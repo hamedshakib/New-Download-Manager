@@ -219,7 +219,7 @@ bool NewDownloadCreater::ProcessCreatePartDownloadsFromDownload()
 	return true;
 }
 
-QString NewDownloadCreater::GeneratePartDownloadAddressFromAddressOfDownloadFile(int numberOfPart,QString addressOfDownloadFile)
+QString NewDownloadCreater::GeneratePartDownloadAddressFromAddressOfDownloadFile(int numberOfPart, QString addressOfDownloadFile)
 {
 	return addressOfDownloadFile + "--" + QString::number(numberOfPart);
 }

@@ -62,7 +62,7 @@ qint64 PartDownloader::ReadReadybytes(qint64 bytes)
 	{
 		ReadedBytes = reply->bytesAvailable();
 		byteArray = reply->read(ReadedBytes);
-		qDebug() << "ReadedBytes:" << ReadedBytes;
+		//qDebug() << "ReadedBytes:" << ReadedBytes;
 	}
 	else
 	{
@@ -85,28 +85,6 @@ qint64 PartDownloader::ReadReadybytes(qint64 bytes)
 
 	return true;
 }
-
-/*
-bool PartDownloader::StartDownload()
-{
-	is_Downloading = true;
-	return true;
-}
-
-bool PartDownloader::PauseDownload()
-{
-	is_Downloading = false;
-
-}
-
-bool PartDownloader::StopDownload()
-{
-	is_Downloading = false;
-	reply->abort();
-	return true;
-}
-*/
-
 
 bool PartDownloader::Set_NetworkReply(QNetworkReply* reply)
 {

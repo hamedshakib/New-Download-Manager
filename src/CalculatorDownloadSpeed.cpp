@@ -9,6 +9,7 @@ CalculatorDownloadSpeed::~CalculatorDownloadSpeed()
 {
 }
 
+/*
 qint64 CalculatorDownloadSpeed::CalculateDownloadSpeed(qint64 NowDownloadedbyte,qint64 SpentedTime_Millisecond)
 {
 	//Bytes per Millisecond 
@@ -22,6 +23,18 @@ qint64 CalculatorDownloadSpeed::CalculateDownloadSpeed(qint64 NowDownloadedbyte,
 	LastSpeedBytesPerMillisecond = (DiffrencebytesDownloaded / SpentedTime_Millisecond);
 	return LastSpeedBytesPerMillisecond;
 }
+*/
+
+qint64 CalculatorDownloadSpeed::CalculateDownloadSpeed(qint64 NumberOfBytesThatDownloadedInLastPeriod, qint64 SpentedTime_Millisecond)
+{
+	if (SpentedTime_Millisecond == 0)
+	{
+		return 0;
+	}
+	LastSpeedBytesPerMillisecond = (NumberOfBytesThatDownloadedInLastPeriod / SpentedTime_Millisecond);
+	return LastSpeedBytesPerMillisecond;
+}
+
 
 QString CalculatorDownloadSpeed::GetSpeedOfDownloadInFormOfString()
 {

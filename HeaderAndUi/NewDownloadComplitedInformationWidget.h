@@ -23,6 +23,10 @@ private slots:
 	void on_DownloadNow_pushButton_clicked();
 	void on_DownloadLater_pushButton_clicked();
 	void on_Cancel_pushButton_clicked();
+
+
+	QString ChooseNameForNewDownloadFile(QString SaveTo, QUrl RealUrl);
+
 private:
 	QUrl RealUrl;
 	Ui::NewDownloadComplitedInformationWidget ui;

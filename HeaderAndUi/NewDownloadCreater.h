@@ -73,6 +73,7 @@ private slots:
 signals:
 	void CreatedNewDownload(Download* download);
 	void DownloadNow(Download* download);
+
 public:
 	NewDownloadCreater(QObject *parent);
 	~NewDownloadCreater();

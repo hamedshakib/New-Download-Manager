@@ -20,6 +20,7 @@ Downloader::Downloader(Download* download, QObject* parent)
 
 Downloader::~Downloader()
 {
+
 }
 
 bool Downloader::StartDownload()
@@ -53,12 +54,6 @@ bool Downloader::StopDownload()
 	return 0;
 }
 
-bool Downloader::StartPartDownloader(PartDownloader* partDownloader)
-{
-
-	return 0;
-}
-
 bool Downloader::ProcessPreparePartDownloaders()
 {
 	QList<PartDownload*> PartDownloads = download->get_PartDownloads();
@@ -77,7 +72,6 @@ bool Downloader::ProcessPreparePartDownloaders()
 			}
 			CheckForFinishedDownload();
 			partDownloader->deleteLater();
-			qDebug() << "After Delete Later";
 			});
 
 	}
@@ -89,11 +83,10 @@ void Downloader::DownloadWithSpeedControlled()
 {
 	qint64 spentedTime = elapsedTimer.restart();
 	qint64 speed=calculatorSpeed.CalculateDownloadSpeed(NumberOfBytesDownloadedInLastPeriod, spentedTime);
-	qDebug() << "Speed:" << speed;
+	qDebug() << "Speed:" << calculatorSpeed.GetSpeedOfDownloadInFormOfString();
 	NumberOfBytesDownloadedInLastPeriod = 0;
 	if (MaxSpeedOfThisDownloader > 0)
 	{
-		qDebug() << "didam9";
 		while (spentedTime<1000 && MaxSpeedOfThisDownloader * 1024>NumberOfBytesDownloadedInLastPeriod)
 		{
 			qint64 BytesShouldDownload = MaxSpeedOfThisDownloader * 1024 - NumberOfBytesDownloadedInLastPeriod;
@@ -104,7 +97,6 @@ void Downloader::DownloadWithSpeedControlled()
 	else
 	{
 		NumberOfBytesDownloadedInLastPeriod += ProcessOfDownload();
-		calculatorSpeed.CalculateDownloadSpeed(NumberOfBytesDownloadedInLastPeriod, elapsedTimer.elapsed());
 	}
 	if (Is_Downloading)
 	{
@@ -114,30 +106,6 @@ void Downloader::DownloadWithSpeedControlled()
 
 qint64 Downloader::ProcessOfDownload(qint64 BytesshouldBeDownloadAtThisPeriod)
 {
-	/*
-	//qint64 BytesThatBeShouldDownloadPerSecondPerPartDownload;
-	qint64 DownloadedBytesInThisSecond=0;
-	if (MaxSpeedOfThisDownloader > 0) 
-	{
-		qint64 BytesThatBeShouldDownloadPerSecondPerPartDownload = (qint64)MaxSpeedOfThisDownloader * 1024 / PartDownloader_list.count();
-		for (PartDownloader* partDownloader : PartDownloader_list)
-		{
-			DownloadedBytesInThisSecond += partDownloader->ReadReadybytes(BytesThatBeShouldDownloadPerSecondPerPartDownload);
-		}
-	}
-	else
-	{
-		for (PartDownloader* partDownloader : PartDownloader_list)
-		{
-			DownloadedBytesInThisSecond += partDownloader->ReadReadybytes();
-		}
-	}
-	
-	calculatorSpeed.CalculateDownloadSpeed(DownloadedBytesInThisSecond,elapsedTimer.restart());
-	return DownloadedBytesInThisSecond;
-	*/
-
-
 	qint64 DownloadedBytesInThisRun=0;
 	if (BytesshouldBeDownloadAtThisPeriod > 0)
 	{
@@ -153,9 +121,10 @@ qint64 Downloader::ProcessOfDownload(qint64 BytesshouldBeDownloadAtThisPeriod)
 		for (PartDownloader* partDownloader : PartDownloader_list)
 		{
 			DownloadedBytesInThisRun += partDownloader->ReadReadybytes();
+
 		}
 	}
-
+	//qDebug() << "Test DownloadedBytesInThisRun:" << DownloadedBytesInThisRun;
 
 
 	return DownloadedBytesInThisRun;
@@ -193,7 +162,7 @@ bool Downloader::CheckForFinishedDownload()
 void Downloader::ProcessOfEndOfDownloading()
 {
 
-	qDebug() << "Endddddddddddddddddddddddddddddddddd";
+	qDebug() << "Process Of End Of Downloading";
 	Is_Downloading = false;
 	QList<PartDownload*> PartDownloads = download->get_PartDownloads();
 	QList<QFile*> FilesOfDownload;

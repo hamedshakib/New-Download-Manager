@@ -20,11 +20,6 @@ class PartDownloader : public QObject
 
 
 public slots:
-	/*
-	bool StartDownload();
-	bool PauseDownload();
-	bool StopDownload();
-	*/
 	qint64 ReadReadybytes(qint64 bytes=-1);
 
 

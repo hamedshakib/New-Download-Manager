@@ -1,1 +1,3 @@
-Download Manager
+﻿Download Manager
+
+برنامه دانلود منیجر با قابلیت بخش بندی فایل دانلود

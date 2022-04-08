@@ -12,7 +12,8 @@ private:
 	qint64 LastSpeedBytesPerMillisecond=0;
 
 public:
-	qint64 CalculateDownloadSpeed(qint64 NowDownloadedbyte,qint64 SpentedTime_Millisecond);
+	//qint64 CalculateDownloadSpeed(qint64 NowDownloadedbyte,qint64 SpentedTime_Millisecond);
+	qint64 CalculateDownloadSpeed(qint64 NumberOfBytesThatDownloadedInLastPeriod, qint64 SpentedTime_Millisecond);
 	QString GetSpeedOfDownloadInFormOfString();
 
 public:

@@ -19,7 +19,7 @@ bool NewDownloadComplitedInformationWidget::SetMoreCompliteInformation(QUrl Real
 	ui.Url_lineEdit->setText(RealUrl.toString());
 	ui.Description_lineEdit->setText(description);
 	ui.FileSize_label->setText(Size);
-	ui.SaveAs_lineEdit->setText(SaveTo+"/" + RealUrl.fileName());
+	ui.SaveAs_lineEdit->setText(ChooseNameForNewDownloadFile(SaveTo, RealUrl));
 	ui.Type_label->setText(TypeFile);
 	return true;
 }
@@ -48,4 +48,31 @@ void NewDownloadComplitedInformationWidget::on_DownloadLater_pushButton_clicked(
 void NewDownloadComplitedInformationWidget::on_Cancel_pushButton_clicked()
 {
 	this->close();
+}
+
+QString NewDownloadComplitedInformationWidget::ChooseNameForNewDownloadFile(QString SaveTo, QUrl RealUrl)
+{
+	QString NameForFile= SaveTo + "/" + RealUrl.fileName();
+	QFileInfo fileInfo(NameForFile);
+	if (fileInfo.exists(NameForFile))
+	{
+		int TempNumber = 1;
+		QString suffix = fileInfo.suffix();
+		QString fileName = fileInfo.fileName();
+		QString directory = fileInfo.dir().dirName();
+		int positionOfSuffix = fileName.lastIndexOf(suffix);
+		QString NameWithoutSuffix = fileName.mid(0, positionOfSuffix - 1);
+
+		QString SuggestionName;
+		do
+		{
+			SuggestionName = NameWithoutSuffix + "(" + QString::number(TempNumber) + ")";
+			fileInfo.setFile(SuggestionName);
+			TempNumber++;
+		} while (fileInfo.exists());
+
+		NameForFile = SaveTo + "/" +SuggestionName + "." + suffix;
+	}
+	
+	return NameForFile;
 }
