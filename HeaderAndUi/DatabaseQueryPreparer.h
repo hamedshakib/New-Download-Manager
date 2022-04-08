@@ -1,0 +1,25 @@
+#pragma once
+
+#include <QObject>
+#include "Download.h"
+#include "qsqlquery.h"
+#include "SettingUpDatabase.h"
+#include "ProcessEnum.h"
+#include "QString"
+
+
+class DatabaseQueryPreparer : public QObject
+{
+	Q_OBJECT
+
+public:
+	static QSqlQuery* PrepareQueryForLoadDownload(int Download_id);
+	static QSqlQuery* PrepareQueryChangeLastbitDownloaded(int PartDownload_id,qint64 LastbitDownloaded);
+	static QSqlQuery* PrepareQuerySuffixsFromMimeType(QString MimeType);
+	static QSqlQuery* PrepareQueryForCreateNewDownload(Download* download);
+	static QSqlQuery* PrepareQueryForCreateNewPartDownload(PartDownload* partDownload);
+
+public:
+	DatabaseQueryPreparer(QObject *parent);
+	~DatabaseQueryPreparer();
+};
