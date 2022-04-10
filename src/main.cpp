@@ -27,7 +27,7 @@ int main(int argc,char* argv[])
 	SettingInteract::SetValue("Download/DefaultPartForDownload", "8");
 
 	DownloadManager downloadManager;
-	downloadManager.CreateNewDownload();
+	//downloadManager.CreateNewDownload();
 
 
 	

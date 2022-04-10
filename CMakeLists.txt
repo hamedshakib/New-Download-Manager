@@ -130,6 +130,12 @@ set(PROJECT_SOURCES
         ${MY_HeaderAndUi_PATH}/CalculatorDownloadSpeed.h
         ${MY_SOURCE_PATH}/CalculatorDownloadSpeed.cpp
 
+        #TableViewController
+        ${MY_HeaderAndUi_PATH}/TableViewController.h
+        ${MY_SOURCE_PATH}/TableViewController.cpp
+
+
+
 
 
 )

@@ -14,6 +14,8 @@ public:
 	static bool ProcessPutLoadedDownloadInformationInDownloadObject(const QSqlRecord& record,Download* download,int download_id);
 	static QString ProcessLoadedSuffixsForMimeType(const QSqlRecord& record);
 
+	//static QList<Row
+
 
 public:
 	ProcessDatabaseOutput(QObject *parent);

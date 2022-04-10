@@ -19,6 +19,8 @@ public:
 	static QSqlQuery* PrepareQueryForCreateNewDownload(Download* download);
 	static QSqlQuery* PrepareQueryForCreateNewPartDownload(PartDownload* partDownload);
 
+	static QSqlQuery* PrepareQueryForLoadDownloadForMainTable();
+
 public:
 	DatabaseQueryPreparer(QObject *parent);
 	~DatabaseQueryPreparer();

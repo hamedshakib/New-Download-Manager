@@ -65,3 +65,14 @@ size_t DatabaseManager::CreateNewPartDownloadOnDatabase(PartDownload* partDownlo
 	return downloadId;
 }
 
+bool DatabaseManager::LoadAllDownloadsForMainTable()
+{
+	QSqlQuery* query = DatabaseQueryPreparer::PrepareQueryForLoadDownloadForMainTable();
+	if (DatabaseInteract::ExectionQueryForReadData(query))
+	{
+
+		return true;
+	}
+	return false;
+}
+

@@ -117,3 +117,14 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForCreateNewPartDownload(PartDownl
 
 	return query;
 }
+
+QSqlQuery* DatabaseQueryPreparer::PrepareQueryForLoadDownloadForMainTable()
+{
+	QString queryString = QString(
+		"Select * "
+		"From Download "
+	);
+	
+	QSqlQuery* query = new QSqlQuery(queryString, SettingUpDatabase::get_Database());
+	return query;
+}

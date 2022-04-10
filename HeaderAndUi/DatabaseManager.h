@@ -23,6 +23,7 @@ public:
 	static size_t CreateNewDownloadOnDatabase(Download* download);
 	static size_t CreateNewPartDownloadOnDatabase(PartDownload* partDownload);
 	
+	static bool LoadAllDownloadsForMainTable();
 
 public:
 	DatabaseManager(QObject *parent=nullptr);

@@ -5,24 +5,8 @@ DownloadManager::DownloadManager(QObject *parent)
 {
 	mainWindow.show();
 
+	connect(&mainWindow, &MainWindow::AddNewDownload, this, &DownloadManager::CreateNewDownload);
 
-
-
-
-
-/*
-	QNetworkRequest request(QUrl("https://cdn.soft98.ir/2/ShutUp10.jpg"));
-	//	request.setAttribute(QNetworkRequest::HttpPipeliningAllowedAttribute, true);
-	//	QString rangeBytes = QString("bytes=%1-%2").arg(partDownload->start_byte).arg(partDownload->end_byte);
-	//	qDebug() << "rangeBytes:" << rangeBytes;
-	//	request.setRawHeader("Range", rangeBytes.toUtf8());
-	QNetworkAccessManager* manager = new QNetworkAccessManager(this);
-	QEventLoop loop;
-	QNetworkReply* reply = manager->get(request);
-	connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
-	loop.exec();
-	qDebug() <<"Reply:"<<reply->readAll();
-	*/
 }
 
 DownloadManager::~DownloadManager()
@@ -68,7 +52,6 @@ bool DownloadManager::CreateDownloadFromDatabase(int download_id)
 
 bool DownloadManager::CreateNewDownload()
 {
-	qDebug() << "Didam1";
 	NewDownloadCreater *newDownloadCreater=new NewDownloadCreater(this);
 	connect(newDownloadCreater, &NewDownloadCreater::CreatedNewDownload, this, &DownloadManager::AddCreatedDownloadToDownloadList);
 	connect(newDownloadCreater, &NewDownloadCreater::DownloadNow, this, &DownloadManager::CreateDownloaderAndStartDownload);
