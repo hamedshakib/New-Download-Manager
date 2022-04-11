@@ -29,6 +29,7 @@ public:
 	void StartProcessOfCreateANewDownload(QObject* parent);
 	
 private:
+	int NumberOfAllowedTryForFindRealUrl = 15;
 	Download* download;
 	QUrl BaseUrl,RealDownloadUrl;
 	QString UserName, Password;
@@ -67,8 +68,8 @@ private slots:
 	void WritePartDownloadsInDatabase();
 
 	void ProcessCompleteInformation();
-	void VerifiedDownload_DownloadNow(QUrl url, QString FileSaveToAddress);
-	void VerifiedDownload_DownloadLater(QUrl url, QString FileSaveToAddress, int QueueId);
+	void VerifiedDownload_DownloadNow(QUrl url, QUrl FileSaveToAddress);
+	void VerifiedDownload_DownloadLater(QUrl url, QUrl FileSaveToAddress, int QueueId);
 
 signals:
 	void CreatedNewDownload(Download* download);

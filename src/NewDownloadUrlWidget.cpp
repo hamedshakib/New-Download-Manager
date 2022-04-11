@@ -24,4 +24,5 @@ void NewDownloadUrlWidget::Rejected()
 {
 	emit GetInformations(QUrl(""), "", "");
 	SignalEmmited = true;
+	this->close();
 }

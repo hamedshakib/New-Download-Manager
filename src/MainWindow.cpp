@@ -5,16 +5,25 @@ MainWindow::MainWindow(QWidget *parent)
 {
 	ui.setupUi(this);
 
-    TableViewController* tableview = new TableViewController();
-    tableview->Set_TableView(ui.tableView);
-    tableview->ProcessSetupOfTableView();
 
-
+	QApplication::setQuitOnLastWindowClosed(false);
 }
 
 MainWindow::~MainWindow()
 {
 }
+void MainWindow::CreateTableViewControllerForMainWindow()
+{
+	tableViewController = new TableViewController(ui.tableView, this);
+	tableViewController->Set_DownloadManager(downloadManagerPointer);
+	tableViewController->ProcessSetupOfTableView();
+}
+
+void MainWindow::SetDownloadManager(DownloadManager* downloadManager)
+{
+	downloadManagerPointer = downloadManager;
+}
+
 
 void MainWindow::on_actionAdd_new_Download_triggered()
 {

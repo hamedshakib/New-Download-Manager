@@ -26,6 +26,7 @@ public slots:
 public:
 	bool Set_PartDownload(PartDownload* partDownload);
 	bool Set_NetworkReply(QNetworkReply* reply);
+	PartDownload* Get_PartDownload();
 
 signals:
 	void Finished();

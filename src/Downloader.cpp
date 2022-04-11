@@ -98,6 +98,10 @@ void Downloader::DownloadWithSpeedControlled()
 	{
 		NumberOfBytesDownloadedInLastPeriod += ProcessOfDownload();
 	}
+
+	download->SizeDownloaded += NumberOfBytesDownloadedInLastPeriod;
+	emit DownloadedAtAll(download->SizeDownloaded);
+
 	if (Is_Downloading)
 	{
 		emit FinishedThisPeriod(NumberOfBytesDownloadedInLastPeriod, elapsedTimer.elapsed());
@@ -112,7 +116,9 @@ qint64 Downloader::ProcessOfDownload(qint64 BytesshouldBeDownloadAtThisPeriod)
 		qint64 BytesThatBeShouldDownloadPerPartDownload = BytesshouldBeDownloadAtThisPeriod / PartDownloader_list.count();
 		for (PartDownloader* partDownloader : PartDownloader_list)
 		{
-			DownloadedBytesInThisRun += partDownloader->ReadReadybytes(BytesThatBeShouldDownloadPerPartDownload);
+			qint64 DownloadedBytesNow= partDownloader->ReadReadybytes(BytesThatBeShouldDownloadPerPartDownload);
+			DownloadedBytesInThisRun += DownloadedBytesNow;
+			
 		}
 	}
 	else
@@ -176,5 +182,11 @@ void Downloader::ProcessOfEndOfDownloading()
 	QFile* NewDownloadFile=DownloadFileWriter::BuildFileFromMultipleFiles(FilesOfDownload, download->get_SavaTo().toString());
 	qDebug() << "NewFile Download" << NewDownloadFile;
 	qDeleteAll(PartDownloads);
+	download->Set_downloadStatus(Download::Completed);
+	emit CompeletedDownload();
+}
 
+Download* Downloader::Get_Download()
+{
+	return download;
 }

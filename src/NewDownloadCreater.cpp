@@ -33,6 +33,7 @@ void  NewDownloadCreater::GetInformationFromUrl(QUrl url, QString UserName, QStr
 		BaseUrl = url;
 		RealDownloadUrl = url;
 
+		int NumberOfTry = 0;
 		while (!TryToGetInformationFromUrl(RealDownloadUrl, UserName, Password))
 		{
 			qDebug() << "f1";
@@ -43,6 +44,12 @@ void  NewDownloadCreater::GetInformationFromUrl(QUrl url, QString UserName, QStr
 			{
 
 			}
+
+
+
+			NumberOfTry++;
+			if (NumberOfAllowedTryForFindRealUrl == NumberOfTry)
+				break;
 		}
 }
 
@@ -150,11 +157,12 @@ bool NewDownloadCreater::ProcessNewDownloadMoreComplitedInformationWidget()
 	return true;
 }
 
-void NewDownloadCreater::VerifiedDownload_DownloadNow(QUrl url, QString FileSaveToAddress)
+void NewDownloadCreater::VerifiedDownload_DownloadNow(QUrl url, QUrl FileSaveToAddress)
 {
 	this->download = CreateNewDownload(parent);
 	this->download->Url = url;
-	this->download->SaveTo = FileSaveToAddress;
+	this->download->FileName = FileSaveToAddress.fileName();
+	this->download->SaveTo = FileSaveToAddress.toString();
 	ProcessCompleteInformation();
 	size_t download_id=WriteDownloadInDatabase();
 	download->IdDownload = download_id;
@@ -164,7 +172,7 @@ void NewDownloadCreater::VerifiedDownload_DownloadNow(QUrl url, QString FileSave
 	emit DownloadNow(download);
 }
 
-void NewDownloadCreater::VerifiedDownload_DownloadLater(QUrl url, QString FileSaveToAddress, int QueueId)
+void NewDownloadCreater::VerifiedDownload_DownloadLater(QUrl url, QUrl FileSaveToAddress, int QueueId)
 {
 	//TODO
 	this->download = CreateNewDownload(parent);

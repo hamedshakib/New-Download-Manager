@@ -2,6 +2,7 @@
 
 #include <QObject>
 #include "Download.h"
+#include "Downloader.h"
 #include "qsqlquery.h"
 #include "SettingUpDatabase.h"
 #include "ProcessEnum.h"
@@ -21,6 +22,11 @@ public:
 
 	static QSqlQuery* PrepareQueryForLoadDownloadForMainTable();
 
+	static QSqlQuery* PrepareQueryForUpdateAllFieldDownload(Download* download);
+
+
+
+	static QSqlQuery* PrepareQueryForUpdateInDownloading(Downloader* downloader);
 public:
 	DatabaseQueryPreparer(QObject *parent);
 	~DatabaseQueryPreparer();

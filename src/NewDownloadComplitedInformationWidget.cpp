@@ -36,7 +36,7 @@ void NewDownloadComplitedInformationWidget::on_SaveAs_toolButton_clicked()
 
 void NewDownloadComplitedInformationWidget::on_DownloadNow_pushButton_clicked()
 {
-	emit DownloadNow(ui.Url_lineEdit->text(), ui.SaveAs_lineEdit->text());
+	emit DownloadNow(ui.Url_lineEdit->text(), QUrl(ui.SaveAs_lineEdit->text()));
 	this->close();
 }
 
@@ -67,9 +67,10 @@ QString NewDownloadComplitedInformationWidget::ChooseNameForNewDownloadFile(QStr
 		do
 		{
 			SuggestionName = NameWithoutSuffix + "(" + QString::number(TempNumber) + ")";
-			fileInfo.setFile(SuggestionName);
+			fileInfo.setFile(SaveTo +"/"+SuggestionName + "." + suffix);
 			TempNumber++;
 		} while (fileInfo.exists());
+
 
 		NameForFile = SaveTo + "/" +SuggestionName + "." + suffix;
 	}

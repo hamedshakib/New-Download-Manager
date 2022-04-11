@@ -9,6 +9,8 @@
 #include "qabstractitemmodel.h"
 #include "qstandarditemmodel.h"
 #include "TableViewController.h"
+#include "DownloadManager.h"
+
 
 class MainWindow : public QMainWindow
 {
@@ -18,7 +20,8 @@ public:
 	MainWindow(QWidget *parent = nullptr);
 	~MainWindow();
 
-
+	void SetDownloadManager(DownloadManager* downloadManager);
+	void CreateTableViewControllerForMainWindow();
 
 private slots:
 	void on_actionAdd_new_Download_triggered();
@@ -30,5 +33,7 @@ signals:
 
 
 private:
+	TableViewController* tableViewController;
+	DownloadManager* downloadManagerPointer;
 	Ui::MainWindow ui;
 };

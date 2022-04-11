@@ -1,54 +1,51 @@
 #pragma once
 
 #include <QObject>
+#include "DownloadManager.h"
 #include "qtableview.h"
 #include "qstandarditemmodel.h"
 #include "qabstractitemmodel.h"
 #include "qheaderview.h"
 #include "qaction.h"
 #include "qmenu.h"
-
-template <typename T>
-QStandardItem* newItem(const T val) {
-	auto item = new QStandardItem;
-	item->setData(val, Qt::DisplayRole);
-	return item;
-}
+#include "DatabaseManager.h"
 
 class TableViewController : public QObject
 {
-private:
 	Q_OBJECT
 
-public:
 
-	bool Set_TableView(QTableView* tableview);
+public:
 	void ProcessSetupOfTableView();
+	void Set_DownloadManager(DownloadManager* downloadManager);
 	
 
-	//void Test();
-
-private slots:
-	void doubleClickedOnRow(const QModelIndex& modelindex);
-	QList<QStandardItem*> PrepareDataForRow(int id,QString FileName,QString Size,QString Status,QString Speed,QString TimeLeft,QString LastTryTime,QString Description,QString SaveTo);
-	void ProcessCheckAndApply_RightClickOnTable(const QPoint& point);
-
-	void AdjusteTableViewProperty();
 
 private slots:
 	void OnHeaderRightClicked(const QPoint& pos);
-	void LoadAllDownloadsFromDatabase();
-
-
+	void doubleClickedOnRow(const QModelIndex& modelindex);
 	int FindDownloadIdFromRow(const QModelIndex& modelindex);
+	void ProcessCheckAndApply_RightClickOnTable(const QPoint& point);
+	void AdjusteTableViewProperty();
+	void LoadAllDownloadsFromDatabaseForMainTableView();
+	void GetDownloaderOfDownloadId(int DownloadId);
+
+	QMenu* CreaterRightClickMenuForRowRightClicked(int Download_id);
+
 private:
-	QTableView* m_table;
+	QTableView* m_tableView;
+	DownloadManager* m_downloadManager;
+	DatabaseManager* manager;
+
 	QStandardItemModel* model;
 	QStringList listOfColomns;
 
 	QHeaderView* horizontalHeader;
 
+	//void UpdateRow(int Row);
+	//void UpdateIndex(QList<QModelIndex&> ListOfIndex);
+	//void index
 public:
-	TableViewController(QObject *parent=nullptr);
+	TableViewController(QTableView *tableView,QObject *parent);
 	~TableViewController();
 };

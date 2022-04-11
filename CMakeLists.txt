@@ -134,6 +134,13 @@ set(PROJECT_SOURCES
         ${MY_HeaderAndUi_PATH}/TableViewController.h
         ${MY_SOURCE_PATH}/TableViewController.cpp
 
+        #ApplicationManager
+        ${MY_HeaderAndUi_PATH}/ApplicationManager.h
+        ${MY_SOURCE_PATH}/ApplicationManager.cpp
+
+        #TableViewRowCreater
+        ${MY_HeaderAndUi_PATH}/TableViewRowCreater.h
+        ${MY_SOURCE_PATH}/TableViewRowCreater.cpp
 
 
 

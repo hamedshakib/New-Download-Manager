@@ -3,9 +3,7 @@
 DownloadManager::DownloadManager(QObject *parent)
 	: QObject(parent)
 {
-	mainWindow.show();
 
-	connect(&mainWindow, &MainWindow::AddNewDownload, this, &DownloadManager::CreateNewDownload);
 
 }
 
@@ -35,18 +33,18 @@ bool DownloadManager::settingUpDataBase()
 }
 */
 
-bool DownloadManager::CreateDownloadFromDatabase(int download_id)
+Download* DownloadManager::CreateDownloadFromDatabase(int download_id)
 {
 	Download* download = new Download(this);
 	DatabaseManager manager(this);
-	if (manager.LoadDownloadComplite(download_id, download))
+	if (manager.LoadDownloadComplete(download_id, download))
 	{
-		return true;
+		return download;
 	}
 	else
 	{
-		download->deleteLater();
-		return false;
+		Download* download;
+		return download;
 	}
 }
 
@@ -59,10 +57,12 @@ bool DownloadManager::CreateNewDownload()
 	return true;
 }
 
+
 void DownloadManager::AddCreatedDownloadToDownloadList(Download* download)
 {
 	ListOfDownloads.append(download);
 }
+
 
 bool DownloadManager::StartDownloader(Downloader* downloader)
 {
@@ -74,6 +74,47 @@ bool DownloadManager::CreateDownloaderAndStartDownload(Download* download)
 {
 	Downloader* downloader = new Downloader(download,this);
 	StartDownloader(downloader);
-	qDebug() << "Didam1";
+
+
+	connect(downloader, &Downloader::CompeletedDownload, this, [&, download]() {
+		DatabaseManager::UpdateAllFieldDownloadOnDataBase(download); qDebug() << "Da---------------------"; });
+
+
 	return true;
+}
+
+Download* DownloadManager::ProcessAchieveDownload(int Download_id)
+{
+	for (Download* download : ListOfDownloads)
+	{
+		if (download->get_Id() == Download_id)
+		{
+			return download;
+		}
+	}
+
+
+	//Not Found Download So Load From Database
+	Download* downloadWithSpecialId = CreateDownloadFromDatabase(Download_id);
+	if (downloadWithSpecialId != nullptr)
+	{
+		AddCreatedDownloadToDownloadList(downloadWithSpecialId);
+	}
+	return downloadWithSpecialId;
+}
+
+Downloader* DownloadManager::ProcessAchieveDownloader(Download* download)
+{
+	for (Downloader* downloader : ListOfDownloaders)
+	{
+		if (downloader->Get_Download() == download)
+		{
+			return downloader;
+		}
+	}
+
+	//Not Found Downloader So Load From Database
+	Downloader* downloader = new Downloader(download, this);
+	ListOfDownloaders.append(downloader);
+	return downloader;
 }

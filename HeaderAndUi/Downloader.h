@@ -36,6 +36,10 @@ public:
 
 
 	bool ProcessPreparePartDownloaders();
+
+	Download* Get_Download();
+
+
 private:
 	bool CreatePartDownloaderFromDatabase();
 	bool StartPartDownloader(PartDownloader* partDownloader);
@@ -52,7 +56,11 @@ private slots:
 
 signals:
 	void FinishedThisPeriod(qint64 bytesDownloaded,qint64 millisecond);
+	void CompeletedDownload();
+	void DownloadedAtAll(qint64 downloadedsize);
 
+private:
+	friend class DatabaseQueryPreparer;
 public:
 	Downloader(Download* download,QObject *parent);
 	~Downloader();

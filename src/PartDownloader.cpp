@@ -18,43 +18,6 @@ bool PartDownloader::Set_PartDownload(PartDownload* partDownload)
 
 qint64 PartDownloader::ReadReadybytes(qint64 bytes)
 {
-	/*
-	QByteArray byteArray;
-	mutex.lock();
-	if ((partDownload->PartDownloadFile->size() + bytes) < partDownload->end_byte)
-	{
-		byteArray=reply->read(bytes);
-		if (DownloadFileWriter::WriteDownloadToFile(byteArray, partDownload->PartDownloadFile))
-		{
-			
-		}
-		mutex.unlock();
-		return true;
-	}
-	else if ((partDownload->PartDownloadFile->size() + bytes) > partDownload->end_byte)
-	{
-		byteArray=reply->read(partDownload->end_byte - partDownload->PartDownloadFile->size());
-		if (DownloadFileWriter::WriteDownloadToFile(byteArray, partDownload->PartDownloadFile))
-		{
-
-		}
-		mutex.unlock();
-		return false;
-	}
-	else if ((partDownload->PartDownloadFile->size() + bytes) == partDownload->end_byte)
-	{
-		byteArray=reply->read(partDownload->PartDownloadFile->size() + bytes);
-		if (DownloadFileWriter::WriteDownloadToFile(byteArray, partDownload->PartDownloadFile))
-		{
-
-		}
-		mutex.unlock();
-	}
-	mutex.unlock();
-	return false;
-	*/
-
-
 	qint64 ReadedBytes = 0;
 	QByteArray byteArray;
 
@@ -95,5 +58,10 @@ bool PartDownloader::Set_NetworkReply(QNetworkReply* reply)
 		emit Finished(); });
 
 	return true;
+}
+
+PartDownload* PartDownloader::Get_PartDownload()
+{
+	return partDownload;
 }
 

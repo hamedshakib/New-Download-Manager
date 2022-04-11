@@ -1,51 +1,63 @@
 #include "HeaderAndUi/TableViewController.h"
 
-TableViewController::TableViewController(QObject *parent)
+TableViewController::TableViewController(QTableView* tableView,QObject *parent)
 	: QObject(parent)
 {
+	m_tableView = tableView;
 	listOfColomns << "id" << "File Name" << "Size" << "Status" << "Speed" << "Time Left" << "Last Try Time" << "Description" << "Save To";
 	model = new QStandardItemModel(this);
-
 }
 
 TableViewController::~TableViewController()
 {
 }
 
-bool TableViewController::Set_TableView(QTableView* tableview)
+void TableViewController::Set_DownloadManager(DownloadManager* downloadManager)
 {
-	m_table = tableview;
-	return true;
+	m_downloadManager = downloadManager;
 }
 
 void TableViewController::ProcessSetupOfTableView()
 {
 	model->setHorizontalHeaderLabels(listOfColomns);
-	m_table->setModel(model);
+	m_tableView->setModel(model);
 
+
+	
 	//Set Header 
-	horizontalHeader = m_table->horizontalHeader();
+	horizontalHeader = m_tableView->horizontalHeader();
 	horizontalHeader->setSectionsMovable(true);
 	horizontalHeader->setContextMenuPolicy(Qt::CustomContextMenu);     //set contextmenu
 	connect(horizontalHeader, &QHeaderView::customContextMenuRequested, this, &TableViewController::OnHeaderRightClicked);
 
 
 
-
+	
 	//Set double click on rows 
-	connect(m_table, &QTableView::doubleClicked, this, &TableViewController::doubleClickedOnRow);
+	connect(m_tableView, &QTableView::doubleClicked, this, &TableViewController::doubleClickedOnRow);
 
+
+	
 	//Set right click on rows
-	m_table->setContextMenuPolicy(Qt::CustomContextMenu);
-	connect(m_table, &QTableView::customContextMenuRequested, this, &TableViewController::ProcessCheckAndApply_RightClickOnTable);
+	m_tableView->setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(m_tableView, &QTableView::customContextMenuRequested, this, &TableViewController::ProcessCheckAndApply_RightClickOnTable);
+
+
+	
+	AdjusteTableViewProperty();
+
+	
+	LoadAllDownloadsFromDatabaseForMainTableView();
+
+	
 }
 
 void TableViewController::AdjusteTableViewProperty()
 {
-	m_table->setSelectionBehavior(QAbstractItemView::SelectRows);
-	m_table->setEditTriggers(QAbstractItemView::NoEditTriggers);
-	m_table->verticalHeader()->setVisible(false);
-	m_table->hideColumn(0);
+	m_tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+	m_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	m_tableView->verticalHeader()->setVisible(false);
+	m_tableView->hideColumn(0);
 }
 
 void TableViewController::OnHeaderRightClicked(const QPoint& pos)
@@ -57,69 +69,6 @@ void TableViewController::OnHeaderRightClicked(const QPoint& pos)
 	menu.exec(QCursor::pos());
 }
 
-/*
-void TableViewController::Test()
-{
-	model=new QStandardItemModel(this);
-	//model.setColumnCount(3);
-	model->setHorizontalHeaderLabels(listOfColomns);
-
-
-	model->appendRow(PrepareDataForRow(1, "anyDesk-P30.zip","3.67 MB","51.61%","208.425 KB/sec","47 sec","8:20 4/9/2022","an application","C://User/hamed/Desktop"));
-	model->appendRow(PrepareDataForRow(1, "avengers.mkv", "2.51 GB", "28.35%", "304.425 KB/sec", "34 sec", "5:10 4/9/2022", "a movie", "C://User/hamed/Desktop"));
-	
-	//model->appendRow(newRow2());
-
-	
-	m_table->setModel(model);
-	m_table->horizontalHeader()->move(2, 1);
-
-	//m_bankListView->sortItems(0, Qt::AscendingOrder);
-
-
-	//m_table->setSelectionMode(QAbstractItemView::SingleSelection);
-	m_table->setSelectionBehavior(QAbstractItemView::SelectRows);
-	m_table->setEditTriggers(QAbstractItemView::NoEditTriggers);
-	m_table->verticalHeader()->setVisible(false);
-	m_table->hideColumn(0);
-
-	connect(m_table, &QTableView::doubleClicked, this, &TableViewController::doubleClickedOnRow);
-	QHeaderView* horizontalHeader;
-	horizontalHeader = m_table->horizontalHeader();
-	//horizontalHeader->sectionMoved(0, 1, 3);
-	horizontalHeader->setSectionsMovable(true);
-	horizontalHeader->setContextMenuPolicy(Qt::CustomContextMenu);     //set contextmenu
-
-	connect(horizontalHeader, &QHeaderView::customContextMenuRequested, this,[&](const QPoint &pos ) {
-	{
-		//ToDo Make Colomns Settings
-		QAction ColomnsSetting("Colomns...",this);
-		QMenu menu;
-		menu.addAction(&ColomnsSetting);
-		menu.exec(QCursor::pos());
-	}
-		});
-	connect(horizontalHeader, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(tablev_customContextMenu(const QPoint&)));
-	//m_table->setcolor
-
-
-
-
-
-	//connect(m_table, &QTableView::event, this, [&](QEvent* event) {qDebug() << "Clicke"; });
-
-	m_table->setContextMenuPolicy(Qt::CustomContextMenu);
-	connect(m_table, &QTableView::customContextMenuRequested, this, &TableViewController::ProcessCheckAndApply_RightClickOnTable);
-}
-*/
-
-int TableViewController::FindDownloadIdFromRow(const QModelIndex& modelindex)
-{
-	int row = m_table->currentIndex().row();
-	QModelIndex index = model->index(row, 0);
-	return model->data(index).toInt();
-}
-
 void TableViewController::doubleClickedOnRow(const QModelIndex& modelindex)
 {
 	FindDownloadIdFromRow(modelindex);
@@ -127,51 +76,85 @@ void TableViewController::doubleClickedOnRow(const QModelIndex& modelindex)
 
 }
 
-QList<QStandardItem*> TableViewController::PrepareDataForRow(int id, QString FileName, QString Size, QString Status, QString Speed, QString TimeLeft, QString LastTryTime, QString Description, QString SaveTo)
+int TableViewController::FindDownloadIdFromRow(const QModelIndex& modelindex)
 {
-	QList<QStandardItem*> listOfItems;
+	int row = m_tableView->currentIndex().row();
+	QModelIndex index = model->index(row, 0);
+	return model->data(index).toInt();
+}
 
-	listOfItems << newItem(id);
-	listOfItems << newItem(FileName);
-	listOfItems << newItem(Size);
-	listOfItems << newItem(Status);
-	listOfItems << newItem(Speed);
-	listOfItems << newItem(TimeLeft);
-	listOfItems << newItem(LastTryTime);
-	listOfItems << newItem(Description);
-	listOfItems << newItem(SaveTo);
-
-	return listOfItems;
+void TableViewController::LoadAllDownloadsFromDatabaseForMainTableView()
+{
+	manager = new DatabaseManager(this);
+	manager->LoadAllDownloadsForMainTable(model);
 }
 
 void TableViewController::ProcessCheckAndApply_RightClickOnTable(const QPoint& point)
 {
-	int row = m_table->indexAt(point).row();
+	int row = m_tableView->indexAt(point).row();
 	QModelIndex index = model->index(row, 0);
 	if (!index.isValid())
 		return;
 
 
 
-
-
-
-
 	int Download_id = model->data(index).toInt();
 
-	qDebug() << index;
-	qDebug() << "Name File:" << model->data(model->index(row, 1));
-
-	QString ResumeOrPause="Resume";
-
-	QMenu* menu = new QMenu();
-	menu->addAction(new QAction("Open", this));
-	menu->addAction(new QAction(ResumeOrPause, this));
-	menu->addAction(new QAction("Pro", this));
-	menu->popup(m_table->viewport()->mapToGlobal(point));
+	QMenu* menu = CreaterRightClickMenuForRowRightClicked(Download_id);
+	menu->popup(m_tableView->viewport()->mapToGlobal(point));
 }
 
-void TableViewController::LoadAllDownloadsFromDatabase()
+void TableViewController::GetDownloaderOfDownloadId(int DownloadId)
 {
 	
+}
+
+QMenu* TableViewController::CreaterRightClickMenuForRowRightClicked(int Download_id)
+{
+
+	Download* RightClickedRow_Download=m_downloadManager->ProcessAchieveDownload(Download_id);
+	Download::DownloadStatusEnum status = RightClickedRow_Download->get_Status();
+	QMenu* menu = new QMenu(m_tableView);
+
+
+	//Open Item For Menu
+	if (status == Download::DownloadStatusEnum::Completed)
+	{
+		QAction* OpenAction = new QAction("Open", this);
+		menu->addAction(OpenAction);
+	}
+	
+
+
+
+
+
+	//Resume/Pause Item For Menu
+	QAction* ResumeOrPause;
+	if (status == (Download::DownloadStatusEnum::Pause | Download::DownloadStatusEnum::NotStarted))
+	{
+		ResumeOrPause = new QAction(this);
+		ResumeOrPause->setText("Resume");
+		ResumeOrPause->setVisible(true);
+		menu->addAction(ResumeOrPause);
+	}
+	else if (status == Download::DownloadStatusEnum::Downloading)
+	{
+		QAction* ResumeOrPause = new QAction(this);
+		ResumeOrPause->setText("Pause");
+		ResumeOrPause->setVisible(true);
+		menu->addAction(ResumeOrPause);
+	}
+
+
+
+
+	//Properties Item For Menu
+	QAction* PropertiesAction = new QAction("Properties", this);
+	menu->addAction(PropertiesAction);
+
+
+
+
+	return menu;
 }

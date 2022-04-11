@@ -10,7 +10,7 @@ DatabaseManager::~DatabaseManager()
 	SettingUpDatabase::get_Database().close();
 }
 
-bool DatabaseManager::LoadDownloadComplite(int Download_id,Download* download)
+bool DatabaseManager::LoadDownloadComplete(int Download_id,Download* download)
 {
 	QSqlQuery* query = DatabaseQueryPreparer::PrepareQueryForLoadDownload(Download_id);
 	if (DatabaseInteract::ExectionQueryForReadData(query))
@@ -65,12 +65,29 @@ size_t DatabaseManager::CreateNewPartDownloadOnDatabase(PartDownload* partDownlo
 	return downloadId;
 }
 
-bool DatabaseManager::LoadAllDownloadsForMainTable()
+bool DatabaseManager::LoadAllDownloadsForMainTable(QStandardItemModel* model)
 {
 	QSqlQuery* query = DatabaseQueryPreparer::PrepareQueryForLoadDownloadForMainTable();
 	if (DatabaseInteract::ExectionQueryForReadData(query))
 	{
+		while (query->next())
+		{
+			ProcessDatabaseOutput::ProcessPrepareLoadedInformationForMainTableView(query->record(), model);
+		}
+		return true;
+	}
+	return false;
+}
 
+bool DatabaseManager::UpdateAllFieldDownloadOnDataBase(Download* download)
+{
+	QSqlQuery* query = DatabaseQueryPreparer::PrepareQueryForUpdateAllFieldDownload(download);
+	if (DatabaseInteract::ExectionQueryForUpdateData(query))
+	{
+		while (query->next())
+		//{
+		//	ProcessDatabaseOutput::ProcessPrepareLoadedInformationForMainTableView(query->record(), model);
+		//}
 		return true;
 	}
 	return false;

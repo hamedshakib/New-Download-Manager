@@ -15,8 +15,8 @@ public:
 	bool SetMoreCompliteInformation(QUrl RealUrl, QString TypeFile, QString Size, QString SaveTo, QString description = "");
 
 signals:
-	void DownloadNow(QUrl url,QString FileSaveToAddress);
-	void DownloadLater(QUrl url, QString FileSaveToAddress,int QueueId);
+	void DownloadNow(QUrl url,QUrl FileSaveToAddress);
+	void DownloadLater(QUrl url, QUrl FileSaveToAddress,int QueueId);
 
 private slots:
 	void on_SaveAs_toolButton_clicked();

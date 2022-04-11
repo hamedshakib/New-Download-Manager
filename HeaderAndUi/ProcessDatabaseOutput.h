@@ -4,6 +4,10 @@
 #include "Download.h"
 #include "qsqlquery.h"
 #include "qsqlrecord.h"
+#include "qstandarditemmodel.h"
+#include "ProcessEnum.h"
+#include "ConverterSizeToSuitableString.h"
+#include "TableViewRowCreater.h"
 
 class ProcessDatabaseOutput : public QObject
 {
@@ -14,8 +18,8 @@ public:
 	static bool ProcessPutLoadedDownloadInformationInDownloadObject(const QSqlRecord& record,Download* download,int download_id);
 	static QString ProcessLoadedSuffixsForMimeType(const QSqlRecord& record);
 
-	//static QList<Row
-
+	//static void ProcessPutLoadedInformationOfDownloadForMainTableView(const QSqlRecord& record,QStandardItemModel *model);
+	static void ProcessPrepareLoadedInformationForMainTableView(const QSqlRecord& record, QStandardItemModel* model);
 
 public:
 	ProcessDatabaseOutput(QObject *parent);

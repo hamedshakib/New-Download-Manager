@@ -15,7 +15,11 @@ public:
 
 
 	static int ConvertResumeCapabilityEnumToResumeCapabilityId(Download::ResumeCapabilityEnum resumeCapabilityEnum);
+	static Download::ResumeCapabilityEnum ConvertDatabseStringToResumeCapabilityEnum(QString str);
 
+
+
+	static int ConvertDownloadStatusEnumToDownloadStatusId(Download::DownloadStatusEnum downloadStatusEnum);
 public:
 	ProcessEnum(QObject *parent);
 	~ProcessEnum();
