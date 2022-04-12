@@ -7,11 +7,12 @@
 #include "Download.h"
 #include "PartDownload.h"
 #include "PartDownloader.h"
-#include "CalculatorDownloadSpeed.h"
+#include "CalculatorDownload.h"
 #include "DownloadFileWriter.h"
 #include "qlist.h"
 #include "qelapsedtimer.h"
 #include "qtimer.h"
+#include "qfileinfo.h"
 
 class Downloader : public QObject
 {
@@ -21,7 +22,7 @@ private:
 	QNetworkAccessManager* manager;
 	Download* download;
 	QList<PartDownloader*> PartDownloader_list;
-	CalculatorDownloadSpeed calculatorSpeed;
+	CalculatorDownload calculatorDownload;
 	qint64 MaxSpeedOfThisDownloader; //   KB/Sec
 	bool Is_PreparePartDownloaders=false;
 	bool Is_Downloading = false;
@@ -58,6 +59,7 @@ signals:
 	void FinishedThisPeriod(qint64 bytesDownloaded,qint64 millisecond);
 	void CompeletedDownload();
 	void DownloadedAtAll(qint64 downloadedsize);
+	void SignalForUpdateDownloading(QString Status,QString speed, QString TimeLeft);
 
 private:
 	friend class DatabaseQueryPreparer;

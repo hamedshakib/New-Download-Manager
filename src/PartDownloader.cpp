@@ -53,7 +53,7 @@ bool PartDownloader::Set_NetworkReply(QNetworkReply* reply)
 {
 	this->reply = reply;
 	connect(reply, &QNetworkReply::finished, this, [&]() {
-		ReadReadybytes();
+		partDownload->LastDownloadedByte +=ReadReadybytes();
 		this->partDownload->PartDownloadFile->close();
 		emit Finished(); });
 
@@ -63,5 +63,10 @@ bool PartDownloader::Set_NetworkReply(QNetworkReply* reply)
 PartDownload* PartDownloader::Get_PartDownload()
 {
 	return partDownload;
+}
+
+void PartDownloader::AddByteToLastDownloadedByte(qint64 NumberOfBytes)
+{
+	partDownload->LastDownloadedByte += NumberOfBytes;
 }
 

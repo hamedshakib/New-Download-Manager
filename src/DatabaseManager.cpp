@@ -85,11 +85,27 @@ bool DatabaseManager::UpdateAllFieldDownloadOnDataBase(Download* download)
 	if (DatabaseInteract::ExectionQueryForUpdateData(query))
 	{
 		while (query->next())
-		//{
+		{
 		//	ProcessDatabaseOutput::ProcessPrepareLoadedInformationForMainTableView(query->record(), model);
-		//}
+		}
 		return true;
 	}
 	return false;
+}
+
+bool DatabaseManager::UpdateInDownloadingOnDataBase(Download* download)
+{
+	auto Queries = DatabaseQueryPreparer::PrepareQueriesForUpdateInDownloading(download);
+	for (int i = 0; i < Queries.size(); i++)
+	{
+		if (DatabaseInteract::ExectionQueryForUpdateData(Queries[0]))
+		{
+
+		}
+	}
+
+
+	qDeleteAll(Queries);
+	return true;
 }
 

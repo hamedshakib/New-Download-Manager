@@ -28,6 +28,8 @@ public:
 	bool Set_NetworkReply(QNetworkReply* reply);
 	PartDownload* Get_PartDownload();
 
+	void AddByteToLastDownloadedByte(qint64 NumberOfBytes);
+
 signals:
 	void Finished();
 

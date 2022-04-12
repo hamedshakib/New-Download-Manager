@@ -26,7 +26,8 @@ public:
 
 
 
-	static QSqlQuery* PrepareQueryForUpdateInDownloading(Downloader* downloader);
+	static QList<QSqlQuery*> PrepareQueriesForUpdateInDownloading(Download* download);
+	//static QSqlQuery* PrepareQueryFor
 public:
 	DatabaseQueryPreparer(QObject *parent);
 	~DatabaseQueryPreparer();

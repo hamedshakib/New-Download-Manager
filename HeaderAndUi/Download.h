@@ -64,6 +64,7 @@ private:
 	friend class ProcessDatabaseOutput;
 	friend class NewDownloadCreater;
 	friend class DatabaseQueryPreparer;
+	friend class TableViewRowCreater;
 	
 
 public:

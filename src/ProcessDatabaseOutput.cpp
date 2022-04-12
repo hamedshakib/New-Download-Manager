@@ -26,7 +26,6 @@ bool ProcessDatabaseOutput::ProcessPutLoadedDownloadInformationInDownloadObject(
 	download->SaveTo = record.value("SaveTo").toString();
 	download->description = record.value("description").toString();
 //	download->LastTryTime= record.value("LastTryTime").toString();
-//	download->TimeLeft= record.value("TimeLeft").toString();
 	download->MaxSpeed = record.value("MaxSpeed").toInt();
 	download->ResumeCapability = ProcessEnum::ConvertDatabseStringToResumeCapabilityEnum(record.value("ResumeCapability").toString());
 

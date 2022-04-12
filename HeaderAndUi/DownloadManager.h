@@ -29,13 +29,19 @@ public:
 private slots:
 	void AddCreatedDownloadToDownloadList(Download* download);
 	bool CreateDownloaderAndStartDownload(Download* download);
-	
+	Downloader* CreateDownloader(Download* download);
 
 private:
 
 	//friend class TableViewController;
 	QList<Download*> ListOfDownloads;
 	QList<Downloader*> ListOfDownloaders;
+
+
+signals:
+	void CreatedDownloader(Downloader* downloader);
+	void CreatedNewDownload(Download* download);
+
 public:
 	DownloadManager(QObject *parent=nullptr);
 	~DownloadManager();

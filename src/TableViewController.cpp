@@ -15,6 +15,8 @@ TableViewController::~TableViewController()
 void TableViewController::Set_DownloadManager(DownloadManager* downloadManager)
 {
 	m_downloadManager = downloadManager;
+	connect(m_downloadManager, &DownloadManager::CreatedNewDownload, this,&TableViewController::AddNewDownloadToTableView);
+	connect(m_downloadManager, &DownloadManager::CreatedDownloader, this, &TableViewController::ConnectorDownloaderToTableUpdateInDownloading);
 }
 
 void TableViewController::ProcessSetupOfTableView()
@@ -49,7 +51,6 @@ void TableViewController::ProcessSetupOfTableView()
 	
 	LoadAllDownloadsFromDatabaseForMainTableView();
 
-	
 }
 
 void TableViewController::AdjusteTableViewProperty()
@@ -155,6 +156,43 @@ QMenu* TableViewController::CreaterRightClickMenuForRowRightClicked(int Download
 
 
 
-
 	return menu;
+}
+
+void TableViewController::ConnectorDownloaderToTableUpdateInDownloading(Downloader* downloader)
+{
+	size_t Download_id= downloader->Get_Download()->get_Id();
+	size_t Row = 0;
+	for (size_t i = 0; i < model->rowCount();i++)
+	{
+		qDebug() << model->index(i, 0).data().toInt();
+		if (model->index(i, 0).data().toInt() == Download_id)
+		{
+			Row = i;
+			break;
+		}
+	}
+	if (Row > 0)
+	{
+		connect(downloader, &Downloader::SignalForUpdateDownloading, this, [&,Row](QString Status,QString Speed, QString TimeLeft) {UpdateRowInDownloading(Row,Status,Speed,TimeLeft); });
+	}
+}
+
+bool TableViewController::UpdateRowInDownloading(size_t row,QString Status,QString Speed, QString TimeLeft)
+{
+	QModelIndex Status_index = model->index(row, 3);
+	QModelIndex Speed_index = model->index(row, 4);
+	QModelIndex TimeLeft_index = model->index(row, 5);
+
+	model->setData(Status_index, Status);
+	model->setData(Speed_index, Speed);
+	model->setData(TimeLeft_index, TimeLeft);
+
+	
+	return true;
+}
+
+void TableViewController::AddNewDownloadToTableView(Download* download)
+{
+	model->appendRow(TableViewRowCreater::PrepareDataForRow(download));
 }

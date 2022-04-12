@@ -82,8 +82,10 @@ bool Downloader::ProcessPreparePartDownloaders()
 void Downloader::DownloadWithSpeedControlled()
 {
 	qint64 spentedTime = elapsedTimer.restart();
-	qint64 speed=calculatorSpeed.CalculateDownloadSpeed(NumberOfBytesDownloadedInLastPeriod, spentedTime);
-	qDebug() << "Speed:" << calculatorSpeed.GetSpeedOfDownloadInFormOfString();
+	qint64 speed= calculatorDownload.CalculateDownloadSpeed(NumberOfBytesDownloadedInLastPeriod, spentedTime);
+	QString SpeedString = calculatorDownload.GetSpeedOfDownloadInFormOfString();
+	QString TimeLeftString = calculatorDownload.GetTimeLeftOfDownloadInFormOfString(download->DownloadSize-download->SizeDownloaded);
+	QString DownloadStatus = calculatorDownload.getStatusForTable(download->SizeDownloaded, download->DownloadSize);
 	NumberOfBytesDownloadedInLastPeriod = 0;
 	if (MaxSpeedOfThisDownloader > 0)
 	{
@@ -101,6 +103,8 @@ void Downloader::DownloadWithSpeedControlled()
 
 	download->SizeDownloaded += NumberOfBytesDownloadedInLastPeriod;
 	emit DownloadedAtAll(download->SizeDownloaded);
+	//qDebug() << SpeedString << " " << TimeLeftString;
+	emit SignalForUpdateDownloading(DownloadStatus,SpeedString, TimeLeftString);
 
 	if (Is_Downloading)
 	{
@@ -118,7 +122,7 @@ qint64 Downloader::ProcessOfDownload(qint64 BytesshouldBeDownloadAtThisPeriod)
 		{
 			qint64 DownloadedBytesNow= partDownloader->ReadReadybytes(BytesThatBeShouldDownloadPerPartDownload);
 			DownloadedBytesInThisRun += DownloadedBytesNow;
-			
+			partDownloader->AddByteToLastDownloadedByte(DownloadedBytesNow);
 		}
 	}
 	else
@@ -126,8 +130,9 @@ qint64 Downloader::ProcessOfDownload(qint64 BytesshouldBeDownloadAtThisPeriod)
 		//There are not limitation
 		for (PartDownloader* partDownloader : PartDownloader_list)
 		{
-			DownloadedBytesInThisRun += partDownloader->ReadReadybytes();
-
+			qint64 DownloadedBytesNow = partDownloader->ReadReadybytes();
+			DownloadedBytesInThisRun += DownloadedBytesNow;
+			partDownloader->AddByteToLastDownloadedByte(DownloadedBytesNow);
 		}
 	}
 	//qDebug() << "Test DownloadedBytesInThisRun:" << DownloadedBytesInThisRun;
@@ -142,7 +147,8 @@ bool Downloader::ProcessPreparePartDownloaderFrompartDownload(PartDownloader* pa
 	QNetworkRequest request(download->get_Url());
 	qDebug() <<"downloadUrl:"<<download->get_Url();
 	request.setAttribute(QNetworkRequest::HttpPipeliningAllowedAttribute, true);
-	QString rangeBytes = QString("bytes=%1-%2").arg(partDownload->start_byte).arg(partDownload->end_byte);
+	
+	QString rangeBytes = QString("bytes=%1-%2").arg(partDownload->LastDownloadedByte+1).arg(partDownload->end_byte);
 	qDebug() << "rangeBytes:" << rangeBytes;
 	request.setRawHeader("Range", rangeBytes.toUtf8());
 

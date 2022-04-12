@@ -32,6 +32,11 @@ private slots:
 
 	QMenu* CreaterRightClickMenuForRowRightClicked(int Download_id);
 
+	bool UpdateRowInDownloading(size_t row, QString Status,QString Speed, QString TimeLeft);
+
+	void ConnectorDownloaderToTableUpdateInDownloading(Downloader* downloader);
+	void AddNewDownloadToTableView(Download* download);
+
 private:
 	QTableView* m_tableView;
 	DownloadManager* m_downloadManager;
@@ -41,6 +46,7 @@ private:
 	QStringList listOfColomns;
 
 	QHeaderView* horizontalHeader;
+
 
 	//void UpdateRow(int Row);
 	//void UpdateIndex(QList<QModelIndex&> ListOfIndex);

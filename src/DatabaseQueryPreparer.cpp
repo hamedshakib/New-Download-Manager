@@ -13,7 +13,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForLoadDownload(int Download_id)
 {
 	SettingUpDatabase::get_Database();
 	QString queryString = QString(
-		"select D.id,D.FileName,Ds.Name as Status,Url,SaveTo,Suffix,DownloadSize,SizeDownloaded,description,TimeLeft,LastTryTime,RC.Name as ResumeCapability,Category_id,Queue_id "
+		"select D.id,D.FileName,Ds.Name as Status,Url,SaveTo,Suffix,DownloadSize,SizeDownloaded,description,LastTryTime,RC.Name as ResumeCapability,Category_id,Queue_id "
 		"From Download as D join DownloadStatus as DS on D.id = DS.id join ResumeCapability as RC on D.ResumeCapability_id = RC.id "
 		"where D.id=:id "
 	);
@@ -66,7 +66,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForCreateNewDownload(Download* dow
 		"Url,SaveTo,"
 		"Suffix,DownloadSize,"
 		"SizeDownloaded,description,"
-		"LastTryTime,TimeLeft,"
+		"LastTryTime,"
 		"MaxSpeed,ResumeCapability_id,"
 		"Category_id,Queue_id"
 		") "
@@ -76,7 +76,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForCreateNewDownload(Download* dow
 		":url,:saveTo,"
 		":suffix,:downloadSize,"
 		"0,:description,"
-		"NULL,NULL,"
+		"NULL,"
 		"0,:resumeCapability_id,"
 		":category_id,:queue_id"
 		");"
@@ -137,7 +137,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForCreateNewPartDownload(PartDownl
 QSqlQuery* DatabaseQueryPreparer::PrepareQueryForLoadDownloadForMainTable()
 {
 	QString queryString = QString(
-		"select D.id,D.FileName,Ds.Name as DownloadStatus,Url,SaveTo,Suffix,DownloadSize,SizeDownloaded,description,TimeLeft,LastTryTime,Queue_id "
+		"select D.id,D.FileName,Ds.Name as DownloadStatus,Url,SaveTo,Suffix,DownloadSize,SizeDownloaded,description,LastTryTime,Queue_id "
 		"From Download as D join DownloadStatus as DS on D.DownloadStatus_id = DS.id"
 	);
 	
@@ -157,7 +157,6 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForUpdateAllFieldDownload(Download
 		"SizeDownloaded = :sizeDownloaded,"
 		"description = :description,"
 //		"LastTryTime = :lastTryTime,"
-//		"TimeLeft = :timeLeft,"
 		"MaxSpeed = :maxSpeed,"
 		"ResumeCapability_id = :resumeCapability_id,"
 		"Category_id = :category_id,"
@@ -183,7 +182,6 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForUpdateAllFieldDownload(Download
 
 
 //	query->bindValue(":lastTryTime", download->LastTryTime);
-//	query->bindValue(":timeLeft", download->TimeLeft);
 	query->bindValue(":maxSpeed", download->MaxSpeed>0 ? QString::number(download->MaxSpeed):QVariant("NULL"));
 	query->bindValue(":resumeCapability_id",ProcessEnum::ConvertResumeCapabilityEnumToResumeCapabilityId(download->ResumeCapability));
 
@@ -198,14 +196,11 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForUpdateAllFieldDownload(Download
 	return query;
 }
 
-QSqlQuery* DatabaseQueryPreparer::PrepareQueryForUpdateInDownloading(Downloader* downloader)
+QList<QSqlQuery*> DatabaseQueryPreparer::PrepareQueriesForUpdateInDownloading(Download* download)
 {
-	Download* download=downloader->Get_Download();
+	SettingUpDatabase::get_Database();
+	QList< QSqlQuery*> listOfQueries;
 
-	for (PartDownload* partDownload: download->get_PartDownloads())
-	{
-
-	}
 
 
 	QString queryString = QString(
@@ -213,36 +208,33 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForUpdateInDownloading(Downloader*
 		"SET SizeDownloaded = :sizeDownloaded "
 		"WHERE id = :id;"
 	);
-
-
-	SettingUpDatabase::get_Database();
 	QSqlQuery* query = new QSqlQuery();
 	query->prepare(queryString);
 
-
-	query->bindValue(":fileName", download->FileName);
-	query->bindValue(":downloadStatus_id", ProcessEnum::ConvertDownloadStatusEnumToDownloadStatusId(download->downloadStatus));
-	query->bindValue(":url", download->Url);
-
-	query->bindValue(":saveTo", download->SaveTo);
-	query->bindValue(":SizeDownloaded", download->SizeDownloaded);
-	query->bindValue(":description", download->description);
-
-
-
-
-	//	query->bindValue(":lastTryTime", download->LastTryTime);
-	//	query->bindValue(":timeLeft", download->TimeLeft);
-	query->bindValue(":maxSpeed", download->MaxSpeed > 0 ? QString::number(download->MaxSpeed) : QVariant("NULL"));
-	query->bindValue(":resumeCapability_id", ProcessEnum::ConvertResumeCapabilityEnumToResumeCapabilityId(download->ResumeCapability));
-
-	query->bindValue(":category_id", QVariant("NULL"));
-
-
-
-	query->bindValue(":queue_id", download->Queue_id > -1 ? download->Queue_id : QVariant("NULL"));
-
+	query->bindValue(":sizeDownloaded", download->SizeDownloaded);
 	query->bindValue(":id", download->IdDownload);
+	listOfQueries.append(query);
 
-	return query;
+
+	for (PartDownload* partDownload: download->get_PartDownloads())
+	{
+		QString queryString1 = QString(
+			"UPDATE PartDownload "
+			"SET  LastDownloaded_byte = :lastDownloaded_byte "
+			"WHERE id = :id; "
+		);
+		QSqlQuery* query1 = new QSqlQuery();
+		query1->prepare(queryString1);
+
+		query1->bindValue(":lastDownloaded_byte", partDownload->LastDownloadedByte);
+		query1->bindValue(":id", partDownload->id_PartDownload);
+		listOfQueries.append(query1);
+	}
+
+
+
+
+
+
+	return listOfQueries;
 }

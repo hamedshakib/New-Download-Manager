@@ -30,6 +30,9 @@ public:
 
 
 	static bool UpdateAllFieldDownloadOnDataBase(Download* download);
+	static bool UpdateInDownloadingOnDataBase(Download* download);
+
+
 
 
 public:

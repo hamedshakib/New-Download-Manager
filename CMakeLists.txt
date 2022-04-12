@@ -126,9 +126,9 @@ set(PROJECT_SOURCES
         ${MY_HeaderAndUi_PATH}/ConverterSizeToSuitableString.h
         ${MY_SOURCE_PATH}/ConverterSizeToSuitableString.cpp
 
-        #CalculatorDownloadSpeed
-        ${MY_HeaderAndUi_PATH}/CalculatorDownloadSpeed.h
-        ${MY_SOURCE_PATH}/CalculatorDownloadSpeed.cpp
+        #CalculatorDownload
+        ${MY_HeaderAndUi_PATH}/CalculatorDownload.h
+        ${MY_SOURCE_PATH}/CalculatorDownload.cpp
 
         #TableViewController
         ${MY_HeaderAndUi_PATH}/TableViewController.h
