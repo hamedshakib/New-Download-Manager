@@ -9,6 +9,7 @@
 #include "qaction.h"
 #include "qmenu.h"
 #include "DatabaseManager.h"
+#include "OpenFileForUser.h"
 
 class TableViewController : public QObject
 {

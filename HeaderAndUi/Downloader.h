@@ -30,6 +30,8 @@ private:
 	QTimer timer;
 	qint64 NumberOfBytesDownloadedInLastPeriod = 0;
 
+	bool DownloadFinished = false;
+
 public:
 	bool StartDownload();
 	bool PauseDownload();

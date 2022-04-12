@@ -13,8 +13,8 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForLoadDownload(int Download_id)
 {
 	SettingUpDatabase::get_Database();
 	QString queryString = QString(
-		"select D.id,D.FileName,Ds.Name as Status,Url,SaveTo,Suffix,DownloadSize,SizeDownloaded,description,LastTryTime,RC.Name as ResumeCapability,Category_id,Queue_id "
-		"From Download as D join DownloadStatus as DS on D.id = DS.id join ResumeCapability as RC on D.ResumeCapability_id = RC.id "
+		"select D.id,D.FileName,DS.Name as Status,Url,SaveTo,Suffix,DownloadSize,SizeDownloaded,description,LastTryTime,RC.Name as ResumeCapability,Category_id,Queue_id "
+		"From Download as D join DownloadStatus as DS on D.DownloadStatus_id = DS.id join ResumeCapability as RC on D.ResumeCapability_id = RC.id "
 		"where D.id=:id "
 	);
 
@@ -237,4 +237,55 @@ QList<QSqlQuery*> DatabaseQueryPreparer::PrepareQueriesForUpdateInDownloading(Do
 
 
 	return listOfQueries;
+}
+
+QList<QSqlQuery*> DatabaseQueryPreparer::PrepareQueryForFinishDownload(Download* download)
+{
+	SettingUpDatabase::get_Database();
+	QList< QSqlQuery*> listOfQueries;
+
+	QString queryString = QString(
+		"UPDATE Download "
+		"SET SizeDownloaded = :sizeDownloaded,"
+		"DownloadStatus_id = :downloadStatus_id "
+		"WHERE id = :id;"
+	);
+	QSqlQuery* query = new QSqlQuery();
+	query->prepare(queryString);
+
+	query->bindValue(":sizeDownloaded", download->SizeDownloaded);
+	query->bindValue(":downloadStatus_id", ProcessEnum::ConvertDownloadStatusEnumToDownloadStatusId(Download::Completed));
+	query->bindValue(":id", download->IdDownload);
+	listOfQueries.append(query);
+
+
+	QString queryString1 = QString(
+		"DELETE FROM PartDownload "
+		"WHERE Download_id = :download_id;"
+	);
+
+
+	QSqlQuery* query1 = new QSqlQuery();
+	query1->prepare(queryString1);
+	query1->bindValue(":download_id", download->IdDownload);
+	listOfQueries.append(query1);
+	return listOfQueries;
+}
+
+QSqlQuery* DatabaseQueryPreparer::PrepareQueryForLoadPartDownloadOfDownload(int Download_id)
+{
+	SettingUpDatabase::get_Database();
+	QString queryString = QString(
+		"SELECT id,"
+		"Start_byte,"
+		"End_byte,"
+		"PartDownload_SaveTo,"
+		"LastDownloaded_byte "
+		"FROM PartDownload "
+		"where Download_id = :download_id; "
+	);
+	QSqlQuery* query = new QSqlQuery();
+	query->prepare(queryString);
+	query->bindValue(":download_id", Download_id);
+	return query;
 }

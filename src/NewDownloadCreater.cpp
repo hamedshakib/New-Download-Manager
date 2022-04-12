@@ -221,6 +221,7 @@ bool NewDownloadCreater::ProcessCreatePartDownloadsFromDownload()
 	PartDownload* partDownload = new PartDownload(parent);
 	partDownload->start_byte = StartByte;
 	partDownload->end_byte = DownloadSize - 1;
+	partDownload->LastDownloadedByte = StartByte - 1;
 	partDownload->id_download = download->IdDownload;
 	partDownload->PartDownloadFile = new QFile(GeneratePartDownloadAddressFromAddressOfDownloadFile(downloadPartNumber, download->SaveTo.toString()));
 	download->DownloadParts.append(partDownload);

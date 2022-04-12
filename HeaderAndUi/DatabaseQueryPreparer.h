@@ -25,8 +25,16 @@ public:
 	static QSqlQuery* PrepareQueryForUpdateAllFieldDownload(Download* download);
 
 
+	static QList<QSqlQuery*> PrepareQueryForFinishDownload(Download* download);
 
 	static QList<QSqlQuery*> PrepareQueriesForUpdateInDownloading(Download* download);
+
+
+
+	static QSqlQuery* PrepareQueriesForCheckStatusOfDownload(int Download_id);
+
+	static QSqlQuery* PrepareQueryForLoadPartDownloadOfDownload(int Download_id);
+
 	//static QSqlQuery* PrepareQueryFor
 public:
 	DatabaseQueryPreparer(QObject *parent);

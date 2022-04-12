@@ -66,7 +66,7 @@ bool DownloadManager::CreateNewDownload()
 
 void DownloadManager::AddCreatedDownloadToDownloadList(Download* download)
 {
-	ListOfDownloads.append(download);
+	ListOfActiveDownloads.append(download);
 }
 
 Downloader* DownloadManager::CreateDownloader(Download* download)
@@ -89,7 +89,9 @@ bool DownloadManager::CreateDownloaderAndStartDownload(Download* download)
 
 
 	connect(downloader, &Downloader::CompeletedDownload, this, [&, download]() {
-		DatabaseManager::UpdateAllFieldDownloadOnDataBase(download); qDebug() << "Da---------------------"; });
+		/*DatabaseManager::UpdateAllFieldDownloadOnDataBase(download);*/
+		DatabaseManager::FinishDownloadOnDatabase(download);
+		qDebug() << "Finished Update Download"; });
 
 
 	return true;
@@ -97,7 +99,7 @@ bool DownloadManager::CreateDownloaderAndStartDownload(Download* download)
 
 Download* DownloadManager::ProcessAchieveDownload(int Download_id)
 {
-	for (Download* download : ListOfDownloads)
+	for (Download* download : ListOfActiveDownloads)
 	{
 		if (download->get_Id() == Download_id)
 		{
@@ -110,6 +112,7 @@ Download* DownloadManager::ProcessAchieveDownload(int Download_id)
 	Download* downloadWithSpecialId = CreateDownloadFromDatabase(Download_id);
 	if (downloadWithSpecialId != nullptr)
 	{
+		CreatePartDownloadAndPutInDownloadFromDatabase(downloadWithSpecialId);
 		AddCreatedDownloadToDownloadList(downloadWithSpecialId);
 	}
 	return downloadWithSpecialId;
@@ -129,4 +132,14 @@ Downloader* DownloadManager::ProcessAchieveDownloader(Download* download)
 	Downloader* downloader = new Downloader(download, this);
 	ListOfDownloaders.append(downloader);
 	return downloader;
+}
+
+bool DownloadManager::CreatePartDownloadAndPutInDownloadFromDatabase(Download* download)
+{
+	QList<PartDownload*> ListOfPartDownloadsOfDownload = DatabaseManager::CreatePartDownloadsOfDownload(download->get_Id());
+	for (PartDownload* partDownload : ListOfPartDownloadsOfDownload)
+	{
+		download->AppendPartDownloadToPartDownloadListOfDownload(partDownload);
+	}
+	return true;
 }

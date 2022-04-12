@@ -11,7 +11,7 @@ class PartDownloader : public QObject
 {
 	Q_OBJECT
 
-	
+	bool Is_PartDownloadEndInBuffer = false;
 	QNetworkReply* reply;
 	PartDownload* partDownload;
 	bool is_Downloading = false;

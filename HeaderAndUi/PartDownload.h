@@ -18,6 +18,7 @@ public:
 
 	friend class PartDownloader;
 	friend class NewDownloadCreater;
+	friend class ProcessDatabaseOutput;
 
 public:
 	PartDownload(QObject *parent);

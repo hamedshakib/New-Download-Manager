@@ -76,3 +76,25 @@ void ProcessDatabaseOutput::ProcessPrepareLoadedInformationForMainTableView(cons
 	//auto preparedDataForRow = tableViewController1->PrepareDataForRow(id, FileName, ConverterSizeToSuitableString::ConvertSizeToSuitableString(DownloadSize).remove("Size: "), Status, "", "", LastTryTime, Description, SaveTo);
 	//tableViewController1->model->appendRow(preparedDataForRow);
 }
+
+bool ProcessDatabaseOutput::ProcessPutLoadedPartDownloadInInPartDownloadObject(const QSqlRecord& record, PartDownload* partDownload,int Download_id)
+{
+	//"SELECT id,"
+	//	"Start_byte,"
+	//	"End_byte,"
+	//	"PartDownload_SaveTo,"
+	//	"LastDownloaded_byte "
+	//	"FROM PartDownload "
+
+	partDownload->id_download = Download_id;
+	partDownload->id_PartDownload= record.value("id").toInt();
+
+
+	partDownload->start_byte = record.value("Start_byte").toLongLong();
+	partDownload->end_byte = record.value("End_byte").toLongLong();
+	partDownload->PartDownloadFile = new QFile(record.value("PartDownload_SaveTo").toString());
+	partDownload->LastDownloadedByte = partDownload->PartDownloadFile->size();
+
+
+	return true;
+}

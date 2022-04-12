@@ -77,7 +77,7 @@ public:
 
 
 	void Set_downloadStatus(Download::DownloadStatusEnum status);
-
+	void AppendPartDownloadToPartDownloadListOfDownload(PartDownload* partDownload);
 
 //private:
 //	static QList<Download*> ListOfDownloads;

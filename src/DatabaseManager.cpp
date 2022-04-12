@@ -98,14 +98,37 @@ bool DatabaseManager::UpdateInDownloadingOnDataBase(Download* download)
 	auto Queries = DatabaseQueryPreparer::PrepareQueriesForUpdateInDownloading(download);
 	for (int i = 0; i < Queries.size(); i++)
 	{
-		if (DatabaseInteract::ExectionQueryForUpdateData(Queries[0]))
-		{
-
-		}
+		DatabaseInteract::ExectionQueryForUpdateData(Queries[i]);
 	}
 
 
 	qDeleteAll(Queries);
 	return true;
+}
+
+bool DatabaseManager::FinishDownloadOnDatabase(Download* download)
+{
+	auto Queries = DatabaseQueryPreparer::PrepareQueryForFinishDownload(download);
+	for (int i = 0; i < Queries.size(); i++)
+	{
+		DatabaseInteract::ExectionQueryForUpdateData(Queries[i]);
+	}
+	qDeleteAll(Queries);
+	return true;
+}
+
+QList<PartDownload*> DatabaseManager::CreatePartDownloadsOfDownload(int Download_id)
+{
+	QList<PartDownload*> ListOfPartDownloadsOfDownload;
+	QSqlQuery* query = DatabaseQueryPreparer::PrepareQueryForLoadPartDownloadOfDownload(Download_id);
+	if (DatabaseInteract::ExectionQueryForReadData(query))
+	{
+		while (query->next())
+		{
+				PartDownload* partDownload = new PartDownload(nullptr);
+				ProcessDatabaseOutput::ProcessPutLoadedPartDownloadInInPartDownloadObject(query->record(), partDownload, Download_id);
+		}
+	}
+	return ListOfPartDownloadsOfDownload;
 }
 

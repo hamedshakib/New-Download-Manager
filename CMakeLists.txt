@@ -142,7 +142,9 @@ set(PROJECT_SOURCES
         ${MY_HeaderAndUi_PATH}/TableViewRowCreater.h
         ${MY_SOURCE_PATH}/TableViewRowCreater.cpp
 
-
+        #OpenFileForUser
+        ${MY_HeaderAndUi_PATH}/OpenFileForUser.h
+        ${MY_SOURCE_PATH}/OpenFileForUser.cpp
 
 
 )

@@ -17,6 +17,7 @@ private:
 
 	//bool settingUpDataBase();
 	Download* CreateDownloadFromDatabase(int download_id);
+	bool CreatePartDownloadAndPutInDownloadFromDatabase(Download* download);
 
 public:
 	bool CreateNewDownload();
@@ -31,10 +32,12 @@ private slots:
 	bool CreateDownloaderAndStartDownload(Download* download);
 	Downloader* CreateDownloader(Download* download);
 
+
+
 private:
 
 	//friend class TableViewController;
-	QList<Download*> ListOfDownloads;
+	QList<Download*> ListOfActiveDownloads;
 	QList<Downloader*> ListOfDownloaders;
 
 

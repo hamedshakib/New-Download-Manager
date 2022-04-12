@@ -21,6 +21,11 @@ public:
 	//static void ProcessPutLoadedInformationOfDownloadForMainTableView(const QSqlRecord& record,QStandardItemModel *model);
 	static void ProcessPrepareLoadedInformationForMainTableView(const QSqlRecord& record, QStandardItemModel* model);
 
+
+
+
+	static bool ProcessPutLoadedPartDownloadInInPartDownloadObject(const QSqlRecord& record, PartDownload* partDownload, int Download_id);
+
 public:
 	ProcessDatabaseOutput(QObject *parent);
 	~ProcessDatabaseOutput();

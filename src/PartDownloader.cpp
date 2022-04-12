@@ -33,18 +33,22 @@ qint64 PartDownloader::ReadReadybytes(qint64 bytes)
 		ReadedBytes = bytes;
 	}
 
+
+
+	
 	if (DownloadFileWriter::WriteDownloadToFile(byteArray, partDownload->PartDownloadFile))
 	{
+
+		if (Is_PartDownloadEndInBuffer && reply->bytesAvailable() == 0)
+		{
+			this->partDownload->PartDownloadFile->close();
+			emit Finished();
+		}
+
+
+
 		return ReadedBytes;
 	}
-
-	/*
-	if (reply->isFinished())
-	{
-		partDownload->PartDownloadFile->close();
-		emit Finished();
-	}
-	*/
 
 	return true;
 }
@@ -53,9 +57,7 @@ bool PartDownloader::Set_NetworkReply(QNetworkReply* reply)
 {
 	this->reply = reply;
 	connect(reply, &QNetworkReply::finished, this, [&]() {
-		partDownload->LastDownloadedByte +=ReadReadybytes();
-		this->partDownload->PartDownloadFile->close();
-		emit Finished(); });
+		Is_PartDownloadEndInBuffer = true;});
 
 	return true;
 }

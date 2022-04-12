@@ -72,9 +72,18 @@ void TableViewController::OnHeaderRightClicked(const QPoint& pos)
 
 void TableViewController::doubleClickedOnRow(const QModelIndex& modelindex)
 {
-	FindDownloadIdFromRow(modelindex);
+	int Download_id=FindDownloadIdFromRow(modelindex);
 	//TODO Load a Download From Database Or ListOfDownload
+	Download* doubleClickedDownload = m_downloadManager->ProcessAchieveDownload(Download_id);
+	if (doubleClickedDownload->get_Status() == Download::DownloadStatusEnum::Completed)
+	{
+		QString UrlOfFile=doubleClickedDownload->get_SavaTo().toString();
+		OpenFileForUser::openFileForShowUser(UrlOfFile);
+	}
+	else
+	{
 
+	}
 }
 
 int TableViewController::FindDownloadIdFromRow(const QModelIndex& modelindex)
@@ -100,6 +109,8 @@ void TableViewController::ProcessCheckAndApply_RightClickOnTable(const QPoint& p
 
 
 	int Download_id = model->data(index).toInt();
+
+	qDebug() << "Download id right:" << Download_id;
 
 	QMenu* menu = CreaterRightClickMenuForRowRightClicked(Download_id);
 	menu->popup(m_tableView->viewport()->mapToGlobal(point));
@@ -180,10 +191,18 @@ void TableViewController::ConnectorDownloaderToTableUpdateInDownloading(Download
 
 bool TableViewController::UpdateRowInDownloading(size_t row,QString Status,QString Speed, QString TimeLeft)
 {
+	Downloader *downloader=static_cast<Downloader*>(sender());
+
 	QModelIndex Status_index = model->index(row, 3);
 	QModelIndex Speed_index = model->index(row, 4);
 	QModelIndex TimeLeft_index = model->index(row, 5);
 
+	if (downloader->Get_Download()->get_Status() == Download::DownloadStatusEnum::Completed)
+	{
+		Status = "Complete";
+		Speed = "";
+		TimeLeft = "";
+	}
 	model->setData(Status_index, Status);
 	model->setData(Speed_index, Speed);
 	model->setData(TimeLeft_index, TimeLeft);

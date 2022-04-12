@@ -33,7 +33,11 @@ public:
 	static bool UpdateInDownloadingOnDataBase(Download* download);
 
 
+	static bool FinishDownloadOnDatabase(Download* download);
 
+
+	//static Q LoadStatusAndFileAddressOfDownload(int download_id);
+	static QList<PartDownload*> CreatePartDownloadsOfDownload(int Download_id);
 
 public:
 	DatabaseManager(QObject *parent=nullptr);

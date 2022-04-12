@@ -81,10 +81,16 @@ bool Downloader::ProcessPreparePartDownloaders()
 
 void Downloader::DownloadWithSpeedControlled()
 {
+	/*
+	if (!Is_Downloading)
+	{
+
+		return;
+	}
 	qint64 spentedTime = elapsedTimer.restart();
-	qint64 speed= calculatorDownload.CalculateDownloadSpeed(NumberOfBytesDownloadedInLastPeriod, spentedTime);
+	qint64 speed = calculatorDownload.CalculateDownloadSpeed(NumberOfBytesDownloadedInLastPeriod, spentedTime);
 	QString SpeedString = calculatorDownload.GetSpeedOfDownloadInFormOfString();
-	QString TimeLeftString = calculatorDownload.GetTimeLeftOfDownloadInFormOfString(download->DownloadSize-download->SizeDownloaded);
+	QString TimeLeftString = calculatorDownload.GetTimeLeftOfDownloadInFormOfString(download->DownloadSize - download->SizeDownloaded);
 	QString DownloadStatus = calculatorDownload.getStatusForTable(download->SizeDownloaded, download->DownloadSize);
 	NumberOfBytesDownloadedInLastPeriod = 0;
 	if (MaxSpeedOfThisDownloader > 0)
@@ -108,6 +114,47 @@ void Downloader::DownloadWithSpeedControlled()
 
 	if (Is_Downloading)
 	{
+		emit FinishedThisPeriod(NumberOfBytesDownloadedInLastPeriod, elapsedTimer.elapsed());
+	}
+	*/
+
+	//qDebug() << "NU:::::";
+	//qDebug() << elapsedTimer.elapsed();
+	//qDebug() << elapsedTimer.nsecsElapsed();
+	//qDebug() << elapsedTimer.restart();
+
+
+
+	qint64 spentedTime = elapsedTimer.restart();
+	NumberOfBytesDownloadedInLastPeriod = 0;
+	if (MaxSpeedOfThisDownloader > 0)
+	{
+		while (spentedTime<1000 && MaxSpeedOfThisDownloader * 1024>NumberOfBytesDownloadedInLastPeriod)
+		{
+			qint64 BytesShouldDownload = MaxSpeedOfThisDownloader * 1024 - NumberOfBytesDownloadedInLastPeriod;
+			spentedTime += elapsedTimer.elapsed();
+			NumberOfBytesDownloadedInLastPeriod += ProcessOfDownload();
+		}
+	}
+	else
+	{
+		NumberOfBytesDownloadedInLastPeriod += ProcessOfDownload();
+	}
+
+	download->SizeDownloaded += NumberOfBytesDownloadedInLastPeriod;
+
+	qint64 speed = calculatorDownload.CalculateDownloadSpeed(NumberOfBytesDownloadedInLastPeriod, elapsedTimer.elapsed()+ spentedTime);
+	QString SpeedString = calculatorDownload.GetSpeedOfDownloadInFormOfString();
+	QString TimeLeftString = calculatorDownload.GetTimeLeftOfDownloadInFormOfString(download->DownloadSize - download->SizeDownloaded);
+	QString DownloadStatus = calculatorDownload.getStatusForTable(download->SizeDownloaded, download->DownloadSize);
+	emit DownloadedAtAll(download->SizeDownloaded);
+	emit SignalForUpdateDownloading(DownloadStatus, SpeedString, TimeLeftString);
+
+
+
+	if (Is_Downloading)
+	{
+
 		emit FinishedThisPeriod(NumberOfBytesDownloadedInLastPeriod, elapsedTimer.elapsed());
 	}
 }
@@ -189,6 +236,14 @@ void Downloader::ProcessOfEndOfDownloading()
 	qDebug() << "NewFile Download" << NewDownloadFile;
 	qDeleteAll(PartDownloads);
 	download->Set_downloadStatus(Download::Completed);
+
+
+
+
+
+
+
+	download->downloadStatus = Download::DownloadStatusEnum::Completed;
 	emit CompeletedDownload();
 }
 
