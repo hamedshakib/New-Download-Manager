@@ -10,6 +10,7 @@
 #include "qmenu.h"
 #include "DatabaseManager.h"
 #include "OpenFileForUser.h"
+#include "ShowDownloadWidget.h"
 
 class TableViewController : public QObject
 {
@@ -38,6 +39,12 @@ private slots:
 	void ConnectorDownloaderToTableUpdateInDownloading(Downloader* downloader);
 	void AddNewDownloadToTableView(Download* download);
 
+	ShowDownloadWidget* CreaterShowDownloadWidget(Downloader* downloader);
+
+
+	void PauseOrResumeActionTriggered(QAction* pauseOrResumeAction,Download* download);
+	void OpenFileActionTriggered(Download* download);
+
 private:
 	QTableView* m_tableView;
 	DownloadManager* m_downloadManager;
@@ -49,9 +56,9 @@ private:
 	QHeaderView* horizontalHeader;
 
 
-	//void UpdateRow(int Row);
-	//void UpdateIndex(QList<QModelIndex&> ListOfIndex);
-	//void index
+	//QList<ShowDownloadWidget*> ListOfShowDownloadWidgets;
+
+	QMap<Downloader*, ShowDownloadWidget*> MapOfShowDownloadWidgets;
 public:
 	TableViewController(QTableView *tableView,QObject *parent);
 	~TableViewController();

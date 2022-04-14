@@ -82,6 +82,23 @@ void TableViewController::doubleClickedOnRow(const QModelIndex& modelindex)
 	}
 	else
 	{
+		//Not Completed Download
+		Downloader *downloader=m_downloadManager->ProcessAchieveDownloader(doubleClickedDownload);
+		ShowDownloadWidget* showDownloadWidget;
+
+		if (MapOfShowDownloadWidgets.find(downloader) != MapOfShowDownloadWidgets.end())
+		{
+			//found
+			showDownloadWidget = MapOfShowDownloadWidgets.find(downloader).value();
+			//MapOfShowDownloadWidgets.insert(downloader, showDownloadWidget);
+		}
+		else
+		{
+			//not found
+			showDownloadWidget = CreaterShowDownloadWidget(downloader);
+			MapOfShowDownloadWidgets.insert(downloader, showDownloadWidget);
+		}
+		showDownloadWidget->show();
 
 	}
 }
@@ -132,8 +149,10 @@ QMenu* TableViewController::CreaterRightClickMenuForRowRightClicked(int Download
 	//Open Item For Menu
 	if (status == Download::DownloadStatusEnum::Completed)
 	{
-		QAction* OpenAction = new QAction("Open", this);
+		QAction* OpenAction = new QAction(tr("Open"), this);
 		menu->addAction(OpenAction);
+		connect(OpenAction, &QAction::triggered, this, [&, RightClickedRow_Download](bool clicked) {qDebug() << "test1"; OpenFileActionTriggered(RightClickedRow_Download); });
+
 	}
 	
 
@@ -143,28 +162,32 @@ QMenu* TableViewController::CreaterRightClickMenuForRowRightClicked(int Download
 
 	//Resume/Pause Item For Menu
 	QAction* ResumeOrPause;
-	if (status == (Download::DownloadStatusEnum::Pause | Download::DownloadStatusEnum::NotStarted))
+	if ((status == Download::DownloadStatusEnum::Pause) || (status== Download::DownloadStatusEnum::NotStarted))
 	{
 		ResumeOrPause = new QAction(this);
-		ResumeOrPause->setText("Resume");
+		ResumeOrPause->setText(tr("Resume"));
 		ResumeOrPause->setVisible(true);
 		menu->addAction(ResumeOrPause);
+		connect(ResumeOrPause, &QAction::triggered, this, [&, ResumeOrPause, RightClickedRow_Download](bool clicked) {qDebug() << "test2"; PauseOrResumeActionTriggered(ResumeOrPause, RightClickedRow_Download); });
+
 	}
 	else if (status == Download::DownloadStatusEnum::Downloading)
 	{
 		QAction* ResumeOrPause = new QAction(this);
-		ResumeOrPause->setText("Pause");
+		ResumeOrPause->setText(tr("Pause"));
 		ResumeOrPause->setVisible(true);
 		menu->addAction(ResumeOrPause);
+		connect(ResumeOrPause, &QAction::triggered, this, [&, ResumeOrPause, RightClickedRow_Download](bool clicked) {qDebug() << "test2"; PauseOrResumeActionTriggered(ResumeOrPause, RightClickedRow_Download); });
+
 	}
 
 
 
 
 	//Properties Item For Menu
-	QAction* PropertiesAction = new QAction("Properties", this);
+	QAction* PropertiesAction = new QAction(tr("Properties"), this);
 	menu->addAction(PropertiesAction);
-
+	//connect(ResumeOrPause, &QAction::triggered, this, [&, ResumeOrPause, RightClickedRow_Download](bool clicked) {qDebug() << "test2"; PauseOrResumeActionTriggered(ResumeOrPause, RightClickedRow_Download); });
 
 
 	return menu;
@@ -199,7 +222,7 @@ bool TableViewController::UpdateRowInDownloading(size_t row,QString Status,QStri
 
 	if (downloader->Get_Download()->get_Status() == Download::DownloadStatusEnum::Completed)
 	{
-		Status = "Complete";
+		Status = tr("Complete");
 		Speed = "";
 		TimeLeft = "";
 	}
@@ -214,4 +237,30 @@ bool TableViewController::UpdateRowInDownloading(size_t row,QString Status,QStri
 void TableViewController::AddNewDownloadToTableView(Download* download)
 {
 	model->appendRow(TableViewRowCreater::PrepareDataForRow(download));
+}
+
+ShowDownloadWidget* TableViewController::CreaterShowDownloadWidget(Downloader* downloader)
+{
+	ShowDownloadWidget* showDownload = new ShowDownloadWidget(downloader);
+	showDownload->ProcessSetup();
+	return showDownload;
+}
+
+void TableViewController::PauseOrResumeActionTriggered(QAction* pauseOrResumeAction,Download* download)
+{
+
+	if (pauseOrResumeAction->text() == tr("Resume"))
+	{
+		m_downloadManager->ProcessAchieveDownloader(download)->StartDownload();
+	}
+	else if (pauseOrResumeAction->text() == tr("Pause"))
+	{
+		m_downloadManager->ProcessAchieveDownloader(download)->PauseDownload();
+	}
+}
+
+void TableViewController::OpenFileActionTriggered(Download* download)
+{
+	QString UrlOfFile = download->get_SavaTo().toString();
+	OpenFileForUser::openFileForShowUser(UrlOfFile);
 }
