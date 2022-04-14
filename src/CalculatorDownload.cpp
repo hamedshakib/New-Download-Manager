@@ -91,6 +91,6 @@ QString CalculatorDownload::getStatusForTable(qint64 DownloadedSize,qint64 SizeD
 	QString DownloadStatus;
 
 	float Present = (long double)DownloadedSize / SizeDownload;
-	DownloadStatus = QString::number(Present, 'f', 2) +"%";
+	DownloadStatus = QString::number(Present*100, 'f', 2) +"%";
 	return DownloadStatus;
 }

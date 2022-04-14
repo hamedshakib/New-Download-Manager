@@ -146,6 +146,10 @@ set(PROJECT_SOURCES
         ${MY_HeaderAndUi_PATH}/OpenFileForUser.h
         ${MY_SOURCE_PATH}/OpenFileForUser.cpp
 
+        #ShowDownloadWidget
+        ${MY_HeaderAndUi_PATH}/ShowDownloadWidget.ui
+        ${MY_HeaderAndUi_PATH}/ShowDownloadWidget.h
+        ${MY_SOURCE_PATH}/ShowDownloadWidget.cpp
 
 )
 

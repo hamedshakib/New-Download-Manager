@@ -35,10 +35,11 @@ private:
 public:
 	bool StartDownload();
 	bool PauseDownload();
-	bool StopDownload();
 
 
 	bool ProcessPreparePartDownloaders();
+
+	bool IsDownloading();
 
 	Download* Get_Download();
 
@@ -55,13 +56,17 @@ private slots:
 	void DownloadWithSpeedControlled();
 	bool CheckForFinishedDownload();
 	void ProcessOfEndOfDownloading();
-		//BuildOneFileFromMultiParts();
+	void HandelFinishedPartDownloadSignalEmitted();
+	void HandelPausedPartDownloadSignalEmitted();
+	void UpdateDownloadInUpdatingInDatabase();
 
 signals:
 	void FinishedThisPeriod(qint64 bytesDownloaded,qint64 millisecond);
 	void CompeletedDownload();
 	void DownloadedAtAll(qint64 downloadedsize);
 	void SignalForUpdateDownloading(QString Status,QString speed, QString TimeLeft);
+	void Started();
+	void Paused();
 
 private:
 	friend class DatabaseQueryPreparer;

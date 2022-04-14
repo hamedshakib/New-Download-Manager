@@ -11,14 +11,13 @@ OpenFileForUser::~OpenFileForUser()
 
 bool OpenFileForUser::openFileForShowUser(QString FileUrl)
 {
-	QProcess process;
-	if (process.execute(FileUrl) > -1)
+	QDesktopServices services;
+	if (services.openUrl(QUrl::fromLocalFile(FileUrl)))
 	{
 		return true;
 	}
 	else
 	{
-		qDebug()<<process.errorString();
 		return false;
 	}
 }

@@ -19,10 +19,12 @@ bool DatabaseManager::LoadDownloadComplete(int Download_id,Download* download)
 		{
 			if (ProcessDatabaseOutput::ProcessPutLoadedDownloadInformationInDownloadObject(query->record(), download, Download_id))
 			{
+				delete query;
 				return true;
 			}
 		}
 	}
+	delete query;
 	return false;
 }
 
@@ -37,10 +39,11 @@ QStringList DatabaseManager::LoadSuffixsForMimeType(QString MimeType)
 			suffixs.append(ProcessDatabaseOutput::ProcessLoadedSuffixsForMimeType(query->record()));
 			
 		}
+		delete query;
 		return suffixs;
 
 	}
-	
+	delete query;
 }
 
 size_t DatabaseManager::CreateNewDownloadOnDatabase(Download* download)
@@ -49,8 +52,11 @@ size_t DatabaseManager::CreateNewDownloadOnDatabase(Download* download)
 	size_t downloadId{};
 	if (DatabaseInteract::ExectionQueryForInsertData(query))
 	{
-		return query->lastInsertId().toInt();
+		downloadId = query->lastInsertId().toInt();
+		delete query;
+		return downloadId;
 	}
+	delete query;
 	return downloadId;
 }
 
@@ -60,8 +66,11 @@ size_t DatabaseManager::CreateNewPartDownloadOnDatabase(PartDownload* partDownlo
 	size_t downloadId{};
 	if (DatabaseInteract::ExectionQueryForInsertData(query))
 	{
-		return query->lastInsertId().toInt();
+		downloadId= query->lastInsertId().toInt();
+		delete query;
+		return downloadId;
 	}
+	delete query;
 	return downloadId;
 }
 
@@ -74,8 +83,10 @@ bool DatabaseManager::LoadAllDownloadsForMainTable(QStandardItemModel* model)
 		{
 			ProcessDatabaseOutput::ProcessPrepareLoadedInformationForMainTableView(query->record(), model);
 		}
+		delete query;
 		return true;
 	}
+	delete query;
 	return false;
 }
 
@@ -88,8 +99,10 @@ bool DatabaseManager::UpdateAllFieldDownloadOnDataBase(Download* download)
 		{
 		//	ProcessDatabaseOutput::ProcessPrepareLoadedInformationForMainTableView(query->record(), model);
 		}
+		delete query;
 		return true;
 	}
+	delete query;
 	return false;
 }
 
@@ -126,9 +139,14 @@ QList<PartDownload*> DatabaseManager::CreatePartDownloadsOfDownload(int Download
 		while (query->next())
 		{
 				PartDownload* partDownload = new PartDownload(nullptr);
-				ProcessDatabaseOutput::ProcessPutLoadedPartDownloadInInPartDownloadObject(query->record(), partDownload, Download_id);
+				if (ProcessDatabaseOutput::ProcessPutLoadedPartDownloadInInPartDownloadObject(query->record(), partDownload, Download_id))
+				{
+					ListOfPartDownloadsOfDownload.append(partDownload);
+				}
+
 		}
 	}
+	delete query;
 	return ListOfPartDownloadsOfDownload;
 }
 

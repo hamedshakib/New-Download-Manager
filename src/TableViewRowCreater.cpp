@@ -33,7 +33,7 @@ QList<QStandardItem*> TableViewRowCreater::PrepareDataForRow(Download* download)
 	
 	listOfItems << newItem(download->IdDownload);
 	listOfItems << newItem(download->FileName);
-	listOfItems << newItem(ConverterSizeToSuitableString::ConvertSizeToSuitableString(download->DownloadSize).remove("Size: "));
+	listOfItems << newItem(ConverterSizeToSuitableString::ConvertSizeToSuitableString(download->DownloadSize));
 
 	QString DownloadStatus;
 	if (download->downloadStatus==Download::Completed)

@@ -8,6 +8,10 @@ PartDownloader::PartDownloader(QObject *parent)
 PartDownloader::~PartDownloader()
 {
 	qDebug() << "delete PartDownloader";
+	if (reply != nullptr)
+	{
+		reply->deleteLater();
+	}
 }
 
 bool PartDownloader::Set_PartDownload(PartDownload* partDownload)
@@ -33,16 +37,24 @@ qint64 PartDownloader::ReadReadybytes(qint64 bytes)
 		ReadedBytes = bytes;
 	}
 
-
-
+	if (ReadedBytes > 0)
+		Is_Downloading = true;
 	
 	if (DownloadFileWriter::WriteDownloadToFile(byteArray, partDownload->PartDownloadFile))
 	{
 
 		if (Is_PartDownloadEndInBuffer && reply->bytesAvailable() == 0)
 		{
-			this->partDownload->PartDownloadFile->close();
-			emit Finished();
+			if (Is_FinishedPartDownload)
+			{
+				this->partDownload->PartDownloadFile->close();
+				emit Finished();
+			}
+			else
+			{
+				reply->deleteLater();
+				emit Paused();
+			}
 		}
 
 
@@ -56,8 +68,6 @@ qint64 PartDownloader::ReadReadybytes(qint64 bytes)
 bool PartDownloader::Set_NetworkReply(QNetworkReply* reply)
 {
 	this->reply = reply;
-	connect(reply, &QNetworkReply::finished, this, [&]() {
-		Is_PartDownloadEndInBuffer = true;});
 
 	return true;
 }
@@ -70,5 +80,31 @@ PartDownload* PartDownloader::Get_PartDownload()
 void PartDownloader::AddByteToLastDownloadedByte(qint64 NumberOfBytes)
 {
 	partDownload->LastDownloadedByte += NumberOfBytes;
+}
+
+void PartDownloader::Resume()
+{
+	is_Paused = false;
+	Is_PartDownloadEndInBuffer = false;
+	connect(reply, &QNetworkReply::finished, this, &PartDownloader::ProcessApplyPauseOrFinishedPartDownloader);
+}
+
+void PartDownloader::Pause()
+{
+	is_Paused = true;
+	reply->abort();
+	Is_Downloading = false;
+	disconnect(reply, &QNetworkReply::finished, this, &PartDownloader::ProcessApplyPauseOrFinishedPartDownloader);
+}
+
+void PartDownloader::ProcessApplyPauseOrFinishedPartDownloader()
+{
+	if (!Is_Downloading)
+		return;
+	Is_PartDownloadEndInBuffer = true;
+	if (!is_Paused)
+	{
+		Is_FinishedPartDownload = true;
+	}
 }
 

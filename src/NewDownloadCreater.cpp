@@ -127,7 +127,9 @@ bool NewDownloadCreater::ProcessNewDownloadUrlWidget()
 				this->GetInformationFromUrl(url, Username, Password);
 				this->ProcessInitialInformationFromUrl();
 				newDownloadComplitedInformationWidget->SetMoreCompliteInformation(RealDownloadUrl, suffix.toUpper(),
-														ConverterSizeToSuitableString::ConvertSizeToSuitableString(DownloadSize), DefualtSaveToAddress(), description);
+														"Size: " + ConverterSizeToSuitableString::ConvertSizeToSuitableString(DownloadSize), DefualtSaveToAddress(), description);
+				//ToDo Remove This new
+				newDownloadUrlWidget->deleteLater();
 			}
 			else
 			{
@@ -170,6 +172,7 @@ void NewDownloadCreater::VerifiedDownload_DownloadNow(QUrl url, QUrl FileSaveToA
 	WritePartDownloadsInDatabase();
 	emit CreatedNewDownload(download);
 	emit DownloadNow(download);
+	sender()->deleteLater();
 }
 
 void NewDownloadCreater::VerifiedDownload_DownloadLater(QUrl url, QUrl FileSaveToAddress, int QueueId)

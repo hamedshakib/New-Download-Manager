@@ -1,8 +1,9 @@
 #pragma once
 
 #include <QObject>
-#include "qprocess.h"
 #include "qdebug.h"
+#include "qdesktopservices.h"
+#include "qurl.h"
 
 class OpenFileForUser : public QObject
 {
