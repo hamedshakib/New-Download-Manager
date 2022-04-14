@@ -12,16 +12,20 @@ class PartDownloader : public QObject
 	Q_OBJECT
 
 	bool Is_PartDownloadEndInBuffer = false;
+	bool is_Paused = false;
+	bool Is_FinishedPartDownload=false;
+	bool Is_Downloading;
 	QNetworkReply* reply;
 	PartDownload* partDownload;
-	bool is_Downloading = false;
+	//bool is_Downloading = false;
 	QTimer timer;
 	QMutex mutex;
 
 
 public slots:
 	qint64 ReadReadybytes(qint64 bytes=-1);
-
+	void Resume();
+	void Pause();
 
 public:
 	bool Set_PartDownload(PartDownload* partDownload);
@@ -30,8 +34,13 @@ public:
 
 	void AddByteToLastDownloadedByte(qint64 NumberOfBytes);
 
+
+private slots:
+	void ProcessApplyPauseOrFinishedPartDownloader();
+
 signals:
 	void Finished();
+	void Paused();
 
 public:
 	PartDownloader(QObject *parent);

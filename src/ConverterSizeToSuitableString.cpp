@@ -2,7 +2,6 @@
 
 QString ConverterSizeToSuitableString::ConvertSizeToSuitableString(qint64 size)
 {
-	QString Str1 = "Size: ";
 	long double preparedSize;
 	QString Str3;
 
@@ -32,6 +31,6 @@ QString ConverterSizeToSuitableString::ConvertSizeToSuitableString(qint64 size)
 		Str3 = "TB";
 	}
 
-	return Str1 + QString::number(preparedSize, 'f', 2) + " " + Str3;
+	return QString::number(preparedSize, 'f', 2) + " " + Str3;
 }
 

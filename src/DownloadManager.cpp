@@ -85,6 +85,7 @@ bool DownloadManager::StartDownloader(Downloader* downloader)
 bool DownloadManager::CreateDownloaderAndStartDownload(Download* download)
 {
 	Downloader* downloader = CreateDownloader(download);
+	ListOfDownloaders.append(downloader);
 	StartDownloader(downloader);
 
 

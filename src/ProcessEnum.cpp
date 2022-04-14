@@ -74,6 +74,22 @@ Download::ResumeCapabilityEnum ProcessEnum::ConvertDatabseStringToResumeCapabili
 	}
 }
 
+QString ProcessEnum::ConvertResumeCapabilityEnumToString(Download::ResumeCapabilityEnum resumeCapabilityEnum)
+{
+	if (resumeCapabilityEnum == Download::ResumeCapabilityEnum::UnKnown)
+	{
+		return "Unknown";
+	}
+	else if (resumeCapabilityEnum == Download::ResumeCapabilityEnum::Yes)
+	{
+		return "Yes";
+	}
+	else if (resumeCapabilityEnum == Download::ResumeCapabilityEnum::No)
+	{
+		return "No";
+	}
+}
+
 int ProcessEnum::ConvertDownloadStatusEnumToDownloadStatusId(Download::DownloadStatusEnum downloadStatusEnum)
 {
 	if (downloadStatusEnum == Download::DownloadStatusEnum::Completed)
@@ -87,6 +103,26 @@ int ProcessEnum::ConvertDownloadStatusEnumToDownloadStatusId(Download::DownloadS
 	else if (downloadStatusEnum == Download::DownloadStatusEnum::NotStarted)
 	{
 		return 1;
+	}
+}
+
+QString ProcessEnum::ConvertDownloadStatusEnumToString(Download::DownloadStatusEnum downloadStatusEnum)
+{
+	if (downloadStatusEnum == Download::DownloadStatusEnum::Downloading)	
+	{
+		return "Downloading";
+	}
+	else if(Download::DownloadStatusEnum::Pause)
+	{
+		return "Pause";
+	}
+	else if (downloadStatusEnum == Download::DownloadStatusEnum::NotStarted)
+	{
+		return "NotStarted";
+	}
+	if (downloadStatusEnum == Download::DownloadStatusEnum::Completed)
+	{
+		return "Completed";
 	}
 }
 
