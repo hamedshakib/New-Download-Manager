@@ -29,6 +29,7 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets Core Sql Network Quick REQ
 
 set(PROJECT_SOURCES
 	    main.qrc
+        appicon.rc
         ${MY_SOURCE_PATH}/main.cpp
 
         #MainWindow
@@ -150,6 +151,17 @@ set(PROJECT_SOURCES
         ${MY_HeaderAndUi_PATH}/ShowDownloadWidget.ui
         ${MY_HeaderAndUi_PATH}/ShowDownloadWidget.h
         ${MY_SOURCE_PATH}/ShowDownloadWidget.cpp
+
+        #DateTimeManager
+        ${MY_HeaderAndUi_PATH}/DateTimeManager.h
+        ${MY_SOURCE_PATH}/DateTimeManager.cpp
+
+
+
+
+
+
+
 
 )
 

@@ -4,6 +4,7 @@
 #include "qstandarditemmodel.h"
 #include "Download.h"
 #include "ConverterSizeToSuitableString.h"
+#include "DateTimeManager.h"
 
 template <typename T>
 QStandardItem* newItem(const T val) {

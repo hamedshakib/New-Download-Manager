@@ -25,7 +25,7 @@ bool ProcessDatabaseOutput::ProcessPutLoadedDownloadInformationInDownloadObject(
 	download->suffix= record.value("Suffix").toString();
 	download->SaveTo = record.value("SaveTo").toString();
 	download->description = record.value("description").toString();
-//	download->LastTryTime= record.value("LastTryTime").toString();
+	download->LastTryTime= DateTimeManager::GetDateTimeFromString(record.value("LastTryTime").toString());
 	download->MaxSpeed = record.value("MaxSpeed").toInt();
 	download->ResumeCapability = ProcessEnum::ConvertDatabseStringToResumeCapabilityEnum(record.value("ResumeCapability").toString());
 
@@ -53,7 +53,7 @@ void ProcessDatabaseOutput::ProcessPrepareLoadedInformationForMainTableView(cons
 	qDebug() <<"Temp st:" << TempStatus;
 
 
-	QString LastTryTime = record.value("LastTryTime").toString();
+	QString LastTryTime = DateTimeManager::ConvertDataTimeToString(DateTimeManager::GetDateTimeFromString(record.value("LastTryTime").toString()));  //ToDo Improved with Galaly
 	QString Description = record.value("description").toString();
 	QString SaveTo = record.value("SaveTo").toString();
 	QString Status;
@@ -61,14 +61,14 @@ void ProcessDatabaseOutput::ProcessPrepareLoadedInformationForMainTableView(cons
 	{
 		Status = "Complete";
 	}
-	else if(TempStatus == "NotStarted")
+	/*else if (TempStatus == "NotStarted")
 	{
 		Status = "0%";
-	}
+	}*/
 	else
 	{
 		float Present = (long double)DownloadedSize / DownloadSize;
-		Status = QString::number(Present, 'f', 2);
+		Status = QString::number(Present*100, 'f', 2)+"%";
 	}
 	
 
