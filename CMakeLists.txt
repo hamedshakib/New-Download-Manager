@@ -29,6 +29,7 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets Core Sql Network Quick REQ
 
 set(PROJECT_SOURCES
 	    main.qrc
+        appicon.rc
         ${MY_SOURCE_PATH}/main.cpp
 
         #MainWindow

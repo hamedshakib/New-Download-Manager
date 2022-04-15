@@ -10,6 +10,9 @@
 #include "qstandarditemmodel.h"
 #include "TableViewController.h"
 #include "DownloadManager.h"
+#include <QResizeEvent>
+#include "qmessagebox.h"
+#include "qpixmap.h"
 
 
 class MainWindow : public QMainWindow
@@ -25,11 +28,16 @@ public:
 
 private slots:
 	void on_actionAdd_new_Download_triggered();
+	void on_actionAbout_triggered();
+	void on_actionExit_triggered();
 	void LoadDownloadsForMainTable();
-
+	void LoadSizeOfWidnow();
 
 signals:
 	void AddNewDownload();
+
+protected:
+	void resizeEvent(QResizeEvent* event);
 
 
 private:

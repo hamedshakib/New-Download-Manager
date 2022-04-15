@@ -72,6 +72,11 @@ void DownloadManager::AddCreatedDownloadToDownloadList(Download* download)
 Downloader* DownloadManager::CreateDownloader(Download* download)
 {
 	Downloader* downloader = new Downloader(download, this);
+	connect(downloader, &Downloader::SignalForUpdateDownloading, this, [&, download]() {DatabaseManager::UpdateInDownloadingOnDataBase(download); });
+	connect(downloader, &Downloader::CompeletedDownload, this, [&, download]() {
+		/*DatabaseManager::UpdateAllFieldDownloadOnDataBase(download);*/
+		DatabaseManager::FinishDownloadOnDatabase(download);
+		qDebug() << "Finished Update Download"; });
 	emit CreatedDownloader(downloader);
 	return downloader;
 }
@@ -88,11 +93,11 @@ bool DownloadManager::CreateDownloaderAndStartDownload(Download* download)
 	ListOfDownloaders.append(downloader);
 	StartDownloader(downloader);
 
-
-	connect(downloader, &Downloader::CompeletedDownload, this, [&, download]() {
-		/*DatabaseManager::UpdateAllFieldDownloadOnDataBase(download);*/
-		DatabaseManager::FinishDownloadOnDatabase(download);
-		qDebug() << "Finished Update Download"; });
+	//connect(downloader, &Downloader::SignalForUpdateDownloading, this, [&, download]() {DatabaseManager::UpdateInDownloadingOnDataBase(download); });
+	//connect(downloader, &Downloader::CompeletedDownload, this, [&, download]() {
+	//	/*DatabaseManager::UpdateAllFieldDownloadOnDataBase(download);*/
+	//	DatabaseManager::FinishDownloadOnDatabase(download);
+	//	qDebug() << "Finished Update Download"; });
 
 
 	return true;
@@ -130,7 +135,8 @@ Downloader* DownloadManager::ProcessAchieveDownloader(Download* download)
 	}
 
 	//Not Found Downloader So Load From Database
-	Downloader* downloader = new Downloader(download, this);
+	//Downloader* downloader = new Downloader(download, this);
+	Downloader* downloader =CreateDownloader(download);
 	ListOfDownloaders.append(downloader);
 	return downloader;
 }
@@ -144,3 +150,4 @@ bool DownloadManager::CreatePartDownloadAndPutInDownloadFromDatabase(Download* d
 	}
 	return true;
 }
+

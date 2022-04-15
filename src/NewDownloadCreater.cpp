@@ -88,7 +88,7 @@ bool NewDownloadCreater::TryToGetInformationFromUrl(QUrl url, QString UserName,Q
 
 void NewDownloadCreater::ProcessInitialInformationFromUrl()
 {
-	this->description= m_networkReply->header(QNetworkRequest::KnownHeaders::ContentDispositionHeader).toString();
+	this->description= m_networkReply->header(QNetworkRequest::KnownHeaders::ContentDispositionHeader).toString().remove("attachment;");
 	this->DownloadSize= m_networkReply->header(QNetworkRequest::ContentLengthHeader).toLongLong();
 	this->suffix = DeterminerDownloadFileType::DetermineDownloadFileType(m_networkReply);
 }
@@ -130,6 +130,7 @@ bool NewDownloadCreater::ProcessNewDownloadUrlWidget()
 														"Size: " + ConverterSizeToSuitableString::ConvertSizeToSuitableString(DownloadSize), DefualtSaveToAddress(), description);
 				//ToDo Remove This new
 				newDownloadUrlWidget->deleteLater();
+				newDownloadUrlWidget = nullptr;
 			}
 			else
 			{

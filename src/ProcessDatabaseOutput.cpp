@@ -61,14 +61,14 @@ void ProcessDatabaseOutput::ProcessPrepareLoadedInformationForMainTableView(cons
 	{
 		Status = "Complete";
 	}
-	else if(TempStatus == "NotStarted")
+	/*else if (TempStatus == "NotStarted")
 	{
 		Status = "0%";
-	}
+	}*/
 	else
 	{
 		float Present = (long double)DownloadedSize / DownloadSize;
-		Status = QString::number(Present, 'f', 2);
+		Status = QString::number(Present*100, 'f', 2)+"%";
 	}
 	
 

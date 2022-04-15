@@ -53,6 +53,7 @@ qint64 PartDownloader::ReadReadybytes(qint64 bytes)
 			else
 			{
 				reply->deleteLater();
+				reply = nullptr;
 				emit Paused();
 			}
 		}
