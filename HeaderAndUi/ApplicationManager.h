@@ -6,6 +6,7 @@
 #include "MainWindow.h"
 #include <QSystemTrayIcon>
 #include "qmenu.h"
+#include "DateTimeManager.h"
 
 class ApplicationManager : public QObject
 {

@@ -152,6 +152,17 @@ set(PROJECT_SOURCES
         ${MY_HeaderAndUi_PATH}/ShowDownloadWidget.h
         ${MY_SOURCE_PATH}/ShowDownloadWidget.cpp
 
+        #DateTimeManager
+        ${MY_HeaderAndUi_PATH}/DateTimeManager.h
+        ${MY_SOURCE_PATH}/DateTimeManager.cpp
+
+
+
+
+
+
+
+
 )
 
 #qt_wrap_ui(PROJECT_SOURCES downloader.ui)

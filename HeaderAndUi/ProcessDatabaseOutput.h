@@ -8,6 +8,7 @@
 #include "ProcessEnum.h"
 #include "ConverterSizeToSuitableString.h"
 #include "TableViewRowCreater.h"
+#include "DateTimeManager.h"
 
 class ProcessDatabaseOutput : public QObject
 {

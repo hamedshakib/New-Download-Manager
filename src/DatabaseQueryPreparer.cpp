@@ -76,7 +76,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForCreateNewDownload(Download* dow
 		":url,:saveTo,"
 		":suffix,:downloadSize,"
 		"0,:description,"
-		"NULL,"
+		":lastTryTime,"
 		"0,:resumeCapability_id,"
 		":category_id,:queue_id"
 		");"
@@ -91,6 +91,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForCreateNewDownload(Download* dow
 	query->bindValue(":suffix", download->suffix);
 	query->bindValue(":downloadSize", download->DownloadSize);
 	query->bindValue(":description", download->description);
+	query->bindValue(":lastTryTime", DateTimeManager::ConvertDataTimeToString(download->LastTryTime));
 	query->bindValue(":resumeCapability_id", ProcessEnum::ConvertResumeCapabilityEnumToResumeCapabilityId(download->ResumeCapability));
 
 
@@ -156,7 +157,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForUpdateAllFieldDownload(Download
 		"SaveTo = :saveTo,"
 		"SizeDownloaded = :sizeDownloaded,"
 		"description = :description,"
-//		"LastTryTime = :lastTryTime,"
+		"LastTryTime = :lastTryTime,"
 		"MaxSpeed = :maxSpeed,"
 		"ResumeCapability_id = :resumeCapability_id,"
 		"Category_id = :category_id,"
@@ -180,8 +181,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForUpdateAllFieldDownload(Download
 
 
 
-
-//	query->bindValue(":lastTryTime", download->LastTryTime);
+	query->bindValue(":lastTryTime", DateTimeManager::ConvertDataTimeToString(download->LastTryTime));
 	query->bindValue(":maxSpeed", download->MaxSpeed>0 ? QString::number(download->MaxSpeed):QVariant("NULL"));
 	query->bindValue(":resumeCapability_id",ProcessEnum::ConvertResumeCapabilityEnumToResumeCapabilityId(download->ResumeCapability));
 

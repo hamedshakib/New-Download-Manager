@@ -15,6 +15,8 @@ ApplicationManager::ApplicationManager(QObject *parent)
 	AddMainSystemTrayToTaskbar();
 	QApplication::setQuitOnLastWindowClosed(false);
 	QApplication::setWindowIcon(QIcon(":Icons/Download_Icon.png"));
+
+	qDebug() << DateTimeManager::ConvertDataTimeToString(DateTimeManager::GetCurrentDateTime());
 }
 
 ApplicationManager::~ApplicationManager()

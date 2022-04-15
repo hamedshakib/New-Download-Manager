@@ -7,6 +7,7 @@
 #include "SettingUpDatabase.h"
 #include "ProcessEnum.h"
 #include "QString"
+#include "DateTimeManager.h"
 
 
 class DatabaseQueryPreparer : public QObject

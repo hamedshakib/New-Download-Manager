@@ -13,6 +13,7 @@
 #include "ConverterSizeToSuitableString.h"
 #include "DatabaseManager.h"
 #include "ProcessEnum.h"
+#include "DateTimeManager.h"
 
 #include "qeventloop.h"
 #include "qnetworkreply.h"

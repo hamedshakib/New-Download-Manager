@@ -58,7 +58,7 @@ QList<QStandardItem*> TableViewRowCreater::PrepareDataForRow(Download* download)
 	listOfItems << newItem(DownloadStatus);
 	listOfItems << newItem("");
 	listOfItems << newItem("");
-	listOfItems << newItem(download->LastTryTime);
+	listOfItems << newItem(DateTimeManager::ConvertDataTimeToString(download->LastTryTime));
 	listOfItems << newItem(download->description);
 	listOfItems << newItem(download->SaveTo);
 	
