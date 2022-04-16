@@ -55,3 +55,17 @@ bool DatabaseInteract::ExectionQueryForCreateTable(QSqlQuery* query)
 		return false;
 	}
 }
+
+bool DatabaseInteract::ExectionQueryForDeleteData(QSqlQuery* query)
+{
+	bool is_Ok = query->exec();
+	if (is_Ok)
+	{
+		return true;
+	}
+	else
+	{
+		qCritical() << "Database Error:" << query->lastError();
+		return false;
+	}
+}

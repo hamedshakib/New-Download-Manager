@@ -36,7 +36,8 @@ public:
 
 	static QSqlQuery* PrepareQueryForLoadPartDownloadOfDownload(int Download_id);
 
-	//static QSqlQuery* PrepareQueryFor
+	static QSqlQuery* PrepareQueryForRemovePartDownloadsOfDownloadFromDatabase(Download* download);
+	static QSqlQuery* PrepareQueryForRemoveDownloadFromDatabase(Download* download);
 public:
 	DatabaseQueryPreparer(QObject *parent);
 	~DatabaseQueryPreparer();

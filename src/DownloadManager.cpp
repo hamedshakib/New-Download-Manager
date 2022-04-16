@@ -12,27 +12,6 @@ DownloadManager::~DownloadManager()
 
 }
 
-
-/*
-
-bool DownloadManager::settingUpDataBase()
-{
-	
-	DataBase = QSqlDatabase::addDatabase("QSQLITE");
-	DataBase.setDatabaseName("DM.BAK");
-	if (!DataBase.open())
-		return false;
-	
-
-	if (DataBase.tables().isEmpty())
-		return false;
-	else
-		return true;
-
-		
-}
-*/
-
 Download* DownloadManager::CreateDownloadFromDatabase(int download_id)
 {
 	Download* download = new Download(this);
@@ -135,7 +114,6 @@ Downloader* DownloadManager::ProcessAchieveDownloader(Download* download)
 	}
 
 	//Not Found Downloader So Load From Database
-	//Downloader* downloader = new Downloader(download, this);
 	Downloader* downloader =CreateDownloader(download);
 	ListOfDownloaders.append(downloader);
 	return downloader;
@@ -149,5 +127,60 @@ bool DownloadManager::CreatePartDownloadAndPutInDownloadFromDatabase(Download* d
 		download->AppendPartDownloadToPartDownloadListOfDownload(partDownload);
 	}
 	return true;
+}
+
+bool DownloadManager::ProcessRemoveDownload(int download_id, bool is_RemoveFromDisk)
+{
+	Download* download = ProcessAchieveDownload(download_id);
+	Downloader* downloader = ProcessAchieveDownloader(download);
+	
+	downloader->Paused();
+	ListOfDownloaders.removeOne(downloader);
+	downloader->deleteLater();
+	downloader = nullptr;
+
+
+	if (is_RemoveFromDisk)
+	{
+		QString DownloadFileAddress = download->get_SavaTo().toString();
+		QFile file(DownloadFileAddress);
+		file.remove();
+	}
+	if (DatabaseManager::RemoveDownloadCompleteWithPartDownloadsFromDatabase(download))
+	{
+		ListOfActiveDownloads.removeOne(download);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool DownloadManager::ProcessRemoveDownload(Download* download, bool is_RemoveFromDisk)
+{
+	Downloader* downloader = ProcessAchieveDownloader(download);
+
+	downloader->Paused();
+	ListOfDownloaders.removeOne(downloader);
+	downloader->deleteLater();
+	downloader = nullptr;
+
+
+	if (is_RemoveFromDisk)
+	{
+		QString DownloadFileAddress = download->get_SavaTo().toString();
+		QFile file(DownloadFileAddress);
+		file.remove();
+	}
+	if (DatabaseManager::RemoveDownloadCompleteWithPartDownloadsFromDatabase(download))
+	{
+		ListOfActiveDownloads.removeOne(download);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 

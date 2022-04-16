@@ -156,8 +156,10 @@ set(PROJECT_SOURCES
         ${MY_HeaderAndUi_PATH}/DateTimeManager.h
         ${MY_SOURCE_PATH}/DateTimeManager.cpp
 
-
-
+        #ShowDownloadProperties
+        ${MY_HeaderAndUi_PATH}/ShowDownloadProperties.ui
+        ${MY_HeaderAndUi_PATH}/ShowDownloadProperties.h
+        ${MY_SOURCE_PATH}/ShowDownloadProperties.cpp
 
 
 

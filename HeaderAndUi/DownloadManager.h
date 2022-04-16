@@ -27,6 +27,9 @@ public:
 	Download* ProcessAchieveDownload(int Download_id);
 	Downloader* ProcessAchieveDownloader(Download* download);
 
+	bool ProcessRemoveDownload(int download_id,bool is_RemoveFromDisk=false);
+	bool ProcessRemoveDownload(Download* download, bool is_RemoveFromDisk = false);
+
 private slots:
 	void AddCreatedDownloadToDownloadList(Download* download);
 	bool CreateDownloaderAndStartDownload(Download* download);

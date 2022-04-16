@@ -75,6 +75,11 @@ public:
 	size_t get_Id();
 	DownloadStatusEnum get_Status();
 
+	QString get_FullFileName();
+	QString get_Description();
+	qint64 get_SizeDownload();
+	qint64 get_DownloadedSize();
+
 
 	void Set_downloadStatus(Download::DownloadStatusEnum status);
 	void AppendPartDownloadToPartDownloadListOfDownload(PartDownload* partDownload);

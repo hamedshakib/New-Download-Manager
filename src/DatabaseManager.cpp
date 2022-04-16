@@ -150,3 +150,31 @@ QList<PartDownload*> DatabaseManager::CreatePartDownloadsOfDownload(int Download
 	return ListOfPartDownloadsOfDownload;
 }
 
+bool DatabaseManager::RemoveDownloadCompleteWithPartDownloadsFromDatabase(Download* download)
+{
+	bool Is_Success = true;
+	QSqlQuery* PartDownloadsDeletequery= DatabaseQueryPreparer::PrepareQueryForRemovePartDownloadsOfDownloadFromDatabase(download);
+	if (DatabaseInteract::ExectionQueryForDeleteData(PartDownloadsDeletequery))
+	{
+		QSqlQuery* DownloadDeletequery = DatabaseQueryPreparer::PrepareQueryForRemoveDownloadFromDatabase(download);
+		if (DatabaseInteract::ExectionQueryForDeleteData(DownloadDeletequery))
+		{
+			delete DownloadDeletequery;
+		}
+		else
+		{
+			delete DownloadDeletequery;
+			Is_Success = false;
+		}
+
+
+		delete PartDownloadsDeletequery;
+	}
+	else
+	{
+		delete PartDownloadsDeletequery;
+		Is_Success = false;
+	}
+	return Is_Success;
+}
+
