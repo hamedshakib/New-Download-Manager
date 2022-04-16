@@ -11,6 +11,8 @@
 #include "DatabaseManager.h"
 #include "OpenFileForUser.h"
 #include "ShowDownloadWidget.h"
+#include "ShowDownloadProperties.h"
+
 
 class TableViewController : public QObject
 {
@@ -44,6 +46,8 @@ private slots:
 
 	void PauseOrResumeActionTriggered(QAction* pauseOrResumeAction,Download* download);
 	void OpenFileActionTriggered(Download* download);
+	void RemoveActionTriggered(Download* download);
+	void PropertiesActionTriggered(Download* download);
 
 private:
 	QTableView* m_tableView;

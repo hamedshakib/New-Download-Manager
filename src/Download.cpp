@@ -51,3 +51,23 @@ void Download::AppendPartDownloadToPartDownloadListOfDownload(PartDownload* part
 {
 	DownloadParts.append(partDownload);
 }
+
+QString Download::get_FullFileName()
+{
+	return FullFileName;
+}
+
+QString Download::get_Description()
+{
+	return description;
+}
+
+qint64 Download::get_SizeDownload()
+{
+	return DownloadSize;
+}
+
+qint64 Download::get_DownloadedSize()
+{
+	return SizeDownloaded;
+}

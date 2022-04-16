@@ -181,13 +181,21 @@ QMenu* TableViewController::CreaterRightClickMenuForRowRightClicked(int Download
 
 	}
 
+	//Remove Action
+	QAction* RemoveDownloadAction = new QAction(tr("Remove"), this);
+	RemoveDownloadAction->setVisible(true);
+	menu->addAction(RemoveDownloadAction);
+	connect(RemoveDownloadAction, &QAction::triggered, this, [&, RightClickedRow_Download](bool clicked) {qDebug() << "test1"; RemoveActionTriggered(RightClickedRow_Download); });
+
 
 
 
 	//Properties Item For Menu
 	QAction* PropertiesAction = new QAction(tr("Properties"), this);
+	PropertiesAction->setVisible(true);
 	menu->addAction(PropertiesAction);
-	//connect(ResumeOrPause, &QAction::triggered, this, [&, ResumeOrPause, RightClickedRow_Download](bool clicked) {qDebug() << "test2"; PauseOrResumeActionTriggered(ResumeOrPause, RightClickedRow_Download); });
+
+	connect(PropertiesAction, &QAction::triggered, this, [&,RightClickedRow_Download](bool clicked) {qDebug() << "test2"; PropertiesActionTriggered(RightClickedRow_Download); });
 
 
 	return menu;
@@ -263,4 +271,18 @@ void TableViewController::OpenFileActionTriggered(Download* download)
 {
 	QString UrlOfFile = download->get_SavaTo().toString();
 	OpenFileForUser::openFileForShowUser(UrlOfFile);
+}
+
+void TableViewController::RemoveActionTriggered(Download* download)
+{
+	m_downloadManager->ProcessRemoveDownload(download);
+	int row = m_tableView->currentIndex().row();
+	model->removeRow(row);
+}
+
+void TableViewController::PropertiesActionTriggered(Download* download)
+{
+	qDebug() << "ddd1";
+	ShowDownloadProperties *showProperties=new ShowDownloadProperties(download);
+	showProperties->ShowPropertiesOfDownload();
 }

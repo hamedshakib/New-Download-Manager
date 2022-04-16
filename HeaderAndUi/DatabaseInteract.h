@@ -16,4 +16,5 @@ public:
 	static bool ExectionQueryForUpdateData(QSqlQuery* query);
 	static bool ExectionQueryForInsertData(QSqlQuery* query);
 	static bool ExectionQueryForCreateTable(QSqlQuery* query);
+	static bool ExectionQueryForDeleteData(QSqlQuery* query);
 };

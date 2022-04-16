@@ -6,9 +6,6 @@
 #include "DatabaseInteract.h"
 #include "ProcessDatabaseOutput.h"
 #include "qstandarditemmodel.h"
-//#include "NewDownloadCreater.h"
-//#include "NewDownloadUrlWidget.h"
-//#include "TableViewController.h"
 
 #include "qsqlrecord.h"
 
@@ -38,6 +35,8 @@ public:
 
 	//static Q LoadStatusAndFileAddressOfDownload(int download_id);
 	static QList<PartDownload*> CreatePartDownloadsOfDownload(int Download_id);
+
+	static bool RemoveDownloadCompleteWithPartDownloadsFromDatabase(Download* download);
 
 public:
 	DatabaseManager(QObject *parent=nullptr);

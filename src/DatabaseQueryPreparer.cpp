@@ -17,15 +17,6 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForLoadDownload(int Download_id)
 		"From Download as D join DownloadStatus as DS on D.DownloadStatus_id = DS.id join ResumeCapability as RC on D.ResumeCapability_id = RC.id "
 		"where D.id=:id "
 	);
-
-
-
-
-
-
-		//"Select DownloadStatus_id,FileName,Url,SaveTo,Suffix,DownloadSize,SizeDownloaded,TimeLeft,LastTryTime,ResumeCapability_id,Category_id,MaxSpeed,description,Queue_id "
-		//"From Download "
-		//"where id='%1' "
 	
 	QSqlQuery* query = new QSqlQuery();
 	query->prepare(queryString);
@@ -287,5 +278,31 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForLoadPartDownloadOfDownload(int 
 	QSqlQuery* query = new QSqlQuery();
 	query->prepare(queryString);
 	query->bindValue(":download_id", Download_id);
+	return query;
+}
+
+QSqlQuery* DatabaseQueryPreparer::PrepareQueryForRemovePartDownloadsOfDownloadFromDatabase(Download* download)
+{
+	SettingUpDatabase::get_Database();
+	QString queryString = QString(
+		"DELETE FROM PartDownload "
+		"WHERE Download_id = :download_id; "
+	);
+	QSqlQuery* query = new QSqlQuery();
+	query->prepare(queryString);
+	query->bindValue(":download_id", download->IdDownload);
+	return query;
+}
+
+QSqlQuery* DatabaseQueryPreparer::PrepareQueryForRemoveDownloadFromDatabase(Download* download)
+{
+	SettingUpDatabase::get_Database();
+	QString queryString = QString(
+		"DELETE FROM Download "
+		"WHERE id = :download_id; "
+	);
+	QSqlQuery* query = new QSqlQuery();
+	query->prepare(queryString);
+	query->bindValue(":download_id", download->IdDownload);
 	return query;
 }
