@@ -69,3 +69,10 @@ void MainWindow::on_actionExit_triggered()
 	qApp->exit();
 }
 
+void MainWindow::on_actionOptions_triggered()
+{
+	OptionsWidget* optionsWidget = new OptionsWidget(this);
+	optionsWidget->show();
+	//connect(optionsWidget, &QWidget::closeEvent, this, [&optionsWidget](QCloseEvent *event) {optionsWidget->deleteLater(); });
+}
+

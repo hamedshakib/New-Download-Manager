@@ -10,6 +10,7 @@
 #include "qstandarditemmodel.h"
 #include "TableViewController.h"
 #include "DownloadManager.h"
+#include "OptionsWidget.h"
 #include <QResizeEvent>
 #include "qmessagebox.h"
 #include "qpixmap.h"
@@ -30,6 +31,7 @@ private slots:
 	void on_actionAdd_new_Download_triggered();
 	void on_actionAbout_triggered();
 	void on_actionExit_triggered();
+	void on_actionOptions_triggered();
 	void LoadDownloadsForMainTable();
 	void LoadSizeOfWidnow();
 
