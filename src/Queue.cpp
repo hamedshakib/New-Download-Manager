@@ -24,9 +24,14 @@ size_t Queue::Get_MaxSpeed() //Kilobytes
 	return MaxSpeed;
 }
 
-QList<Download*> Queue::Get_QueueDownloadList()
+QList<size_t> Queue::Get_ListOfDownloadId()
 {
-	return download_List;
+	return List_DownloadId;
+}
+
+QList<Download*> Queue::Get_QueueDownloadingList()
+{
+	return Downloading_list;
 }
 
 int Queue::Get_NumberDownloadAtSameTime()

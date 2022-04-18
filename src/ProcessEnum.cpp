@@ -96,7 +96,7 @@ int ProcessEnum::ConvertDownloadStatusEnumToDownloadStatusId(Download::DownloadS
 	{
 		return 3;
 	}
-	else if (downloadStatusEnum == (Download::DownloadStatusEnum::Downloading| Download::DownloadStatusEnum::Pause))
+	else if (downloadStatusEnum == Download::DownloadStatusEnum::Downloading|| downloadStatusEnum == Download::DownloadStatusEnum::Pause)
 	{
 		return 2;
 	}

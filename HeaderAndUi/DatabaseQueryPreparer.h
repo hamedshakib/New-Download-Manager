@@ -8,6 +8,7 @@
 #include "ProcessEnum.h"
 #include "QString"
 #include "DateTimeManager.h"
+#include "Queue.h"
 
 
 class DatabaseQueryPreparer : public QObject
@@ -27,7 +28,7 @@ public:
 
 
 	static QList<QSqlQuery*> PrepareQueryForFinishDownload(Download* download);
-
+	static QSqlQuery* PrepareQueryForUpdateInStartDownload(Download* download);
 	static QList<QSqlQuery*> PrepareQueriesForUpdateInDownloading(Download* download);
 
 
@@ -38,6 +39,12 @@ public:
 
 	static QSqlQuery* PrepareQueryForRemovePartDownloadsOfDownloadFromDatabase(Download* download);
 	static QSqlQuery* PrepareQueryForRemoveDownloadFromDatabase(Download* download);
+
+	static QSqlQuery* PrepareQueryForLoadAllQueuesGeneralInformationFromDatabase();
+	static QSqlQuery* PrepareQueryForGetDownloadIdOfQueue(Queue* queue);
+	static QSqlQuery* PrepareQueryForRemoveDownloadFromQueueOnDatabase(Download* download);
+
+
 public:
 	DatabaseQueryPreparer(QObject *parent);
 	~DatabaseQueryPreparer();

@@ -10,6 +10,8 @@ ApplicationManager::ApplicationManager(QObject *parent)
 	mainWindow->show();
 	connect(mainWindow, &MainWindow::AddNewDownload, downloadManager, &DownloadManager::CreateNewDownload);
 
+	queueManager = new QueueManager(downloadManager,this);
+	queueManager->LoadQueuesFormDatabase();
 
 
 	AddMainSystemTrayToTaskbar();

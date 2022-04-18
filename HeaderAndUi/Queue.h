@@ -11,18 +11,20 @@ private:
 	int QueueId;
 	QString QueueName;
 	size_t MaxSpeed; //Kilobytes
-	QList<Download*> download_List;
+	QList<size_t> List_DownloadId;
 	QList<Download*> Downloading_list;
 	int NumberDownloadAtSameTime;
 
 	friend class QueueManager;
+	friend class ProcessDatabaseOutput;
 
 
 public:
 	int Get_QueueId();
 	QString Get_QueueName();
 	size_t Get_MaxSpeed(); //Kilobytes
-	QList<Download*> Get_QueueDownloadList();
+	QList<size_t> Get_ListOfDownloadId();
+	QList<Download*> Get_QueueDownloadingList();
 	int Get_NumberDownloadAtSameTime();
 
 public:

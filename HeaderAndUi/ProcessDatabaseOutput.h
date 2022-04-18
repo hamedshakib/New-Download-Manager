@@ -9,6 +9,7 @@
 #include "ConverterSizeToSuitableString.h"
 #include "TableViewRowCreater.h"
 #include "DateTimeManager.h"
+#include "Queue.h"
 
 class ProcessDatabaseOutput : public QObject
 {
@@ -26,6 +27,9 @@ public:
 
 
 	static bool ProcessPutLoadedPartDownloadInInPartDownloadObject(const QSqlRecord& record, PartDownload* partDownload, int Download_id);
+
+	static bool ProcessPutLoadedQueueInformationInQueueObject(const QSqlRecord& record, Queue* queue);
+	static bool PutDownloadIdInQueueDownloadList(const QSqlRecord& record, Queue* queue);
 
 public:
 	ProcessDatabaseOutput(QObject *parent);

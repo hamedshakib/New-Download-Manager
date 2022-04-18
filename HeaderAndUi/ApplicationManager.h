@@ -8,6 +8,7 @@
 #include "qmenu.h"
 #include "DateTimeManager.h"
 #include "ProxyManager.h"
+#include "QueueManager.h"
 
 class ApplicationManager : public QObject
 {
@@ -17,6 +18,7 @@ class ApplicationManager : public QObject
 
 private:
 	DownloadManager* downloadManager;
+	QueueManager* queueManager;
 	MainWindow* mainWindow;
 
 private slots:
