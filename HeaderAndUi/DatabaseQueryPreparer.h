@@ -43,7 +43,9 @@ public:
 	static QSqlQuery* PrepareQueryForLoadAllQueuesGeneralInformationFromDatabase();
 	static QSqlQuery* PrepareQueryForGetDownloadIdOfQueue(Queue* queue);
 	static QSqlQuery* PrepareQueryForRemoveDownloadFromQueueOnDatabase(Download* download);
-
+	static QSqlQuery* PrepareQueryForCreateNewQueue(Queue* queue);
+	static QSqlQuery* PrepareQueryForExitAllDownloadFromQueue(Queue* queue);
+	static QSqlQuery* PrepareQueryForRemoveQueueFromDatabase(Queue* queue);
 
 public:
 	DatabaseQueryPreparer(QObject *parent);

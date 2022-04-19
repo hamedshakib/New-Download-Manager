@@ -3,6 +3,7 @@
 Queue::Queue(QObject *parent)
 	: QObject(parent)
 {
+	NumberDownloadAtSameTime = 2;
 }
 
 Queue::~Queue()

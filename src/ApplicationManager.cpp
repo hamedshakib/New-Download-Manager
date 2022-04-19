@@ -11,8 +11,8 @@ ApplicationManager::ApplicationManager(QObject *parent)
 	connect(mainWindow, &MainWindow::AddNewDownload, downloadManager, &DownloadManager::CreateNewDownload);
 
 	queueManager = new QueueManager(downloadManager,this);
+	mainWindow->SetQueueManaget(queueManager);
 	queueManager->LoadQueuesFormDatabase();
-
 
 	AddMainSystemTrayToTaskbar();
 	QApplication::setQuitOnLastWindowClosed(false);

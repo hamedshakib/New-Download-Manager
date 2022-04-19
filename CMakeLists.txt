@@ -178,9 +178,14 @@ set(PROJECT_SOURCES
         ${MY_HeaderAndUi_PATH}/QueueManager.h
         ${MY_SOURCE_PATH}/QueueManager.cpp
 
+        #ShowSchedule
+        ${MY_HeaderAndUi_PATH}/ShowSchedule.ui
+        ${MY_HeaderAndUi_PATH}/ShowSchedule.h
+        ${MY_SOURCE_PATH}/ShowSchedule.cpp
 
-
-
+        #ProcessAddNewDownloadToQueue
+        ${MY_HeaderAndUi_PATH}/ProcessAddNewDownloadToQueue.h
+        ${MY_SOURCE_PATH}/ProcessAddNewDownloadToQueue.cpp
 
 
 )

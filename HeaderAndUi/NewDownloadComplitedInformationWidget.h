@@ -3,6 +3,7 @@
 #include <QWidget>
 #include "ui_NewDownloadComplitedInformationWidget.h"
 #include "qfiledialog.h"
+#include "qcombobox.h"
 
 class NewDownloadComplitedInformationWidget : public QWidget
 {
@@ -13,10 +14,12 @@ public:
 	~NewDownloadComplitedInformationWidget();
 
 	bool SetMoreCompliteInformation(QUrl RealUrl, QString TypeFile, QString Size, QString SaveTo, QString description = "");
+	//bool SetQueueManager(QueueManager* queueManager);
 
 signals:
-	void DownloadNow(QUrl url,QUrl FileSaveToAddress);
-	void DownloadLater(QUrl url, QUrl FileSaveToAddress,int QueueId);
+	//void DownloadNow  (QUrl url,QUrl FileSaveToAddress);
+	//void DownloadLater(QUrl url,QUrl FileSaveToAddress);
+	void VerifiedDownload(QUrl url, QUrl FileSaveToAddress,bool Is_DownloadNow);
 
 private slots:
 	void on_SaveAs_toolButton_clicked();

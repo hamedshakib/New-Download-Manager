@@ -76,3 +76,14 @@ void MainWindow::on_actionOptions_triggered()
 	//connect(optionsWidget, &QWidget::closeEvent, this, [&optionsWidget](QCloseEvent *event) {optionsWidget->deleteLater(); });
 }
 
+void MainWindow::on_actionScheduler_triggered()
+{
+	ShowSchedule* showSchedule = new ShowSchedule(queueManager,this);
+	showSchedule->show();
+}
+
+void MainWindow::SetQueueManaget(QueueManager* queueManager)
+{
+	this->queueManager = queueManager;
+}
+

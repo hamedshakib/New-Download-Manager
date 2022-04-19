@@ -23,6 +23,7 @@ void QueueManager::StopQueue(Queue* queue)
 		Downloader* downloader = m_downloadManager->ProcessAchieveDownloader(download);
 		downloader->PauseDownload();
 	}
+	queue->Downloading_list.clear();
 }
 
 void QueueManager::ProcessDownloadOfQueue(Queue* queue)
@@ -107,4 +108,42 @@ bool QueueManager::RemoveDownloadFromQueue(Download* download,Queue* queue)
 	queue->List_DownloadId.removeOne(download->get_Id());
 	queue->Downloading_list.removeOne(download);
 	return true;
+}
+
+Queue* QueueManager::CreateNewQueue(QString QueueName)
+{
+	Queue* queue = new Queue(this);
+	queue->QueueName = QueueName;
+	queue->QueueId =DatabaseManager::CreateNewQueueOnDatabase(queue);
+	ListOfQueues.append(queue);
+	return queue;
+}
+
+Queue* QueueManager::AchiveQueue(size_t Queue_id)
+{
+	for (Queue* queue : ListOfQueues)
+	{
+		if (queue->QueueId == Queue_id)
+		{
+			return queue;
+		}
+	}
+}
+
+bool QueueManager::DeleteQueueByQueueId(size_t queue_id)
+{
+	//ToDo
+	
+	Queue* queue=AchiveQueue(queue_id);
+	StopQueue(queue);
+	DatabaseManager::ExitAllDownloadFromQueue(queue);
+	DatabaseManager::RemoveQueueFromDatabase(queue);
+	ListOfQueues.removeOne(queue);
+	queue->deleteLater();
+	return true;
+}
+
+QList<Queue*> QueueManager::Get_ListOfQueues()
+{
+	return ListOfQueues;
 }

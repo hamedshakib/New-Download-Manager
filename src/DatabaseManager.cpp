@@ -241,3 +241,48 @@ bool DatabaseManager::RemoveDownloadFromQueueOnDatabase(Download* download)
 	delete query;
 	return false ;
 }
+
+size_t DatabaseManager::CreateNewQueueOnDatabase(Queue* queue)
+{
+	//ToDo
+	size_t queue_id;
+	QSqlQuery* query = DatabaseQueryPreparer::PrepareQueryForCreateNewQueue(queue);
+	if (DatabaseInteract::ExectionQueryForUpdateData(query))
+	{
+		queue_id = query->lastInsertId().toInt();
+	}
+	delete query;
+	return queue_id;
+}
+
+bool DatabaseManager::RemoveQueueFromDatabase(Queue* queue)
+{
+	//ToDo
+	QSqlQuery* query = DatabaseQueryPreparer::PrepareQueryForRemoveQueueFromDatabase(queue);
+	if (DatabaseInteract::ExectionQueryForDeleteData(query))
+	{
+		delete query;
+		return true;
+	}
+	delete query;
+	return false;
+}
+
+bool DatabaseManager::ExitDownloadFromQueue(Download* download)
+{
+	//ToDo
+	return 0;
+}
+
+bool DatabaseManager::ExitAllDownloadFromQueue(Queue* queue)
+{
+	//ToDo
+	QSqlQuery* query = DatabaseQueryPreparer::PrepareQueryForExitAllDownloadFromQueue(queue);
+	if (DatabaseInteract::ExectionQueryForUpdateData(query))
+	{
+		delete query;
+		return true;
+	}
+	delete query;
+	return false;
+}

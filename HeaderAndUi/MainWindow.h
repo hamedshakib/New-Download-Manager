@@ -10,6 +10,8 @@
 #include "qstandarditemmodel.h"
 #include "TableViewController.h"
 #include "DownloadManager.h"
+#include "QueueManager.h"
+#include "ShowSchedule.h"
 #include "OptionsWidget.h"
 #include <QResizeEvent>
 #include "qmessagebox.h"
@@ -25,6 +27,7 @@ public:
 	~MainWindow();
 
 	void SetDownloadManager(DownloadManager* downloadManager);
+	void SetQueueManaget(QueueManager* queueManager);
 	void CreateTableViewControllerForMainWindow();
 
 private slots:
@@ -32,6 +35,7 @@ private slots:
 	void on_actionAbout_triggered();
 	void on_actionExit_triggered();
 	void on_actionOptions_triggered();
+	void on_actionScheduler_triggered();
 	void LoadDownloadsForMainTable();
 	void LoadSizeOfWidnow();
 
@@ -45,5 +49,6 @@ protected:
 private:
 	TableViewController* tableViewController;
 	DownloadManager* downloadManagerPointer;
+	QueueManager* queueManager;
 	Ui::MainWindow ui;
 };

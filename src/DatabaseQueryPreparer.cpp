@@ -368,3 +368,48 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForRemoveDownloadFromQueueOnDataba
 	query->bindValue(":id", download->IdDownload);
 	return query;
 }
+
+QSqlQuery* DatabaseQueryPreparer::PrepareQueryForCreateNewQueue(Queue* queue)
+{
+	//ToDo
+	SettingUpDatabase::get_Database();
+	QString queryString = QString(
+		"INSERT INTO Queue(Name,NumberDownloadSameTime) "
+		"VALUES(:name,:numberDownloadSameTime); "
+	);
+	QSqlQuery* query = new QSqlQuery();
+	query->prepare(queryString);
+	query->bindValue(":name", queue->Get_QueueName());
+	query->bindValue(":numberDownloadSameTime", queue->Get_NumberDownloadAtSameTime());
+	return query;
+}
+
+QSqlQuery* DatabaseQueryPreparer::PrepareQueryForExitAllDownloadFromQueue(Queue* queue)
+{
+	SettingUpDatabase::get_Database();
+	QString queryString = QString(
+		"UPDATE Download "
+		"SET Queue_id = :null "
+		"WHERE Queue_id = :queue_id; "
+	);
+	QSqlQuery* query = new QSqlQuery();
+	query->prepare(queryString);
+
+	query->bindValue(":null", QVariant("NULL"));
+	query->bindValue(":queue_id", queue->Get_QueueId());
+	return query;
+}
+
+QSqlQuery* DatabaseQueryPreparer::PrepareQueryForRemoveQueueFromDatabase(Queue* queue)
+{
+	SettingUpDatabase::get_Database();
+	QString queryString = QString(
+		"DELETE FROM Queue "
+		"WHERE id = :id; "
+	);
+	QSqlQuery* query = new QSqlQuery();
+	query->prepare(queryString);
+
+	query->bindValue(":id", queue->Get_QueueId());
+	return query;
+}

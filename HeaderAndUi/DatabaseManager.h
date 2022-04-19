@@ -41,6 +41,10 @@ public:
 	static bool RemoveDownloadCompleteWithPartDownloadsFromDatabase(Download* download);
 
 	static bool LoadAllQueues(QList<Queue*>& listOfQueues,QObject* object);
+	static size_t CreateNewQueueOnDatabase(Queue* queue);
+	static bool RemoveQueueFromDatabase(Queue* queue);
+	static bool ExitDownloadFromQueue(Download* download);
+	static bool ExitAllDownloadFromQueue(Queue* queue);
 
 public:
 	DatabaseManager(QObject *parent=nullptr);
