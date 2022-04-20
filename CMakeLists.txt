@@ -183,9 +183,16 @@ set(PROJECT_SOURCES
         ${MY_HeaderAndUi_PATH}/ShowSchedule.h
         ${MY_SOURCE_PATH}/ShowSchedule.cpp
 
-        #ProcessAddNewDownloadToQueue
-        ${MY_HeaderAndUi_PATH}/ProcessAddNewDownloadToQueue.h
-        ${MY_SOURCE_PATH}/ProcessAddNewDownloadToQueue.cpp
+        #TreeViewController
+        ${MY_HeaderAndUi_PATH}/TreeViewController.h
+        ${MY_SOURCE_PATH}/TreeViewController.cpp
+
+
+
+
+
+
+
 
 
 )

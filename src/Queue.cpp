@@ -39,3 +39,8 @@ int Queue::Get_NumberDownloadAtSameTime()
 {
 	return NumberDownloadAtSameTime;
 }
+
+bool Queue::Get_IsDownloading()
+{
+	return Is_Downloading;
+}

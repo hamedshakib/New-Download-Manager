@@ -9,6 +9,7 @@
 #include "qabstractitemmodel.h"
 #include "qstandarditemmodel.h"
 #include "TableViewController.h"
+#include "TreeViewController.h"
 #include "DownloadManager.h"
 #include "QueueManager.h"
 #include "ShowSchedule.h"
@@ -29,6 +30,8 @@ public:
 	void SetDownloadManager(DownloadManager* downloadManager);
 	void SetQueueManaget(QueueManager* queueManager);
 	void CreateTableViewControllerForMainWindow();
+	void CreateTreeViewController();
+	void LoadTreeView();
 
 private slots:
 	void on_actionAdd_new_Download_triggered();
@@ -39,6 +42,7 @@ private slots:
 	void LoadDownloadsForMainTable();
 	void LoadSizeOfWidnow();
 
+
 signals:
 	void AddNewDownload();
 
@@ -48,6 +52,7 @@ protected:
 
 private:
 	TableViewController* tableViewController;
+	TreeViewController* treeViewController;
 	DownloadManager* downloadManagerPointer;
 	QueueManager* queueManager;
 	Ui::MainWindow ui;

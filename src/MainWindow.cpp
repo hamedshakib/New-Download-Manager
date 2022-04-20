@@ -17,6 +17,13 @@ void MainWindow::CreateTableViewControllerForMainWindow()
 	tableViewController->ProcessSetupOfTableView();
 }
 
+void MainWindow::CreateTreeViewController()
+{
+	treeViewController = new TreeViewController(ui.treeView, this);
+	treeViewController->Set_QueueManager(queueManager);
+	treeViewController->LoadTreeView();
+}
+
 void MainWindow::SetDownloadManager(DownloadManager* downloadManager)
 {
 	downloadManagerPointer = downloadManager;
@@ -85,5 +92,94 @@ void MainWindow::on_actionScheduler_triggered()
 void MainWindow::SetQueueManaget(QueueManager* queueManager)
 {
 	this->queueManager = queueManager;
+}
+
+void MainWindow::LoadTreeView()
+{
+	QStandardItemModel* model = new QStandardItemModel(this);
+	ui.treeView->setModel(model);
+	ui.treeView->setContextMenuPolicy(Qt::CustomContextMenu);
+	//QStandardItem *item1=new QStandardItem();
+	//model->appendRow(new QStandardItem("Category"));
+	//model->appendRow(new QStandardItem("leaf2"));
+
+
+
+	/*
+	QModelIndex pI;
+
+	model->insertRow(itemCount, QModelIndex());
+	pI = model->index(itemCount, 0, QModelIndex());
+	model->setData(pI, title, Qt::DisplayRole);
+	model->item(itemCount, 0)->setEditable(false);
+	*/
+
+
+	//QModelIndex NewItemModelIndex;
+	//model->insertRow(model->rowCount(), QModelIndex());
+	//NewItemModelIndex = model->index(model->rowCount(), 0, QModelIndex());
+	//model->setData(NewItemModelIndex, "Queues", Qt::DisplayRole);
+	//model->item(model->rowCount(), 0)->setEditable(false);
+
+
+
+
+	//model->item(1, 0)->setChild(0,1, new QStandardItem("Main"));
+
+	/*
+	QModelIndex cI;
+	model->insertRow(1, QModelIndex());
+	cI = model->index(1, 0, QModelIndex());
+	model->setData(cI, "test", Qt::DisplayRole);
+	model->item(1, 0)->setChild(0, 1, model->item(5, 0));
+	*/
+
+
+
+
+	QStandardItem* Categoryitem = new QStandardItem("Categories");
+	Categoryitem->setEditable(false);
+	QStandardItem* Queueitem = new QStandardItem("Queues");
+	Queueitem->setEditable(false);
+
+
+	for (Queue* queue : queueManager->Get_ListOfQueues())
+	{
+		QStandardItem* child1 = new QStandardItem(queue->Get_QueueName());
+		child1->setData(queue->Get_QueueId());
+		child1->setEditable(false);
+		child1->setDropEnabled(1);
+		Queueitem->appendRow(child1);
+	}
+
+	connect(ui.treeView,&QTreeView::customContextMenuRequested, this, [&](const QPoint& point) 
+		{
+			QTreeView* treeView=static_cast<QTreeView*>(sender());
+			QModelIndex index = treeView->indexAt(point);
+			if (index.isValid() && index.row() % 2 == 0) {
+				QMenu* myMenu = new QMenu(this);
+				myMenu->addAction("Hi");
+				myMenu->exec(treeView->viewport()->mapToGlobal(point));
+			}
+		}
+	);// SLOT(onCustomContextMenu(const QPoint&)));
+
+	/*
+	QStandardItem* child1 = new QStandardItem("Main");
+	child1->setEditable(false);
+	child1->setDropEnabled(1);
+	Queueitem->appendRow(child1);
+
+	QStandardItem* child2 = new QStandardItem("Other");
+	child2->setEditable(false);
+	Queueitem->appendRow(child2);
+	*/
+
+	
+
+	model->setItem(0, Categoryitem);
+	model->setItem(1, Queueitem);
+
+	model->setHorizontalHeaderItem(0, new QStandardItem("Category"));
 }
 

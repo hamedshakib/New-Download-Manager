@@ -61,8 +61,11 @@ private:
 
 
 	//QList<ShowDownloadWidget*> ListOfShowDownloadWidgets;
+	
 
 	QMap<Downloader*, ShowDownloadWidget*> MapOfShowDownloadWidgets;
+
+
 public:
 	TableViewController(QTableView *tableView,QObject *parent);
 	~TableViewController();

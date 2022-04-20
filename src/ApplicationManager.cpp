@@ -14,6 +14,9 @@ ApplicationManager::ApplicationManager(QObject *parent)
 	mainWindow->SetQueueManaget(queueManager);
 	queueManager->LoadQueuesFormDatabase();
 
+	mainWindow->CreateTreeViewController();
+
+
 	AddMainSystemTrayToTaskbar();
 	QApplication::setQuitOnLastWindowClosed(false);
 	QApplication::setWindowIcon(QIcon(":Icons/Download_Icon.png"));

@@ -15,6 +15,8 @@ private:
 	QList<Download*> Downloading_list;
 	int NumberDownloadAtSameTime;
 
+	bool Is_Downloading = false;
+
 	friend class QueueManager;
 	friend class ProcessDatabaseOutput;
 
@@ -26,6 +28,7 @@ public:
 	QList<size_t> Get_ListOfDownloadId();
 	QList<Download*> Get_QueueDownloadingList();
 	int Get_NumberDownloadAtSameTime();
+	bool Get_IsDownloading();
 
 public:
 	Queue(QObject *parent);

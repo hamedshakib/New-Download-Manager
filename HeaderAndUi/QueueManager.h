@@ -35,6 +35,10 @@ private slots:
 	bool RemoveDownloadFromQueue(Download* download);
 	bool RemoveDownloadFromQueue(Download* download,Queue* queue);
 
+signals:
+	void AddedQueue(int Queue_id);
+	void RemovedQueue(int Queue_id);
+
 public:
 	QueueManager(DownloadManager* downloadManager,QObject *parent);
 	~QueueManager();

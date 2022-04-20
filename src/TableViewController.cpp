@@ -6,6 +6,12 @@ TableViewController::TableViewController(QTableView* tableView,QObject *parent)
 	m_tableView = tableView;
 	listOfColomns << "id" << "File Name" << "Size" << "Status" << "Speed" << "Time Left" << "Last Try Time" << "Description" << "Save To";
 	model = new QStandardItemModel(this);
+
+	tableView->setDragDropMode(QAbstractItemView::DragDropMode::DragOnly);
+	//tableView->setDragEnabled(true);
+	//tableView->setDragEnabled(true);//somewhere in constructor
+	
+	
 }
 
 TableViewController::~TableViewController()
