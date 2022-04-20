@@ -15,6 +15,7 @@ void MainWindow::CreateTableViewControllerForMainWindow()
 	tableViewController = new TableViewController(ui.tableView, this);
 	tableViewController->Set_DownloadManager(downloadManagerPointer);
 	tableViewController->ProcessSetupOfTableView();
+	tableViewController->Set_QueueManager(queueManager);
 }
 
 void MainWindow::CreateTreeViewController()

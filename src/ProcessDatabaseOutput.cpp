@@ -30,7 +30,7 @@ bool ProcessDatabaseOutput::ProcessPutLoadedDownloadInformationInDownloadObject(
 	download->ResumeCapability = ProcessEnum::ConvertDatabseStringToResumeCapabilityEnum(record.value("ResumeCapability").toString());
 
 //	download->Category = record.value("Url").toString();
-//	download->Queue_id = record.value("Url").toString();
+	download->Queue_id = record.value("Queue_id").toInt();
 	download->Url = record.value("Url").toString();
 
 

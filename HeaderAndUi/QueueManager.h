@@ -26,18 +26,23 @@ public:
 	QList<Queue*> Get_ListOfQueues();
 	Queue* AchiveQueue(size_t Queue_id);
 
+public slots:
+	bool RemoveDownloadFromQueue(Download* download);
+	bool AddDownloadToQueue(Download* download, Queue* queue);
+
 private slots:
 	void FinishDownloadOfQueue(Download* download, Queue* queue);
 	void ProcessDownloadOfQueue(Queue* queue);
 	bool Is_QueueIsEmpty(Queue* queue);
 
 
-	bool RemoveDownloadFromQueue(Download* download);
 	bool RemoveDownloadFromQueue(Download* download,Queue* queue);
 
 signals:
 	void AddedQueue(int Queue_id);
 	void RemovedQueue(int Queue_id);
+	void AddedDownloadToQueue(int download_id, int Queue_id);
+	void RemovedDownloadFromQueue(int download_id, int Queue_id);
 
 public:
 	QueueManager(DownloadManager* downloadManager,QObject *parent);
