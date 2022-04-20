@@ -187,6 +187,38 @@ QMenu* TableViewController::CreaterRightClickMenuForRowRightClicked(int Download
 
 	}
 
+
+	//Add To Queue or Remove From Queue
+	if (status != Download::DownloadStatusEnum::Completed)
+	{
+		if (RightClickedRow_Download->get_QueueId() > 0)
+		{
+			QAction* RemoveFromQueueAction = new QAction(this);
+			RemoveFromQueueAction->setText(tr("Delete From Queue"));
+			RemoveFromQueueAction->setVisible(true);
+			menu->addAction(RemoveFromQueueAction);
+			//Todo Edit Connect
+			connect(RemoveFromQueueAction, &QAction::triggered, this, [&, RemoveFromQueueAction, RightClickedRow_Download](bool clicked) {qDebug() << "test2"; RemoveDownloadFromQueue(RightClickedRow_Download); sender()->deleteLater(); });
+		}
+		else
+		{
+			QMenu *AddToQueueMenu=new QMenu(tr("Add To Queue"));
+			QList<QAction*> ListOfQueueAction;
+			for (Queue* queue : queueManager->Get_ListOfQueues())
+			{
+				QAction* AddToQueue = new QAction(queue->Get_QueueName());
+				connect(AddToQueue, &QAction::triggered, this, [&, queue, RightClickedRow_Download, ListOfQueueAction]() {AddDownloadToQueue(queue, RightClickedRow_Download); qDeleteAll(ListOfQueueAction); });
+				ListOfQueueAction.append(AddToQueue);
+				AddToQueueMenu->addAction(AddToQueue);
+			}
+			menu->addMenu(AddToQueueMenu);
+		}
+
+
+	}
+
+
+
 	//Remove Action
 	QAction* RemoveDownloadAction = new QAction(tr("Remove"), this);
 	RemoveDownloadAction->setVisible(true);
@@ -291,4 +323,19 @@ void TableViewController::PropertiesActionTriggered(Download* download)
 	qDebug() << "ddd1";
 	ShowDownloadProperties *showProperties=new ShowDownloadProperties(download);
 	showProperties->ShowPropertiesOfDownload();
+}
+
+void TableViewController::Set_QueueManager(QueueManager* queueManager)
+{
+	this->queueManager = queueManager;
+}
+
+void TableViewController::AddDownloadToQueue(Queue* queue, Download* download)
+{
+	queueManager->AddDownloadToQueue(download, queue);
+}
+
+void TableViewController::RemoveDownloadFromQueue(Download* download)
+{
+	queueManager->RemoveDownloadFromQueue(download);
 }

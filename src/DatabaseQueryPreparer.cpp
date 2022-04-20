@@ -413,3 +413,19 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForRemoveQueueFromDatabase(Queue* 
 	query->bindValue(":id", queue->Get_QueueId());
 	return query;
 }
+
+QSqlQuery* DatabaseQueryPreparer::PrepareQueryFroAddDownloadToQueue(Download* download, Queue* queue)
+{
+	SettingUpDatabase::get_Database();
+	QString queryString = QString(
+		"UPDATE Download "
+		"SET Queue_id = :queue_id "
+		"WHERE id = :id; "
+	);
+	QSqlQuery* query = new QSqlQuery();
+	query->prepare(queryString);
+
+	query->bindValue(":queue_id", queue->Get_QueueId());
+	query->bindValue(":id", download->IdDownload);
+	return query;
+}

@@ -6,13 +6,13 @@ ApplicationManager::ApplicationManager(QObject *parent)
 	downloadManager=new DownloadManager(this);
 	mainWindow=new MainWindow();
 	mainWindow->SetDownloadManager(downloadManager);
+	queueManager = new QueueManager(downloadManager,this);
+	mainWindow->SetQueueManaget(queueManager);
+	queueManager->LoadQueuesFormDatabase();
 	mainWindow->CreateTableViewControllerForMainWindow();
 	mainWindow->show();
 	connect(mainWindow, &MainWindow::AddNewDownload, downloadManager, &DownloadManager::CreateNewDownload);
 
-	queueManager = new QueueManager(downloadManager,this);
-	mainWindow->SetQueueManaget(queueManager);
-	queueManager->LoadQueuesFormDatabase();
 
 	mainWindow->CreateTreeViewController();
 

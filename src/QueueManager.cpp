@@ -103,9 +103,22 @@ bool QueueManager::RemoveDownloadFromQueue(Download* download)
 		qDebug() << download->get_Id();
 		queue->List_DownloadId.removeOne(download->get_Id());
 		queue->Downloading_list.removeOne(download);
-
+		download->Set_QueueId(0);
+		emit RemovedDownloadFromQueue(download->get_Id(), queue->QueueId);
 	}
 	return true;
+}
+
+bool QueueManager::AddDownloadToQueue(Download* download, Queue* queue)
+{
+	if (DatabaseManager::AddDownloadToQueueOnDatabase(download, queue))
+	{
+		queue->List_DownloadId.append(download->get_Id());
+		download->Set_QueueId(queue->QueueId);
+		emit AddedDownloadToQueue(download->get_Id(), queue->QueueId);
+		return true;
+	}
+	return false;
 }
 
 bool QueueManager::RemoveDownloadFromQueue(Download* download,Queue* queue)
@@ -113,6 +126,7 @@ bool QueueManager::RemoveDownloadFromQueue(Download* download,Queue* queue)
 	DatabaseManager::RemoveDownloadFromQueueOnDatabase(download);
 	queue->List_DownloadId.removeOne(download->get_Id());
 	queue->Downloading_list.removeOne(download);
+	emit RemovedDownloadFromQueue(download->get_Id(), queue->QueueId);
 	return true;
 }
 

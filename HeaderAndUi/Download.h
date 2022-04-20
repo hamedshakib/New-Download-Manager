@@ -74,11 +74,14 @@ public:
 	QUrl get_SavaTo();
 	size_t get_Id();
 	DownloadStatusEnum get_Status();
+	int get_QueueId();
 
 	QString get_FullFileName();
 	QString get_Description();
 	qint64 get_SizeDownload();
 	qint64 get_DownloadedSize();
+
+	void Set_QueueId(int Queue_id);
 
 
 	void Set_downloadStatus(Download::DownloadStatusEnum status);

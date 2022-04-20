@@ -12,6 +12,7 @@
 #include "OpenFileForUser.h"
 #include "ShowDownloadWidget.h"
 #include "ShowDownloadProperties.h"
+#include "QueueManager.h"
 
 
 class TableViewController : public QObject
@@ -22,7 +23,7 @@ class TableViewController : public QObject
 public:
 	void ProcessSetupOfTableView();
 	void Set_DownloadManager(DownloadManager* downloadManager);
-	
+	void Set_QueueManager(QueueManager* queueManager);
 
 
 private slots:
@@ -49,8 +50,12 @@ private slots:
 	void RemoveActionTriggered(Download* download);
 	void PropertiesActionTriggered(Download* download);
 
+	void AddDownloadToQueue(Queue* queue, Download* download);
+	void RemoveDownloadFromQueue(Download* download);
+
 private:
 	QTableView* m_tableView;
+	QueueManager* queueManager;
 	DownloadManager* m_downloadManager;
 	DatabaseManager* manager;
 
@@ -58,9 +63,6 @@ private:
 	QStringList listOfColomns;
 
 	QHeaderView* horizontalHeader;
-
-
-	//QList<ShowDownloadWidget*> ListOfShowDownloadWidgets;
 	
 
 	QMap<Downloader*, ShowDownloadWidget*> MapOfShowDownloadWidgets;

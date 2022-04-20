@@ -286,3 +286,15 @@ bool DatabaseManager::ExitAllDownloadFromQueue(Queue* queue)
 	delete query;
 	return false;
 }
+
+bool DatabaseManager::AddDownloadToQueueOnDatabase(Download* Download, Queue* queue)
+{
+	QSqlQuery* query = DatabaseQueryPreparer::PrepareQueryFroAddDownloadToQueue(Download,queue);
+	if (DatabaseInteract::ExectionQueryForUpdateData(query))
+	{
+		delete query;
+		return true;
+	}
+	delete query;
+	return false;
+}

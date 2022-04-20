@@ -52,6 +52,11 @@ void Download::AppendPartDownloadToPartDownloadListOfDownload(PartDownload* part
 	DownloadParts.append(partDownload);
 }
 
+int Download::get_QueueId()
+{
+	return Queue_id;
+}
+
 QString Download::get_FullFileName()
 {
 	return FullFileName;
@@ -70,4 +75,9 @@ qint64 Download::get_SizeDownload()
 qint64 Download::get_DownloadedSize()
 {
 	return SizeDownloaded;
+}
+
+void Download::Set_QueueId(int Queue_id)
+{
+	this->Queue_id = Queue_id;
 }

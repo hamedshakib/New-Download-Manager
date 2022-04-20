@@ -46,6 +46,8 @@ public:
 	static bool ExitDownloadFromQueue(Download* download);
 	static bool ExitAllDownloadFromQueue(Queue* queue);
 
+	static bool AddDownloadToQueueOnDatabase(Download* Download,Queue* queue);
+
 public:
 	DatabaseManager(QObject *parent=nullptr);
 	~DatabaseManager();
