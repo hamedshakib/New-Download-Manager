@@ -27,7 +27,9 @@ public:
 
 
 	static bool UpdateAllFieldDownloadOnDataBase(Download* download);
+	static bool UpdateDownloadInStartOfDownloadOnDatabase(Download* download);
 	static bool UpdateInDownloadingOnDataBase(Download* download);
+	static bool RemoveDownloadFromQueueOnDatabase(Download* download);
 
 
 	static bool FinishDownloadOnDatabase(Download* download);
@@ -37,6 +39,12 @@ public:
 	static QList<PartDownload*> CreatePartDownloadsOfDownload(int Download_id);
 
 	static bool RemoveDownloadCompleteWithPartDownloadsFromDatabase(Download* download);
+
+	static bool LoadAllQueues(QList<Queue*>& listOfQueues,QObject* object);
+	static size_t CreateNewQueueOnDatabase(Queue* queue);
+	static bool RemoveQueueFromDatabase(Queue* queue);
+	static bool ExitDownloadFromQueue(Download* download);
+	static bool ExitAllDownloadFromQueue(Queue* queue);
 
 public:
 	DatabaseManager(QObject *parent=nullptr);

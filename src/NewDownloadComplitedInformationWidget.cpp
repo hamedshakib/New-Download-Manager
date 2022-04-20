@@ -23,6 +23,12 @@ bool NewDownloadComplitedInformationWidget::SetMoreCompliteInformation(QUrl Real
 	ui.Type_label->setText(TypeFile);
 	return true;
 }
+
+//bool NewDownloadComplitedInformationWidget::SetQueueManager(QueueManager* queueManager)
+//{
+//	return 1;
+//}
+
 void NewDownloadComplitedInformationWidget::on_SaveAs_toolButton_clicked()
 {
 	QFileDialog fileDialog;
@@ -36,13 +42,14 @@ void NewDownloadComplitedInformationWidget::on_SaveAs_toolButton_clicked()
 
 void NewDownloadComplitedInformationWidget::on_DownloadNow_pushButton_clicked()
 {
-	emit DownloadNow(ui.Url_lineEdit->text(), QUrl(ui.SaveAs_lineEdit->text()));
+	emit VerifiedDownload(ui.Url_lineEdit->text(), QUrl(ui.SaveAs_lineEdit->text()),true);
 	this->close();
 }
 
 void NewDownloadComplitedInformationWidget::on_DownloadLater_pushButton_clicked()
 {
-
+	emit VerifiedDownload(ui.Url_lineEdit->text(), QUrl(ui.SaveAs_lineEdit->text()),false);
+	this->close();
 }
 
 void NewDownloadComplitedInformationWidget::on_Cancel_pushButton_clicked()

@@ -96,7 +96,7 @@ int ProcessEnum::ConvertDownloadStatusEnumToDownloadStatusId(Download::DownloadS
 	{
 		return 3;
 	}
-	else if (downloadStatusEnum == (Download::DownloadStatusEnum::Downloading| Download::DownloadStatusEnum::Pause))
+	else if (downloadStatusEnum == Download::DownloadStatusEnum::Downloading|| downloadStatusEnum == Download::DownloadStatusEnum::Pause)
 	{
 		return 2;
 	}
@@ -123,6 +123,38 @@ QString ProcessEnum::ConvertDownloadStatusEnumToString(Download::DownloadStatusE
 	if (downloadStatusEnum == Download::DownloadStatusEnum::Completed)
 	{
 		return "Completed";
+	}
+}
+
+QNetworkProxy::ProxyType ProcessEnum::ConvertProxyTypeStringToProxyTypeEnum(QString proxyTypeString)
+{
+	if (proxyTypeString == "No proxy")
+	{
+		return QNetworkProxy::ProxyType::NoProxy;
+	}
+	else if (proxyTypeString == "Http proxy")
+	{
+		return QNetworkProxy::ProxyType::HttpProxy;
+	}
+	else if (proxyTypeString == "Socks5")
+	{
+		return QNetworkProxy::ProxyType::Socks5Proxy;
+	}
+}
+
+QString ProcessEnum::ConvertProxyTypeEnumToProxyTypeString(QNetworkProxy::ProxyType proxyType)
+{
+	if (proxyType == QNetworkProxy::ProxyType::NoProxy)
+	{
+		return "No proxy";
+	}
+	else if (proxyType == QNetworkProxy::ProxyType::HttpProxy)
+	{
+		return "Http proxy";
+	}
+	else if (proxyType == QNetworkProxy::ProxyType::Socks5Proxy)
+	{
+		return "Socks5";
 	}
 }
 

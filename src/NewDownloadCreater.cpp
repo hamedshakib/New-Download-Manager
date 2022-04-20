@@ -154,12 +154,14 @@ size_t NewDownloadCreater::DefaultPartForDownload()
 bool NewDownloadCreater::ProcessNewDownloadMoreComplitedInformationWidget()
 {
 	newDownloadComplitedInformationWidget = new NewDownloadComplitedInformationWidget(BaseUrl);
-	connect(newDownloadComplitedInformationWidget, &NewDownloadComplitedInformationWidget::DownloadNow, this, &NewDownloadCreater::VerifiedDownload_DownloadNow);
-	connect(newDownloadComplitedInformationWidget, &NewDownloadComplitedInformationWidget::DownloadLater, this, &NewDownloadCreater::VerifiedDownload_DownloadLater);
+	//connect(newDownloadComplitedInformationWidget, &NewDownloadComplitedInformationWidget::DownloadNow, this, &NewDownloadCreater::VerifiedDownload_DownloadNow);
+	//connect(newDownloadComplitedInformationWidget, &NewDownloadComplitedInformationWidget::DownloadLater, this, &NewDownloadCreater::VerifiedDownload_DownloadLater);
+	connect(newDownloadComplitedInformationWidget, &NewDownloadComplitedInformationWidget::VerifiedDownload, this, &NewDownloadCreater::VerifiedDownload);
 	newDownloadComplitedInformationWidget->show();
 	return true;
 }
 
+/*
 void NewDownloadCreater::VerifiedDownload_DownloadNow(QUrl url, QUrl FileSaveToAddress)
 {
 	this->download = CreateNewDownload(parent);
@@ -176,10 +178,41 @@ void NewDownloadCreater::VerifiedDownload_DownloadNow(QUrl url, QUrl FileSaveToA
 	sender()->deleteLater();
 }
 
-void NewDownloadCreater::VerifiedDownload_DownloadLater(QUrl url, QUrl FileSaveToAddress, int QueueId)
+void NewDownloadCreater::VerifiedDownload_DownloadLater(QUrl url, QUrl FileSaveToAddress)
 {
-	//TODO
 	this->download = CreateNewDownload(parent);
+	this->download->Url = url;
+	this->download->FileName = FileSaveToAddress.fileName();
+	this->download->SaveTo = FileSaveToAddress.toString();
+	ProcessCompleteInformation();
+	size_t download_id = WriteDownloadInDatabase();
+	download->IdDownload = download_id;
+	ProcessCreatePartDownloadsFromDownload();
+	WritePartDownloadsInDatabase();
+	emit CreatedNewDownload(download);
+	emit DownloadNow(download);
+	sender()->deleteLater();
+}
+*/
+
+void NewDownloadCreater::VerifiedDownload(QUrl url, QUrl FileSaveToAddress,bool Is_DownloadNow)
+{
+	this->download = CreateNewDownload(parent);
+	this->download->Url = url;
+	this->download->FileName = FileSaveToAddress.fileName();
+	this->download->SaveTo = FileSaveToAddress.toString();
+	ProcessCompleteInformation();
+	size_t download_id = WriteDownloadInDatabase();
+	download->IdDownload = download_id;
+	ProcessCreatePartDownloadsFromDownload();
+	WritePartDownloadsInDatabase();
+	emit CreatedNewDownload(download);
+
+	if (Is_DownloadNow == true)
+	{
+		emit DownloadNow(download);
+	}
+	sender()->deleteLater();
 }
 
 size_t NewDownloadCreater::WriteDownloadInDatabase()

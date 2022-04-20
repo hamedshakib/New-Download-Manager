@@ -10,13 +10,18 @@ ApplicationManager::ApplicationManager(QObject *parent)
 	mainWindow->show();
 	connect(mainWindow, &MainWindow::AddNewDownload, downloadManager, &DownloadManager::CreateNewDownload);
 
+	queueManager = new QueueManager(downloadManager,this);
+	mainWindow->SetQueueManaget(queueManager);
+	queueManager->LoadQueuesFormDatabase();
+
+	mainWindow->CreateTreeViewController();
 
 
 	AddMainSystemTrayToTaskbar();
 	QApplication::setQuitOnLastWindowClosed(false);
 	QApplication::setWindowIcon(QIcon(":Icons/Download_Icon.png"));
 
-	qDebug() << DateTimeManager::ConvertDataTimeToString(DateTimeManager::GetCurrentDateTime());
+	LoadProxySettings();
 }
 
 ApplicationManager::~ApplicationManager()
@@ -50,4 +55,16 @@ void ApplicationManager::AddMainSystemTrayToTaskbar()
 		}
 		});
 	connect(exitAction, &QAction::triggered, this, [&, mainWin](bool clicked) {qApp->exit();});
+}
+
+void ApplicationManager::LoadProxySettings()
+{
+	QNetworkProxy::ProxyType Proxytype=ProcessEnum::ConvertProxyTypeStringToProxyTypeEnum(SettingInteract::GetValue("Proxy/Type").toString());
+	QString ProxyHostname=SettingInteract::GetValue("Proxy/hostName").toString();
+	quint32 ProxyPort=SettingInteract::GetValue("Proxy/Port").toInt();
+	QString ProxyUsername=SettingInteract::GetValue("Proxy/User").toString();
+	QString ProxyPassword=SettingInteract::GetValue("Proxy/Password").toString();
+
+	ProxyManager proxyManager;
+	proxyManager.SetProxyForApplication(Proxytype, ProxyHostname, ProxyPort, ProxyUsername, ProxyPassword);
 }

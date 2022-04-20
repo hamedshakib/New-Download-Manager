@@ -187,6 +187,24 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForUpdateAllFieldDownload(Download
 	return query;
 }
 
+QSqlQuery* DatabaseQueryPreparer::PrepareQueryForUpdateInStartDownload(Download* download)
+{
+	//ToDo
+	QString queryString = QString(
+		"UPDATE Download "
+		"SET DownloadStatus_id = :downloadStatus_id,"
+		"LastTryTime = :lastTryTime "
+		"WHERE id = :id;"
+	);
+	QSqlQuery* query = new QSqlQuery();
+	query->prepare(queryString);
+
+	query->bindValue(":downloadStatus_id", ProcessEnum::ConvertDownloadStatusEnumToDownloadStatusId(Download::DownloadStatusEnum::Downloading));
+	query->bindValue(":lastTryTime", DateTimeManager::ConvertDataTimeToString(download->LastTryTime));
+	query->bindValue(":id", download->IdDownload);
+	return query;
+}
+
 QList<QSqlQuery*> DatabaseQueryPreparer::PrepareQueriesForUpdateInDownloading(Download* download)
 {
 	SettingUpDatabase::get_Database();
@@ -304,5 +322,94 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForRemoveDownloadFromDatabase(Down
 	QSqlQuery* query = new QSqlQuery();
 	query->prepare(queryString);
 	query->bindValue(":download_id", download->IdDownload);
+	return query;
+}
+
+QSqlQuery* DatabaseQueryPreparer::PrepareQueryForLoadAllQueuesGeneralInformationFromDatabase()
+{
+	SettingUpDatabase::get_Database();
+
+	QString queryString = QString(
+		"Select * FROM Queue; "
+	);
+	QSqlQuery* query = new QSqlQuery();
+	query->prepare(queryString);
+	return query;
+}
+
+QSqlQuery* DatabaseQueryPreparer::PrepareQueryForGetDownloadIdOfQueue(Queue* queue)
+{
+	//ToDo
+	SettingUpDatabase::get_Database();
+
+	QString queryString = QString(
+		"Select id "
+		"FROM Download "
+		"where Queue_id =:queue_id; "
+	);
+	QSqlQuery* query = new QSqlQuery();
+	query->prepare(queryString);
+	query->bindValue(":queue_id", queue->Get_QueueId());
+	return query;
+}
+
+QSqlQuery* DatabaseQueryPreparer::PrepareQueryForRemoveDownloadFromQueueOnDatabase(Download* download)
+{
+	SettingUpDatabase::get_Database();
+
+	QString queryString = QString(
+		"UPDATE Download "
+		"SET Queue_id = :queue_id "
+		"WHERE id = :id;"
+	);
+	QSqlQuery* query = new QSqlQuery();
+	query->prepare(queryString);
+	query->bindValue(":queue_id", QVariant("NULL"));
+	query->bindValue(":id", download->IdDownload);
+	return query;
+}
+
+QSqlQuery* DatabaseQueryPreparer::PrepareQueryForCreateNewQueue(Queue* queue)
+{
+	//ToDo
+	SettingUpDatabase::get_Database();
+	QString queryString = QString(
+		"INSERT INTO Queue(Name,NumberDownloadSameTime) "
+		"VALUES(:name,:numberDownloadSameTime); "
+	);
+	QSqlQuery* query = new QSqlQuery();
+	query->prepare(queryString);
+	query->bindValue(":name", queue->Get_QueueName());
+	query->bindValue(":numberDownloadSameTime", queue->Get_NumberDownloadAtSameTime());
+	return query;
+}
+
+QSqlQuery* DatabaseQueryPreparer::PrepareQueryForExitAllDownloadFromQueue(Queue* queue)
+{
+	SettingUpDatabase::get_Database();
+	QString queryString = QString(
+		"UPDATE Download "
+		"SET Queue_id = :null "
+		"WHERE Queue_id = :queue_id; "
+	);
+	QSqlQuery* query = new QSqlQuery();
+	query->prepare(queryString);
+
+	query->bindValue(":null", QVariant("NULL"));
+	query->bindValue(":queue_id", queue->Get_QueueId());
+	return query;
+}
+
+QSqlQuery* DatabaseQueryPreparer::PrepareQueryForRemoveQueueFromDatabase(Queue* queue)
+{
+	SettingUpDatabase::get_Database();
+	QString queryString = QString(
+		"DELETE FROM Queue "
+		"WHERE id = :id; "
+	);
+	QSqlQuery* query = new QSqlQuery();
+	query->prepare(queryString);
+
+	query->bindValue(":id", queue->Get_QueueId());
 	return query;
 }

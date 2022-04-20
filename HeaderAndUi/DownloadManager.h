@@ -47,6 +47,7 @@ private:
 signals:
 	void CreatedDownloader(Downloader* downloader);
 	void CreatedNewDownload(Download* download);
+	void FinishedDownload(Download* download);
 
 public:
 	DownloadManager(QObject *parent=nullptr);

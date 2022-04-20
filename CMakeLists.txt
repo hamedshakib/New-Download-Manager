@@ -161,6 +161,36 @@ set(PROJECT_SOURCES
         ${MY_HeaderAndUi_PATH}/ShowDownloadProperties.h
         ${MY_SOURCE_PATH}/ShowDownloadProperties.cpp
 
+        #OptionsWidget
+        ${MY_HeaderAndUi_PATH}/OptionsWidget.ui
+        ${MY_HeaderAndUi_PATH}/OptionsWidget.h
+        ${MY_SOURCE_PATH}/OptionsWidget.cpp
+
+        #ProxyManager
+        ${MY_HeaderAndUi_PATH}/ProxyManager.h
+        ${MY_SOURCE_PATH}/ProxyManager.cpp
+
+        #Queue
+        ${MY_HeaderAndUi_PATH}/Queue.h
+        ${MY_SOURCE_PATH}/Queue.cpp
+
+        #QueueManager
+        ${MY_HeaderAndUi_PATH}/QueueManager.h
+        ${MY_SOURCE_PATH}/QueueManager.cpp
+
+        #ShowSchedule
+        ${MY_HeaderAndUi_PATH}/ShowSchedule.ui
+        ${MY_HeaderAndUi_PATH}/ShowSchedule.h
+        ${MY_SOURCE_PATH}/ShowSchedule.cpp
+
+        #TreeViewController
+        ${MY_HeaderAndUi_PATH}/TreeViewController.h
+        ${MY_SOURCE_PATH}/TreeViewController.cpp
+
+
+
+
+
 
 
 

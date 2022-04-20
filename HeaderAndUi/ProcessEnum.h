@@ -2,6 +2,7 @@
 
 #include <QObject>
 #include "Download.h"
+#include "qnetworkproxy.h"
 
 class ProcessEnum : public QObject
 {
@@ -22,6 +23,9 @@ public:
 	static int ConvertDownloadStatusEnumToDownloadStatusId(Download::DownloadStatusEnum downloadStatusEnum);
 
 	static QString ConvertDownloadStatusEnumToString(Download::DownloadStatusEnum downloadStatusEnum);
+
+	static QNetworkProxy::ProxyType ConvertProxyTypeStringToProxyTypeEnum(QString proxyTypeString);
+	static QString ConvertProxyTypeEnumToProxyTypeString(QNetworkProxy::ProxyType proxyType);
 public:
 	ProcessEnum(QObject *parent);
 	~ProcessEnum();

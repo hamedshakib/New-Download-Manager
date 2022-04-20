@@ -102,3 +102,18 @@ bool ProcessDatabaseOutput::ProcessPutLoadedPartDownloadInInPartDownloadObject(c
 
 	return true;
 }
+
+bool ProcessDatabaseOutput::ProcessPutLoadedQueueInformationInQueueObject(const QSqlRecord& record, Queue* queue)
+{
+	queue->QueueId=record.value("id").toInt();
+	queue->QueueName = record.value("Name").toString();
+	queue->MaxSpeed=record.value("MaxSpeed").toInt();
+	queue->NumberDownloadAtSameTime= record.value("NumberDownloadSameTime").toInt();
+	return true;
+}
+
+bool ProcessDatabaseOutput::PutDownloadIdInQueueDownloadList(const QSqlRecord& record, Queue* queue)
+{
+	queue->List_DownloadId.append(record.value("id").toInt());
+	return true;
+}

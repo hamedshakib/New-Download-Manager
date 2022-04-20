@@ -51,10 +51,12 @@ void DownloadManager::AddCreatedDownloadToDownloadList(Download* download)
 Downloader* DownloadManager::CreateDownloader(Download* download)
 {
 	Downloader* downloader = new Downloader(download, this);
+	connect(downloader, &Downloader::Started, this, [&, download]() {DatabaseManager::UpdateDownloadInStartOfDownloadOnDatabase(download); });
 	connect(downloader, &Downloader::SignalForUpdateDownloading, this, [&, download]() {DatabaseManager::UpdateInDownloadingOnDataBase(download); });
 	connect(downloader, &Downloader::CompeletedDownload, this, [&, download]() {
 		/*DatabaseManager::UpdateAllFieldDownloadOnDataBase(download);*/
 		DatabaseManager::FinishDownloadOnDatabase(download);
+		emit FinishedDownload(download);
 		qDebug() << "Finished Update Download"; });
 	emit CreatedDownloader(downloader);
 	return downloader;
