@@ -72,7 +72,7 @@ void ShowDownloadProperties::ShowPropertiesOfDownload()
 		qint64 DownloadedSize = m_download->get_DownloadedSize();
 		float Present = (long double)DownloadedSize / sizeOfDownload;
 		QString Status = QString::number(Present * 100, 'f', 2) + "%";
-		ui.Status_label->setText(Status + QString("(%1 Bytes)").arg(ConverterSizeToSuitableString::ConvertSizeToSuitableString(DownloadedSize)));
+		ui.Status_label->setText(Status + QString(" (%1 Bytes)").arg(ConverterSizeToSuitableString::ConvertSizeToSuitableString(DownloadedSize)));
 	}
 
 	this->show();

@@ -255,6 +255,10 @@ void TableViewController::ConnectorDownloaderToTableUpdateInDownloading(Download
 	if (Row >= 0)
 	{
 		connect(downloader, &Downloader::SignalForUpdateDownloading, this, [&,Row](QString Status,QString Speed, QString TimeLeft) {UpdateRowInDownloading(Row,Status,Speed,TimeLeft); });
+		connect(downloader, &Downloader::Started, this, [&,Row, downloader]() {
+			//Update LastStartedTime
+			model->setData(model->index(Row, 6), DateTimeManager::ConvertDataTimeToString(downloader->Get_Download()->get_LastTryTime()));
+			});
 	}
 }
 

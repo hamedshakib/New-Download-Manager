@@ -75,11 +75,13 @@ public:
 	size_t get_Id();
 	DownloadStatusEnum get_Status();
 	int get_QueueId();
+	QDateTime get_LastTryTime();
 
 	QString get_FullFileName();
 	QString get_Description();
 	qint64 get_SizeDownload();
 	qint64 get_DownloadedSize();
+
 
 	void Set_QueueId(int Queue_id);
 

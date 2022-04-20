@@ -93,9 +93,12 @@ void PartDownloader::Resume()
 void PartDownloader::Pause()
 {
 	is_Paused = true;
-	reply->abort();
 	Is_Downloading = false;
-	disconnect(reply, &QNetworkReply::finished, this, &PartDownloader::ProcessApplyPauseOrFinishedPartDownloader);
+	if (reply != nullptr)
+	{
+		reply->abort();
+		disconnect(reply, &QNetworkReply::finished, this, &PartDownloader::ProcessApplyPauseOrFinishedPartDownloader);
+	}
 }
 
 void PartDownloader::ProcessApplyPauseOrFinishedPartDownloader()

@@ -81,3 +81,8 @@ void Download::Set_QueueId(int Queue_id)
 {
 	this->Queue_id = Queue_id;
 }
+
+QDateTime Download::get_LastTryTime()
+{
+	return LastTryTime;
+}

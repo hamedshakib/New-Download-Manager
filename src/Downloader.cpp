@@ -50,6 +50,7 @@ bool Downloader::StartDownload()
 		partDownloader->Resume();
 	}
 	download->downloadStatus = Download::DownloadStatusEnum::Downloading;
+	download->LastTryTime = QDateTime::currentDateTime();
 	emit Started();
 	Is_Downloading = true;
 	DownloadWithSpeedControlled();
