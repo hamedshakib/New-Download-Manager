@@ -45,6 +45,7 @@ Download::DownloadStatusEnum Download::get_Status()
 void Download::Set_downloadStatus(Download::DownloadStatusEnum status)
 {
 	downloadStatus = status;
+	emit DownloadStatusChanged(status);
 }
 
 void Download::AppendPartDownloadToPartDownloadListOfDownload(PartDownload* partDownload)

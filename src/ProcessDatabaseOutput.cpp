@@ -18,7 +18,7 @@ bool ProcessDatabaseOutput::ProcessPutLoadedDownloadInformationInDownloadObject(
 	
 	download->IdDownload = record.value("id").toInt();
 	download->FileName = record.value("FileName").toString();
-	download->downloadStatus = ProcessEnum::ConvertStringToDownloadStatusEnum(record.value("Status").toString());
+	download->Set_downloadStatus(ProcessEnum::ConvertStringToDownloadStatusEnum(record.value("Status").toString()));
 	download->Url = record.value("Url").toString();
 	download->DownloadSize = record.value("DownloadSize").toLongLong();
 	download->SizeDownloaded = record.value("SizeDownloaded").toLongLong();

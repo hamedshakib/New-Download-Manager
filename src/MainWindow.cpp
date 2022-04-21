@@ -5,6 +5,10 @@ MainWindow::MainWindow(QWidget *parent)
 {
 	ui.setupUi(this);
 	LoadSizeOfWidnow();
+
+	ui.actionDownload_Now->setEnabled(false);
+	ui.actionStop_Download->setEnabled(false);
+	ui.actionRemove->setEnabled(false);
 }
 
 MainWindow::~MainWindow()
@@ -16,6 +20,7 @@ void MainWindow::CreateTableViewControllerForMainWindow()
 	tableViewController->Set_DownloadManager(downloadManagerPointer);
 	tableViewController->ProcessSetupOfTableView();
 	tableViewController->Set_QueueManager(queueManager);
+	connect(tableViewController, &TableViewController::SelectedDownloadChanged, this, &MainWindow::ChangedDownloadSelected);
 }
 
 void MainWindow::CreateTreeViewController()
@@ -182,5 +187,108 @@ void MainWindow::LoadTreeView()
 	model->setItem(1, Queueitem);
 
 	model->setHorizontalHeaderItem(0, new QStandardItem("Category"));
+}
+
+void MainWindow::ChangedDownloadSelected(int Download_id,bool Is_Completed)
+{
+	qDebug() << "Download_id:"<< Download_id;
+	if (SelectedDownload != nullptr)
+	{
+		disconnect(SelectedDownload, &Download::DownloadStatusChanged, this, &MainWindow::ChangedStatusOfSeletedDownload);
+	}
+
+	ui.actionRemove->setEnabled(true);
+	if (Is_Completed == true)
+	{
+		ui.actionDownload_Now->setEnabled(false);
+		ui.actionStop_Download->setEnabled(false);
+		SelectedDownload = nullptr;
+
+	}
+	else
+	{
+		//Download Not Completed
+
+
+
+		SelectedDownload = downloadManagerPointer->ProcessAchieveDownload(Download_id);
+		connect(SelectedDownload, &Download::DownloadStatusChanged, this, &MainWindow::ChangedStatusOfSeletedDownload);
+
+		if (SelectedDownload->get_Status() == Download::NotStarted || SelectedDownload->get_Status() == Download::Pause)
+		{
+			ui.actionDownload_Now->setEnabled(true);
+			ui.actionStop_Download->setEnabled(false);
+		}
+		else
+		{
+			//Is Downloading
+			ui.actionDownload_Now->setEnabled(false);
+			ui.actionStop_Download->setEnabled(true);
+		}
+	}
+
+}
+
+void MainWindow::ChangedStatusOfSeletedDownload(Download::DownloadStatusEnum NewStatus)
+{
+	ui.actionRemove->setEnabled(true);
+	if (SelectedDownload->get_Status() == Download::NotStarted || SelectedDownload->get_Status() == Download::Pause)
+	{
+		ui.actionDownload_Now->setEnabled(true);
+		ui.actionStop_Download->setEnabled(false);
+	}
+	else if(SelectedDownload->get_Status() == Download::Downloading)
+	{
+		ui.actionDownload_Now->setEnabled(false);
+		ui.actionStop_Download->setEnabled(true);
+	}
+	else
+	{
+		//Finished Download
+		ui.actionDownload_Now->setEnabled(false);
+		ui.actionStop_Download->setEnabled(false);
+	}
+
+}
+
+void MainWindow::on_actionDownload_Now_triggered()
+{
+	if (SelectedDownload != nullptr)
+	{
+		Downloader *downloader = downloadManagerPointer->ProcessAchieveDownloader(SelectedDownload);
+		downloader->StartDownload();
+	}
+}
+
+void MainWindow::on_actionStop_Download_triggered()
+{
+	if (SelectedDownload != nullptr)
+	{
+		Downloader* downloader = downloadManagerPointer->ProcessAchieveDownloader(SelectedDownload);
+		downloader->PauseDownload();
+	}
+}
+
+void MainWindow::on_actionRemove_triggered()
+{
+	if (SelectedDownload != nullptr)
+	{
+		tableViewController->RemoveActionTriggered(SelectedDownload);
+	}
+	else
+	{
+		int Download_id=tableViewController->Get_SeletedFinisedDownloadId();
+		if (Download_id > 0)
+		{
+			//is valid
+			Download* download = downloadManagerPointer->ProcessAchieveDownload(Download_id);
+			tableViewController->RemoveActionTriggered(download);
+		}
+	}
+}
+
+void MainWindow::on_actionStop_All_triggered()
+{
+	downloadManagerPointer->StopAllDownload();
 }
 

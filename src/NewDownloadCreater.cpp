@@ -100,7 +100,7 @@ void NewDownloadCreater::ProcessCompleteInformation()
 	download->description = description;
 	download->SizeDownloaded = 0;
 	download->MaxSpeed = 0;
-	download->downloadStatus = Download::DownloadStatusEnum::NotStarted;
+	download->Set_downloadStatus(Download::DownloadStatusEnum::NotStarted);
 	download->ResumeCapability = ProcessEnum::ConvertHeaderToResumeCapabilityEnum(m_networkReply->rawHeader("Accept-Ranges").constData());
 	download->LastTryTime = DateTimeManager::GetCurrentDateTime();
 	

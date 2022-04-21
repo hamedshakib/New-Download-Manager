@@ -25,6 +25,9 @@ public:
 	void Set_DownloadManager(DownloadManager* downloadManager);
 	void Set_QueueManager(QueueManager* queueManager);
 
+public slots:
+	void RemoveActionTriggered(Download* download);
+	int Get_SeletedFinisedDownloadId();
 
 private slots:
 	void OnHeaderRightClicked(const QPoint& pos);
@@ -47,11 +50,15 @@ private slots:
 
 	void PauseOrResumeActionTriggered(QAction* pauseOrResumeAction,Download* download);
 	void OpenFileActionTriggered(Download* download);
-	void RemoveActionTriggered(Download* download);
 	void PropertiesActionTriggered(Download* download);
 
 	void AddDownloadToQueue(Queue* queue, Download* download);
 	void RemoveDownloadFromQueue(Download* download);
+
+	void ClickedOnRow(const QModelIndex& modelindex);
+
+signals:
+	void SelectedDownloadChanged(int Download_id,bool Is_Completed);
 
 private:
 	QTableView* m_tableView;
@@ -66,7 +73,7 @@ private:
 	
 
 	QMap<Downloader*, ShowDownloadWidget*> MapOfShowDownloadWidgets;
-
+	int SelectedFinishedDownload_id = 0;
 
 public:
 	TableViewController(QTableView *tableView,QObject *parent);

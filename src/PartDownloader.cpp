@@ -8,9 +8,11 @@ PartDownloader::PartDownloader(QObject *parent)
 PartDownloader::~PartDownloader()
 {
 	qDebug() << "delete PartDownloader";
+
 	if (reply != nullptr)
 	{
 		reply->deleteLater();
+		reply = nullptr;
 	}
 }
 
@@ -52,7 +54,8 @@ qint64 PartDownloader::ReadReadybytes(qint64 bytes)
 			}
 			else
 			{
-				reply->deleteLater();
+				delete reply;
+				//reply->deleteLater();
 				reply = nullptr;
 				emit Paused();
 			}

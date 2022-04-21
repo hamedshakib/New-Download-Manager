@@ -15,11 +15,13 @@ class PartDownloader : public QObject
 	bool is_Paused = false;
 	bool Is_FinishedPartDownload=false;
 	bool Is_Downloading;
-	QNetworkReply* reply;
+	QNetworkReply* reply=nullptr;
 	PartDownload* partDownload;
 	//bool is_Downloading = false;
 	QTimer timer;
 	QMutex mutex;
+
+	bool DeletedBefore = false;
 
 
 public slots:
