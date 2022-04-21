@@ -45,6 +45,7 @@ Download::DownloadStatusEnum Download::get_Status()
 void Download::Set_downloadStatus(Download::DownloadStatusEnum status)
 {
 	downloadStatus = status;
+	emit DownloadStatusChanged(status);
 }
 
 void Download::AppendPartDownloadToPartDownloadListOfDownload(PartDownload* partDownload)
@@ -80,4 +81,9 @@ qint64 Download::get_DownloadedSize()
 void Download::Set_QueueId(int Queue_id)
 {
 	this->Queue_id = Queue_id;
+}
+
+QDateTime Download::get_LastTryTime()
+{
+	return LastTryTime;
 }

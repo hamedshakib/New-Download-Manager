@@ -66,6 +66,7 @@ private:
 	friend class DatabaseQueryPreparer;
 	friend class TableViewRowCreater;
 	friend class ShowDownloadWidget;
+	friend class Downloader;
 
 public:
 	QUrl get_Url();
@@ -75,11 +76,13 @@ public:
 	size_t get_Id();
 	DownloadStatusEnum get_Status();
 	int get_QueueId();
+	QDateTime get_LastTryTime();
 
 	QString get_FullFileName();
 	QString get_Description();
 	qint64 get_SizeDownload();
 	qint64 get_DownloadedSize();
+
 
 	void Set_QueueId(int Queue_id);
 
@@ -87,15 +90,8 @@ public:
 	void Set_downloadStatus(Download::DownloadStatusEnum status);
 	void AppendPartDownloadToPartDownloadListOfDownload(PartDownload* partDownload);
 
-//private:
-//	static QList<Download*> ListOfDownloads;
-//public:
-	//static bool AddDownloadToDownloadList(Download* download);
-	//static Download* get_Download(int DownloadId);
-	//static bool RemoveDownloadFromDownloadList(Download* download);
-	//static bool RemoveDownloadFromDownloadList(int download_id);
-
-	friend class Downloader;
+signals:
+	void DownloadStatusChanged(Download::DownloadStatusEnum NewStatus);
 
 public:
 	Download(QObject *parent);

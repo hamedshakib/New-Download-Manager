@@ -88,10 +88,10 @@ Download* DownloadManager::ProcessAchieveDownload(int Download_id)
 {
 	for (Download* download : ListOfActiveDownloads)
 	{
-		if (download->get_Id() == Download_id)
-		{
-			return download;
-		}
+if (download->get_Id() == Download_id)
+{
+	return download;
+}
 	}
 
 
@@ -116,7 +116,7 @@ Downloader* DownloadManager::ProcessAchieveDownloader(Download* download)
 	}
 
 	//Not Found Downloader So Load From Database
-	Downloader* downloader =CreateDownloader(download);
+	Downloader* downloader = CreateDownloader(download);
 	ListOfDownloaders.append(downloader);
 	return downloader;
 }
@@ -135,7 +135,7 @@ bool DownloadManager::ProcessRemoveDownload(int download_id, bool is_RemoveFromD
 {
 	Download* download = ProcessAchieveDownload(download_id);
 	Downloader* downloader = ProcessAchieveDownloader(download);
-	
+
 	downloader->Paused();
 	ListOfDownloaders.removeOne(downloader);
 	downloader->deleteLater();
@@ -166,7 +166,6 @@ bool DownloadManager::ProcessRemoveDownload(Download* download, bool is_RemoveFr
 	downloader->Paused();
 	ListOfDownloaders.removeOne(downloader);
 	downloader->deleteLater();
-	downloader = nullptr;
 
 
 	if (is_RemoveFromDisk)
@@ -184,5 +183,14 @@ bool DownloadManager::ProcessRemoveDownload(Download* download, bool is_RemoveFr
 	{
 		return false;
 	}
+}
+
+bool DownloadManager::StopAllDownload()
+{
+	for(Downloader* downloader:ListOfDownloaders)
+	{
+		downloader->PauseDownload();
+	}
+	return true;
 }
 

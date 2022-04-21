@@ -39,9 +39,16 @@ private slots:
 	void on_actionExit_triggered();
 	void on_actionOptions_triggered();
 	void on_actionScheduler_triggered();
+	void on_actionDownload_Now_triggered();
+	void on_actionStop_Download_triggered();
+	void on_actionRemove_triggered();
+	void on_actionStop_All_triggered();
+
 	void LoadDownloadsForMainTable();
 	void LoadSizeOfWidnow();
 
+	void ChangedDownloadSelected(int Download_id,bool Is_Completed);
+	void ChangedStatusOfSeletedDownload(Download::DownloadStatusEnum NewStatus);
 
 signals:
 	void AddNewDownload();
@@ -56,4 +63,6 @@ private:
 	DownloadManager* downloadManagerPointer;
 	QueueManager* queueManager;
 	Ui::MainWindow ui;
+
+	Download* SelectedDownload=nullptr;
 };

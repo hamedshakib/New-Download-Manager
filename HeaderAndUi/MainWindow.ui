@@ -142,8 +142,6 @@
     <addaction name="actionDelete_All_Complited"/>
     <addaction name="separator"/>
     <addaction name="actionScheduler"/>
-    <addaction name="actionStart_Queue"/>
-    <addaction name="actionStop_Queue"/>
     <addaction name="separator"/>
     <addaction name="actionSpeed_Limiter"/>
     <addaction name="separator"/>

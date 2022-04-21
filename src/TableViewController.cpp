@@ -11,7 +11,6 @@ TableViewController::TableViewController(QTableView* tableView,QObject *parent)
 	//tableView->setDragEnabled(true);
 	//tableView->setDragEnabled(true);//somewhere in constructor
 	
-	
 }
 
 TableViewController::~TableViewController()
@@ -42,7 +41,9 @@ void TableViewController::ProcessSetupOfTableView()
 
 	
 	//Set double click on rows 
-	connect(m_tableView, &QTableView::doubleClicked, this, &TableViewController::doubleClickedOnRow);
+	//connect(m_tableView, &QTableView::doubleClicked, this, &TableViewController::doubleClickedOnRow);
+	connect(m_tableView, &QTableView::doubleClicked, this, [&](const QModelIndex& modelindex) {doubleClickedOnRow(modelindex); ClickedOnRow(modelindex); });
+
 
 
 	
@@ -50,6 +51,9 @@ void TableViewController::ProcessSetupOfTableView()
 	m_tableView->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(m_tableView, &QTableView::customContextMenuRequested, this, &TableViewController::ProcessCheckAndApply_RightClickOnTable);
 
+
+	//Set Just Clicked on rows
+	connect(m_tableView, &QTableView::clicked, this, &TableViewController::ClickedOnRow);
 
 	
 	AdjusteTableViewProperty();
@@ -130,13 +134,14 @@ void TableViewController::ProcessCheckAndApply_RightClickOnTable(const QPoint& p
 		return;
 
 
-
 	int Download_id = model->data(index).toInt();
 
 	qDebug() << "Download id right:" << Download_id;
 
 	QMenu* menu = CreaterRightClickMenuForRowRightClicked(Download_id);
 	menu->popup(m_tableView->viewport()->mapToGlobal(point));
+
+	ClickedOnRow(index);
 }
 
 void TableViewController::GetDownloaderOfDownloadId(int DownloadId)
@@ -255,6 +260,10 @@ void TableViewController::ConnectorDownloaderToTableUpdateInDownloading(Download
 	if (Row >= 0)
 	{
 		connect(downloader, &Downloader::SignalForUpdateDownloading, this, [&,Row](QString Status,QString Speed, QString TimeLeft) {UpdateRowInDownloading(Row,Status,Speed,TimeLeft); });
+		connect(downloader, &Downloader::Started, this, [&,Row, downloader]() {
+			//Update LastStartedTime
+			model->setData(model->index(Row, 6), DateTimeManager::ConvertDataTimeToString(downloader->Get_Download()->get_LastTryTime()));
+			});
 	}
 }
 
@@ -338,4 +347,27 @@ void TableViewController::AddDownloadToQueue(Queue* queue, Download* download)
 void TableViewController::RemoveDownloadFromQueue(Download* download)
 {
 	queueManager->RemoveDownloadFromQueue(download);
+}
+
+void TableViewController::ClickedOnRow(const QModelIndex& modelindex)
+{
+	int Download_id=FindDownloadIdFromRow(modelindex);
+
+	int row = m_tableView->currentIndex().row();
+	QModelIndex Statusindex = model->index(row, 3);
+	QString Status = model->data(Statusindex).toString();
+	if (Status == tr("Complete"))
+	{
+		SelectedFinishedDownload_id = Download_id;
+		emit SelectedDownloadChanged(Download_id,true);
+	}
+	else
+	{
+		emit SelectedDownloadChanged(Download_id,false);
+	}
+}
+
+int TableViewController::Get_SeletedFinisedDownloadId()
+{
+	return SelectedFinishedDownload_id;
 }

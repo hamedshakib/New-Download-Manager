@@ -8,9 +8,11 @@ PartDownloader::PartDownloader(QObject *parent)
 PartDownloader::~PartDownloader()
 {
 	qDebug() << "delete PartDownloader";
+
 	if (reply != nullptr)
 	{
 		reply->deleteLater();
+		reply = nullptr;
 	}
 }
 
@@ -52,7 +54,8 @@ qint64 PartDownloader::ReadReadybytes(qint64 bytes)
 			}
 			else
 			{
-				reply->deleteLater();
+				delete reply;
+				//reply->deleteLater();
 				reply = nullptr;
 				emit Paused();
 			}
@@ -93,9 +96,12 @@ void PartDownloader::Resume()
 void PartDownloader::Pause()
 {
 	is_Paused = true;
-	reply->abort();
 	Is_Downloading = false;
-	disconnect(reply, &QNetworkReply::finished, this, &PartDownloader::ProcessApplyPauseOrFinishedPartDownloader);
+	if (reply != nullptr)
+	{
+		reply->abort();
+		disconnect(reply, &QNetworkReply::finished, this, &PartDownloader::ProcessApplyPauseOrFinishedPartDownloader);
+	}
 }
 
 void PartDownloader::ProcessApplyPauseOrFinishedPartDownloader()

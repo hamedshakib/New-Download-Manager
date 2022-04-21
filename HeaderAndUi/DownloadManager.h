@@ -22,6 +22,7 @@ private:
 public:
 	bool CreateNewDownload();
 	bool StartDownloader(Downloader* downloader);
+	bool StopAllDownload();
 
 
 	Download* ProcessAchieveDownload(int Download_id);
@@ -34,7 +35,6 @@ private slots:
 	void AddCreatedDownloadToDownloadList(Download* download);
 	bool CreateDownloaderAndStartDownload(Download* download);
 	Downloader* CreateDownloader(Download* download);
-
 
 
 private:

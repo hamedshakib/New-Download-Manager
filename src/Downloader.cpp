@@ -20,7 +20,8 @@ Downloader::Downloader(Download* download, QObject* parent)
 
 Downloader::~Downloader()
 {
-
+	qDebug() << "Downlader Deleted";
+	qDeleteAll(PartDownloader_list);
 }
 
 bool Downloader::StartDownload()
@@ -49,7 +50,8 @@ bool Downloader::StartDownload()
 		ProcessPreparePartDownloaderFrompartDownload(partDownloader, partDownload);
 		partDownloader->Resume();
 	}
-	download->downloadStatus = Download::DownloadStatusEnum::Downloading;
+	download->Set_downloadStatus(Download::DownloadStatusEnum::Downloading);
+	download->LastTryTime = QDateTime::currentDateTime();
 	emit Started();
 	Is_Downloading = true;
 	DownloadWithSpeedControlled();
@@ -59,7 +61,7 @@ bool Downloader::PauseDownload()
 {
 	Is_Downloading = false;
 	elapsedTimer.restart();
-	download->downloadStatus = Download::DownloadStatusEnum::Pause;
+	download->Set_downloadStatus(Download::DownloadStatusEnum::Pause);
 
 	for (PartDownloader* partDownloader :PartDownloader_list)
 	{
