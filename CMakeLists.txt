@@ -194,7 +194,9 @@ set(PROJECT_SOURCES
         ${MY_HeaderAndUi_PATH}/TranslationManager.h
         ${MY_SOURCE_PATH}/TranslationManager.cpp
 
-
+        #RunGuard
+        ${MY_HeaderAndUi_PATH}/RunGuard.h
+        ${MY_SOURCE_PATH}/RunGuard.cpp
 
 
         #translatation
@@ -275,6 +277,20 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     MACOSX_BUNDLE ON
 )
 
+
+#Add Database If Not Exist
+
+if(NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/DM.db")
+    file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/Database/DM.db"
+        DESTINATION "${CMAKE_CURRENT_BINARY_DIR}") 
+endif()
+
+
+#Add INI If Not Exist
+if(NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/OptionAndSettings.ini")
+    file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/Ini file/OptionAndSettings.ini"
+        DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
+endif()
 
 
 if(QT_VERSION_MAJOR EQUAL 6)
