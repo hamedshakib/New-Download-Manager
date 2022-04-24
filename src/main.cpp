@@ -3,6 +3,7 @@
 #include "qlibrary.h"
 
 #include "HeaderAndUi/ApplicationManager.h"
+#include "HeaderAndUi/TranslationManager.h"
 
 
 int main(int argc,char* argv[])
@@ -10,6 +11,8 @@ int main(int argc,char* argv[])
 	QApplication app(argc, argv);
 	QApplication::setApplicationName("Download Manager");
 	
+	TranslationManager translationMaager(&app, &app);
+	translationMaager.Translate();
 
 	
 	QLibrary library1("libssl-1_1-x64");
