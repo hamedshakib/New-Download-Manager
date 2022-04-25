@@ -4,6 +4,7 @@
 #include "Queue.h"
 #include "Download.h"
 #include "DownloadManager.h"
+#include "QueueTimeManager.h"
 #include "qdebug.h"
 
 class QueueManager : public QObject
@@ -14,6 +15,7 @@ class QueueManager : public QObject
 private:
 	QList<Queue*> ListOfQueues;
 	DownloadManager* m_downloadManager;
+	QueueTimeManager* m_QueueTimeManager;
 
 public:
 	void StartQueue(Queue* queue);
@@ -29,6 +31,7 @@ public:
 public slots:
 	bool RemoveDownloadFromQueue(Download* download);
 	bool AddDownloadToQueue(Download* download, Queue* queue);
+	bool ChangeStartOrStopTimeForQueue(Queue* queue);
 
 private slots:
 	void FinishDownloadOfQueue(Download* download, Queue* queue);
@@ -37,6 +40,8 @@ private slots:
 
 
 	bool RemoveDownloadFromQueue(Download* download,Queue* queue);
+
+	bool HandelSingleShots();
 
 signals:
 	void AddedQueue(int Queue_id);

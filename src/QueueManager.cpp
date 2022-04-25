@@ -5,6 +5,9 @@ QueueManager::QueueManager(DownloadManager* downloadManager,QObject *parent)
 {
 	this->m_downloadManager = downloadManager;
 	connect(m_downloadManager, &DownloadManager::FinishedDownload, this, [&](Download* download) {RemoveDownloadFromQueue(download); });
+	m_QueueTimeManager = new QueueTimeManager(this);
+	connect(m_QueueTimeManager, &QueueTimeManager::StartQueue, this, &QueueManager::StartQueue);
+	connect(m_QueueTimeManager, &QueueTimeManager::StopQueue, this, &QueueManager::StopQueue);
 }
 
 QueueManager::~QueueManager()
@@ -168,4 +171,21 @@ bool QueueManager::DeleteQueueByQueueId(size_t queue_id)
 QList<Queue*> QueueManager::Get_ListOfQueues()
 {
 	return ListOfQueues;
+}
+
+bool QueueManager::HandelSingleShots()
+{
+	
+	//int DeffirentSecond=QTime::currentTime().secsTo(QTime(23, 59, 59));
+	//timer->singleShot(DeffirentSecond, this, &QueueManager::HandelSingleShots);
+	
+	
+
+	return 0;
+}
+
+bool QueueManager::ChangeStartOrStopTimeForQueue(Queue* queue)
+{
+	m_QueueTimeManager->AddSingleShot(queue);
+	return 0;
 }

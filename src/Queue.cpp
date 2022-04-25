@@ -44,3 +44,28 @@ bool Queue::Get_IsDownloading()
 {
 	return Is_Downloading;
 }
+
+QStringList Queue::Get_DaysOfDownoad()
+{
+	return DownloadDays;
+}
+
+bool Queue::Has_StartTimeActive()
+{
+	return startDownload.is_active;
+}
+
+bool Queue::Has_StopTimeActive()
+{
+	return stopDownload.is_active;
+}
+
+QTime Queue::Get_StartTime()
+{
+	return startDownload.Time;
+}
+
+QTime Queue::Get_StopTime()
+{
+	return stopDownload.Time;
+}

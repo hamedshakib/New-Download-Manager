@@ -3,6 +3,7 @@
 #include <QWidget>
 #include "ui_ShowSchedule.h"
 #include "QueueManager.h"
+#include "ConverterQueueTime.h"
 
 class ShowSchedule : public QWidget
 {
@@ -24,6 +25,14 @@ private slots:
 	void AddQueueToListWidget(Queue *queue);
 
 	void AddDownloadsToTreeWidget();
+
+
+	void LoadInformationOfChangedQueue();
+
+	void PutInformationInQueue(Queue* queue);
+
+	void UpdateSchedule();
+
 
 private:
 	QueueManager* m_queueManager;

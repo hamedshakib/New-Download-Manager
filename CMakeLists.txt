@@ -198,6 +198,14 @@ set(PROJECT_SOURCES
         ${MY_HeaderAndUi_PATH}/RunGuard.h
         ${MY_SOURCE_PATH}/RunGuard.cpp
 
+        #QueueTimeManager
+        ${MY_HeaderAndUi_PATH}/QueueTimeManager.h
+        ${MY_SOURCE_PATH}/QueueTimeManager.cpp
+
+        #ConverterQueueTime
+        ${MY_HeaderAndUi_PATH}/ConverterQueueTime.h
+        ${MY_SOURCE_PATH}/ConverterQueueTime.cpp
+
 
         #translatation
         ${TS_FILES}
