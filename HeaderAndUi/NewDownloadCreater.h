@@ -54,9 +54,9 @@ private slots:
 
 	bool ProcessNewDownloadUrlWidget();
 	bool ProcessNewDownloadMoreComplitedInformationWidget();
-	bool ProcessCreatePartDownloadsFromDownload();
+	bool ProcessCreatePartDownloadsFromDownload(QString FileName);
 
-	QString GeneratePartDownloadAddressFromAddressOfDownloadFile(int numberOfPart,QString addressOfDownloadFile);
+	QString GeneratePartDownloadAddressFromAddressOfDownloadFile(int numberOfPart,QString FileName);
 
 
 	QString DefualtSaveToAddress();

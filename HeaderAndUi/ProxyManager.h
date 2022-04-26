@@ -9,6 +9,7 @@ class ProxyManager : public QObject
 
 public:
 	bool SetProxyForApplication(QNetworkProxy::ProxyType proxyType, QString host_name,quint16 port, QString User = "", QString Password = "");
+
 private:
 	QNetworkProxy m_Proxy;
 public:

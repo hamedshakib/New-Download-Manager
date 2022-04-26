@@ -29,16 +29,6 @@ int main(int argc,char* argv[])
 	
 
 
-	SettingInteract::SetValue("Download/DefaultSaveToAddress", "C:/Users/user/Desktop/testDownload");
-	SettingInteract::SetValue("Download/DefaultPartForDownload", "8");
-
-/*	SettingInteract::SetValue("Proxy/Type", "Socks5");
-	SettingInteract::SetValue("Proxy/hostName", "127.0.0.1");
-	SettingInteract::SetValue("Proxy/Port", ui.Port_spinBox->value());
-	SettingInteract::SetValue("Proxy/User", "");
-	SettingInteract::SetValue("Proxy/Password", "");
-	*/
-
 	ApplicationManager manager(&app);
 
 	
