@@ -4,7 +4,7 @@ TableViewController::TableViewController(QTableView* tableView,QObject *parent)
 	: QObject(parent)
 {
 	m_tableView = tableView;
-	listOfColomns << "id" << "File Name" << "Size" << "Status" << "Speed" << "Time Left" << "Last Try Time" << "Description" << "Save To";
+	listOfColomns << "id" << tr("File Name") << tr("Size") << tr("Status") << tr("Speed") << tr("Time Left") << tr("Last Try Time") << tr("Description") << tr("Save To");
 	model = new QStandardItemModel(this);
 
 	tableView->setDragDropMode(QAbstractItemView::DragDropMode::DragOnly);
@@ -74,7 +74,7 @@ void TableViewController::AdjusteTableViewProperty()
 void TableViewController::OnHeaderRightClicked(const QPoint& pos)
 {
 	//ToDo Make Colomns Settings
-	QAction ColomnsSetting("Colomns...", this);
+	QAction ColomnsSetting(tr("Colomns..."), this);
 	QMenu menu;
 	menu.addAction(&ColomnsSetting);
 	menu.exec(QCursor::pos());

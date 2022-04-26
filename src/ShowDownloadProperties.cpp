@@ -64,7 +64,7 @@ void ShowDownloadProperties::ShowPropertiesOfDownload()
 	}
 	else if (status == Download::DownloadStatusEnum::Completed)
 	{
-		ui.Status_label->setText("Complete");
+		ui.Status_label->setText(tr("Complete"));
 		ui.Open_pushButton->setEnabled(true);
 	}
 	else

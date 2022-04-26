@@ -24,9 +24,9 @@ void TreeViewController::LoadTreeView()
 	m_TreeView->setContextMenuPolicy(Qt::CustomContextMenu);
 
 
-	Categoryitem = new QStandardItem("Categories");
+	Categoryitem = new QStandardItem(tr("Categories"));
 	Categoryitem->setEditable(false);
-	Queueitem = new QStandardItem("Queues");
+	Queueitem = new QStandardItem(tr("Queues"));
 	Queueitem->setEditable(false);
 
 
@@ -47,7 +47,7 @@ void TreeViewController::LoadTreeView()
 	model->setItem(0, Categoryitem);
 	model->setItem(1, Queueitem);
 
-	model->setHorizontalHeaderItem(0, new QStandardItem("Category"));
+	model->setHorizontalHeaderItem(0, new QStandardItem(tr("Category")));
 }
 
 void TreeViewController::customContextMenuRequested(const QPoint& point)
