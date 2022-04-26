@@ -26,6 +26,11 @@ public:
 
 	static QNetworkProxy::ProxyType ConvertProxyTypeStringToProxyTypeEnum(QString proxyTypeString);
 	static QString ConvertProxyTypeEnumToProxyTypeString(QNetworkProxy::ProxyType proxyType);
+
+
+	static QString ConvertTypeProxyEnumToEnglishStringProxyType(QNetworkProxy::ProxyType proxyType);
+	static QNetworkProxy::ProxyType ConvertEnglishStringProxyTypeToProxyTypeEnum(QString EnglishStringProxyType);
+
 public:
 	ProcessEnum(QObject *parent);
 	~ProcessEnum();

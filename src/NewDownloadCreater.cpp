@@ -10,7 +10,6 @@ NewDownloadCreater::~NewDownloadCreater()
 	if(m_networkReply!=nullptr)
 		m_networkReply->deleteLater();
 
-	qDebug() << "123";
 	if (newDownloadUrlWidget!=nullptr)
 		newDownloadUrlWidget->deleteLater();
 }
@@ -68,6 +67,8 @@ bool NewDownloadCreater::TryToGetInformationFromUrl(QUrl url, QString UserName,Q
 		connect(m_networkReply, &QNetworkReply::finished, &eventloop, &QEventLoop::quit);
 		eventloop.exec();
 
+		qDebug() << m_networkReply->header(QNetworkRequest::ContentLengthHeader);
+		qDebug() << m_networkReply->header(QNetworkRequest::KnownHeaders::ContentTypeHeader);
 		long long sizeOfDownload = m_networkReply->header(QNetworkRequest::ContentLengthHeader).toLongLong();
 		if (sizeOfDownload == 0)
 		{
@@ -204,7 +205,7 @@ void NewDownloadCreater::VerifiedDownload(QUrl url, QUrl FileSaveToAddress,bool 
 	ProcessCompleteInformation();
 	size_t download_id = WriteDownloadInDatabase();
 	download->IdDownload = download_id;
-	ProcessCreatePartDownloadsFromDownload();
+	ProcessCreatePartDownloadsFromDownload(this->download->FileName);
 	WritePartDownloadsInDatabase();
 	emit CreatedNewDownload(download);
 
@@ -228,7 +229,7 @@ void NewDownloadCreater::WritePartDownloadsInDatabase()
 	}
 }
 
-bool NewDownloadCreater::ProcessCreatePartDownloadsFromDownload()
+bool NewDownloadCreater::ProcessCreatePartDownloadsFromDownload(QString FileName)
 {
 	qint64 StartByte = 0;
 	size_t downloadPartNumber = 0;
@@ -246,7 +247,7 @@ bool NewDownloadCreater::ProcessCreatePartDownloadsFromDownload()
 			partDownload->end_byte = StartByte+ rangeOfEachDlownload;
 			partDownload->LastDownloadedByte = StartByte-1;
 			partDownload->id_download = download->IdDownload;
-			partDownload->PartDownloadFile = new QFile(GeneratePartDownloadAddressFromAddressOfDownloadFile(downloadPartNumber, download->SaveTo.toString()));
+			partDownload->PartDownloadFile = new QFile(GeneratePartDownloadAddressFromAddressOfDownloadFile(downloadPartNumber, FileName));
 			download->DownloadParts.append(partDownload);
 		}
 
@@ -260,13 +261,14 @@ bool NewDownloadCreater::ProcessCreatePartDownloadsFromDownload()
 	partDownload->end_byte = DownloadSize - 1;
 	partDownload->LastDownloadedByte = StartByte - 1;
 	partDownload->id_download = download->IdDownload;
-	partDownload->PartDownloadFile = new QFile(GeneratePartDownloadAddressFromAddressOfDownloadFile(downloadPartNumber, download->SaveTo.toString()));
+	partDownload->PartDownloadFile = new QFile(GeneratePartDownloadAddressFromAddressOfDownloadFile(downloadPartNumber, FileName));
 	download->DownloadParts.append(partDownload);
 	
 	return true;
 }
 
-QString NewDownloadCreater::GeneratePartDownloadAddressFromAddressOfDownloadFile(int numberOfPart, QString addressOfDownloadFile)
+QString NewDownloadCreater::GeneratePartDownloadAddressFromAddressOfDownloadFile(int numberOfPart,QString FileName)
 {
-	return addressOfDownloadFile + "--" + QString::number(numberOfPart);
+	QString TempDirAddress=SettingInteract::GetValue("Download/DefaultTempSaveToAddress").toString();
+	return TempDirAddress+"/" + FileName + "--" + QString::number(numberOfPart);
 }

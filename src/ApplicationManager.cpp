@@ -35,8 +35,8 @@ void ApplicationManager::AddMainSystemTrayToTaskbar()
 
 	QMenu* trayIconMenu = new QMenu();
 
-	QAction* viewWindow = new QAction("View Download Manager");
-	QAction* exitAction = new QAction("Exit");
+	QAction* viewWindow = new QAction(tr("View Download Manager"));
+	QAction* exitAction = new QAction(tr("Exit"));
 	trayIconMenu->addAction(viewWindow);
 	trayIconMenu->addAction(exitAction);
 
@@ -59,7 +59,7 @@ void ApplicationManager::AddMainSystemTrayToTaskbar()
 
 void ApplicationManager::LoadProxySettings()
 {
-	QNetworkProxy::ProxyType Proxytype=ProcessEnum::ConvertProxyTypeStringToProxyTypeEnum(SettingInteract::GetValue("Proxy/Type").toString());
+	QNetworkProxy::ProxyType Proxytype=ProcessEnum::ConvertEnglishStringProxyTypeToProxyTypeEnum(SettingInteract::GetValue("Proxy/Type").toString());
 	QString ProxyHostname=SettingInteract::GetValue("Proxy/hostName").toString();
 	quint32 ProxyPort=SettingInteract::GetValue("Proxy/Port").toInt();
 	QString ProxyUsername=SettingInteract::GetValue("Proxy/User").toString();
@@ -68,3 +68,4 @@ void ApplicationManager::LoadProxySettings()
 	ProxyManager proxyManager;
 	proxyManager.SetProxyForApplication(Proxytype, ProxyHostname, ProxyPort, ProxyUsername, ProxyPassword);
 }
+

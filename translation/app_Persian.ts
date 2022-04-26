@@ -4,6 +4,16 @@
 <context>
     <name>ApplicationManager</name>
     <message>
+        <location filename="../src/ApplicationManager.cpp" line="38"/>
+        <source>View Download Manager</source>
+        <translation>مشاهده دانلود منیجر</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationManager.cpp" line="39"/>
+        <source>Exit</source>
+        <translation>خروج</translation>
+    </message>
+    <message>
         <location filename="../src/ApplicationManager.cpp" line="46"/>
         <source>Download Manager</source>
         <translation type="unfinished"></translation>
@@ -490,7 +500,7 @@
         <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="296"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_OptionsWidget.h" line="296"/>
         <source>Main dirctory</source>
-        <translation type="unfinished">مسیر اصلی</translation>
+        <translation>مسیر اصلی</translation>
     </message>
     <message>
         <location filename="../HeaderAndUi/OptionsWidget.ui" line="177"/>
@@ -562,6 +572,42 @@
         <location filename="../src/ProcessDatabaseOutput.cpp" line="62"/>
         <source>Complete</source>
         <translation>تکمیل شده</translation>
+    </message>
+</context>
+<context>
+    <name>ProcessEnum</name>
+    <message>
+        <location filename="../src/ProcessEnum.cpp" line="164"/>
+        <location filename="../src/ProcessEnum.cpp" line="182"/>
+        <source>No proxy</source>
+        <translation>بدون پروکسی</translation>
+    </message>
+    <message>
+        <location filename="../src/ProcessEnum.cpp" line="168"/>
+        <location filename="../src/ProcessEnum.cpp" line="186"/>
+        <source>Http proxy</source>
+        <translation>پروکسی http</translation>
+    </message>
+    <message>
+        <location filename="../src/ProcessEnum.cpp" line="172"/>
+        <location filename="../src/ProcessEnum.cpp" line="190"/>
+        <source>Socks5</source>
+        <translation>ساکس5</translation>
+    </message>
+</context>
+<context>
+    <name>ProxyManager</name>
+    <message>
+        <source>No proxy</source>
+        <translation type="vanished">بدون پروکسی</translation>
+    </message>
+    <message>
+        <source>Http proxy</source>
+        <translation type="vanished">پروکسی http</translation>
+    </message>
+    <message>
+        <source>Socks5</source>
+        <translation type="vanished">ساکس5</translation>
     </message>
 </context>
 <context>

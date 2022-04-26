@@ -126,23 +126,8 @@ QString ProcessEnum::ConvertDownloadStatusEnumToString(Download::DownloadStatusE
 	}
 }
 
-QNetworkProxy::ProxyType ProcessEnum::ConvertProxyTypeStringToProxyTypeEnum(QString proxyTypeString)
-{
-	if (proxyTypeString == "No proxy")
-	{
-		return QNetworkProxy::ProxyType::NoProxy;
-	}
-	else if (proxyTypeString == "Http proxy")
-	{
-		return QNetworkProxy::ProxyType::HttpProxy;
-	}
-	else if (proxyTypeString == "Socks5")
-	{
-		return QNetworkProxy::ProxyType::Socks5Proxy;
-	}
-}
-
-QString ProcessEnum::ConvertProxyTypeEnumToProxyTypeString(QNetworkProxy::ProxyType proxyType)
+//
+QString ProcessEnum::ConvertTypeProxyEnumToEnglishStringProxyType(QNetworkProxy::ProxyType proxyType)
 {
 	if (proxyType == QNetworkProxy::ProxyType::NoProxy)
 	{
@@ -155,6 +140,54 @@ QString ProcessEnum::ConvertProxyTypeEnumToProxyTypeString(QNetworkProxy::ProxyT
 	else if (proxyType == QNetworkProxy::ProxyType::Socks5Proxy)
 	{
 		return "Socks5";
+	}
+}
+
+QNetworkProxy::ProxyType ProcessEnum::ConvertEnglishStringProxyTypeToProxyTypeEnum(QString EnglishStringProxyType)
+{
+	if (EnglishStringProxyType == "No proxy")
+	{
+		return QNetworkProxy::ProxyType::NoProxy;
+	}
+	else if (EnglishStringProxyType == "Http proxy")
+	{
+		return QNetworkProxy::ProxyType::HttpProxy;
+	}
+	else if (EnglishStringProxyType == "Socks5")
+	{
+		return QNetworkProxy::ProxyType::Socks5Proxy;
+	}
+}
+
+QNetworkProxy::ProxyType ProcessEnum::ConvertProxyTypeStringToProxyTypeEnum(QString proxyTypeString)
+{
+	if (proxyTypeString == tr("No proxy"))
+	{
+		return QNetworkProxy::ProxyType::NoProxy;
+	}
+	else if (proxyTypeString == tr("Http proxy"))
+	{
+		return QNetworkProxy::ProxyType::HttpProxy;
+	}
+	else if (proxyTypeString == tr("Socks5"))
+	{
+		return QNetworkProxy::ProxyType::Socks5Proxy;
+	}
+}
+
+QString ProcessEnum::ConvertProxyTypeEnumToProxyTypeString(QNetworkProxy::ProxyType proxyType)
+{
+	if (proxyType == QNetworkProxy::ProxyType::NoProxy)
+	{
+		return tr("No proxy");
+	}
+	else if (proxyType == QNetworkProxy::ProxyType::HttpProxy)
+	{
+		return tr("Http proxy");
+	}
+	else if (proxyType == QNetworkProxy::ProxyType::Socks5Proxy)
+	{
+		return tr("Socks5");
 	}
 }
 
