@@ -93,38 +93,46 @@
          </attribute>
          <layout class="QGridLayout" name="gridLayout_6">
           <item row="1" column="2">
-           <widget class="QDateEdit" name="dateEdit"/>
+           <widget class="QDateEdit" name="dateEdit">
+            <property name="date">
+             <date>
+              <year>2022</year>
+              <month>1</month>
+              <day>1</day>
+             </date>
+            </property>
+           </widget>
           </item>
           <item row="4" column="0">
-           <widget class="QCheckBox" name="checkBox_9">
+           <widget class="QCheckBox" name="StopAt_checkBox">
             <property name="text">
              <string>Stop at</string>
             </property>
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QRadioButton" name="radioButton">
+           <widget class="QRadioButton" name="OnceTime_radioButton">
             <property name="text">
              <string>Once Time at</string>
             </property>
            </widget>
           </item>
           <item row="2" column="0" colspan="2">
-           <widget class="QRadioButton" name="radioButton_2">
+           <widget class="QRadioButton" name="Periodic_radioButton">
             <property name="text">
              <string>Periodic Synchronization</string>
             </property>
            </widget>
           </item>
           <item row="0" column="0" colspan="2">
-           <widget class="QCheckBox" name="checkBox">
+           <widget class="QCheckBox" name="StartAt_checkBox">
             <property name="text">
              <string>Start Download at </string>
             </property>
            </widget>
           </item>
           <item row="4" column="1" colspan="2">
-           <widget class="QTimeEdit" name="timeEdit_2"/>
+           <widget class="QTimeEdit" name="Stop_timeEdit"/>
           </item>
           <item row="3" column="0" colspan="3">
            <widget class="QWidget" name="widget_3" native="true">
@@ -215,7 +223,7 @@
               </widget>
              </item>
              <item row="0" column="0">
-              <widget class="QRadioButton" name="radioButton_3">
+              <widget class="QRadioButton" name="daily_radioButton">
                <property name="text">
                 <string>Daily</string>
                </property>
@@ -225,7 +233,7 @@
            </widget>
           </item>
           <item row="0" column="2">
-           <widget class="QTimeEdit" name="timeEdit"/>
+           <widget class="QTimeEdit" name="Start_timeEdit"/>
           </item>
           <item row="5" column="1">
            <spacer name="verticalSpacer">

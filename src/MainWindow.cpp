@@ -292,3 +292,26 @@ void MainWindow::on_actionStop_All_triggered()
 	downloadManagerPointer->StopAllDownload();
 }
 
+void MainWindow::on_actionEnglish_triggered()
+{
+	SettingInteract::SetValue("Language/Program", "English");
+	ProcessForChangeLanguage();
+}
+
+void MainWindow::on_actionPersian_triggered()
+{
+	SettingInteract::SetValue("Language/Program","Persian");
+	ProcessForChangeLanguage();
+}
+
+void MainWindow::ProcessForChangeLanguage()
+{
+	int const EXIT_CODE_REBOOT = -123456789;
+	QMessageBox::StandardButton buttonSelected=QMessageBox::question(this, "Change Language", tr("Do you want restart download manager For apply change language?"), QMessageBox::StandardButton::Yes | QMessageBox::StandardButton::No);
+	if (buttonSelected == QMessageBox::StandardButton::Yes)
+	{
+		qApp->quit();
+		QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
+	}
+}
+

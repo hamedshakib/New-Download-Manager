@@ -3,13 +3,21 @@
 #include "qlibrary.h"
 
 #include "HeaderAndUi/ApplicationManager.h"
+#include "HeaderAndUi/TranslationManager.h"
+#include "HeaderAndUi/RunGuard.h"
 
 
 int main(int argc,char* argv[])
 {
+	RunGuard guard("Download Manager Application");
+	if (!guard.tryToRun())
+		return 0;
+
 	QApplication app(argc, argv);
 	QApplication::setApplicationName("Download Manager");
 	
+	TranslationManager translationMaager(&app, &app);
+	translationMaager.Translate();
 
 	
 	QLibrary library1("libssl-1_1-x64");

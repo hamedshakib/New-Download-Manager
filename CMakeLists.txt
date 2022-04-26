@@ -6,10 +6,11 @@ project (DownloadManager VERSION 0.01 LANGUAGES CXX)
 # Include sub-projects.
 #add_subdirectory ("")
 
-
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 SET(MY_SOURCE_PATH "src")
 SET(MY_HeaderAndUi_PATH "HeaderAndUi")
+SET(MY_TRANSLATION_PATH "translation")
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -22,10 +23,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_PREFIX_PATH "C:/Programs/QT/6.2.4/msvc2019_64")
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets Core Sql Network Quick REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets Core Sql Network Quick REQUIRED)
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets Core Sql Network Quick LinguistTools REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets Core Sql Network Quick LinguistTools REQUIRED)
 
-
+set(TS_FILES 
+        ${MY_TRANSLATION_PATH}/app_Persian.ts
+)
 
 set(PROJECT_SOURCES
 	    main.qrc
@@ -187,27 +190,66 @@ set(PROJECT_SOURCES
         ${MY_HeaderAndUi_PATH}/TreeViewController.h
         ${MY_SOURCE_PATH}/TreeViewController.cpp
 
+        #TranslationManager
+        ${MY_HeaderAndUi_PATH}/TranslationManager.h
+        ${MY_SOURCE_PATH}/TranslationManager.cpp
+
+        #RunGuard
+        ${MY_HeaderAndUi_PATH}/RunGuard.h
+        ${MY_SOURCE_PATH}/RunGuard.cpp
+
+        #QueueTimeManager
+        ${MY_HeaderAndUi_PATH}/QueueTimeManager.h
+        ${MY_SOURCE_PATH}/QueueTimeManager.cpp
+
+        #ConverterQueueTime
+        ${MY_HeaderAndUi_PATH}/ConverterQueueTime.h
+        ${MY_SOURCE_PATH}/ConverterQueueTime.cpp
 
 
-
-
-
-
-
-
+        #translatation
+        ${TS_FILES}
 )
 
 #qt_wrap_ui(PROJECT_SOURCES downloader.ui)
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+
+    
+    #qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
+
+   
+
+    add_custom_target(translate DEPENDS ${qm_files})
+    set_source_files_properties(${TS_FILES}
+        PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/translations")
+
+    qt_add_translations(translate
+    TS_FILES ${TS_FILES}
+    QM_FILES_OUTPUT_VARIABLE qm_files
+    SOURCES ${PROJECT_SOURCES}
+    )
+
+
+
+
     qt_add_executable(${PROJECT_NAME}
         MANUAL_FINALIZATION
-        ${PROJECT_SOURCES} 
+        ${PROJECT_SOURCES}
+        #${QM_FILES}
+        ${APP_RES}
+        ${QT_RES}
     )
+
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET andr APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
 #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
 # For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
+
+    
+    
+    add_dependencies(${PROJECT_NAME} translate)
+
 else()
     if(ANDROID)
         add_library(${PROJECT_NAME} SHARED
@@ -216,8 +258,10 @@ else()
 # Define properties for Android with Qt 5 after find_package() calls as:
 #    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
     else()
+        #qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
         add_executable(${PROJECT_NAME}
           ${PROJECT_SOURCES}
+          #${QM_FILES}
         )
     endif()
 endif()
@@ -241,6 +285,20 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     MACOSX_BUNDLE ON
 )
 
+
+#Add Database If Not Exist
+
+if(NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/DM.db")
+    file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/Database/DM.db"
+        DESTINATION "${CMAKE_CURRENT_BINARY_DIR}") 
+endif()
+
+
+#Add INI If Not Exist
+if(NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/OptionAndSettings.ini")
+    file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/Ini file/OptionAndSettings.ini"
+        DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
+endif()
 
 
 if(QT_VERSION_MAJOR EQUAL 6)

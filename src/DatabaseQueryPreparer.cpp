@@ -429,3 +429,74 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryFroAddDownloadToQueue(Download* do
 	query->bindValue(":id", download->IdDownload);
 	return query;
 }
+
+QSqlQuery* DatabaseQueryPreparer::PrepareQueryFroEditTimeEventsOfQueue(Queue* queue)
+{
+	SettingUpDatabase::get_Database();
+	QString queryString = QString(
+		"UPDATE Queue "
+		"SET NumberDownloadSameTime = :numberDownloadSameTime, "
+		"StartTime = :startTime, "
+		"StopTime = :stopTime, "
+		"OnceTimeAt = :onceTimeAt, "
+		"EachDays = :eachDays, "
+		"DaysOfWeek = :daysOfWeek "
+		"WHERE id = :queue_id; "
+	);
+	QSqlQuery* query = new QSqlQuery();
+	query->prepare(queryString);
+
+	query->bindValue(":numberDownloadSameTime", queue->Get_NumberDownloadAtSameTime());
+	//ToDo check null time
+
+	if (queue->Has_StopTimeActive())
+	{
+		query->bindValue(":stopTime", queue->Get_StopTime().toString());
+	}
+	else
+	{
+		query->bindValue(":stopTime", QVariant("NULL"));
+	}
+
+
+	if (queue->Has_StartTimeActive())
+	{
+		query->bindValue(":startTime", queue->Get_StartTime().toString());
+		if (ConverterQueueTime::IsNameOfDaysOfWeek(queue->Get_DaysOfDownoad()[0]))
+		{
+			QString DownloadDaysOfWeek;
+			for (QString day:queue->Get_DaysOfDownoad())
+			{
+				DownloadDaysOfWeek.append(day + ",");
+			}
+			query->bindValue(":daysOfWeek", DownloadDaysOfWeek);
+			query->bindValue(":onceTimeAt", QVariant("NULL"));
+			query->bindValue(":eachDays", QVariant("NULL"));
+		}
+		else if (ConverterQueueTime::IsNumberOfDays(queue->Get_DaysOfDownoad()[0]))
+		{
+			query->bindValue(":eachDays", queue->Get_DaysOfDownoad()[0]);
+			query->bindValue(":onceTimeAt", QVariant("NULL"));
+			query->bindValue(":daysOfWeek", QVariant("NULL"));
+		}
+		else
+		{
+			query->bindValue(":onceTimeAt", queue->Get_DaysOfDownoad()[0]);
+			query->bindValue(":eachDays", QVariant("NULL"));
+			query->bindValue(":daysOfWeek", QVariant("NULL"));
+		}
+	}
+	else
+	{
+		query->bindValue(":startTime", QVariant("NULL"));
+		query->bindValue(":onceTimeAt", QVariant("NULL"));
+		query->bindValue(":eachDays", QVariant("NULL"));
+		query->bindValue(":daysOfWeek", QVariant("NULL"));
+	}
+	
+
+
+
+	query->bindValue(":queue_id", queue->Get_QueueId());
+	return query;
+}

@@ -15,11 +15,21 @@ private:
 	QList<Download*> Downloading_list;
 	int NumberDownloadAtSameTime;
 
+	struct EventTime
+	{
+		bool is_active=false;
+		QTime Time;
+	}startDownload, stopDownload;
+
+	QStringList DownloadDays;
+
+
 	bool Is_Downloading = false;
 
 	friend class QueueManager;
 	friend class ProcessDatabaseOutput;
-
+	friend class QueueTimeManager;
+	friend class ShowSchedule;
 
 public:
 	int Get_QueueId();
@@ -30,6 +40,12 @@ public:
 	int Get_NumberDownloadAtSameTime();
 	bool Get_IsDownloading();
 
+	QStringList Get_DaysOfDownoad();
+	bool Has_StartTimeActive();
+	bool Has_StopTimeActive();
+	QTime Get_StartTime();
+	QTime Get_StopTime();
+	
 public:
 	Queue(QObject *parent);
 	~Queue();

@@ -17,6 +17,7 @@
 #include <QResizeEvent>
 #include "qmessagebox.h"
 #include "qpixmap.h"
+#include "qprocess.h"
 
 
 class MainWindow : public QMainWindow
@@ -43,12 +44,15 @@ private slots:
 	void on_actionStop_Download_triggered();
 	void on_actionRemove_triggered();
 	void on_actionStop_All_triggered();
+	void on_actionEnglish_triggered();
+	void on_actionPersian_triggered();
 
 	void LoadDownloadsForMainTable();
 	void LoadSizeOfWidnow();
 
 	void ChangedDownloadSelected(int Download_id,bool Is_Completed);
 	void ChangedStatusOfSeletedDownload(Download::DownloadStatusEnum NewStatus);
+	void ProcessForChangeLanguage();
 
 signals:
 	void AddNewDownload();
