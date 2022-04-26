@@ -148,12 +148,13 @@ bool QueueTimeManager::CheckQueueForEvent(Queue* queue)
 	if (queue != nullptr)
 	{
 		qDebug() <<"Test:"<<QTime::currentTime().secsTo(queue->startDownload.Time);
-		if (std::abs(QTime::currentTime().secsTo(queue->startDownload.Time)) < AllowedSecondsError)
+
+		if (queue->startDownload.is_active && std::abs(QTime::currentTime().secsTo(queue->startDownload.Time)) < AllowedSecondsError)
 		{
 			emit StartQueue(queue);
 			return true;
 		}
-		else if (std::abs(QTime::currentTime().secsTo(queue->stopDownload.Time)) < AllowedSecondsError)
+		else if (queue->stopDownload.is_active && std::abs(QTime::currentTime().secsTo(queue->stopDownload.Time)) < AllowedSecondsError)
 		{
 			emit StopQueue(queue);
 			return true;

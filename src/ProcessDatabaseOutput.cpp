@@ -109,6 +109,41 @@ bool ProcessDatabaseOutput::ProcessPutLoadedQueueInformationInQueueObject(const 
 	queue->QueueName = record.value("Name").toString();
 	queue->MaxSpeed=record.value("MaxSpeed").toInt();
 	queue->NumberDownloadAtSameTime= record.value("NumberDownloadSameTime").toInt();
+
+	if (record.value("StartTime") != QVariant("NULL"))
+	{
+		queue->startDownload.is_active = true;
+		qDebug() << record.value("StartTime").toString();
+		qDebug() << QTime::fromString(record.value("StartTime").toString());
+		queue->startDownload.Time = QTime::fromString(record.value("StartTime").toString());
+
+
+		if (QString DaysOfWeek = record.value("DaysOfWeek").toString();DaysOfWeek!="NULL")
+		{
+			queue->DownloadDays.append(DaysOfWeek.split(","));
+		}
+		else if (QString OnceTimeAt = record.value("OnceTimeAt").toString(); OnceTimeAt != "NULL")
+		{
+			queue->DownloadDays.append(OnceTimeAt);
+		}
+		else
+		{
+			
+			queue->DownloadDays.append(record.value("EachDays").toString());
+		}
+
+
+	}
+	if (record.value("StopTime") != QVariant("NULL"))
+	{
+		queue->stopDownload.is_active = true;
+		queue->stopDownload.Time = QTime::fromString(record.value("StopTime").toString());
+	}
+	
+
+
+
+
 	return true;
 }
 

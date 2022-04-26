@@ -106,26 +106,33 @@ void ShowSchedule::LoadInformationOfChangedQueue()
 	ui.checkBox_6->setChecked(false);
 	ui.checkBox_7->setChecked(false);
 	ui.checkBox_8->setChecked(false);
+	ui.StopAt_checkBox->setChecked(false);
+	ui.StartAt_checkBox->setChecked(false);
+
+
 	Queue* queue = m_queueManager->AchiveQueue(CurrentQueueItemSelected->data(1).toInt());
 	//StartTime
 	if (queue->Has_StartTimeActive())
 	{
 		ui.StartAt_checkBox->setChecked(true);
-
+		ui.Start_timeEdit->setTime(queue->startDownload.Time);
 	}
 	else
 	{
 		ui.StartAt_checkBox->setChecked(false);
+		ui.Start_timeEdit->setTime(QTime());
 	}
 
 	//StopTime
 	if (queue->Has_StopTimeActive())
 	{
 		ui.StopAt_checkBox->setChecked(true);
+		ui.Stop_timeEdit->setTime(queue->stopDownload.Time);
 	}
 	else
 	{
 		ui.StopAt_checkBox->setChecked(false);
+		ui.Stop_timeEdit->setTime(QTime());
 	}
 
 	if (!queue->DownloadDays.isEmpty())
