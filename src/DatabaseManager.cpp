@@ -298,3 +298,17 @@ bool DatabaseManager::AddDownloadToQueueOnDatabase(Download* Download, Queue* qu
 	delete query;
 	return false;
 }
+
+bool DatabaseManager::UpdateTimeQueueEvents(Queue* queue)
+{
+	//TODO
+	QSqlQuery* query = DatabaseQueryPreparer::PrepareQueryFroEditTimeEventsOfQueue(queue);
+	if (DatabaseInteract::ExectionQueryForUpdateData(query))
+	{
+		delete query;
+		return true;
+	}
+	delete query;
+	return false;
+	return 0;
+}

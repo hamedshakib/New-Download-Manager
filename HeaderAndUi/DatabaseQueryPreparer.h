@@ -9,6 +9,7 @@
 #include "QString"
 #include "DateTimeManager.h"
 #include "Queue.h"
+#include "ConverterQueueTime.h"
 
 
 class DatabaseQueryPreparer : public QObject
@@ -48,6 +49,8 @@ public:
 	static QSqlQuery* PrepareQueryForRemoveQueueFromDatabase(Queue* queue);
 
 	static QSqlQuery* PrepareQueryFroAddDownloadToQueue(Download* download,Queue* queue);
+	static QSqlQuery* PrepareQueryFroEditTimeEventsOfQueue(Queue* queue);
+
 
 public:
 	DatabaseQueryPreparer(QObject *parent);

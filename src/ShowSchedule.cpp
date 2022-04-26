@@ -56,11 +56,13 @@ void ShowSchedule::on_Apply_pushButton_clicked()
 	Queue* queue = m_queueManager->AchiveQueue(CurrentQueueItemSelected->data(1).toInt());
 	PutInformationInQueue(queue);
 	m_queueManager->ChangeStartOrStopTimeForQueue(queue);
+	DatabaseManager::UpdateTimeQueueEvents(queue);
 }
 
 void ShowSchedule::on_Cancel_pushButton_clicked()
 {
-
+	this->close();
+	this->deleteLater();
 }
 
 void ShowSchedule::on_AddQueue_pushButton_clicked()
