@@ -216,7 +216,7 @@ set(PROJECT_SOURCES
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 
     
-    #qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
+    qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 
    
 
@@ -236,7 +236,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(${PROJECT_NAME}
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        #${QM_FILES}
+        ${QM_FILES}
         ${APP_RES}
         ${QT_RES}
     )

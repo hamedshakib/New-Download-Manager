@@ -26,18 +26,14 @@ Downloader::~Downloader()
 
 bool Downloader::StartDownload()
 {
-	qDebug() << "didam5";
 	if (!Is_PreparePartDownloaders)
 	{
-		qDebug() << "didam6";
 		if (!ProcessPreparePartDownloaders())
 		{
-			qDebug() << "didam7";
 			return false;
 		}
 	}
 
-	qDebug() << "didam8";
 	Is_Downloading = true;
 
 	elapsedTimer.start();

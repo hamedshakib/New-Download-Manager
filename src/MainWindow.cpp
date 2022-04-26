@@ -65,7 +65,7 @@ void MainWindow::resizeEvent(QResizeEvent* event)
 void MainWindow::on_actionAbout_triggered()
 {
 	QMessageBox messageBox(this);
-	messageBox.setText("Download Manager developed by Hamed shakib");
+	messageBox.setText(tr("Download Manager developed by Hamed shakib"));
 	messageBox.setWindowTitle("About Appication");
 	messageBox.setStandardButtons(QMessageBox::Ok);
 	messageBox.setDefaultButton(QMessageBox::Ok);
@@ -164,7 +164,7 @@ void MainWindow::LoadTreeView()
 			QModelIndex index = treeView->indexAt(point);
 			if (index.isValid() && index.row() % 2 == 0) {
 				QMenu* myMenu = new QMenu(this);
-				myMenu->addAction("Hi");
+				//myMenu->addAction("Hi");
 				myMenu->exec(treeView->viewport()->mapToGlobal(point));
 			}
 		}

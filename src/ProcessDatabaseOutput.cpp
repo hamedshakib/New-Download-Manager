@@ -59,7 +59,7 @@ void ProcessDatabaseOutput::ProcessPrepareLoadedInformationForMainTableView(cons
 	QString Status;
 	if (TempStatus == "Completed")
 	{
-		Status = "Complete";
+		Status = tr("Complete");
 	}
 	/*else if (TempStatus == "NotStarted")
 	{

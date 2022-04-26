@@ -38,7 +38,7 @@ QList<QStandardItem*> TableViewRowCreater::PrepareDataForRow(Download* download)
 	QString DownloadStatus;
 	if (download->downloadStatus==Download::Completed)
 	{
-		DownloadStatus = "Complete";
+		DownloadStatus = tr("Complete");
 	}
 	else if (download->downloadStatus == Download::NotStarted)
 	{
