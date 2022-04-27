@@ -32,8 +32,11 @@ void OptionsWidget::LoadOptions()
 	ui.PartDownloads_spinBox->setValue(SettingInteract::GetValue("Download/DefaultPartForDownload").toInt());
 
 	//ToDo General
-
-
+	QSettings RegistrysettingForStartup("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run", QSettings::NativeFormat);
+	if (RegistrysettingForStartup.value("HDownload Manager").isValid())
+	{
+		ui.checkBox->setChecked(true);
+	}
 }
 
 void OptionsWidget::Accepted()
@@ -53,7 +56,15 @@ void OptionsWidget::Accepted()
 	SettingInteract::SetValue("Download/DefaultPartForDownload", ui.PartDownloads_spinBox->value());
 
 
-
+	QSettings RegistrysettingForStartup("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run", QSettings::NativeFormat);
+	if (ui.checkBox->isChecked())
+	{
+		RegistrysettingForStartup.setValue("HDownload Manager", QDir::toNativeSeparators(qApp->applicationFilePath()));
+	}
+	else
+	{
+		RegistrysettingForStartup.remove("HDownload Manager");
+	}
 
 
 
