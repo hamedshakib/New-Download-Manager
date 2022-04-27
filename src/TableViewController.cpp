@@ -29,6 +29,8 @@ void TableViewController::ProcessSetupOfTableView()
 	model->setHorizontalHeaderLabels(listOfColomns);
 	m_tableView->setModel(model);
 
+	
+
 
 	
 	//Set Header 
@@ -38,6 +40,14 @@ void TableViewController::ProcessSetupOfTableView()
 	connect(horizontalHeader, &QHeaderView::customContextMenuRequested, this, &TableViewController::OnHeaderRightClicked);
 
 
+	for (int columNumber = 1; columNumber < listOfColomns.count(); columNumber++)
+	{
+		QString SettingStringKey = "TableView/MainTableView/WidthColum" + QString::number(columNumber);
+		int ColumWidth = SettingInteract::GetValue(SettingStringKey).toInt();
+		m_tableView->setColumnWidth(columNumber, ColumWidth);
+	}
+
+	connect(horizontalHeader, &QHeaderView::sectionResized, this, [&](int numberOfColum, int oldsize, int newSize) {ChangeColumnWidth(numberOfColum, newSize); });
 
 	
 	//Set double click on rows 
@@ -394,4 +404,10 @@ void TableViewController::ClickedOnRow(const QModelIndex& modelindex)
 int TableViewController::Get_SeletedFinisedDownloadId()
 {
 	return SelectedFinishedDownload_id;
+}
+
+void TableViewController::ChangeColumnWidth(int numberOfColumn, int NewColumnWidth)
+{
+	QString SettingStringKey = "TableView/MainTableView/WidthColum" + QString::number(numberOfColumn);
+	SettingInteract::SetValue(SettingStringKey, NewColumnWidth);
 }

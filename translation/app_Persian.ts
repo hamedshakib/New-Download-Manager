@@ -1261,60 +1261,60 @@
         <translation>محل ذخیره</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="77"/>
+        <location filename="../src/TableViewController.cpp" line="87"/>
         <source>Colomns...</source>
         <translation>ستون ها...</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="163"/>
+        <location filename="../src/TableViewController.cpp" line="173"/>
         <source>Open</source>
         <translation>باز کردن</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="169"/>
+        <location filename="../src/TableViewController.cpp" line="179"/>
         <source>Open with</source>
         <translation>باز کردن با</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="173"/>
+        <location filename="../src/TableViewController.cpp" line="183"/>
         <source>Open folder</source>
         <translation>باز کردن فولدر</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="189"/>
-        <location filename="../src/TableViewController.cpp" line="319"/>
+        <location filename="../src/TableViewController.cpp" line="199"/>
+        <location filename="../src/TableViewController.cpp" line="329"/>
         <source>Resume</source>
         <translation>ادامه</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="198"/>
-        <location filename="../src/TableViewController.cpp" line="323"/>
+        <location filename="../src/TableViewController.cpp" line="208"/>
+        <location filename="../src/TableViewController.cpp" line="333"/>
         <source>Pause</source>
         <translation>توقف</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="212"/>
+        <location filename="../src/TableViewController.cpp" line="222"/>
         <source>Delete From Queue</source>
         <translation>حذف کردن از صف</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="220"/>
+        <location filename="../src/TableViewController.cpp" line="230"/>
         <source>Add To Queue</source>
         <translation>افزودن به صف</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="240"/>
+        <location filename="../src/TableViewController.cpp" line="250"/>
         <source>Remove</source>
         <translation>حذف</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="249"/>
+        <location filename="../src/TableViewController.cpp" line="259"/>
         <source>Properties</source>
         <translation>جزئیات</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="292"/>
-        <location filename="../src/TableViewController.cpp" line="383"/>
+        <location filename="../src/TableViewController.cpp" line="302"/>
+        <location filename="../src/TableViewController.cpp" line="393"/>
         <source>Complete</source>
         <translation>تکمیل شده</translation>
     </message>
