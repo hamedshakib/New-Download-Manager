@@ -37,6 +37,9 @@ void OptionsWidget::LoadOptions()
 	{
 		ui.checkBox->setChecked(true);
 	}
+
+	ui.ShowCompliteDialog_checkButton->setChecked(SettingInteract::GetValue("Download/ShowCompleteDialog").toBool());
+
 }
 
 void OptionsWidget::Accepted()
@@ -59,13 +62,21 @@ void OptionsWidget::Accepted()
 	QSettings RegistrysettingForStartup("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run", QSettings::NativeFormat);
 	if (ui.checkBox->isChecked())
 	{
-		RegistrysettingForStartup.setValue("HDownload Manager", QDir::toNativeSeparators(qApp->applicationFilePath()));
+		RegistrysettingForStartup.setValue("HDownload Manager", QDir::toNativeSeparators(qApp->applicationFilePath()+" -silent"));
 	}
 	else
 	{
 		RegistrysettingForStartup.remove("HDownload Manager");
 	}
 
+	if(ui.ShowCompliteDialog_checkButton->isChecked())
+	{
+		SettingInteract::SetValue("Download/ShowCompleteDialog", true);
+	}
+	else
+	{
+		SettingInteract::SetValue("ShowCompleteDialog", false);
+	}
 
 
 	this->close();

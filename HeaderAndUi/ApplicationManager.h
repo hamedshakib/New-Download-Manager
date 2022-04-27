@@ -24,11 +24,13 @@ private:
 private slots:
 	void AddMainSystemTrayToTaskbar();
 	void LoadProxySettings();
+	void ProcessArguments(int argc, char* argv[]);
 
 private:
 	QSystemTrayIcon* m_trayIcon;
+	bool is_Silent = false;
 
 public:
-	ApplicationManager(QObject *parent);
+	ApplicationManager(QObject *parent,int argc,char* argv[]);
 	~ApplicationManager();
 };

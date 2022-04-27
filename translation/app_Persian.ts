@@ -4,17 +4,17 @@
 <context>
     <name>ApplicationManager</name>
     <message>
-        <location filename="../src/ApplicationManager.cpp" line="38"/>
+        <location filename="../src/ApplicationManager.cpp" line="43"/>
         <source>View Download Manager</source>
         <translation>مشاهده دانلود منیجر</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationManager.cpp" line="39"/>
+        <location filename="../src/ApplicationManager.cpp" line="44"/>
         <source>Exit</source>
         <translation>خروج</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationManager.cpp" line="46"/>
+        <location filename="../src/ApplicationManager.cpp" line="51"/>
         <source>Download Manager</source>
         <translation type="unfinished"></translation>
     </message>

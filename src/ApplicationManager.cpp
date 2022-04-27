@@ -1,6 +1,6 @@
 #include "HeaderAndUi/ApplicationManager.h"
 
-ApplicationManager::ApplicationManager(QObject *parent)
+ApplicationManager::ApplicationManager(QObject *parent,int argc,char* argv[])
 	: QObject(parent)
 {
 	downloadManager=new DownloadManager(this);
@@ -10,7 +10,12 @@ ApplicationManager::ApplicationManager(QObject *parent)
 	mainWindow->SetQueueManaget(queueManager);
 	queueManager->LoadQueuesFormDatabase();
 	mainWindow->CreateTableViewControllerForMainWindow();
-	mainWindow->show();
+
+	ProcessArguments(argc, argv);
+	if (is_Silent == false)
+	{
+		mainWindow->show();
+	}
 	connect(mainWindow, &MainWindow::AddNewDownload, downloadManager, &DownloadManager::CreateNewDownload);
 
 
@@ -67,5 +72,19 @@ void ApplicationManager::LoadProxySettings()
 
 	ProxyManager proxyManager;
 	proxyManager.SetProxyForApplication(Proxytype, ProxyHostname, ProxyPort, ProxyUsername, ProxyPassword);
+}
+
+void ApplicationManager::ProcessArguments(int argc, char* argv[])
+{
+	for (int i = 0; i < argc; i++)
+	{
+		if (QString(argv[i]) == "-silent")
+		{
+			is_Silent = true;
+		}
+
+
+
+	}
 }
 

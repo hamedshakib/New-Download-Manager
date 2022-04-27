@@ -11,6 +11,7 @@
 #include "DownloadFileWriter.h"
 #include "CompleteDownloadDialog.h"
 #include "ConverterSizeToSuitableString.h"
+#include "SettingInteract.h"
 #include "qlist.h"
 #include "qelapsedtimer.h"
 #include "qtimer.h"
@@ -53,6 +54,7 @@ private:
 	qint64 ProcessOfDownload(qint64 shouldBeDownloadAtThisPeriod=-1);
 	qint64 CalculateDownloadedInPeriod();
 	bool ProcessPreparePartDownloaderFrompartDownload(PartDownloader* partDownloader, PartDownload* partDownload);
+	bool ShowCompleteDialog(Download* download,QFile* newDownloadFile);
 
 private slots:
 	void DownloadWithSpeedControlled();
