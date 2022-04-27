@@ -14,6 +14,8 @@ int main(int argc,char* argv[])
 		return 0;
 
 	QApplication app(argc, argv);
+
+	qDebug() << argc << argv;
 	QDir::setCurrent(qApp->applicationDirPath());
 	QApplication::setApplicationName("Download Manager");
 	
@@ -28,9 +30,9 @@ int main(int argc,char* argv[])
 	QLibrary library3("vcruntime140");
 	library3.load();
 	
+	
 
-
-	ApplicationManager manager(&app);
+	ApplicationManager manager(&app,argc,argv);
 
 	
 	return app.exec();

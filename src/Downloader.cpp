@@ -213,21 +213,18 @@ void Downloader::ProcessOfEndOfDownloading()
 
 
 	QFile* NewDownloadFile=DownloadFileWriter::BuildFileFromMultipleFiles(FilesOfDownload, download->get_SavaTo().toString());
+	download->CompletedFile = NewDownloadFile;
 	qDebug() << "NewFile Download" << NewDownloadFile;
 	qDeleteAll(PartDownloads);
 	download->Set_downloadStatus(Download::Completed);
 
 
+	//Check for show comlete dialog
+	if (SettingInteract::GetValue("Download/ShowCompleteDialog").toBool())
+	{
+		ShowCompleteDialog(download, NewDownloadFile);
+	}
 
-
-
-
-
-	download->downloadStatus = Download::DownloadStatusEnum::Completed;
-
-	QString SizeDownloadString = ConverterSizeToSuitableString::ConvertSizeToSuitableString(download->DownloadSize) + QString(" (%1 Bytes)").arg(download->DownloadSize);
-	CompleteDownloadDialog* completeDownloadDialog = new CompleteDownloadDialog(NewDownloadFile->fileName(), SizeDownloadString, download->Url.toString());
-	completeDownloadDialog->show();
 
 	NewDownloadFile->deleteLater();
 	emit CompeletedDownload();
@@ -256,6 +253,14 @@ void Downloader::HandelPausedPartDownloadSignalEmitted()
 {
 	PartDownloader* partDownloader = static_cast<PartDownloader*>(sender());
 	qDebug() << "PartDownloader Is Paused";
+}
+
+bool Downloader::ShowCompleteDialog(Download* download,QFile* newDownloadFile)
+{
+	QString SizeDownloadString = ConverterSizeToSuitableString::ConvertSizeToSuitableString(download->DownloadSize) + QString(" (%1 Bytes)").arg(download->DownloadSize);
+	CompleteDownloadDialog* completeDownloadDialog = new CompleteDownloadDialog(newDownloadFile->fileName(), SizeDownloadString, download->Url.toString());
+	completeDownloadDialog->show();
+	return true;
 }
 
 void Downloader::UpdateDownloadInUpdatingInDatabase()
