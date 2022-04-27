@@ -60,6 +60,8 @@ private slots:
 
 	void ClickedOnRow(const QModelIndex& modelindex);
 
+	void ChangeColumnWidth(int numberOfColumn, int NewColumnWidth);
+
 signals:
 	void SelectedDownloadChanged(int Download_id,bool Is_Completed);
 
