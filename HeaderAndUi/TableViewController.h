@@ -50,6 +50,9 @@ private slots:
 
 	void PauseOrResumeActionTriggered(QAction* pauseOrResumeAction,Download* download);
 	void OpenFileActionTriggered(Download* download);
+	void OpenFileWithActionTriggered(Download* download);
+	void OpenFolderActionTriggered(Download* download);
+
 	void PropertiesActionTriggered(Download* download);
 
 	void AddDownloadToQueue(Queue* queue, Download* download);

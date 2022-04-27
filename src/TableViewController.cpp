@@ -164,6 +164,16 @@ QMenu* TableViewController::CreaterRightClickMenuForRowRightClicked(int Download
 		menu->addAction(OpenAction);
 		connect(OpenAction, &QAction::triggered, this, [&, RightClickedRow_Download](bool clicked) {qDebug() << "test1"; OpenFileActionTriggered(RightClickedRow_Download); });
 
+
+
+		QAction *OpenWithAction= new QAction(tr("Open with"), this);
+		menu->addAction(OpenWithAction);
+		connect(OpenWithAction, &QAction::triggered, this, [&, RightClickedRow_Download](bool clicked) {qDebug() << "test1"; OpenFileWithActionTriggered(RightClickedRow_Download); });
+
+		QAction* OpenFolderAction = new QAction(tr("Open folder"), this);
+		menu->addAction(OpenFolderAction);
+		connect(OpenFolderAction, &QAction::triggered, this, [&, RightClickedRow_Download](bool clicked) {qDebug() << "test1"; OpenFolderActionTriggered(RightClickedRow_Download); });
+
 	}
 	
 
@@ -222,6 +232,8 @@ QMenu* TableViewController::CreaterRightClickMenuForRowRightClicked(int Download
 
 	}
 
+	menu->addSeparator();
+
 
 
 	//Remove Action
@@ -230,7 +242,7 @@ QMenu* TableViewController::CreaterRightClickMenuForRowRightClicked(int Download
 	menu->addAction(RemoveDownloadAction);
 	connect(RemoveDownloadAction, &QAction::triggered, this, [&, RightClickedRow_Download](bool clicked) {qDebug() << "test1"; RemoveActionTriggered(RightClickedRow_Download); });
 
-
+	menu->addSeparator();
 
 
 	//Properties Item For Menu
@@ -318,6 +330,18 @@ void TableViewController::OpenFileActionTriggered(Download* download)
 {
 	QString UrlOfFile = download->get_SavaTo().toString();
 	OpenFileForUser::openFileForShowUser(UrlOfFile);
+}
+
+void TableViewController::OpenFileWithActionTriggered(Download* download)
+{
+	QString UrlOfFile = download->get_SavaTo().toString();
+	OpenFileForUser::openWithFileForShowUser(UrlOfFile);
+}
+
+void TableViewController::OpenFolderActionTriggered(Download* download)
+{
+	QString UrlOfFile = download->get_SavaTo().toString();
+	OpenFileForUser::OpenFolderForShowUser(UrlOfFile);
 }
 
 void TableViewController::RemoveActionTriggered(Download* download)

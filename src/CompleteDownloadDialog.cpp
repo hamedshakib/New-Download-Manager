@@ -17,29 +17,18 @@ CompleteDownloadDialog::~CompleteDownloadDialog()
 
 void CompleteDownloadDialog::on_Open_pushButton_clicked()
 {
-	QDesktopServices::openUrl(QUrl::fromLocalFile(AddressOfFile));
+	OpenFileForUser::openFileForShowUser(AddressOfFile);
 }
 
 void CompleteDownloadDialog::on_OpenWith_pushButton_clicked()
 {
 	//"Rundll32 Shell32.dll,OpenAs_RunDLL any-file-name.txt"
-
-
-	OPENASINFO oi = { 0 };
-	std::string file;
-	AddressOfFile =AddressOfFile.replace("/", "\\");
-	LPCWSTR strVariable2 = (const wchar_t*)AddressOfFile.utf16();
-
-	oi.pcszFile = strVariable2;
-	oi.oaifInFlags = OAIF_EXEC;
-	SHOpenWithDialog(NULL, &oi);
+	OpenFileForUser::openWithFileForShowUser(AddressOfFile);
 }
 
 void CompleteDownloadDialog::on_OpenFolder_pushButton_clicked()
 {
-	QStringList args;
-	args << "/select," << QDir::toNativeSeparators(AddressOfFile);
-	QProcess::startDetached("explorer", args);
+	OpenFileForUser::OpenFolderForShowUser(AddressOfFile);
 }
 
 void CompleteDownloadDialog::mousePressEvent(QMouseEvent* event)

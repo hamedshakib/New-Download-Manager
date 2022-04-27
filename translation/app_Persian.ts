@@ -31,13 +31,13 @@
         <location filename="../HeaderAndUi/CompleteDownloadDialog.ui" line="45"/>
         <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_CompleteDownloadDialog.h" line="195"/>
         <source>Download complete</source>
-        <translation type="unfinished"></translation>
+        <translation>دانلود تکمیل شده</translation>
     </message>
     <message>
         <location filename="../HeaderAndUi/CompleteDownloadDialog.ui" line="38"/>
         <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_CompleteDownloadDialog.h" line="194"/>
         <source>Downloaded : </source>
-        <translation type="unfinished"></translation>
+        <translation>: دانلود شده</translation>
     </message>
     <message>
         <location filename="../HeaderAndUi/CompleteDownloadDialog.ui" line="52"/>
@@ -49,31 +49,31 @@
         <location filename="../HeaderAndUi/CompleteDownloadDialog.ui" line="78"/>
         <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_CompleteDownloadDialog.h" line="197"/>
         <source>Address</source>
-        <translation type="unfinished"></translation>
+        <translation>آدرس</translation>
     </message>
     <message>
         <location filename="../HeaderAndUi/CompleteDownloadDialog.ui" line="94"/>
         <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_CompleteDownloadDialog.h" line="198"/>
         <source>Save to</source>
-        <translation type="unfinished">محل ذخیره</translation>
+        <translation>محل ذخیره</translation>
     </message>
     <message>
         <location filename="../HeaderAndUi/CompleteDownloadDialog.ui" line="123"/>
         <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_CompleteDownloadDialog.h" line="200"/>
         <source>Open</source>
-        <translation type="unfinished">باز کردن</translation>
+        <translation>باز کردن</translation>
     </message>
     <message>
         <location filename="../HeaderAndUi/CompleteDownloadDialog.ui" line="183"/>
         <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_CompleteDownloadDialog.h" line="202"/>
         <source>Open with</source>
-        <translation type="unfinished"></translation>
+        <translation>باز کردن با</translation>
     </message>
     <message>
         <location filename="../HeaderAndUi/CompleteDownloadDialog.ui" line="116"/>
         <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_CompleteDownloadDialog.h" line="199"/>
         <source>Open Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>باز کردن فولدر</translation>
     </message>
 </context>
 <context>
@@ -1271,40 +1271,50 @@
         <translation>باز کردن</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="179"/>
-        <location filename="../src/TableViewController.cpp" line="307"/>
+        <location filename="../src/TableViewController.cpp" line="169"/>
+        <source>Open with</source>
+        <translation>باز کردن با</translation>
+    </message>
+    <message>
+        <location filename="../src/TableViewController.cpp" line="173"/>
+        <source>Open folder</source>
+        <translation>باز کردن فولدر</translation>
+    </message>
+    <message>
+        <location filename="../src/TableViewController.cpp" line="189"/>
+        <location filename="../src/TableViewController.cpp" line="319"/>
         <source>Resume</source>
         <translation>ادامه</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="188"/>
-        <location filename="../src/TableViewController.cpp" line="311"/>
+        <location filename="../src/TableViewController.cpp" line="198"/>
+        <location filename="../src/TableViewController.cpp" line="323"/>
         <source>Pause</source>
         <translation>توقف</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="202"/>
+        <location filename="../src/TableViewController.cpp" line="212"/>
         <source>Delete From Queue</source>
         <translation>حذف کردن از صف</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="210"/>
+        <location filename="../src/TableViewController.cpp" line="220"/>
         <source>Add To Queue</source>
         <translation>افزودن به صف</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="228"/>
+        <location filename="../src/TableViewController.cpp" line="240"/>
         <source>Remove</source>
         <translation>حذف</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="237"/>
+        <location filename="../src/TableViewController.cpp" line="249"/>
         <source>Properties</source>
         <translation>جزئیات</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="280"/>
-        <location filename="../src/TableViewController.cpp" line="359"/>
+        <location filename="../src/TableViewController.cpp" line="292"/>
+        <location filename="../src/TableViewController.cpp" line="383"/>
         <source>Complete</source>
         <translation>تکمیل شده</translation>
     </message>
