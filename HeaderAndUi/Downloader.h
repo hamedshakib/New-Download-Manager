@@ -9,6 +9,8 @@
 #include "PartDownloader.h"
 #include "CalculatorDownload.h"
 #include "DownloadFileWriter.h"
+#include "CompleteDownloadDialog.h"
+#include "ConverterSizeToSuitableString.h"
 #include "qlist.h"
 #include "qelapsedtimer.h"
 #include "qtimer.h"

@@ -224,6 +224,12 @@ void Downloader::ProcessOfEndOfDownloading()
 
 
 	download->downloadStatus = Download::DownloadStatusEnum::Completed;
+
+	QString SizeDownloadString = ConverterSizeToSuitableString::ConvertSizeToSuitableString(download->DownloadSize) + QString(" (%1 Bytes)").arg(download->DownloadSize);
+	CompleteDownloadDialog* completeDownloadDialog = new CompleteDownloadDialog(NewDownloadFile->fileName(), SizeDownloadString, download->Url.toString());
+	completeDownloadDialog->show();
+
+	NewDownloadFile->deleteLater();
 	emit CompeletedDownload();
 }
 

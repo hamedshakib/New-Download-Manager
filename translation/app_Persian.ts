@@ -20,6 +20,63 @@
     </message>
 </context>
 <context>
+    <name>CompleteDownloadDialog</name>
+    <message>
+        <location filename="../HeaderAndUi/CompleteDownloadDialog.ui" line="14"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_CompleteDownloadDialog.h" line="193"/>
+        <source>CompleteDownloadDialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/CompleteDownloadDialog.ui" line="45"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_CompleteDownloadDialog.h" line="195"/>
+        <source>Download complete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/CompleteDownloadDialog.ui" line="38"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_CompleteDownloadDialog.h" line="194"/>
+        <source>Downloaded : </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/CompleteDownloadDialog.ui" line="52"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_CompleteDownloadDialog.h" line="196"/>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/CompleteDownloadDialog.ui" line="78"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_CompleteDownloadDialog.h" line="197"/>
+        <source>Address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/CompleteDownloadDialog.ui" line="94"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_CompleteDownloadDialog.h" line="198"/>
+        <source>Save to</source>
+        <translation type="unfinished">محل ذخیره</translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/CompleteDownloadDialog.ui" line="123"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_CompleteDownloadDialog.h" line="200"/>
+        <source>Open</source>
+        <translation type="unfinished">باز کردن</translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/CompleteDownloadDialog.ui" line="183"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_CompleteDownloadDialog.h" line="202"/>
+        <source>Open with</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/CompleteDownloadDialog.ui" line="116"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_CompleteDownloadDialog.h" line="199"/>
+        <source>Open Folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MainWindow</name>
     <message>
         <location filename="../HeaderAndUi/MainWindow.ui" line="14"/>
