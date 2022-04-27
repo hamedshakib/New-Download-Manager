@@ -424,143 +424,155 @@
     <name>OptionsWidget</name>
     <message>
         <location filename="../HeaderAndUi/OptionsWidget.ui" line="14"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="287"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="317"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_OptionsWidget.h" line="287"/>
         <source>OptionsWidget</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../HeaderAndUi/OptionsWidget.ui" line="46"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="293"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="323"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_OptionsWidget.h" line="293"/>
         <source>General</source>
         <translation>کلی</translation>
     </message>
     <message>
         <location filename="../HeaderAndUi/OptionsWidget.ui" line="71"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="288"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="318"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_OptionsWidget.h" line="288"/>
         <source>Type Of Calender :</source>
         <translation>نوع تقویم</translation>
     </message>
     <message>
         <location filename="../HeaderAndUi/OptionsWidget.ui" line="82"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="289"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="319"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_OptionsWidget.h" line="289"/>
         <source>Gregorian</source>
         <translation>میلادی</translation>
     </message>
     <message>
         <location filename="../HeaderAndUi/OptionsWidget.ui" line="90"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="290"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="320"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_OptionsWidget.h" line="290"/>
         <source>Jalali</source>
         <translation>جلالی</translation>
     </message>
     <message>
         <location filename="../HeaderAndUi/OptionsWidget.ui" line="101"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="291"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="321"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_OptionsWidget.h" line="291"/>
         <source>Show download complete dialog</source>
         <translation>نمایش پنجره اتمام دانلود</translation>
     </message>
     <message>
         <location filename="../HeaderAndUi/OptionsWidget.ui" line="108"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="292"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="322"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_OptionsWidget.h" line="292"/>
         <source>Lanch download manager at startup</source>
         <translation>startup اجرای دانلود منیجر در هنگام</translation>
     </message>
     <message>
         <location filename="../HeaderAndUi/OptionsWidget.ui" line="116"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="298"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="330"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_OptionsWidget.h" line="298"/>
         <source>Save to</source>
         <translation>محل ذخیره</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/OptionsWidget.ui" line="122"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="294"/>
+        <location filename="../HeaderAndUi/OptionsWidget.ui" line="157"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="326"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_OptionsWidget.h" line="294"/>
         <source>Temprary dirctory</source>
         <translation>مسیر موقتی</translation>
     </message>
     <message>
         <location filename="../HeaderAndUi/OptionsWidget.ui" line="131"/>
-        <location filename="../HeaderAndUi/OptionsWidget.ui" line="150"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="295"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="297"/>
+        <location filename="../HeaderAndUi/OptionsWidget.ui" line="166"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="325"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="327"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_OptionsWidget.h" line="295"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_OptionsWidget.h" line="297"/>
         <source>...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/OptionsWidget.ui" line="141"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="296"/>
+        <location filename="../HeaderAndUi/OptionsWidget.ui" line="122"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="324"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_OptionsWidget.h" line="296"/>
         <source>Main dirctory</source>
         <translation>مسیر اصلی</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/OptionsWidget.ui" line="177"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="308"/>
+        <location filename="../HeaderAndUi/OptionsWidget.ui" line="176"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="328"/>
+        <source>Parts of new downloads</source>
+        <translation>قسمت های دانلود جدید</translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/OptionsWidget.ui" line="182"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="329"/>
+        <source>Number of parts to which a new download should be divided</source>
+        <translation>تعداد بخش هایی که دانلود جدید باید به آن تقسیم شود</translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/OptionsWidget.ui" line="219"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="340"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_OptionsWidget.h" line="308"/>
         <source>Proxy</source>
         <translation>پروکسی</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/OptionsWidget.ui" line="183"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="299"/>
+        <location filename="../HeaderAndUi/OptionsWidget.ui" line="225"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="331"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_OptionsWidget.h" line="299"/>
         <source>Proxy/Socks type :</source>
         <translation>: نوع پروکسی/ساکس</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/OptionsWidget.ui" line="194"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="300"/>
+        <location filename="../HeaderAndUi/OptionsWidget.ui" line="236"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="332"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_OptionsWidget.h" line="300"/>
         <source>No proxy</source>
         <translation>بدون پروکسی</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/OptionsWidget.ui" line="199"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="301"/>
+        <location filename="../HeaderAndUi/OptionsWidget.ui" line="241"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="333"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_OptionsWidget.h" line="301"/>
         <source>Http proxy</source>
         <translation>پروکسی http</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/OptionsWidget.ui" line="204"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="302"/>
+        <location filename="../HeaderAndUi/OptionsWidget.ui" line="246"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="334"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_OptionsWidget.h" line="302"/>
         <source>Socks5</source>
         <translation>ساکس5</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/OptionsWidget.ui" line="212"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="304"/>
+        <location filename="../HeaderAndUi/OptionsWidget.ui" line="254"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="336"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_OptionsWidget.h" line="304"/>
         <source>Username :</source>
         <translation>: نام کاربری</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/OptionsWidget.ui" line="219"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="305"/>
+        <location filename="../HeaderAndUi/OptionsWidget.ui" line="261"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="337"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_OptionsWidget.h" line="305"/>
         <source>Password :</source>
         <translation>: رمز عبور</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/OptionsWidget.ui" line="233"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="306"/>
+        <location filename="../HeaderAndUi/OptionsWidget.ui" line="275"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="338"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_OptionsWidget.h" line="306"/>
         <source>Address server :</source>
         <translation>: آدرس سرور</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/OptionsWidget.ui" line="298"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="307"/>
+        <location filename="../HeaderAndUi/OptionsWidget.ui" line="340"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_OptionsWidget.h" line="339"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_OptionsWidget.h" line="307"/>
         <source>Port :</source>
         <translation>: پورت</translation>
