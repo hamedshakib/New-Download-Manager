@@ -2,13 +2,12 @@
 
 #include <QDialog>
 #include "ui_CompleteDownloadDialog.h"
-#include "qprocess.h"
-#include "qdir.h"
 #include "qdesktopservices.h"
 #include "qdrag.h"
 #include "qmimedata.h"
 #include "qevent.h"
-#include <ShlObj_core.h>
+#include "OpenFileForUser.h"
+
 //#include <iostream>
 //#include <cstring>
 //#include <fstream>
