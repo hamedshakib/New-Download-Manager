@@ -14,6 +14,7 @@ int main(int argc,char* argv[])
 		return 0;
 
 	QApplication app(argc, argv);
+	QDir::setCurrent(qApp->applicationDirPath());
 	QApplication::setApplicationName("Download Manager");
 	
 	TranslationManager translationMaager(&app, &app);
