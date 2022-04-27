@@ -1,7 +1,8 @@
 <RCC>
-    <qresource prefix="Icons">
-		<file alias="qt-logo.png">Icons/qt-logo.png</file>
-		<file alias="Add-Download.png">Icons/Add-Download.png</file>
-		<file alias="Download_Icon.png">Icons/Download-256.png</file>
-    </qresource>
+  <qresource prefix="Icons">
+    <file>Icons/drag-and-drop-99.png</file>
+    <file alias="qt-logo.png">Icons/qt-logo.png</file>
+    <file alias="Add-Download.png">Icons/Add-Download.png</file>
+    <file alias="Download_Icon.png">Icons/Download-256.png</file>
+  </qresource>
 </RCC>

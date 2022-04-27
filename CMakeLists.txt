@@ -206,6 +206,11 @@ set(PROJECT_SOURCES
         ${MY_HeaderAndUi_PATH}/ConverterQueueTime.h
         ${MY_SOURCE_PATH}/ConverterQueueTime.cpp
 
+        #CompleteDownloadDialog
+        ${MY_HeaderAndUi_PATH}/CompleteDownloadDialog.h
+        ${MY_SOURCE_PATH}/CompleteDownloadDialog.cpp
+
+
 
         #translatation
         ${TS_FILES}

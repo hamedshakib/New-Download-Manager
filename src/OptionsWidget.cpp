@@ -29,6 +29,7 @@ void OptionsWidget::LoadOptions()
 	//ToDo SaveTo
 	ui.MainDirectory_lineEdit->setText(SettingInteract::GetValue("Download/DefaultSaveToAddress").toString());
 	ui.TempDirectory_lineEdit->setText(SettingInteract::GetValue("Download/DefaultTempSaveToAddress").toString());
+	ui.PartDownloads_spinBox->setValue(SettingInteract::GetValue("Download/DefaultPartForDownload").toInt());
 
 	//ToDo General
 
@@ -49,7 +50,7 @@ void OptionsWidget::Accepted()
 	SettingInteract::SetValue("Proxy/Password", ui.Password_lineEdit->text());
 	SettingInteract::SetValue("Download/DefaultSaveToAddress", ui.MainDirectory_lineEdit->text());
 	SettingInteract::SetValue("Download/DefaultTempSaveToAddress", ui.TempDirectory_lineEdit->text());
-
+	SettingInteract::SetValue("Download/DefaultPartForDownload", ui.PartDownloads_spinBox->value());
 
 
 
