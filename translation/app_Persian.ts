@@ -1430,7 +1430,7 @@
     </message>
     <message>
         <location filename="../src/TableViewController.cpp" line="302"/>
-        <location filename="../src/TableViewController.cpp" line="393"/>
+        <location filename="../src/TableViewController.cpp" line="394"/>
         <source>Complete</source>
         <translation>تکمیل شده</translation>
     </message>

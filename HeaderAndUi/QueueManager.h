@@ -29,9 +29,11 @@ public:
 	Queue* AchiveQueue(size_t Queue_id);
 
 public slots:
-	bool RemoveDownloadFromQueue(Download* download);
+	void ProcessRemoveADownloadFromQueue(Download* download);
 	bool AddDownloadToQueue(Download* download, Queue* queue);
 	bool ChangeStartOrStopTimeForQueue(Queue* queue);
+
+	bool MoveDownloadInQueue(Queue* queue,Download* download,int moveNumber);
 
 private slots:
 	void FinishDownloadOfQueue(Download* download, Queue* queue);
@@ -39,9 +41,12 @@ private slots:
 	bool Is_QueueIsEmpty(Queue* queue);
 
 
-	bool RemoveDownloadFromQueue(Download* download,Queue* queue);
+	//bool RemoveDownloadFromQueue(Download* download,Queue* queue);
+
+	bool RemoveDownloadFromQueue(Download* download);
 
 	bool HandelSingleShots();
+
 
 signals:
 	void AddedQueue(int Queue_id);

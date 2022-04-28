@@ -380,7 +380,8 @@ void TableViewController::AddDownloadToQueue(Queue* queue, Download* download)
 
 void TableViewController::RemoveDownloadFromQueue(Download* download)
 {
-	queueManager->RemoveDownloadFromQueue(download);
+	//queueManager->RemoveDownloadFromQueue(download);
+	queueManager->ProcessRemoveADownloadFromQueue(download);
 }
 
 void TableViewController::ClickedOnRow(const QModelIndex& modelindex)

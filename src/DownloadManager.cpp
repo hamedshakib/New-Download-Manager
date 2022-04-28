@@ -148,6 +148,7 @@ bool DownloadManager::ProcessRemoveDownload(int download_id, bool is_RemoveFromD
 		QFile file(DownloadFileAddress);
 		file.remove();
 	}
+	DatabaseManager::RemoveDownloadFrom_Queue_Download(download);
 	if (DatabaseManager::RemoveDownloadCompleteWithPartDownloadsFromDatabase(download))
 	{
 		ListOfActiveDownloads.removeOne(download);
@@ -174,6 +175,7 @@ bool DownloadManager::ProcessRemoveDownload(Download* download, bool is_RemoveFr
 		QFile file(DownloadFileAddress);
 		file.remove();
 	}
+	DatabaseManager::RemoveDownloadFrom_Queue_Download(download);
 	if (DatabaseManager::RemoveDownloadCompleteWithPartDownloadsFromDatabase(download))
 	{
 		ListOfActiveDownloads.removeOne(download);

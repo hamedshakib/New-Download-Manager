@@ -49,6 +49,15 @@ public:
 	static bool AddDownloadToQueueOnDatabase(Download* Download,Queue* queue);
 	static bool UpdateTimeQueueEvents(Queue* queue);
 
+	static bool AddDownloadTo_Queue_Download(Queue* queue, Download* download);
+	static bool RemoveDownloadFrom_Queue_Download(Download* download);
+	static bool DecreaseDownloadNumberOfQueueListForNextDownloadInQueueListOn_Queue_Download(Queue* queue,int DownloadNumberInQueueList);
+	static bool ExitAllDownloadFrom_Queue_Download(Queue* queue);
+	static size_t GetNumberDownloadInListOfQueue(Download* download);
+
+	static bool MoveDownloadIn_Queue_Download(Queue* queue, Download* download, int moveNumber);
+	static size_t GetturnInIdOfDownload(Queue* queue, int NumnberDownloadInList);
+
 public:
 	DatabaseManager(QObject *parent=nullptr);
 	~DatabaseManager();
