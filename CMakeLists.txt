@@ -210,6 +210,14 @@ set(PROJECT_SOURCES
         ${MY_HeaderAndUi_PATH}/CompleteDownloadDialog.h
         ${MY_SOURCE_PATH}/CompleteDownloadDialog.cpp
 
+        #BatchDownloadCreatorWidget
+        ${MY_HeaderAndUi_PATH}/BatchDownloadCreatorWidget.h
+        ${MY_SOURCE_PATH}/BatchDownloadCreatorWidget.cpp
+
+
+
+
+
 
 
         #translatation

@@ -21,6 +21,7 @@ private:
 
 public:
 	bool CreateNewDownload();
+	bool CreateNewDownloadsFromBatch(QList<QString> listOfAddress, QString SaveTo, QString Username, QString Password);
 	bool StartDownloader(Downloader* downloader);
 	bool StopAllDownload();
 

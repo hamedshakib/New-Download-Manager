@@ -194,3 +194,19 @@ bool DownloadManager::StopAllDownload()
 	return true;
 }
 
+bool DownloadManager::CreateNewDownloadsFromBatch(QList<QString> listOfAddress, QString SaveTo, QString Username, QString Password)
+{
+	NewDownloadCreater* newDownloadCreater = new NewDownloadCreater(this);
+	//	connect(newDownloadCreater, &NewDownloadCreater::CreatedNewDownload, this, &DownloadManager::AddCreatedDownloadToDownloadList);
+	connect(newDownloadCreater, &NewDownloadCreater::CreatedNewDownload, this, [&](Download* download) {
+		AddCreatedDownloadToDownloadList(download);
+		emit CreatedNewDownload(download);
+		});
+
+
+
+	connect(newDownloadCreater, &NewDownloadCreater::DownloadNow, this, &DownloadManager::CreateDownloaderAndStartDownload);
+	newDownloadCreater->StartProcessOfCreateNewDownloadFromBatch(listOfAddress, SaveTo, Username, Password,this);
+	return true;
+}
+

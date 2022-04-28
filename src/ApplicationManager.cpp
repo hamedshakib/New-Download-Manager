@@ -17,6 +17,7 @@ ApplicationManager::ApplicationManager(QObject *parent,int argc,char* argv[])
 		mainWindow->show();
 	}
 	connect(mainWindow, &MainWindow::AddNewDownload, downloadManager, &DownloadManager::CreateNewDownload);
+	connect(mainWindow, &MainWindow::NewBatchDownload, downloadManager, &DownloadManager::CreateNewDownloadsFromBatch);
 
 
 	mainWindow->CreateTreeViewController();
