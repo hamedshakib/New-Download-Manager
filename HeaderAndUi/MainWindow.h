@@ -14,6 +14,7 @@
 #include "QueueManager.h"
 #include "ShowSchedule.h"
 #include "OptionsWidget.h"
+#include "BatchDownloadCreatorWidget.h"
 #include <QResizeEvent>
 #include "qmessagebox.h"
 #include "qpixmap.h"
@@ -36,6 +37,7 @@ public:
 
 private slots:
 	void on_actionAdd_new_Download_triggered();
+	void on_actionAdd_batch_download_triggered();
 	void on_actionAbout_triggered();
 	void on_actionExit_triggered();
 	void on_actionOptions_triggered();
@@ -56,6 +58,7 @@ private slots:
 
 signals:
 	void AddNewDownload();
+	void NewBatchDownload(QList<QString> listOfAddress, QString SaveTo, QString Username, QString Password);
 
 protected:
 	void resizeEvent(QResizeEvent* event);

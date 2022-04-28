@@ -20,6 +20,25 @@ void NewDownloadCreater::StartProcessOfCreateANewDownload(QObject* parent)
 	ProcessNewDownloadUrlWidget();
 }
 
+void NewDownloadCreater::StartProcessOfCreateNewDownloadFromBatch(QList<QString> ListOfUrl, QString SaveTo, QString Username, QString Password, QObject* parent)
+{
+	this->parent = parent;
+
+	for (QString url : ListOfUrl)
+	{
+		BaseUrl = url;
+		//ProcessNewDownloadMoreComplitedInformationWidget();
+		this->GetInformationFromUrl(url, Username, Password);
+		this->ProcessInitialInformationFromUrl();
+
+		QUrl SaveToForThisDownload=NewDownloadComplitedInformationWidget::ChooseNameForNewDownloadFile(SaveTo, RealDownloadUrl);
+
+		VerifiedDownload(RealDownloadUrl, SaveToForThisDownload, false);
+	}
+}
+
+
+
 Download* NewDownloadCreater::CreateNewDownload(QObject* parent)
 {
 	Download* download = new Download(parent);
@@ -213,7 +232,8 @@ void NewDownloadCreater::VerifiedDownload(QUrl url, QUrl FileSaveToAddress,bool 
 	{
 		emit DownloadNow(download);
 	}
-	sender()->deleteLater();
+	if(static_cast<NewDownloadComplitedInformationWidget*>(sender())== newDownloadComplitedInformationWidget)
+		sender()->deleteLater();
 }
 
 size_t NewDownloadCreater::WriteDownloadInDatabase()

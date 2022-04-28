@@ -20,14 +20,14 @@ QString ConverterSizeToSuitableString::ConvertSizeToSuitableString(qint64 size)
 		preparedSize = (long double)size / (1024*1024);
 		Str3 = "MB";
 	}
-	else if (size >= 1024 * 1024* 1024 && size < 1024 * 1024 * 1024 * 1024)
+	else if (size >= (1073741824) && size < 1099511627776)
 	{
-		preparedSize = (long double)size / (1024 * 1024 * 1024);
+		preparedSize = (long double)size / (1073741824);
 		Str3 = "GB";
 	}
-	else if(size >= 1024 * 1024 * 1024 *1024 && size < 1024 * 1024 * 1024 * 1024 * 1024)
+	else if(size >= (1099511627776) && size < (1024 * 1099511627776))
 	{
-		preparedSize = (long double)size / (1024 * 1024 * 1024 * 1024);
+		preparedSize = (long double)size / (1099511627776);
 		Str3 = "TB";
 	}
 

@@ -28,6 +28,8 @@ class NewDownloadCreater : public QObject
 
 public:
 	void StartProcessOfCreateANewDownload(QObject* parent);
+
+	void StartProcessOfCreateNewDownloadFromBatch(QList<QString> ListOfUrl, QString SaveTo, QString Username, QString Password, QObject* parent);
 	
 private:
 	int NumberOfAllowedTryForFindRealUrl = 15;
@@ -72,6 +74,9 @@ private slots:
 	//void VerifiedDownload_DownloadNow(QUrl url, QUrl FileSaveToAddress);
 	//void VerifiedDownload_DownloadLater(QUrl url, QUrl FileSaveToAddress);
 	void VerifiedDownload(QUrl url, QUrl FileSaveToAddress, bool Is_DownloadNow);
+
+
+
 
 signals:
 	void CreatedNewDownload(Download* download);

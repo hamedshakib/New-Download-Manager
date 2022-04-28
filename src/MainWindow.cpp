@@ -315,3 +315,16 @@ void MainWindow::ProcessForChangeLanguage()
 	}
 }
 
+void MainWindow::on_actionAdd_batch_download_triggered()
+{
+	BatchDownloadCreatorWidget* batchDownloadCreatorWidget = new BatchDownloadCreatorWidget(this);
+	connect(batchDownloadCreatorWidget, &BatchDownloadCreatorWidget::NewBatchDownload, [&](QList<QString> listOfAddress, QString SaveTo, QString Username, QString Password)
+		{
+			NewBatchDownload(listOfAddress, SaveTo, Username, Password);
+			sender()->deleteLater();
+		}
+	);
+
+	batchDownloadCreatorWidget->show();
+}
+

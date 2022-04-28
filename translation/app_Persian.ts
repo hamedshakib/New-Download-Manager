@@ -4,19 +4,135 @@
 <context>
     <name>ApplicationManager</name>
     <message>
-        <location filename="../src/ApplicationManager.cpp" line="43"/>
+        <location filename="../src/ApplicationManager.cpp" line="44"/>
         <source>View Download Manager</source>
         <translation>مشاهده دانلود منیجر</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationManager.cpp" line="44"/>
+        <location filename="../src/ApplicationManager.cpp" line="45"/>
         <source>Exit</source>
         <translation>خروج</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationManager.cpp" line="51"/>
+        <location filename="../src/ApplicationManager.cpp" line="52"/>
         <source>Download Manager</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>BatchDownloadCreatorWidget</name>
+    <message>
+        <location filename="../HeaderAndUi/BatchDownloadCreatorWidget.ui" line="14"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_BatchDownloadCreatorWidget.h" line="349"/>
+        <source>BatchDownloadCreatorWidget</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/BatchDownloadCreatorWidget.ui" line="58"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_BatchDownloadCreatorWidget.h" line="351"/>
+        <source>Save To : </source>
+        <translation>: محل ذخیره</translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/BatchDownloadCreatorWidget.ui" line="82"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_BatchDownloadCreatorWidget.h" line="353"/>
+        <source>Cancel</source>
+        <translation>انصراف</translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/BatchDownloadCreatorWidget.ui" line="99"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_BatchDownloadCreatorWidget.h" line="354"/>
+        <source>...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/BatchDownloadCreatorWidget.ui" line="115"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_BatchDownloadCreatorWidget.h" line="355"/>
+        <source>Address : </source>
+        <translation>: آدرس</translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/BatchDownloadCreatorWidget.ui" line="122"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_BatchDownloadCreatorWidget.h" line="356"/>
+        <source>replace astrix to</source>
+        <translation>جایگزینی ستاره</translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/BatchDownloadCreatorWidget.ui" line="128"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_BatchDownloadCreatorWidget.h" line="357"/>
+        <source>Numerics</source>
+        <translation>اعداد</translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/BatchDownloadCreatorWidget.ui" line="135"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_BatchDownloadCreatorWidget.h" line="358"/>
+        <source>Letters</source>
+        <translation>حروف</translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/BatchDownloadCreatorWidget.ui" line="151"/>
+        <location filename="../HeaderAndUi/BatchDownloadCreatorWidget.ui" line="285"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_BatchDownloadCreatorWidget.h" line="359"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_BatchDownloadCreatorWidget.h" line="362"/>
+        <source>To : </source>
+        <translation>: به</translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/BatchDownloadCreatorWidget.ui" line="208"/>
+        <location filename="../HeaderAndUi/BatchDownloadCreatorWidget.ui" line="246"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_BatchDownloadCreatorWidget.h" line="360"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_BatchDownloadCreatorWidget.h" line="361"/>
+        <source>From : </source>
+        <translation>: از</translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/BatchDownloadCreatorWidget.ui" line="311"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_BatchDownloadCreatorWidget.h" line="363"/>
+        <source>https://google.com/videos/video*.mp4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/BatchDownloadCreatorWidget.ui" line="318"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_BatchDownloadCreatorWidget.h" line="364"/>
+        <source>For Example:</source>
+        <translation>: برای مثال</translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/BatchDownloadCreatorWidget.ui" line="45"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_BatchDownloadCreatorWidget.h" line="350"/>
+        <source>Batch Download Type : </source>
+        <translation>: نوع دسته</translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/BatchDownloadCreatorWidget.ui" line="65"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_BatchDownloadCreatorWidget.h" line="352"/>
+        <source>Download</source>
+        <translation>دانلود</translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/BatchDownloadCreatorWidget.ui" line="357"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_BatchDownloadCreatorWidget.h" line="368"/>
+        <source>authentication</source>
+        <translation>هویت سنجی</translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/BatchDownloadCreatorWidget.ui" line="363"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_BatchDownloadCreatorWidget.h" line="369"/>
+        <source>UserName : </source>
+        <translation>: نام کاربری</translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/BatchDownloadCreatorWidget.ui" line="370"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_BatchDownloadCreatorWidget.h" line="370"/>
+        <source>Password : </source>
+        <translation>: رمزعبور</translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/BatchDownloadCreatorWidget.ui" line="343"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_BatchDownloadCreatorWidget.h" line="366"/>
+        <location filename="../src/BatchDownloadCreatorWidget.cpp" line="68"/>
+        <source>Download from a sequential download names</source>
+        <translation>دانلود از یک دسته توالی اسم های دانلود</translation>
     </message>
 </context>
 <context>
@@ -140,7 +256,7 @@
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_MainWindow.h" line="232"/>
         <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_MainWindow.h" line="230"/>
         <source>Add batch download</source>
-        <translation type="unfinished"></translation>
+        <translation>افزودن دسته دانلود</translation>
     </message>
     <message>
         <location filename="../HeaderAndUi/MainWindow.ui" line="196"/>

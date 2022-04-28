@@ -27,8 +27,8 @@ private slots:
 	void on_DownloadLater_pushButton_clicked();
 	void on_Cancel_pushButton_clicked();
 
-
-	QString ChooseNameForNewDownloadFile(QString SaveTo, QUrl RealUrl);
+public slots:
+	static QString ChooseNameForNewDownloadFile(QString SaveTo, QUrl RealUrl);
 
 private:
 	QUrl RealUrl;
