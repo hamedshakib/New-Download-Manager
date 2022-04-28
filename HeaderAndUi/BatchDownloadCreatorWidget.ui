@@ -256,7 +256,7 @@
                </size>
               </property>
               <property name="maxLength">
-               <number>5</number>
+               <number>1</number>
               </property>
              </widget>
             </item>
@@ -295,7 +295,7 @@
                </size>
               </property>
               <property name="maxLength">
-               <number>5</number>
+               <number>1</number>
               </property>
              </widget>
             </item>

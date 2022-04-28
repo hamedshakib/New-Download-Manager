@@ -23,7 +23,7 @@ private slots:
 
 
 	void CreateNewBatchDownloadSequentialNumericsAddress(QString BaseUrl,int start,int end);
-	void CreateNewBatchDownloadSequentialLettersAddress(QString BaseUrl,QString start,QString end);
+	void CreateNewBatchDownloadSequentialLettersAddress(QString BaseUrl, QChar start, QChar end);
 
 signals:
 	void NewBatchDownload(QList<QString> listOfAddress,QString SaveTo,QString Username,QString Password);

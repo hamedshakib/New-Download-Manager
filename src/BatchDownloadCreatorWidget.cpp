@@ -35,7 +35,7 @@ void BatchDownloadCreatorWidget::on_Download_pushButton_clicked()
 		if (ui.From_lineEdit->text().isEmpty() || ui.To_lineEdit->text().isEmpty())
 			return;
 
-		CreateNewBatchDownloadSequentialLettersAddress(BaseUrl, ui.From_lineEdit->text(), ui.To_lineEdit->text());
+		CreateNewBatchDownloadSequentialLettersAddress(BaseUrl, ui.From_lineEdit->text()[0], ui.To_lineEdit->text()[0]);
 	}
 	else
 	{
@@ -109,20 +109,14 @@ void BatchDownloadCreatorWidget::CreateNewBatchDownloadSequentialNumericsAddress
 	emit NewBatchDownload(ListOfDowmloadUrl, ui.SaveTo_lineEdit->text(), ui.Username_lineEdit->text(), ui.Password_lineEdit->text());
 }
 
-void BatchDownloadCreatorWidget::CreateNewBatchDownloadSequentialLettersAddress(QString BaseUrl, QString start, QString end)
+void BatchDownloadCreatorWidget::CreateNewBatchDownloadSequentialLettersAddress(QString BaseUrl, QChar start, QChar end)
 {
 	QList<QString> ListOfDowmloadUrl;
-
-
-	for (int NumberOfChar = 0; NumberOfChar < start.length(); NumberOfChar++)
+	for (char character = start.toLatin1(); character <= end.toLatin1(); character++)
 	{
-		//for (QChar character = start.at(NumberOfChar).tochar; character <= end.at(NumberOfChar); character.)
-		for (char character = start.at(NumberOfChar).toLatin1(); character <= end.at(NumberOfChar).toLatin1(); character++)
-		{
 			QString TempBaseDownload = BaseUrl;
 			QString DownloadAddress = TempBaseDownload.replace("*", QString(character));
 			ListOfDowmloadUrl.append(DownloadAddress);
-		}
 	}
 
 	emit NewBatchDownload(ListOfDowmloadUrl, ui.SaveTo_lineEdit->text(), ui.Username_lineEdit->text(), ui.Password_lineEdit->text());
