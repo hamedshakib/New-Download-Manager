@@ -18,8 +18,8 @@ class TableViewRowCreater : public QObject
 	Q_OBJECT
 
 public:
-	static QList<QStandardItem*> PrepareDataForRow(Download *download);
-	static QList<QStandardItem*> PrepareDataForRow(int id, QString FileName, QString Size, QString Status, QString Speed, QString TimeLeft, QString LastTryTime, QString Description, QString SaveTo);
+	static QList<QStandardItem*> PrepareDataForRowForMainTableView(Download *download);
+	static QList<QStandardItem*> PrepareDataForRowForMainTableView(int id, QString FileName, QString Size, QString Status, QString Speed, QString TimeLeft, QString LastTryTime, QString Description, QString SaveTo);
 
 public:
 	TableViewRowCreater(QObject *parent);

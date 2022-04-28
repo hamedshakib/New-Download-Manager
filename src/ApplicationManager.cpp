@@ -9,7 +9,7 @@ ApplicationManager::ApplicationManager(QObject *parent,int argc,char* argv[])
 	queueManager = new QueueManager(downloadManager,this);
 	mainWindow->SetQueueManaget(queueManager);
 	queueManager->LoadQueuesFormDatabase();
-	mainWindow->CreateTableViewControllerForMainWindow();
+	mainWindow->CreateMainTableViewControllerForMainWindow();
 
 	ProcessArguments(argc, argv);
 	if (is_Silent == false)

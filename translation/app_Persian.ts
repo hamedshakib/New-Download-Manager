@@ -193,6 +193,107 @@
     </message>
 </context>
 <context>
+    <name>MainTableViewController</name>
+    <message>
+        <location filename="../src/MainTableViewController.cpp" line="17"/>
+        <source>File Name</source>
+        <translation type="unfinished">نام فایل</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTableViewController.cpp" line="17"/>
+        <source>Size</source>
+        <translation type="unfinished">سایز</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTableViewController.cpp" line="17"/>
+        <source>Status</source>
+        <translation type="unfinished">وضعیت</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTableViewController.cpp" line="17"/>
+        <source>Speed</source>
+        <translation type="unfinished">سرعت</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTableViewController.cpp" line="17"/>
+        <source>Time Left</source>
+        <translation type="unfinished">زمان باقی مانده</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTableViewController.cpp" line="17"/>
+        <source>Last Try Time</source>
+        <translation type="unfinished">آخرین زمان تلاش</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTableViewController.cpp" line="17"/>
+        <source>Description</source>
+        <translation type="unfinished">توضیحات</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTableViewController.cpp" line="17"/>
+        <source>Save To</source>
+        <translation type="unfinished">محل ذخیره</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTableViewController.cpp" line="97"/>
+        <source>Colomns...</source>
+        <translation type="unfinished">ستون ها...</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTableViewController.cpp" line="183"/>
+        <source>Open</source>
+        <translation type="unfinished">باز کردن</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTableViewController.cpp" line="189"/>
+        <source>Open with</source>
+        <translation type="unfinished">باز کردن با</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTableViewController.cpp" line="193"/>
+        <source>Open folder</source>
+        <translation type="unfinished">باز کردن فولدر</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTableViewController.cpp" line="209"/>
+        <location filename="../src/MainTableViewController.cpp" line="339"/>
+        <source>Resume</source>
+        <translation type="unfinished">ادامه</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTableViewController.cpp" line="218"/>
+        <location filename="../src/MainTableViewController.cpp" line="343"/>
+        <source>Pause</source>
+        <translation type="unfinished">توقف</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTableViewController.cpp" line="232"/>
+        <source>Delete From Queue</source>
+        <translation type="unfinished">حذف کردن از صف</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTableViewController.cpp" line="240"/>
+        <source>Add To Queue</source>
+        <translation type="unfinished">افزودن به صف</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTableViewController.cpp" line="260"/>
+        <source>Remove</source>
+        <translation type="unfinished">حذف</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTableViewController.cpp" line="269"/>
+        <source>Properties</source>
+        <translation type="unfinished">جزئیات</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTableViewController.cpp" line="312"/>
+        <location filename="../src/MainTableViewController.cpp" line="404"/>
+        <source>Complete</source>
+        <translation type="unfinished">تکمیل شده</translation>
+    </message>
+</context>
+<context>
     <name>MainWindow</name>
     <message>
         <location filename="../HeaderAndUi/MainWindow.ui" line="14"/>
@@ -1139,196 +1240,214 @@
     <name>ShowSchedule</name>
     <message>
         <location filename="../HeaderAndUi/ShowSchedule.ui" line="14"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="345"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="395"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="343"/>
         <source>ShowSchedule</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="35"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="346"/>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="42"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="396"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="344"/>
         <source>Add Queue</source>
         <translation>افزودن صف</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="42"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="347"/>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="49"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="397"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="345"/>
         <source>Delete Queue</source>
         <translation>حذف صف</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="61"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="348"/>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="96"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="401"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="346"/>
         <source>Start Now</source>
         <translation>شروع همین حالا</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="68"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="349"/>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="89"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="400"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="347"/>
         <source>Cancel</source>
         <translation>انصراف</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="75"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="350"/>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="82"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="399"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="348"/>
         <source>Apply</source>
         <translation>اعمال</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="92"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="365"/>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="113"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="416"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="363"/>
         <source>Schedule</source>
         <translation>برنامه ریزی</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="109"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="351"/>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="130"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="402"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="349"/>
         <source>Stop at</source>
         <translation>: زمان شروع دانلود</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="116"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="352"/>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="137"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="403"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="350"/>
         <source>Once Time at</source>
         <translation>یکبار :</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="123"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="353"/>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="144"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="404"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="351"/>
         <source>Periodic Synchronization</source>
         <translation>همگام سازی دوره ای</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="130"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="354"/>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="151"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="405"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="352"/>
         <source>Start Download at </source>
         <translation>شروع در زمان :</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="152"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="355"/>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="173"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="406"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="353"/>
         <source>Saturday</source>
         <translation>شنبه</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="159"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="356"/>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="180"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="407"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="354"/>
         <source>Sunday</source>
         <translation>یکشنبه</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="166"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="357"/>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="187"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="408"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="355"/>
         <source>Monday</source>
         <translation>دوشنبه</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="173"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="358"/>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="194"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="409"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="356"/>
         <source>Tuesday</source>
         <translation>سه شنبه</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="180"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="359"/>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="201"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="410"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="357"/>
         <source>Wednesday</source>
         <translation>چهارشنبه</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="187"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="360"/>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="208"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="411"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="358"/>
         <source>Thursday</source>
         <translation>پنج شنبه</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="194"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="361"/>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="215"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="412"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="359"/>
         <source>Friday</source>
         <translation>جمعه</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="211"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="362"/>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="232"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="413"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="360"/>
         <source>Each</source>
         <translation>هر :</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="221"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="363"/>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="242"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="414"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="361"/>
         <source>Days</source>
         <translation>روز</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="228"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="364"/>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="249"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="415"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="362"/>
         <source>Daily</source>
         <translation>روزانه</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="258"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="372"/>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="279"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="426"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="370"/>
         <source>File in queue</source>
         <translation>فایل در صف</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="267"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="366"/>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="313"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="417"/>
+        <source>Down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="326"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="418"/>
+        <source>Remove</source>
+        <translation type="unfinished">حذف</translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="345"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="419"/>
+        <source>Up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="352"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="420"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="364"/>
         <source>Number download file at same time :</source>
         <translation>تعداد دانلود فایل همزمان</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="291"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="371"/>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="376"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="425"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="369"/>
         <source>File Name</source>
         <translation>نام فایل</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="296"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="370"/>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="381"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="424"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="368"/>
         <source>Size</source>
         <translation>سایز</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="301"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="369"/>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="386"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="423"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="367"/>
         <source>Status</source>
         <translation>وضعیت</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="306"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="368"/>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="391"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="422"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="366"/>
         <source>Time Left</source>
         <translation>زمان باقی مانده</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="318"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="373"/>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="68"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="398"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="371"/>
         <source>Stop Now</source>
         <translation>توقف حالا</translation>
@@ -1337,100 +1456,100 @@
 <context>
     <name>TableViewController</name>
     <message>
-        <location filename="../src/TableViewController.cpp" line="7"/>
+        <location filename="../src/TableViewController1.cpp" line="7"/>
         <source>File Name</source>
         <translation>نام فایل</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="7"/>
+        <location filename="../src/TableViewController1.cpp" line="7"/>
         <source>Size</source>
         <translation>سایز</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="7"/>
+        <location filename="../src/TableViewController1.cpp" line="7"/>
         <source>Status</source>
         <translation>وضعیت</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="7"/>
+        <location filename="../src/TableViewController1.cpp" line="7"/>
         <source>Speed</source>
         <translation>سرعت</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="7"/>
+        <location filename="../src/TableViewController1.cpp" line="7"/>
         <source>Time Left</source>
         <translation>زمان باقی مانده</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="7"/>
+        <location filename="../src/TableViewController1.cpp" line="7"/>
         <source>Last Try Time</source>
         <translation>آخرین زمان تلاش</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="7"/>
+        <location filename="../src/TableViewController1.cpp" line="7"/>
         <source>Description</source>
         <translation>توضیحات</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="7"/>
+        <location filename="../src/TableViewController1.cpp" line="7"/>
         <source>Save To</source>
         <translation>محل ذخیره</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="87"/>
+        <location filename="../src/TableViewController1.cpp" line="87"/>
         <source>Colomns...</source>
         <translation>ستون ها...</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="173"/>
+        <location filename="../src/TableViewController1.cpp" line="173"/>
         <source>Open</source>
         <translation>باز کردن</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="179"/>
+        <location filename="../src/TableViewController1.cpp" line="179"/>
         <source>Open with</source>
         <translation>باز کردن با</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="183"/>
+        <location filename="../src/TableViewController1.cpp" line="183"/>
         <source>Open folder</source>
         <translation>باز کردن فولدر</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="199"/>
-        <location filename="../src/TableViewController.cpp" line="329"/>
+        <location filename="../src/TableViewController1.cpp" line="199"/>
+        <location filename="../src/TableViewController1.cpp" line="329"/>
         <source>Resume</source>
         <translation>ادامه</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="208"/>
-        <location filename="../src/TableViewController.cpp" line="333"/>
+        <location filename="../src/TableViewController1.cpp" line="208"/>
+        <location filename="../src/TableViewController1.cpp" line="333"/>
         <source>Pause</source>
         <translation>توقف</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="222"/>
+        <location filename="../src/TableViewController1.cpp" line="222"/>
         <source>Delete From Queue</source>
         <translation>حذف کردن از صف</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="230"/>
+        <location filename="../src/TableViewController1.cpp" line="230"/>
         <source>Add To Queue</source>
         <translation>افزودن به صف</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="250"/>
+        <location filename="../src/TableViewController1.cpp" line="250"/>
         <source>Remove</source>
         <translation>حذف</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="259"/>
+        <location filename="../src/TableViewController1.cpp" line="259"/>
         <source>Properties</source>
         <translation>جزئیات</translation>
     </message>
     <message>
-        <location filename="../src/TableViewController.cpp" line="302"/>
-        <location filename="../src/TableViewController.cpp" line="394"/>
+        <location filename="../src/TableViewController1.cpp" line="302"/>
+        <location filename="../src/TableViewController1.cpp" line="394"/>
         <source>Complete</source>
         <translation>تکمیل شده</translation>
     </message>

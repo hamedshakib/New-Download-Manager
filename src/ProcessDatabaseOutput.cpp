@@ -72,7 +72,7 @@ void ProcessDatabaseOutput::ProcessPrepareLoadedInformationForMainTableView(cons
 	}
 	
 
-	model->appendRow(TableViewRowCreater::PrepareDataForRow(id, FileName, ConverterSizeToSuitableString::ConvertSizeToSuitableString(DownloadSize), Status, "", "", LastTryTime, Description, SaveTo));
+	model->appendRow(TableViewRowCreater::PrepareDataForRowForMainTableView(id, FileName, ConverterSizeToSuitableString::ConvertSizeToSuitableString(DownloadSize), Status, "", "", LastTryTime, Description, SaveTo));
 	//auto preparedDataForRow = tableViewController1->PrepareDataForRow(id, FileName, ConverterSizeToSuitableString::ConvertSizeToSuitableString(DownloadSize).remove("Size: "), Status, "", "", LastTryTime, Description, SaveTo);
 	//tableViewController1->model->appendRow(preparedDataForRow);
 }

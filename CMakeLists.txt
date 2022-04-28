@@ -214,9 +214,13 @@ set(PROJECT_SOURCES
         ${MY_HeaderAndUi_PATH}/BatchDownloadCreatorWidget.h
         ${MY_SOURCE_PATH}/BatchDownloadCreatorWidget.cpp
 
+        #MainTableViewController
+        ${MY_HeaderAndUi_PATH}/MainTableViewController.h
+        ${MY_SOURCE_PATH}/MainTableViewController.cpp
 
-
-
+        #ScheduleTableViewController
+        ${MY_HeaderAndUi_PATH}/ScheduleTableViewController.h
+        ${MY_SOURCE_PATH}/ScheduleTableViewController.cpp
 
 
 

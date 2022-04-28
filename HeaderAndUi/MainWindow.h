@@ -8,7 +8,8 @@
 #include "SettingUpDatabase.h"
 #include "qabstractitemmodel.h"
 #include "qstandarditemmodel.h"
-#include "TableViewController.h"
+//#include "TableViewController.h"
+#include "MainTableViewController.h"
 #include "TreeViewController.h"
 #include "DownloadManager.h"
 #include "QueueManager.h"
@@ -31,7 +32,7 @@ public:
 
 	void SetDownloadManager(DownloadManager* downloadManager);
 	void SetQueueManaget(QueueManager* queueManager);
-	void CreateTableViewControllerForMainWindow();
+	void CreateMainTableViewControllerForMainWindow();
 	void CreateTreeViewController();
 	void LoadTreeView();
 
@@ -65,7 +66,7 @@ protected:
 
 
 private:
-	TableViewController* tableViewController;
+	MainTableViewController* mainTableViewController;
 	TreeViewController* treeViewController;
 	DownloadManager* downloadManagerPointer;
 	QueueManager* queueManager;

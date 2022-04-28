@@ -9,7 +9,7 @@ TableViewRowCreater::~TableViewRowCreater()
 {
 }
 
-QList<QStandardItem*> TableViewRowCreater::PrepareDataForRow(int id, QString FileName, QString Size, QString Status, QString Speed, QString TimeLeft, QString LastTryTime, QString Description, QString SaveTo)
+QList<QStandardItem*> TableViewRowCreater::PrepareDataForRowForMainTableView(int id, QString FileName, QString Size, QString Status, QString Speed, QString TimeLeft, QString LastTryTime, QString Description, QString SaveTo)
 {
 	QList<QStandardItem*> listOfItems;
 
@@ -26,7 +26,7 @@ QList<QStandardItem*> TableViewRowCreater::PrepareDataForRow(int id, QString Fil
 	return listOfItems;
 }
 
-QList<QStandardItem*> TableViewRowCreater::PrepareDataForRow(Download* download)
+QList<QStandardItem*> TableViewRowCreater::PrepareDataForRowForMainTableView(Download* download)
 {
 	QList<QStandardItem*> listOfItems;
 

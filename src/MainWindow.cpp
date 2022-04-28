@@ -14,13 +14,13 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
 }
-void MainWindow::CreateTableViewControllerForMainWindow()
+void MainWindow::CreateMainTableViewControllerForMainWindow()
 {
-	tableViewController = new TableViewController(ui.tableView, this);
-	tableViewController->Set_DownloadManager(downloadManagerPointer);
-	tableViewController->ProcessSetupOfTableView();
-	tableViewController->Set_QueueManager(queueManager);
-	connect(tableViewController, &TableViewController::SelectedDownloadChanged, this, &MainWindow::ChangedDownloadSelected);
+	mainTableViewController = new MainTableViewController(ui.tableView, this);
+	mainTableViewController->Set_DownloadManager(downloadManagerPointer);
+	mainTableViewController->ProcessSetupOfTableView();
+	mainTableViewController->Set_QueueManager(queueManager);
+	connect(mainTableViewController, &MainTableViewController::SelectedDownloadChanged, this, &MainWindow::ChangedDownloadSelected);
 }
 
 void MainWindow::CreateTreeViewController()
@@ -273,16 +273,16 @@ void MainWindow::on_actionRemove_triggered()
 {
 	if (SelectedDownload != nullptr)
 	{
-		tableViewController->RemoveActionTriggered(SelectedDownload);
+		mainTableViewController->RemoveActionTriggered(SelectedDownload);
 	}
 	else
 	{
-		int Download_id=tableViewController->Get_SeletedFinisedDownloadId();
+		int Download_id= mainTableViewController->Get_SeletedFinisedDownloadId();
 		if (Download_id > 0)
 		{
 			//is valid
 			Download* download = downloadManagerPointer->ProcessAchieveDownload(Download_id);
-			tableViewController->RemoveActionTriggered(download);
+			mainTableViewController->RemoveActionTriggered(download);
 		}
 	}
 }
