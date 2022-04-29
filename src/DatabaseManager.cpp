@@ -350,13 +350,16 @@ bool DatabaseManager::DecreaseDownloadNumberOfQueueListForNextDownloadInQueueLis
 
 bool DatabaseManager::MoveDownloadIn_Queue_Download(Queue* queue, Download* download, int moveNumber)
 {
-	QSqlQuery* query = DatabaseQueryPreparer::PrepareQueryForMoveDownloadIn_Queue_Download(queue, download,moveNumber);
-	if (DatabaseInteract::ExectionQueryForUpdateData(query))
+	QList<QSqlQuery*> querylist = DatabaseQueryPreparer::PrepareQueryForMoveDownloadIn_Queue_Download(queue, download,moveNumber);
+	if (DatabaseInteract::ExectionQueryForUpdateData(querylist[0]))
 	{
-		delete query;
-		return true;
+		if (DatabaseInteract::ExectionQueryForUpdateData(querylist[1]))
+		{
+			qDeleteAll(querylist);
+			return true;
+		}
 	}
-	delete query;
+	qDeleteAll(querylist);
 	return false;
 }
 bool DatabaseManager::ExitAllDownloadFrom_Queue_Download(Queue* queue)

@@ -562,14 +562,16 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForDecreaseDownloadNumberOfQueueLi
 	return query;
 }
 
-QSqlQuery* DatabaseQueryPreparer::PrepareQueryForMoveDownloadIn_Queue_Download(Queue* queue, Download* download, int moveNumber)
+QList<QSqlQuery*> DatabaseQueryPreparer::PrepareQueryForMoveDownloadIn_Queue_Download(Queue* queue, Download* download, int moveNumber)
 {
+	/*
 	SettingUpDatabase::get_Database();
 	QString queryString = QString(
 		"UPDATE Queue_Download "
 		"SET NumbersInList = NumbersInList + :moveNumber "
 		"WHERE Queue_id = :queue_id AND Download_id = :download_id; "
 	);
+
 
 	QSqlQuery* query = new QSqlQuery();
 	query->prepare(queryString);
@@ -579,6 +581,52 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForMoveDownloadIn_Queue_Download(Q
 	query->bindValue(":queue_id", queue->Get_QueueId());
 	query->bindValue(":download_id", download->IdDownload);
 	return query;
+	*/
+
+
+
+	SettingUpDatabase::get_Database();
+	QList< QSqlQuery*> listOfQueries;
+
+
+
+	QString queryString1 = QString(
+		"UPDATE Queue_Download "
+		"SET NumbersInList = NumbersInList + :moveNumber "
+		"WHERE Queue_id = :queue_id AND Download_id = :download_id; "
+	);
+	QSqlQuery* query1 = new QSqlQuery();
+	query1->prepare(queryString1);
+
+	query1->bindValue(":moveNumber", moveNumber);
+	query1->bindValue(":queue_id", queue->Get_QueueId());
+	query1->bindValue(":download_id", download->IdDownload);
+	listOfQueries.append(query1);
+
+	//
+	QString queryString2 = QString(
+		"UPDATE Queue_Download "
+		"SET NumbersInList = NumbersInList + :moveNumber "
+		"WHERE Queue_id = :queue_id AND  Download_id != :download_id and NumbersInList = (select NumbersInList From Queue_Download where Download_id = :download_id); "
+	);
+	QSqlQuery* query2 = new QSqlQuery();
+	query2->prepare(queryString2);
+
+	query2->bindValue(":moveNumber", -moveNumber);
+	query2->bindValue(":queue_id", queue->Get_QueueId());
+	query2->bindValue(":download_id", download->IdDownload);
+	listOfQueries.append(query2);
+
+
+
+
+
+
+
+
+	return listOfQueries;
+
+
 }
 
 QSqlQuery* DatabaseQueryPreparer::PrepareQueryForExitAllDownloadFrom_Queue_Download(Queue* queue)
