@@ -62,6 +62,8 @@ public:
 
 	static void LoadDownloadInformationOfQueueForScheduleTreeWidget(QList<QTreeWidgetItem*>& TreeWidgetItems,Queue* queue);
 
+	static bool UpdateNumberOfDownloadAtSameTimeOfQueue(Queue* queue);
+
 public:
 	DatabaseManager(QObject *parent=nullptr);
 	~DatabaseManager();

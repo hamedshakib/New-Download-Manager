@@ -649,3 +649,21 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForLoadDownloadInformationOfQueueF
 	query->bindValue(":queue_id", queue->Get_QueueId());
 	return query;
 }
+
+QSqlQuery* DatabaseQueryPreparer::PrepareQueryForUpdateNumberOfDownloadAtSameTimeOfQueue(Queue* queue)
+{
+	SettingUpDatabase::get_Database();
+	QString queryString = QString(
+		"UPDATE Queue "
+		"SET NumberDownloadSameTime = :numberDownloadSameTime "
+		"WHERE id = :queue_id; "
+	);
+
+	QSqlQuery* query = new QSqlQuery();
+	query->prepare(queryString);
+
+	query->bindValue(":numberDownloadSameTime", queue->Get_NumberDownloadAtSameTime());
+	query->bindValue(":queue_id", queue->Get_QueueId());
+
+	return query;
+}

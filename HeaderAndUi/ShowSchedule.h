@@ -34,6 +34,10 @@ private slots:
 
 	void UpdateSchedule();
 
+	void LoadNumberOfDownloadAtSameTime(Queue* queue);
+	void UpdateNumberOfDownloadAtSameTime(int value, Queue* queue);
+
+
 public slots:
 	void UpdateScheduleTreeWidgetTab(Queue* queue);
 

@@ -415,3 +415,15 @@ void DatabaseManager::LoadDownloadInformationOfQueueForScheduleTreeWidget(QList<
 	}
 	delete query;
 }
+
+bool DatabaseManager::UpdateNumberOfDownloadAtSameTimeOfQueue(Queue* queue)
+{
+	QSqlQuery* query = DatabaseQueryPreparer::PrepareQueryForUpdateNumberOfDownloadAtSameTimeOfQueue(queue);
+	if (DatabaseInteract::ExectionQueryForUpdateData(query))
+	{
+		delete query;
+		return true;
+	}
+	delete query;
+	return false;
+}

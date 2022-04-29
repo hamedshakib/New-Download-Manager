@@ -29,11 +29,13 @@ public:
 	Queue* AchiveQueue(size_t Queue_id);
 
 public slots:
+	void ProcessRemoveADownloadFromQueue(size_t download_id);
 	void ProcessRemoveADownloadFromQueue(Download* download);
 	bool AddDownloadToQueue(Download* download, Queue* queue);
 	bool ChangeStartOrStopTimeForQueue(Queue* queue);
 
 	bool MoveDownloadInQueue(Queue* queue,Download* download,int moveNumber);
+	bool MoveDownloadInQueue(size_t download_id,int moveNumber);
 
 private slots:
 	void FinishDownloadOfQueue(Download* download, Queue* queue);

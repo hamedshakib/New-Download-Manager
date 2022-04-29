@@ -173,6 +173,12 @@ void QueueManager::ProcessRemoveADownloadFromQueue(Download* download)
 	DatabaseManager::DecreaseDownloadNumberOfQueueListForNextDownloadInQueueListOn_Queue_Download(queue,DownloadNumberInQueueList);
 }
 
+void QueueManager::ProcessRemoveADownloadFromQueue(size_t download_id)
+{
+	Download* download=m_downloadManager->ProcessAchieveDownload(download_id);
+	ProcessRemoveADownloadFromQueue(download);
+}
+
 bool QueueManager::RemoveDownloadFromQueue(Download* download)
 {
 	DatabaseManager::RemoveDownloadFrom_Queue_Download(download);
@@ -278,4 +284,15 @@ bool QueueManager::MoveDownloadInQueue(Queue* queue, Download* download, int mov
 		return true;
 	else
 		return false;
+}
+
+bool QueueManager::MoveDownloadInQueue(size_t download_id, int moveNumber)
+{
+	Download* download=m_downloadManager->ProcessAchieveDownload(download_id);
+	Queue* queue=AchiveQueue(download->get_QueueId());
+	if (MoveDownloadInQueue(queue, download, moveNumber))
+		return true;
+	else
+		return false;
+
 }

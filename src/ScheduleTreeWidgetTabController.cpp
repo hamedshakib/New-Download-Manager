@@ -39,6 +39,7 @@ void ScheduleTreeWidgetTabController::ChangedCurrentQueue(Queue* NewQueue)
 void ScheduleTreeWidgetTabController::UpdateAllDataOfTreeWidget()
 {
 	m_TreeWidget->clear();
+	TreeWidgetItems.clear();
 	LoadDownloadInformationOfQueueForScheduleTreeWidgetFromDatabase();
 
 	std::sort(TreeWidgetItems.begin(), TreeWidgetItems.end(), [&](const QTreeWidgetItem* v1, const QTreeWidgetItem* v2) {return v1->data(4, 0).toInt() < v2->data(4, 0).toInt(); });
@@ -57,17 +58,37 @@ size_t ScheduleTreeWidgetTabController::GetDownloadIdFromTreeWidgetItem(QTreeWid
 
 void ScheduleTreeWidgetTabController::ClickedOnUpButton()
 {
-
+	auto items = m_TreeWidget->selectedItems();
+	if (!items.isEmpty())
+	{
+		auto item = items[0];
+		size_t download_id = GetDownloadIdFromTreeWidgetItem(item);
+		m_QueueManager->MoveDownloadInQueue(download_id, -1);
+		UpdateAllDataOfTreeWidget();
+	}
 }
 
 void ScheduleTreeWidgetTabController::ClickedOnDownButton()
 {
+	auto items= m_TreeWidget->selectedItems();
+	if (!items.isEmpty())
+	{
+		auto item = items[0];
+		size_t download_id = GetDownloadIdFromTreeWidgetItem(item);
 
+		m_QueueManager->MoveDownloadInQueue(download_id, +1);
+		UpdateAllDataOfTreeWidget();
+	}
 }
 
 void ScheduleTreeWidgetTabController::ClickedOnRemoveButton()
 {
-
+	for (QTreeWidgetItem* item : m_TreeWidget->selectedItems())
+	{
+		size_t download_id=GetDownloadIdFromTreeWidgetItem(item);
+		m_QueueManager->ProcessRemoveADownloadFromQueue(download_id);
+	}
+	UpdateAllDataOfTreeWidget();
 }
 
 void ScheduleTreeWidgetTabController::ChangeColumnWidth(int numberOfColumn, int NewColumnWidth)
@@ -75,3 +96,4 @@ void ScheduleTreeWidgetTabController::ChangeColumnWidth(int numberOfColumn, int 
 	QString SettingStringKey = "TreeWidget/ScheduleTreeWidget/WidthColum" + QString::number(numberOfColumn);
 	SettingInteract::SetValue(SettingStringKey, NewColumnWidth);
 }
+

@@ -17,14 +17,14 @@ public slots:
 	void UpdateAllDataOfTreeWidget();
 	void ChangedCurrentQueue(Queue* NewQueue);
 
+	void ClickedOnUpButton();
+	void ClickedOnDownButton();
+	void ClickedOnRemoveButton();
 private slots:
 	void LoadDownloadInformationOfQueueForScheduleTreeWidgetFromDatabase();
 	size_t GetDownloadIdFromTreeWidgetItem(QTreeWidgetItem* item);
 
 
-	void ClickedOnUpButton();
-	void ClickedOnDownButton();
-	void ClickedOnRemoveButton();
 	void ChangeColumnWidth(int numberOfColumn, int NewColumnWidth);
 
 private:

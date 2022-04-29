@@ -43,7 +43,6 @@ void TreeViewController::LoadTreeView()
 
 
 
-
 	model->setItem(0, Categoryitem);
 	model->setItem(1, Queueitem);
 
@@ -60,11 +59,6 @@ void TreeViewController::customContextMenuRequested(const QPoint& point)
 		return;
 	}
 
-	//ToDo Start/Pause Queue
-	//qDebug() << index;
-	//qDebug() << index.parent();
-	//qDebug() << index.data(0);
-
 	if (index.parent().model() == Queueitem->model())
 	{
 		//Queue right clicked
@@ -77,7 +71,6 @@ void TreeViewController::customContextMenuRequested(const QPoint& point)
 	{
 		//Category right clicked
 		QMenu* RightClickMenu = new QMenu(m_TreeView);
-
 	}
 	
 }
@@ -107,8 +100,6 @@ void TreeViewController::CreateMenuForQueueRightClicked(const QPoint& Point, Que
 	RightClickMenu->addAction(DeleteQueue);
 
 
-
-	//RightClickMenu->exec(treeView->viewport()->mapToGlobal(point));
 	RightClickMenu->exec(m_TreeView->viewport()->mapToGlobal(Point));
 }
 

@@ -302,7 +302,7 @@
            </spacer>
           </item>
           <item row="3" column="3">
-           <widget class="QPushButton" name="pushButton_2">
+           <widget class="QPushButton" name="Down_pushButton">
             <property name="maximumSize">
              <size>
               <width>50</width>
@@ -315,7 +315,7 @@
            </widget>
           </item>
           <item row="4" column="3">
-           <widget class="QPushButton" name="pushButton_3">
+           <widget class="QPushButton" name="Remove_pushButton">
             <property name="maximumSize">
              <size>
               <width>50</width>
@@ -328,7 +328,7 @@
            </widget>
           </item>
           <item row="2" column="3">
-           <widget class="QPushButton" name="pushButton">
+           <widget class="QPushButton" name="Up_pushButton">
             <property name="sizePolicy">
              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
               <horstretch>1</horstretch>
@@ -394,7 +394,11 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QSpinBox" name="spinBox_2"/>
+           <widget class="QSpinBox" name="spinBox_2">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+           </widget>
           </item>
           <item row="1" column="3">
            <widget class="QFrame" name="frame">

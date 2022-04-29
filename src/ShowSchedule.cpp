@@ -22,6 +22,11 @@ ShowSchedule::ShowSchedule(QueueManager* queueManager,QWidget *parent)
 	connect(ui.Periodic_radioButton, &QRadioButton::clicked, this, [&](int) {UpdateSchedule(); });
 	connect(ui.daily_radioButton, &QRadioButton::clicked, this, [&](int) {UpdateSchedule(); });
 	connect(ui.radioButton_4, &QRadioButton::clicked, this, [&](int) {UpdateSchedule(); });
+
+
+	connect(ui.Up_pushButton, &QPushButton::clicked, scheduleTreeWidgetTabController, &ScheduleTreeWidgetTabController::ClickedOnUpButton);
+	connect(ui.Down_pushButton, &QPushButton::clicked, scheduleTreeWidgetTabController, &ScheduleTreeWidgetTabController::ClickedOnDownButton);
+	connect(ui.Remove_pushButton, &QPushButton::clicked, scheduleTreeWidgetTabController, &ScheduleTreeWidgetTabController::ClickedOnRemoveButton);
 }
 
 ShowSchedule::~ShowSchedule()
@@ -62,6 +67,7 @@ void ShowSchedule::on_Apply_pushButton_clicked()
 	PutInformationInQueue(queue);
 	m_queueManager->ChangeStartOrStopTimeForQueue(queue);
 	DatabaseManager::UpdateTimeQueueEvents(queue);
+	UpdateNumberOfDownloadAtSameTime(ui.spinBox_2->value(),queue);
 }
 
 void ShowSchedule::on_Cancel_pushButton_clicked()
@@ -81,7 +87,6 @@ void ShowSchedule::on_AddQueue_pushButton_clicked()
 
 	Queue *queue=m_queueManager->CreateNewQueue(newQueueName);
 	QListWidgetItem* listwidgetItem = new QListWidgetItem(ui.listWidget);
-	//listwidgetItem->setText(newQueueName);
 	listwidgetItem->setData(0, newQueueName);
 	listwidgetItem->setData(1, queue->Get_QueueId());
 
@@ -193,6 +198,7 @@ void ShowSchedule::LoadInformationOfChangedQueue()
 	}
 	UpdateSchedule();
 	UpdateScheduleTreeWidgetTab(queue);
+	LoadNumberOfDownloadAtSameTime(queue);
 }
 
 void ShowSchedule::UpdateSchedule()
@@ -375,5 +381,20 @@ void ShowSchedule::PutInformationInQueue(Queue* queue)
 
 void ShowSchedule::UpdateScheduleTreeWidgetTab(Queue* queue)
 {
-	scheduleTreeWidgetTabController->ChangedCurrentQueue(queue);
+	if(queue)
+		scheduleTreeWidgetTabController->ChangedCurrentQueue(queue);
+}
+
+void ShowSchedule::LoadNumberOfDownloadAtSameTime(Queue* queue)
+{
+	ui.spinBox_2->setValue(queue->Get_NumberDownloadAtSameTime());
+}
+
+void ShowSchedule::UpdateNumberOfDownloadAtSameTime(int value, Queue* queue)
+{
+	if (queue)
+	{
+		queue->Set_NumberDownloadAtSameTime(value);
+		DatabaseManager::UpdateNumberOfDownloadAtSameTimeOfQueue(queue);
+	}
 }
