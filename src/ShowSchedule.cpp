@@ -96,9 +96,13 @@ void ShowSchedule::on_AddQueue_pushButton_clicked()
 
 void ShowSchedule::on_DeleteQueue_pushButton_clicked()
 {
-	m_queueManager->DeleteQueueByQueueId(CurrentQueueItemSelected->data(1).toInt());
-	ui.listWidget->removeItemWidget(CurrentQueueItemSelected);
-	delete CurrentQueueItemSelected;
+	int Queue_id = CurrentQueueItemSelected->data(1).toInt();
+	if (Queue_id > 1)
+	{
+		m_queueManager->DeleteQueueByQueueId(Queue_id);
+		ui.listWidget->removeItemWidget(CurrentQueueItemSelected);
+		delete CurrentQueueItemSelected;
+	}
 }
 
 void ShowSchedule::AddDownloadsToTreeWidget()

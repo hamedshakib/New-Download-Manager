@@ -24,6 +24,8 @@ public:
 	bool CreateNewDownloadsFromBatch(QList<QString> listOfAddress, QString SaveTo, QString Username, QString Password);
 	bool StartDownloader(Downloader* downloader);
 	bool StopAllDownload();
+	bool Set_SpeedLimit(int maxSpeed);
+
 
 
 	Download* ProcessAchieveDownload(int Download_id);
@@ -36,13 +38,14 @@ private slots:
 	void AddCreatedDownloadToDownloadList(Download* download);
 	bool CreateDownloaderAndStartDownload(Download* download);
 	Downloader* CreateDownloader(Download* download);
-
+	bool SpeedLimitForAllDownload();
 
 private:
 
 	//friend class TableViewController;
 	QList<Download*> ListOfActiveDownloads;
 	QList<Downloader*> ListOfDownloaders;
+	int SpeedLimit = 0;
 
 
 signals:

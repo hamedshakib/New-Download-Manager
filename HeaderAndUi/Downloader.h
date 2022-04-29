@@ -26,7 +26,7 @@ private:
 	Download* download;
 	QList<PartDownloader*> PartDownloader_list;
 	CalculatorDownload calculatorDownload;
-	qint64 MaxSpeedOfThisDownloader; //   KB/Sec
+	size_t MaxSpeedOfThisDownloader; //   KB/Sec
 	bool Is_PreparePartDownloaders=false;
 	bool Is_Downloading = false;
 	QElapsedTimer elapsedTimer;
@@ -45,7 +45,8 @@ public:
 	bool IsDownloading();
 
 	Download* Get_Download();
-
+	void SetMaxSpeed(int maxSpeed);
+	int Get_MaxSpeed();
 
 private:
 	bool CreatePartDownloaderFromDatabase();

@@ -20,6 +20,7 @@
 #include "qmessagebox.h"
 #include "qpixmap.h"
 #include "qprocess.h"
+#include "qinputdialog.h"
 
 
 class MainWindow : public QMainWindow
@@ -49,6 +50,8 @@ private slots:
 	void on_actionStop_All_triggered();
 	void on_actionEnglish_triggered();
 	void on_actionPersian_triggered();
+	void on_actionSpeedLimitterTurnOnOrOff_triggered();
+	void on_actionSpeedLimitterSetting_triggered();
 
 	void LoadDownloadsForMainTable();
 	void LoadSizeOfWidnow();

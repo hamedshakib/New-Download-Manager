@@ -95,9 +95,12 @@ void TreeViewController::CreateMenuForQueueRightClicked(const QPoint& Point, Que
 	}
 
 
-	QAction* DeleteQueue = new QAction(tr("Delete"), this);
-	connect(DeleteQueue, &QAction::triggered, this, [&, queue, queueManager]() {queueManager->DeleteQueueByQueueId(queue->Get_QueueId()); sender()->deleteLater(); });
-	RightClickMenu->addAction(DeleteQueue);
+	if (queue->Get_QueueId() > 1)
+	{
+		QAction* DeleteQueue = new QAction(tr("Delete"), this);
+		connect(DeleteQueue, &QAction::triggered, this, [&, queue, queueManager]() {queueManager->DeleteQueueByQueueId(queue->Get_QueueId()); sender()->deleteLater(); });
+		RightClickMenu->addAction(DeleteQueue);
+	}
 
 
 	RightClickMenu->exec(m_TreeView->viewport()->mapToGlobal(Point));

@@ -1,5 +1,6 @@
 #include "HeaderAndUi/Downloader.h"
 
+//qint64 spentedTime;
 Downloader::Downloader(Download* download, QObject* parent)
 	:QObject(parent)
 {
@@ -8,11 +9,12 @@ Downloader::Downloader(Download* download, QObject* parent)
 	connect(this, &Downloader::FinishedThisPeriod, this, [&](qint64 Bytes, qint64 spentedTime) {
 		if (spentedTime < 1000) 
 		{
-			timer.singleShot(1000 - spentedTime, this, &Downloader::DownloadWithSpeedControlled);
-			//QTimer::singleShot(1000 - spentedTime, this, &Downloader::DownloadWithSpeedControlled);
+			//it's mean pause for other other of one second and wait for next second
+			timer.singleShot(995- spentedTime, this, &Downloader::DownloadWithSpeedControlled);
 		}
 		else
 		{
+
 			DownloadWithSpeedControlled();
 		}
 		});
@@ -50,6 +52,7 @@ bool Downloader::StartDownload()
 	download->LastTryTime = QDateTime::currentDateTime();
 	emit Started();
 	Is_Downloading = true;
+	elapsedTimer.restart();
 	DownloadWithSpeedControlled();
 }
 
@@ -101,16 +104,22 @@ bool Downloader::IsDownloading()
 
 void Downloader::DownloadWithSpeedControlled()
 {
+	//qDebug() <<"B:" << elapsedTimer.elapsed();
 	qint64 spentedTime = elapsedTimer.restart();
 	NumberOfBytesDownloadedInLastPeriod = 0;
 	if (MaxSpeedOfThisDownloader > 0)
 	{
-		while (spentedTime<1000 && MaxSpeedOfThisDownloader * 1024>NumberOfBytesDownloadedInLastPeriod)
+		while (spentedTime<1000 && MaxSpeedOfThisDownloader*1024 >NumberOfBytesDownloadedInLastPeriod)
 		{
-			qint64 BytesShouldDownload = MaxSpeedOfThisDownloader * 1024 - NumberOfBytesDownloadedInLastPeriod;
+			//qDebug() << "1:"<< spentedTime;
+			//qDebug() << NumberOfBytesDownloadedInLastPeriod;
+			qint64 BytesShouldDownload = MaxSpeedOfThisDownloader*1024 - NumberOfBytesDownloadedInLastPeriod;
+			//qDebug() << "SOU:" << BytesShouldDownload;
 			spentedTime += elapsedTimer.elapsed();
-			NumberOfBytesDownloadedInLastPeriod += ProcessOfDownload();
+			NumberOfBytesDownloadedInLastPeriod += ProcessOfDownload(BytesShouldDownload);
+
 		}
+		//qDebug() << "3:"<<spentedTime;
 	}
 	else
 	{
@@ -127,7 +136,7 @@ void Downloader::DownloadWithSpeedControlled()
 	emit SignalForUpdateDownloading(DownloadStatus, SpeedString, TimeLeftString);
 
 
-
+	qDebug() <<"S:" << spentedTime;
 	if (Is_Downloading)
 	{
 		emit FinishedThisPeriod(NumberOfBytesDownloadedInLastPeriod, elapsedTimer.elapsed());
@@ -266,4 +275,14 @@ bool Downloader::ShowCompleteDialog(Download* download,QFile* newDownloadFile)
 void Downloader::UpdateDownloadInUpdatingInDatabase()
 {
 	//ToDo 
+}
+
+void Downloader::SetMaxSpeed(int maxSpeed)
+{
+	MaxSpeedOfThisDownloader = maxSpeed;
+}
+
+int Downloader::Get_MaxSpeed()
+{
+	return MaxSpeedOfThisDownloader;
 }
