@@ -218,9 +218,9 @@ set(PROJECT_SOURCES
         ${MY_HeaderAndUi_PATH}/MainTableViewController.h
         ${MY_SOURCE_PATH}/MainTableViewController.cpp
 
-        #ScheduleTableViewController
-        ${MY_HeaderAndUi_PATH}/ScheduleTableViewController.h
-        ${MY_SOURCE_PATH}/ScheduleTableViewController.cpp
+        #ScheduleTreeWidgetController
+        ${MY_HeaderAndUi_PATH}/ScheduleTreeWidgetTabController.h
+        ${MY_SOURCE_PATH}/ScheduleTreeWidgetTabController.cpp
 
 
 

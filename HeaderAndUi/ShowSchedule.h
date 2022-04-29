@@ -4,6 +4,7 @@
 #include "ui_ShowSchedule.h"
 #include "QueueManager.h"
 #include "ConverterQueueTime.h"
+#include "ScheduleTreeWidgetTabController.h"
 
 class ShowSchedule : public QWidget
 {
@@ -33,10 +34,13 @@ private slots:
 
 	void UpdateSchedule();
 
+public slots:
+	void UpdateScheduleTreeWidgetTab(Queue* queue);
 
 private:
 	QueueManager* m_queueManager;
 	QListWidgetItem *CurrentQueueItemSelected;
+	ScheduleTreeWidgetTabController* scheduleTreeWidgetTabController;
 
 	Ui::ShowSchedule ui;
 };

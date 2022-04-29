@@ -1558,6 +1558,7 @@
     <name>TableViewRowCreater</name>
     <message>
         <location filename="../src/TableViewRowCreater.cpp" line="41"/>
+        <location filename="../src/TableViewRowCreater.cpp" line="80"/>
         <source>Complete</source>
         <translation>تکمیل شده</translation>
     </message>

@@ -400,3 +400,18 @@ size_t DatabaseManager::GetturnInIdOfDownload(Queue* queue,int NumnberDownloadIn
 	delete query;
 	return queue_id;
 }
+
+void DatabaseManager::LoadDownloadInformationOfQueueForScheduleTreeWidget(QList<QTreeWidgetItem*>& TreeWidgetItems, Queue* queue)
+{
+	QSqlQuery* query = DatabaseQueryPreparer::PrepareQueryForLoadDownloadInformationOfQueueForScheduleTreeWidget(queue);
+	if (DatabaseInteract::ExectionQueryForReadData(query))
+	{
+		while(query->next())
+		{
+			QTreeWidgetItem* item = new QTreeWidgetItem();
+			ProcessDatabaseOutput::PutDownloadInformationOfQueueForScheduleTreeWidget(query->record(), item);
+			TreeWidgetItems.append(item);
+		}
+	}
+	delete query;
+}

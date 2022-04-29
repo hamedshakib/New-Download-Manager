@@ -59,7 +59,7 @@ public:
 	static QSqlQuery* PrepareQueryForExitAllDownloadFrom_Queue_Download(Queue* queue);
 	static QSqlQuery* PrepareQueryForGetturnInIdOfDownload(Queue* queue, int NumnberDownloadInList);
 	static QSqlQuery* PrepareQueryForGetNumberInListDownload(Download* download);
-
+	static QSqlQuery* PrepareQueryForLoadDownloadInformationOfQueueForScheduleTreeWidget(Queue* queue);
 
 
 public:

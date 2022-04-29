@@ -50,7 +50,7 @@ void ProcessDatabaseOutput::ProcessPrepareLoadedInformationForMainTableView(cons
 	qint64 DownloadedSize = record.value("SizeDownloaded").toLongLong();
 	QString TempStatus = record.value("DownloadStatus").toString();
 
-	qDebug() <<"Temp st:" << TempStatus;
+	//qDebug() <<"Temp st:" << TempStatus;
 
 
 	QString LastTryTime = DateTimeManager::ConvertDataTimeToString(DateTimeManager::GetDateTimeFromString(record.value("LastTryTime").toString()));  //ToDo Improved with Galaly
@@ -150,5 +150,35 @@ bool ProcessDatabaseOutput::ProcessPutLoadedQueueInformationInQueueObject(const 
 bool ProcessDatabaseOutput::PutDownloadIdInQueueDownloadList(const QSqlRecord& record, Queue* queue)
 {
 	queue->List_DownloadId.append(record.value("id").toInt());
+	return true;
+}
+
+bool ProcessDatabaseOutput::PutDownloadInformationOfQueueForScheduleTreeWidget(const QSqlRecord& record,QTreeWidgetItem* item)
+{
+	//"SELECT QD.Download_id,QD.NumbersInList, "
+	//	"D.FileName, DownloadSize, DownloadStatus_id "
+
+
+	item->setData(4, 0, record.value("NumbersInList").toInt());
+	item->setData(5, 0, record.value("Download_id").toInt());
+
+	item->setText(0, record.value("FileName").toString());
+	item->setText(1, ConverterSizeToSuitableString::ConvertSizeToSuitableString(record.value("DownloadSize").toLongLong()));
+	item->setText(2, record.value("Status").toString());
+	item->setText(3, record.value("").toString());
+
+
+	//item->setData(0, 0, "1");
+	//item->setText(0, "Hi1");
+	//item->setText(1, "Hi2");
+	//item->setText(2, "Hi3");
+	//item->setText(3, "Hi4");
+
+
+	//item->setText(0, record.value("FileName").toString());
+	//item->setText(1, record.value("DownloadSize").toString());
+	//item->setText(2, record.value("DownloadStatus_id").toString());
+	//item->setText(3, record.value("").toString());
+
 	return true;
 }

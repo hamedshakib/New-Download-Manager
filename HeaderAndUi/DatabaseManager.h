@@ -6,6 +6,8 @@
 #include "DatabaseInteract.h"
 #include "ProcessDatabaseOutput.h"
 #include "qstandarditemmodel.h"
+#include <QTreeWidgetItem>
+
 
 #include "qsqlrecord.h"
 
@@ -57,6 +59,8 @@ public:
 
 	static bool MoveDownloadIn_Queue_Download(Queue* queue, Download* download, int moveNumber);
 	static size_t GetturnInIdOfDownload(Queue* queue, int NumnberDownloadInList);
+
+	static void LoadDownloadInformationOfQueueForScheduleTreeWidget(QList<QTreeWidgetItem*>& TreeWidgetItems,Queue* queue);
 
 public:
 	DatabaseManager(QObject *parent=nullptr);

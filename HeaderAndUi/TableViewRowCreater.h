@@ -21,6 +21,9 @@ public:
 	static QList<QStandardItem*> PrepareDataForRowForMainTableView(Download *download);
 	static QList<QStandardItem*> PrepareDataForRowForMainTableView(int id, QString FileName, QString Size, QString Status, QString Speed, QString TimeLeft, QString LastTryTime, QString Description, QString SaveTo);
 
+	static QList<QStandardItem*> PrepareDataForRowForScheduleTableView(Download* download);
+	static QList<QStandardItem*> PrepareDataForRowForScheduleTableView(int id, QString FileName, QString Size, QString Status, QString TimeLeft);
+
 public:
 	TableViewRowCreater(QObject *parent);
 	~TableViewRowCreater();

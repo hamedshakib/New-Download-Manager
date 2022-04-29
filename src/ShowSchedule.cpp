@@ -6,9 +6,14 @@ ShowSchedule::ShowSchedule(QueueManager* queueManager,QWidget *parent)
 	ui.setupUi(this);
 	this->setWindowFlags(Qt::Window);
 	this->m_queueManager = queueManager;
-	connect(ui.listWidget, &QListWidget::currentItemChanged, this, [&](QListWidgetItem* current, QListWidgetItem* pervious) {CurrentQueueItemSelected = current; LoadInformationOfChangedQueue(); });
 	PrepareQueues();
 
+	scheduleTreeWidgetTabController = new ScheduleTreeWidgetTabController(ui.treeWidget, this);
+	scheduleTreeWidgetTabController->Set_QueueManager(queueManager);
+
+	connect(ui.listWidget, &QListWidget::currentItemChanged, this, [&](QListWidgetItem* current, QListWidgetItem* pervious) {CurrentQueueItemSelected = current; LoadInformationOfChangedQueue(); });
+	CurrentQueueItemSelected = ui.listWidget->currentItem();
+	LoadInformationOfChangedQueue();
 
 
 	connect(ui.StartAt_checkBox, &QCheckBox::stateChanged, this, [&](int) {UpdateSchedule(); });
@@ -187,6 +192,7 @@ void ShowSchedule::LoadInformationOfChangedQueue()
 		}
 	}
 	UpdateSchedule();
+	UpdateScheduleTreeWidgetTab(queue);
 }
 
 void ShowSchedule::UpdateSchedule()
@@ -365,4 +371,9 @@ void ShowSchedule::PutInformationInQueue(Queue* queue)
 
 
 
+}
+
+void ShowSchedule::UpdateScheduleTreeWidgetTab(Queue* queue)
+{
+	scheduleTreeWidgetTabController->ChangedCurrentQueue(queue);
 }

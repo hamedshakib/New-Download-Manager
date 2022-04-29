@@ -631,3 +631,21 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForGetturnInIdOfDownload(Queue* qu
 	query->bindValue(":numbersInList", NumnberDownloadInList);
 	return query;
 }
+
+QSqlQuery* DatabaseQueryPreparer::PrepareQueryForLoadDownloadInformationOfQueueForScheduleTreeWidget(Queue* queue)
+{
+	SettingUpDatabase::get_Database();
+	QString queryString = QString(
+		"SELECT QD.Download_id,QD.NumbersInList, "
+		"D.FileName, DownloadSize, DS.Name as Status "
+		"FROM Queue_Download as QD join Download as D on QD.Download_id = D.id join DownloadStatus as DS on D.DownloadStatus_id = DS.id "
+		"Where QD.Queue_id = :queue_id; "
+	);
+
+	QSqlQuery* query = new QSqlQuery();
+	query->prepare(queryString);
+
+
+	query->bindValue(":queue_id", queue->Get_QueueId());
+	return query;
+}

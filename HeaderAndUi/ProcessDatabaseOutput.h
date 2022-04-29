@@ -10,6 +10,7 @@
 #include "TableViewRowCreater.h"
 #include "DateTimeManager.h"
 #include "Queue.h"
+#include <QTreeWidgetItem>
 
 class ProcessDatabaseOutput : public QObject
 {
@@ -30,6 +31,8 @@ public:
 
 	static bool ProcessPutLoadedQueueInformationInQueueObject(const QSqlRecord& record, Queue* queue);
 	static bool PutDownloadIdInQueueDownloadList(const QSqlRecord& record, Queue* queue);
+
+	static bool PutDownloadInformationOfQueueForScheduleTreeWidget(const QSqlRecord& record, QTreeWidgetItem* item);
 
 public:
 	ProcessDatabaseOutput(QObject *parent);
