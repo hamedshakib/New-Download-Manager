@@ -667,3 +667,17 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForUpdateNumberOfDownloadAtSameTim
 
 	return query;
 }
+
+QSqlQuery* DatabaseQueryPreparer::PrepareQueryForRemoveAllCompletedDownload()
+{
+	SettingUpDatabase::get_Database();
+	QString queryString = QString(
+		"DELETE FROM Download "
+		"WHERE DownloadStatus_id = 3; "
+	);
+
+	QSqlQuery* query = new QSqlQuery();
+	query->prepare(queryString);
+
+	return query;
+}

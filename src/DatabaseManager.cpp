@@ -373,7 +373,7 @@ bool DatabaseManager::ExitAllDownloadFrom_Queue_Download(Queue* queue)
 
 size_t DatabaseManager::GetNumberDownloadInListOfQueue(Download* download)
 {
-	size_t numberInList;
+	size_t numberInList{};
 	QSqlQuery* query = DatabaseQueryPreparer::PrepareQueryForGetNumberInListDownload(download);
 	if (DatabaseInteract::ExectionQueryForReadData(query))
 	{
@@ -420,6 +420,18 @@ bool DatabaseManager::UpdateNumberOfDownloadAtSameTimeOfQueue(Queue* queue)
 {
 	QSqlQuery* query = DatabaseQueryPreparer::PrepareQueryForUpdateNumberOfDownloadAtSameTimeOfQueue(queue);
 	if (DatabaseInteract::ExectionQueryForUpdateData(query))
+	{
+		delete query;
+		return true;
+	}
+	delete query;
+	return false;
+}
+
+bool DatabaseManager::RemoveAllCompletedDownload()
+{
+	QSqlQuery* query = DatabaseQueryPreparer::PrepareQueryForRemoveAllCompletedDownload();
+	if (DatabaseInteract::ExectionQueryForDeleteData(query))
 	{
 		delete query;
 		return true;

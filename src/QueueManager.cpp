@@ -4,7 +4,7 @@ QueueManager::QueueManager(DownloadManager* downloadManager,QObject *parent)
 	: QObject(parent)
 {
 	this->m_downloadManager = downloadManager;
-	connect(m_downloadManager, &DownloadManager::FinishedDownload, this, [&](Download* download) {/*RemoveDownloadFromQueue(download);*/ProcessRemoveADownloadFromQueue(download); });
+	connect(m_downloadManager, &DownloadManager::FinishedDownload, this, [&](Download* download) {if(download->get_QueueId()>0) ProcessRemoveADownloadFromQueue(download); });
 	m_QueueTimeManager = new QueueTimeManager(this);
 	connect(m_QueueTimeManager, &QueueTimeManager::StartQueue, this, &QueueManager::StartQueue);
 	connect(m_QueueTimeManager, &QueueTimeManager::StopQueue, this, &QueueManager::StopQueue);

@@ -312,3 +312,12 @@ void MainWindow::on_actionSpeedLimitterSetting_triggered()
 	SettingInteract::SetValue("Download/DefaultSpeedLimit", newSpeedLimit);
 }
 
+void MainWindow::on_actionDelete_All_Complited_triggered()
+{
+	DatabaseManager::RemoveAllCompletedDownload();
+
+	QAbstractItemModel* model = ui.tableView->model();
+	model->removeRows(0, model->rowCount());
+	mainTableViewController->LoadAllDownloadsFromDatabaseForMainTableView();
+}
+

@@ -62,6 +62,8 @@ public:
 	static QSqlQuery* PrepareQueryForLoadDownloadInformationOfQueueForScheduleTreeWidget(Queue* queue);
 
 	static QSqlQuery* PrepareQueryForUpdateNumberOfDownloadAtSameTimeOfQueue(Queue* queue);
+
+	static QSqlQuery* PrepareQueryForRemoveAllCompletedDownload();
 public:
 	DatabaseQueryPreparer(QObject *parent);
 	~DatabaseQueryPreparer();

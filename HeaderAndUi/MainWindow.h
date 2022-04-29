@@ -52,6 +52,7 @@ private slots:
 	void on_actionPersian_triggered();
 	void on_actionSpeedLimitterTurnOnOrOff_triggered();
 	void on_actionSpeedLimitterSetting_triggered();
+	void on_actionDelete_All_Complited_triggered();
 
 	void LoadDownloadsForMainTable();
 	void LoadSizeOfWidnow();

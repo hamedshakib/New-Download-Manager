@@ -64,6 +64,8 @@ public:
 
 	static bool UpdateNumberOfDownloadAtSameTimeOfQueue(Queue* queue);
 
+	static bool RemoveAllCompletedDownload();
+
 public:
 	DatabaseManager(QObject *parent=nullptr);
 	~DatabaseManager();
