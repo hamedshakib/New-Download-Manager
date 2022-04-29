@@ -29,6 +29,7 @@ qint64 PartDownloader::ReadReadybytes(qint64 bytes)
 
 	if (bytes == -1 || reply->bytesAvailable() <= bytes)
 	{
+		qDebug() << "NNN";
 		ReadedBytes = reply->bytesAvailable();
 		byteArray = reply->read(ReadedBytes);
 		//qDebug() << "ReadedBytes:" << ReadedBytes;

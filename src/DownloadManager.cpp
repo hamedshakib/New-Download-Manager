@@ -3,7 +3,10 @@
 DownloadManager::DownloadManager(QObject *parent)
 	: QObject(parent)
 {
-
+	if (SettingInteract::GetValue("Download/IsSpeedLimitted").toBool())
+	{
+		this->SpeedLimit = SettingInteract::GetValue("Download/DefaultSpeedLimit").toInt();
+	}
 
 }
 
@@ -59,6 +62,7 @@ Downloader* DownloadManager::CreateDownloader(Download* download)
 		emit FinishedDownload(download);
 		qDebug() << "Finished Update Download"; });
 	emit CreatedDownloader(downloader);
+	downloader->SetMaxSpeed(SpeedLimit);
 	return downloader;
 }
 
@@ -88,10 +92,10 @@ Download* DownloadManager::ProcessAchieveDownload(int Download_id)
 {
 	for (Download* download : ListOfActiveDownloads)
 	{
-if (download->get_Id() == Download_id)
-{
-	return download;
-}
+		if (download->get_Id() == Download_id)
+		{
+			return download;
+		}
 	}
 
 
@@ -148,6 +152,7 @@ bool DownloadManager::ProcessRemoveDownload(int download_id, bool is_RemoveFromD
 		QFile file(DownloadFileAddress);
 		file.remove();
 	}
+	DatabaseManager::RemoveDownloadFrom_Queue_Download(download);
 	if (DatabaseManager::RemoveDownloadCompleteWithPartDownloadsFromDatabase(download))
 	{
 		ListOfActiveDownloads.removeOne(download);
@@ -174,6 +179,7 @@ bool DownloadManager::ProcessRemoveDownload(Download* download, bool is_RemoveFr
 		QFile file(DownloadFileAddress);
 		file.remove();
 	}
+	DatabaseManager::RemoveDownloadFrom_Queue_Download(download);
 	if (DatabaseManager::RemoveDownloadCompleteWithPartDownloadsFromDatabase(download))
 	{
 		ListOfActiveDownloads.removeOne(download);
@@ -208,5 +214,24 @@ bool DownloadManager::CreateNewDownloadsFromBatch(QList<QString> listOfAddress, 
 	connect(newDownloadCreater, &NewDownloadCreater::DownloadNow, this, &DownloadManager::CreateDownloaderAndStartDownload);
 	newDownloadCreater->StartProcessOfCreateNewDownloadFromBatch(listOfAddress, SaveTo, Username, Password,this);
 	return true;
+}
+
+bool DownloadManager::SpeedLimitForAllDownload()
+{
+	for (Downloader* downloader : ListOfDownloaders)
+	{
+		downloader->SetMaxSpeed(SpeedLimit);
+	}
+	return true;
+}
+
+bool DownloadManager::Set_SpeedLimit(int maxSpeed)
+{
+	this->SpeedLimit = maxSpeed;
+	if (SpeedLimitForAllDownload())
+		return true;
+	else
+		return false;
+
 }
 

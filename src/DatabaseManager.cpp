@@ -310,5 +310,120 @@ bool DatabaseManager::UpdateTimeQueueEvents(Queue* queue)
 	}
 	delete query;
 	return false;
-	return 0;
+}
+
+bool DatabaseManager::AddDownloadTo_Queue_Download(Queue* queue, Download* download)
+{
+	QSqlQuery* query = DatabaseQueryPreparer::PrepareQueryForAddDownloadTo_Queue_Download(queue,download);
+	if (DatabaseInteract::ExectionQueryForInsertData(query))
+	{
+		delete query;
+		return true;
+	}
+	delete query;
+	return false;
+}
+
+bool DatabaseManager::RemoveDownloadFrom_Queue_Download(Download* download)
+{
+	QSqlQuery* query = DatabaseQueryPreparer::PrepareQueryForRemoveDownloadFrom_Queue_Download(download);
+	if (DatabaseInteract::ExectionQueryForDeleteData(query))
+	{
+		delete query;
+		return true;
+	}
+	delete query;
+	return false;
+}
+
+bool DatabaseManager::DecreaseDownloadNumberOfQueueListForNextDownloadInQueueListOn_Queue_Download(Queue* queue, int DownloadNumberInQueueList)
+{
+	QSqlQuery* query = DatabaseQueryPreparer::PrepareQueryForDecreaseDownloadNumberOfQueueListForNextDownloadInQueueListOn_Queue_Download(queue, DownloadNumberInQueueList);
+	if (DatabaseInteract::ExectionQueryForUpdateData(query))
+	{
+		delete query;
+		return true;
+	}
+	delete query;
+	return false;
+}
+
+bool DatabaseManager::MoveDownloadIn_Queue_Download(Queue* queue, Download* download, int moveNumber)
+{
+	QSqlQuery* query = DatabaseQueryPreparer::PrepareQueryForMoveDownloadIn_Queue_Download(queue, download,moveNumber);
+	if (DatabaseInteract::ExectionQueryForUpdateData(query))
+	{
+		delete query;
+		return true;
+	}
+	delete query;
+	return false;
+}
+bool DatabaseManager::ExitAllDownloadFrom_Queue_Download(Queue* queue)
+{
+	QSqlQuery* query = DatabaseQueryPreparer::PrepareQueryForExitAllDownloadFrom_Queue_Download(queue);
+	if (DatabaseInteract::ExectionQueryForDeleteData(query))
+	{
+		delete query;
+		return true;
+	}
+	delete query;
+	return false;
+}
+
+size_t DatabaseManager::GetNumberDownloadInListOfQueue(Download* download)
+{
+	size_t numberInList;
+	QSqlQuery* query = DatabaseQueryPreparer::PrepareQueryForGetNumberInListDownload(download);
+	if (DatabaseInteract::ExectionQueryForReadData(query))
+	{
+		if (query->next())
+		{
+			numberInList = query->value(0).toInt();
+		}
+	}
+	delete query;
+	return numberInList;
+}
+
+size_t DatabaseManager::GetturnInIdOfDownload(Queue* queue,int NumnberDownloadInList)
+{
+	size_t queue_id;
+	QSqlQuery* query = DatabaseQueryPreparer::PrepareQueryForGetturnInIdOfDownload(queue, NumnberDownloadInList);
+	if (DatabaseInteract::ExectionQueryForReadData(query))
+	{
+		if (query->next())
+		{
+			queue_id = query->value(0).toInt();
+		}
+	}
+	delete query;
+	return queue_id;
+}
+
+void DatabaseManager::LoadDownloadInformationOfQueueForScheduleTreeWidget(QList<QTreeWidgetItem*>& TreeWidgetItems, Queue* queue)
+{
+	QSqlQuery* query = DatabaseQueryPreparer::PrepareQueryForLoadDownloadInformationOfQueueForScheduleTreeWidget(queue);
+	if (DatabaseInteract::ExectionQueryForReadData(query))
+	{
+		while(query->next())
+		{
+			QTreeWidgetItem* item = new QTreeWidgetItem();
+			ProcessDatabaseOutput::PutDownloadInformationOfQueueForScheduleTreeWidget(query->record(), item);
+			TreeWidgetItems.append(item);
+		}
+	}
+	delete query;
+}
+
+bool DatabaseManager::UpdateNumberOfDownloadAtSameTimeOfQueue(Queue* queue)
+{
+	QSqlQuery* query = DatabaseQueryPreparer::PrepareQueryForUpdateNumberOfDownloadAtSameTimeOfQueue(queue);
+	if (DatabaseInteract::ExectionQueryForUpdateData(query))
+	{
+		delete query;
+		return true;
+	}
+	delete query;
+	return false;
 }

@@ -9,18 +9,25 @@ MainWindow::MainWindow(QWidget *parent)
 	ui.actionDownload_Now->setEnabled(false);
 	ui.actionStop_Download->setEnabled(false);
 	ui.actionRemove->setEnabled(false);
+
+	qDebug() << SettingInteract::GetValue("Download/IsSpeedLimitted");
+	if (SettingInteract::GetValue("Download/IsSpeedLimitted").toBool())
+	{
+		ui.actionSpeedLimitterTurnOnOrOff->setText(tr("Turn off"));
+		//todo
+	}
 }
 
 MainWindow::~MainWindow()
 {
 }
-void MainWindow::CreateTableViewControllerForMainWindow()
+void MainWindow::CreateMainTableViewControllerForMainWindow()
 {
-	tableViewController = new TableViewController(ui.tableView, this);
-	tableViewController->Set_DownloadManager(downloadManagerPointer);
-	tableViewController->ProcessSetupOfTableView();
-	tableViewController->Set_QueueManager(queueManager);
-	connect(tableViewController, &TableViewController::SelectedDownloadChanged, this, &MainWindow::ChangedDownloadSelected);
+	mainTableViewController = new MainTableViewController(ui.tableView, this);
+	mainTableViewController->Set_DownloadManager(downloadManagerPointer);
+	mainTableViewController->ProcessSetupOfTableView();
+	mainTableViewController->Set_QueueManager(queueManager);
+	connect(mainTableViewController, &MainTableViewController::SelectedDownloadChanged, this, &MainWindow::ChangedDownloadSelected);
 }
 
 void MainWindow::CreateTreeViewController()
@@ -105,42 +112,6 @@ void MainWindow::LoadTreeView()
 	QStandardItemModel* model = new QStandardItemModel(this);
 	ui.treeView->setModel(model);
 	ui.treeView->setContextMenuPolicy(Qt::CustomContextMenu);
-	//QStandardItem *item1=new QStandardItem();
-	//model->appendRow(new QStandardItem("Category"));
-	//model->appendRow(new QStandardItem("leaf2"));
-
-
-
-	/*
-	QModelIndex pI;
-
-	model->insertRow(itemCount, QModelIndex());
-	pI = model->index(itemCount, 0, QModelIndex());
-	model->setData(pI, title, Qt::DisplayRole);
-	model->item(itemCount, 0)->setEditable(false);
-	*/
-
-
-	//QModelIndex NewItemModelIndex;
-	//model->insertRow(model->rowCount(), QModelIndex());
-	//NewItemModelIndex = model->index(model->rowCount(), 0, QModelIndex());
-	//model->setData(NewItemModelIndex, "Queues", Qt::DisplayRole);
-	//model->item(model->rowCount(), 0)->setEditable(false);
-
-
-
-
-	//model->item(1, 0)->setChild(0,1, new QStandardItem("Main"));
-
-	/*
-	QModelIndex cI;
-	model->insertRow(1, QModelIndex());
-	cI = model->index(1, 0, QModelIndex());
-	model->setData(cI, "test", Qt::DisplayRole);
-	model->item(1, 0)->setChild(0, 1, model->item(5, 0));
-	*/
-
-
 
 
 	QStandardItem* Categoryitem = new QStandardItem("Categories");
@@ -170,18 +141,6 @@ void MainWindow::LoadTreeView()
 		}
 	);// SLOT(onCustomContextMenu(const QPoint&)));
 
-	/*
-	QStandardItem* child1 = new QStandardItem("Main");
-	child1->setEditable(false);
-	child1->setDropEnabled(1);
-	Queueitem->appendRow(child1);
-
-	QStandardItem* child2 = new QStandardItem("Other");
-	child2->setEditable(false);
-	Queueitem->appendRow(child2);
-	*/
-
-	
 
 	model->setItem(0, Categoryitem);
 	model->setItem(1, Queueitem);
@@ -273,16 +232,16 @@ void MainWindow::on_actionRemove_triggered()
 {
 	if (SelectedDownload != nullptr)
 	{
-		tableViewController->RemoveActionTriggered(SelectedDownload);
+		mainTableViewController->RemoveActionTriggered(SelectedDownload);
 	}
 	else
 	{
-		int Download_id=tableViewController->Get_SeletedFinisedDownloadId();
+		int Download_id= mainTableViewController->Get_SeletedFinisedDownloadId();
 		if (Download_id > 0)
 		{
 			//is valid
 			Download* download = downloadManagerPointer->ProcessAchieveDownload(Download_id);
-			tableViewController->RemoveActionTriggered(download);
+			mainTableViewController->RemoveActionTriggered(download);
 		}
 	}
 }
@@ -326,5 +285,30 @@ void MainWindow::on_actionAdd_batch_download_triggered()
 	);
 
 	batchDownloadCreatorWidget->show();
+}
+
+void MainWindow::on_actionSpeedLimitterTurnOnOrOff_triggered()
+{
+	if (ui.actionSpeedLimitterTurnOnOrOff->text()==tr("Turn off"))
+	{
+		//speed limitter is on so Should become off
+		ui.actionSpeedLimitterTurnOnOrOff->setText("Turn on");
+		SettingInteract::SetValue("Download/IsSpeedLimitted", false);
+		downloadManagerPointer->Set_SpeedLimit(0);
+	}
+	else
+	{
+		//speed limitter is off so Should become on
+		ui.actionSpeedLimitterTurnOnOrOff->setText("Turn off");
+		SettingInteract::SetValue("Download/IsSpeedLimitted", true);
+		int MaxSpeed = SettingInteract::GetValue("Download/DefaultSpeedLimit").toInt();
+		downloadManagerPointer->Set_SpeedLimit(MaxSpeed);
+	}
+}
+
+void MainWindow::on_actionSpeedLimitterSetting_triggered()
+{
+	int newSpeedLimit=QInputDialog::getInt(this, "Speed Limit", tr("Enter Speed limit For All downloads"), SettingInteract::GetValue("Download/DefaultSpeedLimit").toInt(), 1);
+	SettingInteract::SetValue("Download/DefaultSpeedLimit", newSpeedLimit);
 }
 

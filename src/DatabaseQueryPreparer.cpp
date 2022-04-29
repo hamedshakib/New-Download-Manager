@@ -500,3 +500,170 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryFroEditTimeEventsOfQueue(Queue* qu
 	query->bindValue(":queue_id", queue->Get_QueueId());
 	return query;
 }
+
+//
+QSqlQuery* DatabaseQueryPreparer::PrepareQueryForAddDownloadTo_Queue_Download(Queue* queue, Download* download)
+{
+
+	SettingUpDatabase::get_Database();
+	QString queryString = QString(
+
+		"INSERT INTO Queue_Download ( "
+		"Queue_id, "
+		"Download_id, "
+		"NumbersInList "
+	") "
+		"VALUES( "
+			":queue_id, "
+			":download_id, "
+			"(SELECT(CASE WHEN max(NumbersInList) IS not NULL THEN max(NumbersInList)+1 ELSE 1 END) as 'NumbersInList' FROM Queue_Download where Queue_id = :queue_id) ); "
+	);
+
+
+
+	QSqlQuery* query = new QSqlQuery();
+	query->prepare(queryString);
+
+	query->bindValue(":queue_id", queue->Get_QueueId());
+	query->bindValue(":download_id", download->IdDownload);
+	return query;
+}
+
+QSqlQuery* DatabaseQueryPreparer::PrepareQueryForRemoveDownloadFrom_Queue_Download(Download* download)
+{
+	SettingUpDatabase::get_Database();
+	QString queryString = QString(
+		"DELETE FROM Queue_Download "
+		"WHERE Download_id = :download_id; "
+	);
+
+	QSqlQuery* query = new QSqlQuery();
+	query->prepare(queryString);
+
+	query->bindValue(":download_id", download->IdDownload);
+	return query;
+}
+
+QSqlQuery* DatabaseQueryPreparer::PrepareQueryForDecreaseDownloadNumberOfQueueListForNextDownloadInQueueListOn_Queue_Download(Queue* queue, int DownloadNumberInQueueList)
+{
+	SettingUpDatabase::get_Database();
+	QString queryString = QString(
+		"UPDATE Queue_Download "
+		"SET NumbersInList = NumbersInList - 1 "
+		"WHERE Queue_id = :queue_id AND "
+		"NumbersInList > :numbersInList; "
+	);
+
+	QSqlQuery* query = new QSqlQuery();
+	query->prepare(queryString);
+
+	query->bindValue(":queue_id", queue->Get_QueueId());
+	query->bindValue(":numbersInList", DownloadNumberInQueueList);
+	return query;
+}
+
+QSqlQuery* DatabaseQueryPreparer::PrepareQueryForMoveDownloadIn_Queue_Download(Queue* queue, Download* download, int moveNumber)
+{
+	SettingUpDatabase::get_Database();
+	QString queryString = QString(
+		"UPDATE Queue_Download "
+		"SET NumbersInList = NumbersInList + :moveNumber "
+		"WHERE Queue_id = :queue_id AND Download_id = :download_id; "
+	);
+
+	QSqlQuery* query = new QSqlQuery();
+	query->prepare(queryString);
+
+
+	query->bindValue(":moveNumber", moveNumber);
+	query->bindValue(":queue_id", queue->Get_QueueId());
+	query->bindValue(":download_id", download->IdDownload);
+	return query;
+}
+
+QSqlQuery* DatabaseQueryPreparer::PrepareQueryForExitAllDownloadFrom_Queue_Download(Queue* queue)
+{
+	SettingUpDatabase::get_Database();
+	QString queryString = QString(
+		"DELETE FROM Queue_Download "
+		"WHERE Queue_id = :queue_id'; "
+	);
+
+	QSqlQuery* query = new QSqlQuery();
+	query->prepare(queryString);
+
+	query->bindValue(":queue_id", queue->Get_QueueId());
+	return query;
+}
+
+QSqlQuery* DatabaseQueryPreparer::PrepareQueryForGetNumberInListDownload(Download* download)
+{
+	SettingUpDatabase::get_Database();
+	QString queryString = QString(
+		"Select NumbersInList "
+		"From Queue_Download "
+		"WHERE Download_id = :download_id; "
+	);
+
+	QSqlQuery* query = new QSqlQuery();
+
+	query->prepare(queryString);
+
+
+	query->bindValue(":download_id", download->IdDownload);
+	return query;
+}
+
+QSqlQuery* DatabaseQueryPreparer::PrepareQueryForGetturnInIdOfDownload(Queue* queue, int NumnberDownloadInList)
+{
+	SettingUpDatabase::get_Database();
+	QString queryString = QString(
+		"Select Download_id "
+		"From Queue_Download "
+		"where NumbersInList = :numbersInList And Queue_id = :queue_id ; "
+	);
+
+	QSqlQuery* query = new QSqlQuery();
+	query->prepare(queryString);
+
+
+	query->bindValue(":queue_id", queue->Get_QueueId());
+	query->bindValue(":numbersInList", NumnberDownloadInList);
+	return query;
+}
+
+QSqlQuery* DatabaseQueryPreparer::PrepareQueryForLoadDownloadInformationOfQueueForScheduleTreeWidget(Queue* queue)
+{
+	SettingUpDatabase::get_Database();
+	QString queryString = QString(
+		"SELECT QD.Download_id,QD.NumbersInList, "
+		"D.FileName, DownloadSize, DS.Name as Status "
+		"FROM Queue_Download as QD join Download as D on QD.Download_id = D.id join DownloadStatus as DS on D.DownloadStatus_id = DS.id "
+		"Where QD.Queue_id = :queue_id; "
+	);
+
+	QSqlQuery* query = new QSqlQuery();
+	query->prepare(queryString);
+
+
+	query->bindValue(":queue_id", queue->Get_QueueId());
+	return query;
+}
+
+QSqlQuery* DatabaseQueryPreparer::PrepareQueryForUpdateNumberOfDownloadAtSameTimeOfQueue(Queue* queue)
+{
+	SettingUpDatabase::get_Database();
+	QString queryString = QString(
+		"UPDATE Queue "
+		"SET NumberDownloadSameTime = :numberDownloadSameTime "
+		"WHERE id = :queue_id; "
+	);
+
+	QSqlQuery* query = new QSqlQuery();
+	query->prepare(queryString);
+
+	query->bindValue(":numberDownloadSameTime", queue->Get_NumberDownloadAtSameTime());
+	query->bindValue(":queue_id", queue->Get_QueueId());
+
+	return query;
+}

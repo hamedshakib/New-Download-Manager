@@ -8,7 +8,8 @@
 #include "SettingUpDatabase.h"
 #include "qabstractitemmodel.h"
 #include "qstandarditemmodel.h"
-#include "TableViewController.h"
+//#include "TableViewController.h"
+#include "MainTableViewController.h"
 #include "TreeViewController.h"
 #include "DownloadManager.h"
 #include "QueueManager.h"
@@ -19,6 +20,7 @@
 #include "qmessagebox.h"
 #include "qpixmap.h"
 #include "qprocess.h"
+#include "qinputdialog.h"
 
 
 class MainWindow : public QMainWindow
@@ -31,7 +33,7 @@ public:
 
 	void SetDownloadManager(DownloadManager* downloadManager);
 	void SetQueueManaget(QueueManager* queueManager);
-	void CreateTableViewControllerForMainWindow();
+	void CreateMainTableViewControllerForMainWindow();
 	void CreateTreeViewController();
 	void LoadTreeView();
 
@@ -48,6 +50,8 @@ private slots:
 	void on_actionStop_All_triggered();
 	void on_actionEnglish_triggered();
 	void on_actionPersian_triggered();
+	void on_actionSpeedLimitterTurnOnOrOff_triggered();
+	void on_actionSpeedLimitterSetting_triggered();
 
 	void LoadDownloadsForMainTable();
 	void LoadSizeOfWidnow();
@@ -65,7 +69,7 @@ protected:
 
 
 private:
-	TableViewController* tableViewController;
+	MainTableViewController* mainTableViewController;
 	TreeViewController* treeViewController;
 	DownloadManager* downloadManagerPointer;
 	QueueManager* queueManager;

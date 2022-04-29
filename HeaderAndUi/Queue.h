@@ -45,7 +45,9 @@ public:
 	bool Has_StopTimeActive();
 	QTime Get_StartTime();
 	QTime Get_StopTime();
+
 	
+	void Set_NumberDownloadAtSameTime(int numberDownloadAtSameTime);
 public:
 	Queue(QObject *parent);
 	~Queue();

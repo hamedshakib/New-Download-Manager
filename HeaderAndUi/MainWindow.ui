@@ -133,6 +133,13 @@
     <property name="title">
      <string>Downloads</string>
     </property>
+    <widget class="QMenu" name="menuSpeed_Limiter">
+     <property name="title">
+      <string>Speed Limiter</string>
+     </property>
+     <addaction name="actionSpeedLimitterTurnOnOrOff"/>
+     <addaction name="actionSpeedLimitterSetting"/>
+    </widget>
     <addaction name="actionDownload_Now"/>
     <addaction name="actionStop_Download"/>
     <addaction name="actionRemove"/>
@@ -143,7 +150,7 @@
     <addaction name="separator"/>
     <addaction name="actionScheduler"/>
     <addaction name="separator"/>
-    <addaction name="actionSpeed_Limiter"/>
+    <addaction name="menuSpeed_Limiter"/>
     <addaction name="separator"/>
     <addaction name="actionOptions"/>
    </widget>
@@ -246,11 +253,6 @@
     <string>Stop Queue</string>
    </property>
   </action>
-  <action name="actionSpeed_Limiter">
-   <property name="text">
-    <string>Speed Limiter</string>
-   </property>
-  </action>
   <action name="actionOptions">
    <property name="text">
     <string>Options</string>
@@ -274,6 +276,16 @@
   <action name="actionPersian">
    <property name="text">
     <string>Persian</string>
+   </property>
+  </action>
+  <action name="actionSpeedLimitterTurnOnOrOff">
+   <property name="text">
+    <string>Turn on</string>
+   </property>
+  </action>
+  <action name="actionSpeedLimitterSetting">
+   <property name="text">
+    <string>Setting</string>
    </property>
   </action>
  </widget>

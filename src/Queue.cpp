@@ -69,3 +69,8 @@ QTime Queue::Get_StopTime()
 {
 	return stopDownload.Time;
 }
+
+void Queue::Set_NumberDownloadAtSameTime(int numberDownloadAtSameTime)
+{
+	this->NumberDownloadAtSameTime = numberDownloadAtSameTime;
+}
