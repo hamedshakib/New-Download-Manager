@@ -55,13 +55,15 @@ public:
 	static QSqlQuery* PrepareQueryForAddDownloadTo_Queue_Download(Queue* queue,Download* download);
 	static QSqlQuery* PrepareQueryForRemoveDownloadFrom_Queue_Download(Download* download);
 	static QSqlQuery* PrepareQueryForDecreaseDownloadNumberOfQueueListForNextDownloadInQueueListOn_Queue_Download(Queue* queue, int DownloadNumberInQueueList);
-	static QSqlQuery* PrepareQueryForMoveDownloadIn_Queue_Download(Queue* queue, Download* download,int moveNumber);
+	static QList<QSqlQuery*> PrepareQueryForMoveDownloadIn_Queue_Download(Queue* queue, Download* download,int moveNumber);
 	static QSqlQuery* PrepareQueryForExitAllDownloadFrom_Queue_Download(Queue* queue);
 	static QSqlQuery* PrepareQueryForGetturnInIdOfDownload(Queue* queue, int NumnberDownloadInList);
 	static QSqlQuery* PrepareQueryForGetNumberInListDownload(Download* download);
 	static QSqlQuery* PrepareQueryForLoadDownloadInformationOfQueueForScheduleTreeWidget(Queue* queue);
 
 	static QSqlQuery* PrepareQueryForUpdateNumberOfDownloadAtSameTimeOfQueue(Queue* queue);
+
+	static QSqlQuery* PrepareQueryForRemoveAllCompletedDownload();
 public:
 	DatabaseQueryPreparer(QObject *parent);
 	~DatabaseQueryPreparer();

@@ -28,6 +28,7 @@ public:
 public slots:
 	void RemoveActionTriggered(Download* download);
 	int Get_SeletedFinisedDownloadId();
+	void LoadAllDownloadsFromDatabaseForMainTableView();
 
 private slots:
 	void OnHeaderRightClicked(const QPoint& pos);
@@ -35,7 +36,6 @@ private slots:
 	int FindDownloadIdFromRow(const QModelIndex& modelindex);
 	void ProcessCheckAndApply_RightClickOnTable(const QPoint& point);
 	void AdjusteTableViewProperty();
-	void LoadAllDownloadsFromDatabaseForMainTableView();
 	void GetDownloaderOfDownloadId(int DownloadId);
 
 	QMenu* CreaterRightClickMenuForRowRightClicked(int Download_id);
