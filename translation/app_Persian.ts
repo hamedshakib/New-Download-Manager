@@ -451,13 +451,13 @@
         <location filename="../HeaderAndUi/MainWindow.ui" line="283"/>
         <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="257"/>
         <source>Turn on</source>
-        <translation type="unfinished"></translation>
+        <translation>روشن</translation>
     </message>
     <message>
         <location filename="../HeaderAndUi/MainWindow.ui" line="288"/>
         <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="258"/>
         <source>Setting</source>
-        <translation type="unfinished"></translation>
+        <translation>تنظیمات</translation>
     </message>
     <message>
         <location filename="../HeaderAndUi/MainWindow.ui" line="138"/>
@@ -509,7 +509,7 @@
         <location filename="../src/MainWindow.cpp" line="16"/>
         <location filename="../src/MainWindow.cpp" line="292"/>
         <source>Turn off</source>
-        <translation type="unfinished"></translation>
+        <translation>خاموش</translation>
     </message>
     <message>
         <location filename="../src/MainWindow.cpp" line="75"/>
@@ -523,8 +523,8 @@
     </message>
     <message>
         <location filename="../src/MainWindow.cpp" line="311"/>
-        <source>Enter Speed limit For All downloads</source>
-        <translation type="unfinished"></translation>
+        <source>Enter Speed limit For All downloads (KB/sec)</source>
+        <translation>سرعت محدود شده را برای همه دانلود ها وارد کنید. (KB/Sec)</translation>
     </message>
 </context>
 <context>

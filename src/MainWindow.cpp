@@ -308,7 +308,7 @@ void MainWindow::on_actionSpeedLimitterTurnOnOrOff_triggered()
 
 void MainWindow::on_actionSpeedLimitterSetting_triggered()
 {
-	int newSpeedLimit=QInputDialog::getInt(this, "Speed Limit", tr("Enter Speed limit For All downloads"), SettingInteract::GetValue("Download/DefaultSpeedLimit").toInt(), 1);
+	int newSpeedLimit=QInputDialog::getInt(this, "Speed Limit", tr("Enter Speed limit For All downloads (KB/sec)"), SettingInteract::GetValue("Download/DefaultSpeedLimit").toInt(), 1);
 	SettingInteract::SetValue("Download/DefaultSpeedLimit", newSpeedLimit);
 }
 
