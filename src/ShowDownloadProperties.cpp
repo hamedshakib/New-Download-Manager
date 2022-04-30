@@ -4,6 +4,7 @@ ShowDownloadProperties::ShowDownloadProperties(Download* download,QWidget *paren
 	: QWidget(parent)
 {
 	ui.setupUi(this);
+	this->setWindowTitle("Properties");
 
 	m_download = download;
 }

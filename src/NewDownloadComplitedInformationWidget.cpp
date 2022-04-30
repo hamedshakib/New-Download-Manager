@@ -4,7 +4,7 @@ NewDownloadComplitedInformationWidget::NewDownloadComplitedInformationWidget(QUr
 	: QWidget(parent)
 {
 	ui.setupUi(this);
-
+	this->setWindowTitle("New Download Information");
 	ui.Url_lineEdit->setText(BaseUrl.toString());
 }
 

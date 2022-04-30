@@ -1,9 +1,6 @@
 #pragma once
 
 #include <QObject>
-#include "qnetworkreply.h"
-#include "qnetworkrequest.h"
-#include "qnetworkaccessmanager.h"
 #include "Download.h"
 #include "DeterminerDownloadFileType.h"
 #include "DatabaseManager.h"
@@ -19,6 +16,7 @@
 #include "qnetworkreply.h"
 #include "qnetworkrequest.h"
 #include "qnetworkaccessmanager.h"
+#include "qstandardpaths.h"
 
 class NewDownloadCreater : public QObject
 {

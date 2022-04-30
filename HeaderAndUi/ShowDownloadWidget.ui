@@ -284,10 +284,10 @@
        <string>1</string>
       </property>
       <property name="text">
-       <string>2222 kb</string>
+       <string/>
       </property>
       <property name="text">
-       <string>started</string>
+       <string/>
       </property>
      </item>
      <item>

@@ -1,5 +1,16 @@
 <RCC>
   <qresource prefix="Icons">
+    <file>Icons/settings.png</file>
+    <file>Icons/language-64.png</file>
+    <file>Icons/about.png</file>
+    <file>Icons/en.png</file>
+    <file>Icons/fa.png</file>
+    <file>Icons/New Project.png</file>
+    <file>Icons/exit-door.png</file>
+    <file>Icons/clock.png</file>
+    <file>Icons/Stop all.png</file>
+    <file>Icons/stop-download.png</file>
+    <file>Icons/resume-download.png</file>
     <file>Icons/drag-and-drop-99.png</file>
     <file alias="qt-logo.png">Icons/qt-logo.png</file>
     <file alias="Add-Download.png">Icons/Add-Download.png</file>

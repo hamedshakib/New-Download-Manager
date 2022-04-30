@@ -31,8 +31,10 @@ public slots:
 	void LoadAllDownloadsFromDatabaseForMainTableView();
 
 private slots:
-	void OnHeaderRightClicked(const QPoint& pos);
+	void ClickedOnRow(const QModelIndex& modelindex);
 	void doubleClickedOnRow(const QModelIndex& modelindex);
+	void OnHeaderRightClicked(const QPoint& pos);
+	void ChangeColumnWidth(int numberOfColumn, int NewColumnWidth);
 	int FindDownloadIdFromRow(const QModelIndex& modelindex);
 	void ProcessCheckAndApply_RightClickOnTable(const QPoint& point);
 	void AdjusteTableViewProperty();
@@ -58,9 +60,7 @@ private slots:
 	void AddDownloadToQueue(Queue* queue, Download* download);
 	void RemoveDownloadFromQueue(Download* download);
 
-	void ClickedOnRow(const QModelIndex& modelindex);
 
-	void ChangeColumnWidth(int numberOfColumn, int NewColumnWidth);
 
 signals:
 	void SelectedDownloadChanged(int Download_id, bool Is_Completed);

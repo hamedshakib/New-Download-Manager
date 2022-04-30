@@ -4,6 +4,7 @@ ShowSchedule::ShowSchedule(QueueManager* queueManager,QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
+	this->setWindowTitle("Schedule");
 	this->setWindowFlags(Qt::Window);
 	this->m_queueManager = queueManager;
 	PrepareQueues();

@@ -19,7 +19,7 @@ QString DeterminerDownloadFileType::DetermineDownloadFileType(QNetworkReply* rep
 	QString MimeType=reply->header(QNetworkRequest::ContentTypeHeader).toString();
 	DatabaseManager databaseManager;
 
-	qDebug() << "TempM:" << MimeType;
+	//qDebug() << "TempM:" << MimeType;
 	QStringList listOfAbleSuffixs=databaseManager.LoadSuffixsForMimeType(MimeType);
 	qDebug() << listOfAbleSuffixs;
 	for (auto suffix : listOfAbleSuffixs)
