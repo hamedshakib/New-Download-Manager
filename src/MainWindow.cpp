@@ -321,8 +321,3 @@ void MainWindow::on_actionDelete_All_Complited_triggered()
 	mainTableViewController->LoadAllDownloadsFromDatabaseForMainTableView();
 }
 
-void MainWindow::dragEnterEvent(QDragEnterEvent* event)
-{
-	mainTreeViewController->dragEnterEventToTreeView(event);
-}
-

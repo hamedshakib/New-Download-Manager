@@ -222,6 +222,9 @@ set(PROJECT_SOURCES
         ${MY_HeaderAndUi_PATH}/ScheduleTreeWidgetTabController.h
         ${MY_SOURCE_PATH}/ScheduleTreeWidgetTabController.cpp
 
+        #MainTreeViewQueueItem
+        ${MY_HeaderAndUi_PATH}/MainTreeViewQueueItem.h
+        ${MY_SOURCE_PATH}/MainTreeViewQueueItem.cpp
 
 
         #translatation

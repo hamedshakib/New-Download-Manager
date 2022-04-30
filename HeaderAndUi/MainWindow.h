@@ -69,10 +69,6 @@ protected:
 	void resizeEvent(QResizeEvent* event);
 
 
-protected:
-	void dragEnterEvent(QDragEnterEvent* event) override;
-
-
 private:
 	MainTableViewController* mainTableViewController;
 	MainTreeViewController* mainTreeViewController;

@@ -6,6 +6,8 @@
 #include "QueueManager.h"
 #include "qmenu.h"
 
+#include "MainTreeViewQueueItem.h"
+
 #define NumberOfDataOfQueueId 10
 
 class MainTreeViewController : public QObject
@@ -35,9 +37,6 @@ private slots:
 
 	void AddQueueToTreeView(int Queue_id);
 	void RemoveQueueFromTreeView(int Queue_id);
-
-public slots:
-	void dragEnterEventToTreeView(QDragEnterEvent* event);
 
 public:
 	MainTreeViewController(QTreeView* treeView,QObject *parent);

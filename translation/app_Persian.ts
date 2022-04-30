@@ -293,60 +293,60 @@
         <translation>محل ذخیره</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="89"/>
+        <location filename="../src/MainTableViewController.cpp" line="88"/>
         <source>Colomns...</source>
         <translation>ستون ها...</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="175"/>
+        <location filename="../src/MainTableViewController.cpp" line="174"/>
         <source>Open</source>
         <translation>باز کردن</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="181"/>
+        <location filename="../src/MainTableViewController.cpp" line="180"/>
         <source>Open with</source>
         <translation>باز کردن با</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="185"/>
+        <location filename="../src/MainTableViewController.cpp" line="184"/>
         <source>Open folder</source>
         <translation>باز کردن فولدر</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="201"/>
-        <location filename="../src/MainTableViewController.cpp" line="331"/>
+        <location filename="../src/MainTableViewController.cpp" line="200"/>
+        <location filename="../src/MainTableViewController.cpp" line="330"/>
         <source>Resume</source>
         <translation>ادامه</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="210"/>
-        <location filename="../src/MainTableViewController.cpp" line="335"/>
+        <location filename="../src/MainTableViewController.cpp" line="209"/>
+        <location filename="../src/MainTableViewController.cpp" line="334"/>
         <source>Pause</source>
         <translation>توقف</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="224"/>
+        <location filename="../src/MainTableViewController.cpp" line="223"/>
         <source>Delete From Queue</source>
         <translation>حذف کردن از صف</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="232"/>
+        <location filename="../src/MainTableViewController.cpp" line="231"/>
         <source>Add To Queue</source>
         <translation>افزودن به صف</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="252"/>
+        <location filename="../src/MainTableViewController.cpp" line="251"/>
         <source>Remove</source>
         <translation>حذف</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="261"/>
+        <location filename="../src/MainTableViewController.cpp" line="260"/>
         <source>Properties</source>
         <translation>جزئیات</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="304"/>
-        <location filename="../src/MainTableViewController.cpp" line="395"/>
+        <location filename="../src/MainTableViewController.cpp" line="303"/>
+        <location filename="../src/MainTableViewController.cpp" line="394"/>
         <source>Complete</source>
         <translation>تکمیل شده</translation>
     </message>
@@ -364,22 +364,22 @@
         <translation type="unfinished">صف ها</translation>
     </message>
     <message>
-        <location filename="../src/MainTreeViewController.cpp" line="49"/>
+        <location filename="../src/MainTreeViewController.cpp" line="57"/>
         <source>Category</source>
         <translation type="unfinished">دسته</translation>
     </message>
     <message>
-        <location filename="../src/MainTreeViewController.cpp" line="86"/>
+        <location filename="../src/MainTreeViewController.cpp" line="100"/>
         <source>Pause</source>
         <translation type="unfinished">توقف</translation>
     </message>
     <message>
-        <location filename="../src/MainTreeViewController.cpp" line="92"/>
+        <location filename="../src/MainTreeViewController.cpp" line="106"/>
         <source>Resume</source>
         <translation type="unfinished">ادامه</translation>
     </message>
     <message>
-        <location filename="../src/MainTreeViewController.cpp" line="100"/>
+        <location filename="../src/MainTreeViewController.cpp" line="114"/>
         <source>Delete</source>
         <translation type="unfinished">حذف</translation>
     </message>

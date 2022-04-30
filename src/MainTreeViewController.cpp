@@ -32,11 +32,19 @@ void MainTreeViewController::LoadTreeView()
 
 	for (Queue* queue : m_queueManager->Get_ListOfQueues())
 	{
+		MainTreeViewQueueItem* child1 = new MainTreeViewQueueItem(queue,this);
+		//child1->setData(queue->Get_QueueId(), NumberOfDataOfQueue);
+		child1->setEditable(false);
+		child1->setDropEnabled(1);
+		Queueitem->appendRow(child1);
+
+		/*
 		QStandardItem* child1 = new QStandardItem(queue->Get_QueueName());
 		child1->setData(queue->Get_QueueId(),NumberOfDataOfQueue);
 		child1->setEditable(false);
 		child1->setDropEnabled(1);
 		Queueitem->appendRow(child1);
+		*/
 	}
 
 	connect(m_TreeView, &QTreeView::customContextMenuRequested, this,&MainTreeViewController::customContextMenuRequested );
@@ -62,10 +70,16 @@ void MainTreeViewController::customContextMenuRequested(const QPoint& point)
 	if (index.parent().model() == Queueitem->model())
 	{
 		//Queue right clicked
-		size_t Queue_id=index.data(NumberOfDataOfQueue).toInt();
-		Queue* queue=m_queueManager->AchiveQueue(Queue_id);
+		QStandardItemModel* sModel = qobject_cast<QStandardItemModel*>(model);
+		MainTreeViewQueueItem* child = static_cast<MainTreeViewQueueItem*>(sModel->itemFromIndex(index));
 
-		CreateMenuForQueueRightClicked(point, queue);
+
+		//size_t Queue_id=index.data(NumberOfDataOfQueue).toInt();
+		//Queue* queue=m_queueManager->AchiveQueue(Queue_id);
+		//CreateMenuForQueueRightClicked(point, queue);
+		CreateMenuForQueueRightClicked(point, child->Get_Queue());
+
+
 	}
 	else if (index.parent().model() == Categoryitem->model())
 	{
@@ -109,8 +123,13 @@ void MainTreeViewController::CreateMenuForQueueRightClicked(const QPoint& Point,
 void MainTreeViewController::AddQueueToTreeView(int Queue_id)
 {
 	Queue* queue = m_queueManager->AchiveQueue(Queue_id);
-	QStandardItem* child = new QStandardItem(queue->Get_QueueName());
-	child->setData(queue->Get_QueueId(), NumberOfDataOfQueue);
+
+
+	MainTreeViewQueueItem* child = new MainTreeViewQueueItem(queue,this);
+//	QStandardItem* child = new QStandardItem(queue->Get_QueueName());
+
+
+	//child->setData(queue->Get_QueueId(), NumberOfDataOfQueue);
 	child->setEditable(false);
 	child->setDropEnabled(1);
 	Queueitem->appendRow(child);
@@ -122,32 +141,14 @@ void MainTreeViewController::RemoveQueueFromTreeView(int Queue_id)
 {
 	for (int i = 0; i < Queueitem->rowCount(); i++)
 	{
-		int QueuItemId=Queueitem->child(i)->data(NumberOfDataOfQueue).toInt();
+		auto child= static_cast<MainTreeViewQueueItem*>(Queueitem->child(i));
+		int QueuItemId= child->Get_Queue()->Get_QueueId();
 		if (QueuItemId == Queue_id)
 		{
+			child->deleteLater();
 			Queueitem->removeRow(i);
 		}
 		
 	}
 	
-}
-
-void MainTreeViewController::dragEnterEventToTreeView(QDragEnterEvent* event)
-{
-	if (event->mimeData()->hasFormat("application/MoveDownloadToQueue")) {
-
-		qDebug() << "yes";
-
-
-		//if (event->source() == this) {
-		//	event->setDropAction(Qt::MoveAction);
-		//	event->accept();
-		//}
-		//else {
-		//	event->acceptProposedAction();
-		//}
-	}
-	else {
-		event->ignore();
-	}
 }
