@@ -32,7 +32,26 @@ Download Manager with the following capabilities:<br/>
 -تغییر زبان برنامه<br/>
 -...<br/>
 </div>
+<br/>
+<br/>
 
 
-
-![alt text](http://url/to/img.png)
+![alt text](https://github.com/hamedshakib/New-Download-Manager/blob/develop/Images/1.jpg?raw=true)
+<br/>
+<br/>
+![alt text](https://github.com/hamedshakib/New-Download-Manager/blob/develop/Images/2.jpg?raw=true)
+<br/>
+<br/>
+![alt text](https://github.com/hamedshakib/New-Download-Manager/blob/develop/Images/3.jpg?raw=true)
+<br/>
+<br/>
+![alt text](https://github.com/hamedshakib/New-Download-Manager/blob/develop/Images/4.jpg?raw=true)
+<br/>
+<br/>
+![alt text](https://github.com/hamedshakib/New-Download-Manager/blob/develop/Images/5.jpg?raw=true)
+<br/>
+<br/>
+![alt text](https://github.com/hamedshakib/New-Download-Manager/blob/develop/Images/6.jpg?raw=true)
+<br/>
+<br/>
+![alt text](https://github.com/hamedshakib/New-Download-Manager/blob/develop/Images/7.jpg?raw=true)
