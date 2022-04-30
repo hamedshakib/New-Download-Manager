@@ -292,14 +292,14 @@ void MainWindow::on_actionSpeedLimitterTurnOnOrOff_triggered()
 	if (ui.actionSpeedLimitterTurnOnOrOff->text()==tr("Turn off"))
 	{
 		//speed limitter is on so Should become off
-		ui.actionSpeedLimitterTurnOnOrOff->setText("Turn on");
+		ui.actionSpeedLimitterTurnOnOrOff->setText(tr("Turn on"));
 		SettingInteract::SetValue("Download/IsSpeedLimitted", false);
 		downloadManagerPointer->Set_SpeedLimit(0);
 	}
 	else
 	{
 		//speed limitter is off so Should become on
-		ui.actionSpeedLimitterTurnOnOrOff->setText("Turn off");
+		ui.actionSpeedLimitterTurnOnOrOff->setText(tr("Turn off"));
 		SettingInteract::SetValue("Download/IsSpeedLimitted", true);
 		int MaxSpeed = SettingInteract::GetValue("Download/DefaultSpeedLimit").toInt();
 		downloadManagerPointer->Set_SpeedLimit(MaxSpeed);
