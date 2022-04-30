@@ -5,6 +5,7 @@ BatchDownloadCreatorWidget::BatchDownloadCreatorWidget(QWidget *parent)
 {
 	ui.setupUi(this);
 	this->setWindowFlags(Qt::Window);
+	this->setWindowTitle("Batch Download");
 	ui.SequentialBatch_widget->setEnabled(false);
 	ui.SequentialBatch_widget->setHidden(true);
 	connect(ui.TypeBatchDownload_comboBox, &QComboBox::currentTextChanged, this, &BatchDownloadCreatorWidget::ChangeWidgetOfBatch);

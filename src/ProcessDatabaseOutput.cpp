@@ -50,8 +50,6 @@ void ProcessDatabaseOutput::ProcessPrepareLoadedInformationForMainTableView(cons
 	qint64 DownloadedSize = record.value("SizeDownloaded").toLongLong();
 	QString TempStatus = record.value("DownloadStatus").toString();
 
-	//qDebug() <<"Temp st:" << TempStatus;
-
 
 	QString LastTryTime = DateTimeManager::ConvertDataTimeToString(DateTimeManager::GetDateTimeFromString(record.value("LastTryTime").toString()));  //ToDo Improved with Galaly
 	QString Description = record.value("description").toString();
@@ -61,10 +59,6 @@ void ProcessDatabaseOutput::ProcessPrepareLoadedInformationForMainTableView(cons
 	{
 		Status = tr("Complete");
 	}
-	/*else if (TempStatus == "NotStarted")
-	{
-		Status = "0%";
-	}*/
 	else
 	{
 		float Present = (long double)DownloadedSize / DownloadSize;
@@ -73,8 +67,6 @@ void ProcessDatabaseOutput::ProcessPrepareLoadedInformationForMainTableView(cons
 	
 
 	model->appendRow(TableViewRowCreater::PrepareDataForRowForMainTableView(id, FileName, ConverterSizeToSuitableString::ConvertSizeToSuitableString(DownloadSize), Status, "", "", LastTryTime, Description, SaveTo));
-	//auto preparedDataForRow = tableViewController1->PrepareDataForRow(id, FileName, ConverterSizeToSuitableString::ConvertSizeToSuitableString(DownloadSize).remove("Size: "), Status, "", "", LastTryTime, Description, SaveTo);
-	//tableViewController1->model->appendRow(preparedDataForRow);
 }
 
 bool ProcessDatabaseOutput::ProcessPutLoadedPartDownloadInInPartDownloadObject(const QSqlRecord& record, PartDownload* partDownload,int Download_id)
@@ -113,8 +105,8 @@ bool ProcessDatabaseOutput::ProcessPutLoadedQueueInformationInQueueObject(const 
 	if (record.value("StartTime") != QVariant("NULL"))
 	{
 		queue->startDownload.is_active = true;
-		qDebug() << record.value("StartTime").toString();
-		qDebug() << QTime::fromString(record.value("StartTime").toString());
+		//qDebug() << record.value("StartTime").toString();
+		//qDebug() << QTime::fromString(record.value("StartTime").toString());
 		queue->startDownload.Time = QTime::fromString(record.value("StartTime").toString());
 
 
@@ -143,7 +135,6 @@ bool ProcessDatabaseOutput::ProcessPutLoadedQueueInformationInQueueObject(const 
 
 
 
-
 	return true;
 }
 
@@ -164,21 +155,17 @@ bool ProcessDatabaseOutput::PutDownloadInformationOfQueueForScheduleTreeWidget(c
 
 	item->setText(0, record.value("FileName").toString());
 	item->setText(1, ConverterSizeToSuitableString::ConvertSizeToSuitableString(record.value("DownloadSize").toLongLong()));
-	item->setText(2, record.value("Status").toString());
+
+	if (record.value("Status").toString()=="NotStarted")
+	{
+		item->setText(2, tr("Not Started"));
+	}
+	else
+	{
+		item->setText(2, tr("Started"));
+	}
+
 	item->setText(3, record.value("").toString());
-
-
-	//item->setData(0, 0, "1");
-	//item->setText(0, "Hi1");
-	//item->setText(1, "Hi2");
-	//item->setText(2, "Hi3");
-	//item->setText(3, "Hi4");
-
-
-	//item->setText(0, record.value("FileName").toString());
-	//item->setText(1, record.value("DownloadSize").toString());
-	//item->setText(2, record.value("DownloadStatus_id").toString());
-	//item->setText(3, record.value("").toString());
 
 	return true;
 }

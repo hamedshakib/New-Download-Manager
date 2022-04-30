@@ -171,17 +171,17 @@ QMenu* MainTableViewController::CreaterRightClickMenuForRowRightClicked(int Down
 	{
 		QAction* OpenAction = new QAction(tr("Open"), this);
 		menu->addAction(OpenAction);
-		connect(OpenAction, &QAction::triggered, this, [&, RightClickedRow_Download](bool clicked) {qDebug() << "test1"; OpenFileActionTriggered(RightClickedRow_Download); });
+		connect(OpenAction, &QAction::triggered, this, [&, RightClickedRow_Download](bool clicked) {OpenFileActionTriggered(RightClickedRow_Download); });
 
 
 
 		QAction* OpenWithAction = new QAction(tr("Open with"), this);
 		menu->addAction(OpenWithAction);
-		connect(OpenWithAction, &QAction::triggered, this, [&, RightClickedRow_Download](bool clicked) {qDebug() << "test1"; OpenFileWithActionTriggered(RightClickedRow_Download); });
+		connect(OpenWithAction, &QAction::triggered, this, [&, RightClickedRow_Download](bool clicked) {OpenFileWithActionTriggered(RightClickedRow_Download); });
 
 		QAction* OpenFolderAction = new QAction(tr("Open folder"), this);
 		menu->addAction(OpenFolderAction);
-		connect(OpenFolderAction, &QAction::triggered, this, [&, RightClickedRow_Download](bool clicked) {qDebug() << "test1"; OpenFolderActionTriggered(RightClickedRow_Download); });
+		connect(OpenFolderAction, &QAction::triggered, this, [&, RightClickedRow_Download](bool clicked) {OpenFolderActionTriggered(RightClickedRow_Download); });
 
 	}
 
@@ -198,7 +198,7 @@ QMenu* MainTableViewController::CreaterRightClickMenuForRowRightClicked(int Down
 		ResumeOrPause->setText(tr("Resume"));
 		ResumeOrPause->setVisible(true);
 		menu->addAction(ResumeOrPause);
-		connect(ResumeOrPause, &QAction::triggered, this, [&, ResumeOrPause, RightClickedRow_Download](bool clicked) {qDebug() << "test2"; PauseOrResumeActionTriggered(ResumeOrPause, RightClickedRow_Download); });
+		connect(ResumeOrPause, &QAction::triggered, this, [&, ResumeOrPause, RightClickedRow_Download](bool clicked) {PauseOrResumeActionTriggered(ResumeOrPause, RightClickedRow_Download); });
 
 	}
 	else if (status == Download::DownloadStatusEnum::Downloading)
@@ -207,7 +207,7 @@ QMenu* MainTableViewController::CreaterRightClickMenuForRowRightClicked(int Down
 		ResumeOrPause->setText(tr("Pause"));
 		ResumeOrPause->setVisible(true);
 		menu->addAction(ResumeOrPause);
-		connect(ResumeOrPause, &QAction::triggered, this, [&, ResumeOrPause, RightClickedRow_Download](bool clicked) {qDebug() << "test2"; PauseOrResumeActionTriggered(ResumeOrPause, RightClickedRow_Download); });
+		connect(ResumeOrPause, &QAction::triggered, this, [&, ResumeOrPause, RightClickedRow_Download](bool clicked) {PauseOrResumeActionTriggered(ResumeOrPause, RightClickedRow_Download); });
 
 	}
 
@@ -222,7 +222,7 @@ QMenu* MainTableViewController::CreaterRightClickMenuForRowRightClicked(int Down
 			RemoveFromQueueAction->setVisible(true);
 			menu->addAction(RemoveFromQueueAction);
 			//Todo Edit Connect
-			connect(RemoveFromQueueAction, &QAction::triggered, this, [&, RemoveFromQueueAction, RightClickedRow_Download](bool clicked) {qDebug() << "test2"; RemoveDownloadFromQueue(RightClickedRow_Download); sender()->deleteLater(); });
+			connect(RemoveFromQueueAction, &QAction::triggered, this, [&, RemoveFromQueueAction, RightClickedRow_Download](bool clicked) {RemoveDownloadFromQueue(RightClickedRow_Download); sender()->deleteLater(); });
 		}
 		else
 		{
@@ -249,7 +249,7 @@ QMenu* MainTableViewController::CreaterRightClickMenuForRowRightClicked(int Down
 	QAction* RemoveDownloadAction = new QAction(tr("Remove"), this);
 	RemoveDownloadAction->setVisible(true);
 	menu->addAction(RemoveDownloadAction);
-	connect(RemoveDownloadAction, &QAction::triggered, this, [&, RightClickedRow_Download](bool clicked) {qDebug() << "test1"; RemoveActionTriggered(RightClickedRow_Download); });
+	connect(RemoveDownloadAction, &QAction::triggered, this, [&, RightClickedRow_Download](bool clicked) {RemoveActionTriggered(RightClickedRow_Download); });
 
 	menu->addSeparator();
 
@@ -259,7 +259,7 @@ QMenu* MainTableViewController::CreaterRightClickMenuForRowRightClicked(int Down
 	PropertiesAction->setVisible(true);
 	menu->addAction(PropertiesAction);
 
-	connect(PropertiesAction, &QAction::triggered, this, [&, RightClickedRow_Download](bool clicked) {qDebug() << "test2"; PropertiesActionTriggered(RightClickedRow_Download); });
+	connect(PropertiesAction, &QAction::triggered, this, [&, RightClickedRow_Download](bool clicked) {PropertiesActionTriggered(RightClickedRow_Download); });
 
 
 	return menu;
@@ -362,7 +362,6 @@ void MainTableViewController::RemoveActionTriggered(Download* download)
 
 void MainTableViewController::PropertiesActionTriggered(Download* download)
 {
-	qDebug() << "ddd1";
 	ShowDownloadProperties* showProperties = new ShowDownloadProperties(download);
 	showProperties->ShowPropertiesOfDownload();
 }

@@ -5,6 +5,8 @@ OptionsWidget::OptionsWidget(QWidget *parent)
 {
 	ui.setupUi(this);
 	this->setWindowFlags(Qt::Window);
+	this->setWindowTitle("Options");
+	ui.widget->setHidden(true);
 	connect(ui.buttonBox, &QDialogButtonBox::accepted, this, &OptionsWidget::Accepted);
 	connect(ui.buttonBox, &QDialogButtonBox::rejected, this, &OptionsWidget::Rejected);
 	LoadOptions();

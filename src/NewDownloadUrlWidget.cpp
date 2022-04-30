@@ -4,6 +4,7 @@ NewDownloadUrlWidget::NewDownloadUrlWidget(QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
+	this->setWindowTitle("New Download");
 	connect(ui.buttonBox, &QDialogButtonBox::accepted, this, &NewDownloadUrlWidget::Accepted);
 	connect(ui.buttonBox, &QDialogButtonBox::rejected, this, &NewDownloadUrlWidget::Rejected);
 }

@@ -4,6 +4,7 @@ CompleteDownloadDialog::CompleteDownloadDialog(QString AddressOfFile, QString Si
 	: QDialog(parent)
 {
 	ui.setupUi(this);
+	this->setWindowTitle("Completed Download");
 	this->AddressOfFile = AddressOfFile;
 	this->sizeString = SizeString;
 	ui.Address_lineEdit->setText(Url);

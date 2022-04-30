@@ -54,7 +54,6 @@ void  NewDownloadCreater::GetInformationFromUrl(QUrl url, QString UserName, QStr
 		int NumberOfTry = 0;
 		while (!TryToGetInformationFromUrl(RealDownloadUrl, UserName, Password))
 		{
-			qDebug() << "f1";
 			QString LocationUrl = m_networkReply->header(QNetworkRequest::LocationHeader).toString();
 			if(!LocationUrl.isEmpty())
 				RealDownloadUrl = LocationUrl;
@@ -163,7 +162,11 @@ bool NewDownloadCreater::ProcessNewDownloadUrlWidget()
 
 QString NewDownloadCreater::DefualtSaveToAddress()
 {
-	return SettingInteract::GetValue("Download/DefaultSaveToAddress").toString();
+	QString DefualtSaveToString = SettingInteract::GetValue("Download/DefaultSaveToAddress").toString();
+	if(DefualtSaveToString=="")
+		return QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
+	else
+		return SettingInteract::GetValue("Download/DefaultSaveToAddress").toString();
 }
 
 size_t NewDownloadCreater::DefaultPartForDownload()
@@ -290,5 +293,12 @@ bool NewDownloadCreater::ProcessCreatePartDownloadsFromDownload(QString FileName
 QString NewDownloadCreater::GeneratePartDownloadAddressFromAddressOfDownloadFile(int numberOfPart,QString FileName)
 {
 	QString TempDirAddress=SettingInteract::GetValue("Download/DefaultTempSaveToAddress").toString();
+	if (TempDirAddress == "")
+	{
+		TempDirAddress = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation) + "/temp";
+		QDir dir(TempDirAddress);
+		if (!dir.exists())
+			dir.mkpath(".");
+	}
 	return TempDirAddress+"/" + FileName + "--" + QString::number(numberOfPart);
 }

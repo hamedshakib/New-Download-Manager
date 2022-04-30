@@ -15,7 +15,7 @@ int main(int argc,char* argv[])
 
 	QApplication app(argc, argv);
 
-	qDebug() << argc << argv;
+	//qDebug() << argc << argv;
 	QDir::setCurrent(qApp->applicationDirPath());
 	QApplication::setApplicationName("Download Manager");
 	

@@ -124,9 +124,6 @@
     <addaction name="actionAdd_new_Download"/>
     <addaction name="actionAdd_batch_download"/>
     <addaction name="separator"/>
-    <addaction name="actionImport"/>
-    <addaction name="actionExport"/>
-    <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuDownloads">
@@ -170,6 +167,10 @@
      <property name="title">
       <string>Languages</string>
      </property>
+     <property name="icon">
+      <iconset resource="../main.qrc">
+       <normaloff>:/Icons/Icons/language-64.png</normaloff>:/Icons/Icons/language-64.png</iconset>
+     </property>
      <addaction name="actionEnglish"/>
      <addaction name="actionPersian"/>
     </widget>
@@ -189,6 +190,10 @@
    </attribute>
   </widget>
   <action name="actionAdd_new_Download">
+   <property name="icon">
+    <iconset resource="../main.qrc">
+     <normaloff>:/Icons/Add-Download.png</normaloff>:/Icons/Add-Download.png</iconset>
+   </property>
    <property name="text">
     <string>Add new Download</string>
    </property>
@@ -209,26 +214,46 @@
    </property>
   </action>
   <action name="actionExit">
+   <property name="icon">
+    <iconset resource="../main.qrc">
+     <normaloff>:/Icons/Icons/exit-door.png</normaloff>:/Icons/Icons/exit-door.png</iconset>
+   </property>
    <property name="text">
     <string>Exit</string>
    </property>
   </action>
   <action name="actionDownload_Now">
+   <property name="icon">
+    <iconset resource="../main.qrc">
+     <normaloff>:/Icons/Icons/resume-download.png</normaloff>:/Icons/Icons/resume-download.png</iconset>
+   </property>
    <property name="text">
     <string>Download Now</string>
    </property>
   </action>
   <action name="actionStop_Download">
+   <property name="icon">
+    <iconset resource="../main.qrc">
+     <normaloff>:/Icons/Icons/stop-download.png</normaloff>:/Icons/Icons/stop-download.png</iconset>
+   </property>
    <property name="text">
     <string>Stop Download</string>
    </property>
   </action>
   <action name="actionRemove">
+   <property name="icon">
+    <iconset resource="../main.qrc">
+     <normaloff>:/Icons/Icons/New Project.png</normaloff>:/Icons/Icons/New Project.png</iconset>
+   </property>
    <property name="text">
     <string>Remove</string>
    </property>
   </action>
   <action name="actionStop_All">
+   <property name="icon">
+    <iconset resource="../main.qrc">
+     <normaloff>:/Icons/Icons/Stop all.png</normaloff>:/Icons/Icons/Stop all.png</iconset>
+   </property>
    <property name="text">
     <string>Stop All</string>
    </property>
@@ -239,6 +264,10 @@
    </property>
   </action>
   <action name="actionScheduler">
+   <property name="icon">
+    <iconset resource="../main.qrc">
+     <normaloff>:/Icons/Icons/clock.png</normaloff>:/Icons/Icons/clock.png</iconset>
+   </property>
    <property name="text">
     <string>Scheduler</string>
    </property>
@@ -254,26 +283,45 @@
    </property>
   </action>
   <action name="actionOptions">
+   <property name="icon">
+    <iconset resource="../main.qrc">
+     <normaloff>:/Icons/Icons/settings.png</normaloff>:/Icons/Icons/settings.png</iconset>
+   </property>
    <property name="text">
     <string>Options</string>
    </property>
   </action>
   <action name="actionCheck_for_updates">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Check for updates</string>
    </property>
   </action>
   <action name="actionAbout">
+   <property name="icon">
+    <iconset resource="../main.qrc">
+     <normaloff>:/Icons/Icons/about.png</normaloff>:/Icons/Icons/about.png</iconset>
+   </property>
    <property name="text">
     <string>About</string>
    </property>
   </action>
   <action name="actionEnglish">
+   <property name="icon">
+    <iconset resource="../main.qrc">
+     <normaloff>:/Icons/Icons/en.png</normaloff>:/Icons/Icons/en.png</iconset>
+   </property>
    <property name="text">
     <string>English</string>
    </property>
   </action>
   <action name="actionPersian">
+   <property name="icon">
+    <iconset resource="../main.qrc">
+     <normaloff>:/Icons/Icons/fa.png</normaloff>:/Icons/Icons/fa.png</iconset>
+   </property>
    <property name="text">
     <string>Persian</string>
    </property>

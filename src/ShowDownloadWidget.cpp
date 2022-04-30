@@ -4,6 +4,7 @@ ShowDownloadWidget::ShowDownloadWidget(Downloader* downloader,QWidget *parent)
 	:QWidget(parent)
 {
 	ui.setupUi(this);
+	this->setWindowTitle("Download");
 	m_Downloader = downloader;
 	m_Download = downloader->Get_Download();
 }

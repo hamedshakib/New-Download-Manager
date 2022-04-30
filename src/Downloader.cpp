@@ -68,7 +68,7 @@ bool Downloader::PauseDownload()
 		partDownloader->Pause();
 		if (!partDownload->PartDownloadFile->isOpen())
 			partDownload->PartDownloadFile->open(QIODevice::WriteOnly|QIODevice::Append);
-		qDebug() << partDownload->PartDownloadFile->size();
+		//qDebug() << partDownload->PartDownloadFile->size();
 		partDownload->LastDownloadedByte = partDownload->start_byte + partDownload->PartDownloadFile->size() - 1;
 	}
 
@@ -104,22 +104,17 @@ bool Downloader::IsDownloading()
 
 void Downloader::DownloadWithSpeedControlled()
 {
-	//qDebug() <<"B:" << elapsedTimer.elapsed();
 	qint64 spentedTime = elapsedTimer.restart();
 	NumberOfBytesDownloadedInLastPeriod = 0;
 	if (MaxSpeedOfThisDownloader > 0)
 	{
 		while (spentedTime<1000 && MaxSpeedOfThisDownloader*1024 >NumberOfBytesDownloadedInLastPeriod)
 		{
-			//qDebug() << "1:"<< spentedTime;
-			//qDebug() << NumberOfBytesDownloadedInLastPeriod;
 			qint64 BytesShouldDownload = MaxSpeedOfThisDownloader*1024 - NumberOfBytesDownloadedInLastPeriod;
-			//qDebug() << "SOU:" << BytesShouldDownload;
 			spentedTime += elapsedTimer.elapsed();
 			NumberOfBytesDownloadedInLastPeriod += ProcessOfDownload(BytesShouldDownload);
 
 		}
-		//qDebug() << "3:"<<spentedTime;
 	}
 	else
 	{
@@ -136,7 +131,6 @@ void Downloader::DownloadWithSpeedControlled()
 	emit SignalForUpdateDownloading(DownloadStatus, SpeedString, TimeLeftString);
 
 
-	qDebug() <<"S:" << spentedTime;
 	if (Is_Downloading)
 	{
 		emit FinishedThisPeriod(NumberOfBytesDownloadedInLastPeriod, elapsedTimer.elapsed());
