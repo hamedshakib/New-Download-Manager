@@ -142,12 +142,15 @@ qint64 Downloader::ProcessOfDownload(qint64 BytesshouldBeDownloadAtThisPeriod)
 	qint64 DownloadedBytesInThisRun=0;
 	if (BytesshouldBeDownloadAtThisPeriod > 0)
 	{
-		qint64 BytesThatBeShouldDownloadPerPartDownload = BytesshouldBeDownloadAtThisPeriod / PartDownloader_list.count();
-		for (PartDownloader* partDownloader : PartDownloader_list)
+		if (PartDownloader_list.count() > 0)
 		{
-			qint64 DownloadedBytesNow= partDownloader->ReadReadybytes(BytesThatBeShouldDownloadPerPartDownload);
-			DownloadedBytesInThisRun += DownloadedBytesNow;
-			partDownloader->AddByteToLastDownloadedByte(DownloadedBytesNow);
+			qint64 BytesThatBeShouldDownloadPerPartDownload = BytesshouldBeDownloadAtThisPeriod / PartDownloader_list.count();
+			for (PartDownloader* partDownloader : PartDownloader_list)
+			{
+				qint64 DownloadedBytesNow = partDownloader->ReadReadybytes(BytesThatBeShouldDownloadPerPartDownload);
+				DownloadedBytesInThisRun += DownloadedBytesNow;
+				partDownloader->AddByteToLastDownloadedByte(DownloadedBytesNow);
+			}
 		}
 	}
 	else

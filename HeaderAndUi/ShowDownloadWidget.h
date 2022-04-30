@@ -15,6 +15,8 @@ class ShowDownloadWidget : public QWidget
 private:
 	Download* m_Download;
 	Downloader* m_Downloader;
+	QMap< QTreeWidgetItem*, PartDownload*> TreeWidgetMap;
+	QList<QTreeWidgetItem*> items;
 
 public slots:
 	void ProcessSetup();
@@ -27,6 +29,9 @@ private slots:
 public:
 	ShowDownloadWidget(Downloader* downloader,QWidget *parent=nullptr);
 	~ShowDownloadWidget();
+
+protected slots:
+	void closeEvent(QCloseEvent* event) override;
 
 private:
 	Ui::ShowDownloadWidget ui;

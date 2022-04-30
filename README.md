@@ -9,9 +9,9 @@ Download Manager with the following capabilities:<br/>
 - Show completed download in folder<br/>
 - Open completed download with desired program (Open with...)<br/>
 - launching program on startup<br/>
-- Add Proxy(Sock5,Http)
-- Change program language
--...
+- Add Proxy(Sock5,Http)<br/>
+- Change program language<br/>
+- ...
 
 <br/>
 <br/>
