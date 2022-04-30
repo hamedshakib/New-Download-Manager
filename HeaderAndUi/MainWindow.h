@@ -10,7 +10,7 @@
 #include "qstandarditemmodel.h"
 //#include "TableViewController.h"
 #include "MainTableViewController.h"
-#include "TreeViewController.h"
+#include "MainTreeViewController.h"
 #include "DownloadManager.h"
 #include "QueueManager.h"
 #include "ShowSchedule.h"
@@ -34,7 +34,7 @@ public:
 	void SetDownloadManager(DownloadManager* downloadManager);
 	void SetQueueManaget(QueueManager* queueManager);
 	void CreateMainTableViewControllerForMainWindow();
-	void CreateTreeViewController();
+	void CreateMainTreeViewController();
 	void LoadTreeView();
 
 private slots:
@@ -69,9 +69,13 @@ protected:
 	void resizeEvent(QResizeEvent* event);
 
 
+protected:
+	void dragEnterEvent(QDragEnterEvent* event) override;
+
+
 private:
 	MainTableViewController* mainTableViewController;
-	TreeViewController* treeViewController;
+	MainTreeViewController* mainTreeViewController;
 	DownloadManager* downloadManagerPointer;
 	QueueManager* queueManager;
 	Ui::MainWindow ui;

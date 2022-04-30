@@ -8,7 +8,7 @@
 
 #define NumberOfDataOfQueueId 10
 
-class TreeViewController : public QObject
+class MainTreeViewController : public QObject
 {
 	Q_OBJECT
 
@@ -36,7 +36,10 @@ private slots:
 	void AddQueueToTreeView(int Queue_id);
 	void RemoveQueueFromTreeView(int Queue_id);
 
+public slots:
+	void dragEnterEventToTreeView(QDragEnterEvent* event);
+
 public:
-	TreeViewController(QTreeView* treeView,QObject *parent);
-	~TreeViewController();
+	MainTreeViewController(QTreeView* treeView,QObject *parent);
+	~MainTreeViewController();
 };

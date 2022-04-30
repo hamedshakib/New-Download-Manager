@@ -60,7 +60,7 @@ private slots:
 	void AddDownloadToQueue(Queue* queue, Download* download);
 	void RemoveDownloadFromQueue(Download* download);
 
-
+	void PressClickedOnRow(const QModelIndex& modelindex);
 
 signals:
 	void SelectedDownloadChanged(int Download_id, bool Is_Completed);

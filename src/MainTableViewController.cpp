@@ -6,10 +6,12 @@ MainTableViewController::MainTableViewController(QTableView* tableView, QObject*
 	listOfColomns << "id" << tr("File Name") << tr("Size") << tr("Status") << tr("Speed") << tr("Time Left") << tr("Last Try Time") << tr("Description") << tr("Save To");
 	model = new QStandardItemModel(this);
 
+	m_tableView->setSelectionMode(QAbstractItemView::SelectionMode::SingleSelection);
+
 	//tableView->setDragDropMode(QAbstractItemView::DragDropMode::DragOnly);
 	//tableView->setDragEnabled(true);
 	//tableView->setDragEnabled(true);//somewhere in constructor
-
+	
 }
 
 MainTableViewController::~MainTableViewController()
@@ -64,6 +66,7 @@ void MainTableViewController::ProcessSetupOfTableView()
 	//Set Just Clicked on rows
 	connect(m_tableView, &QTableView::clicked, this, &MainTableViewController::ClickedOnRow);
 
+	connect(m_tableView, &QTableView::pressed, this, &MainTableViewController::PressClickedOnRow);
 
 	AdjusteTableViewProperty();
 
@@ -409,4 +412,36 @@ void MainTableViewController::ChangeColumnWidth(int numberOfColumn, int NewColum
 {
 	QString SettingStringKey = "TableView/MainTableView/WidthColum" + QString::number(numberOfColumn);
 	SettingInteract::SetValue(SettingStringKey, NewColumnWidth);
+}
+
+void MainTableViewController::PressClickedOnRow(const QModelIndex& modelindex)
+{
+	int Download_id = FindDownloadIdFromRow(modelindex);
+
+	int row = m_tableView->currentIndex().row();
+	Download* download=m_downloadManager->ProcessAchieveDownload(Download_id);
+	if (download->get_Status() == Download::DownloadStatusEnum::Completed)
+	{
+		QDrag* drag = new QDrag(this);
+		QMimeData* mimeData = new QMimeData;
+
+		QList<QUrl> urls;
+		QUrl url = "file:///" + download->get_SavaTo().toString();
+		urls.append(url);
+		mimeData->setUrls(urls);
+		drag->setMimeData(mimeData);
+
+
+		Qt::DropAction dropAction = drag->exec(Qt::MoveAction);
+	}
+	if (download->get_QueueId() == 0)
+	{
+		//ToDo Move To Queue
+		QDrag* drag = new QDrag(this);
+		QMimeData* mimeData = new QMimeData;
+		QByteArray itemData=QString("Dlownload_id:"+ Download_id).toUtf8();
+		mimeData->setData("application/MoveDownloadToQueue", itemData);
+		drag->setMimeData(mimeData);
+		Qt::DropAction dropAction = drag->exec(Qt::MoveAction);
+	}
 }

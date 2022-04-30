@@ -1,23 +1,23 @@
-#include "HeaderAndUi/TreeViewController.h"
+#include "HeaderAndUi/MainTreeViewController.h"
 
-TreeViewController::TreeViewController(QTreeView* treeView,QObject *parent)
+MainTreeViewController::MainTreeViewController(QTreeView* treeView,QObject *parent)
 	: QObject(parent)
 {
 	this->m_TreeView = treeView;
 }
 
-TreeViewController::~TreeViewController()
+MainTreeViewController::~MainTreeViewController()
 {
 }
 
-void TreeViewController::Set_QueueManager(QueueManager* queueManager)
+void MainTreeViewController::Set_QueueManager(QueueManager* queueManager)
 {
 	m_queueManager = queueManager;
-	connect(queueManager, &QueueManager::RemovedQueue, this, &TreeViewController::RemoveQueueFromTreeView);
-	connect(queueManager, &QueueManager::AddedQueue, this, &TreeViewController::AddQueueToTreeView);
+	connect(queueManager, &QueueManager::RemovedQueue, this, &MainTreeViewController::RemoveQueueFromTreeView);
+	connect(queueManager, &QueueManager::AddedQueue, this, &MainTreeViewController::AddQueueToTreeView);
 }
 
-void TreeViewController::LoadTreeView()
+void MainTreeViewController::LoadTreeView()
 {
 	model = new QStandardItemModel(this);
 	m_TreeView->setModel(model);
@@ -39,7 +39,7 @@ void TreeViewController::LoadTreeView()
 		Queueitem->appendRow(child1);
 	}
 
-	connect(m_TreeView, &QTreeView::customContextMenuRequested, this,&TreeViewController::customContextMenuRequested );
+	connect(m_TreeView, &QTreeView::customContextMenuRequested, this,&MainTreeViewController::customContextMenuRequested );
 
 
 
@@ -49,7 +49,7 @@ void TreeViewController::LoadTreeView()
 	model->setHorizontalHeaderItem(0, new QStandardItem(tr("Category")));
 }
 
-void TreeViewController::customContextMenuRequested(const QPoint& point)
+void MainTreeViewController::customContextMenuRequested(const QPoint& point)
 {
 	QTreeView* treeView = static_cast<QTreeView*>(sender());
 	QModelIndex index = treeView->indexAt(point);
@@ -75,7 +75,7 @@ void TreeViewController::customContextMenuRequested(const QPoint& point)
 	
 }
 
-void TreeViewController::CreateMenuForQueueRightClicked(const QPoint& Point, Queue* queue)
+void MainTreeViewController::CreateMenuForQueueRightClicked(const QPoint& Point, Queue* queue)
 {
 
 	QueueManager* queueManager = m_queueManager;
@@ -106,7 +106,7 @@ void TreeViewController::CreateMenuForQueueRightClicked(const QPoint& Point, Que
 	RightClickMenu->exec(m_TreeView->viewport()->mapToGlobal(Point));
 }
 
-void TreeViewController::AddQueueToTreeView(int Queue_id)
+void MainTreeViewController::AddQueueToTreeView(int Queue_id)
 {
 	Queue* queue = m_queueManager->AchiveQueue(Queue_id);
 	QStandardItem* child = new QStandardItem(queue->Get_QueueName());
@@ -115,10 +115,10 @@ void TreeViewController::AddQueueToTreeView(int Queue_id)
 	child->setDropEnabled(1);
 	Queueitem->appendRow(child);
 
-	connect(m_TreeView, &QTreeView::customContextMenuRequested, this, &TreeViewController::customContextMenuRequested);
+	connect(m_TreeView, &QTreeView::customContextMenuRequested, this, &MainTreeViewController::customContextMenuRequested);
 }
 
-void TreeViewController::RemoveQueueFromTreeView(int Queue_id)
+void MainTreeViewController::RemoveQueueFromTreeView(int Queue_id)
 {
 	for (int i = 0; i < Queueitem->rowCount(); i++)
 	{
@@ -130,4 +130,24 @@ void TreeViewController::RemoveQueueFromTreeView(int Queue_id)
 		
 	}
 	
+}
+
+void MainTreeViewController::dragEnterEventToTreeView(QDragEnterEvent* event)
+{
+	if (event->mimeData()->hasFormat("application/MoveDownloadToQueue")) {
+
+		qDebug() << "yes";
+
+
+		//if (event->source() == this) {
+		//	event->setDropAction(Qt::MoveAction);
+		//	event->accept();
+		//}
+		//else {
+		//	event->acceptProposedAction();
+		//}
+	}
+	else {
+		event->ignore();
+	}
 }

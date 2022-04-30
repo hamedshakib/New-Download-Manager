@@ -64,11 +64,11 @@ Download::ResumeCapabilityEnum ProcessEnum::ConvertDatabseStringToResumeCapabili
 	{
 		return Download::ResumeCapabilityEnum::UnKnown;
 	}
-	else if (str == "YES")
+	else if (str == "Yes")
 	{
 		return Download::ResumeCapabilityEnum::Yes;
 	}
-	else if(str=="NO")
+	else if(str=="No")
 	{
 		return Download::ResumeCapabilityEnum::No;
 	}
@@ -78,15 +78,15 @@ QString ProcessEnum::ConvertResumeCapabilityEnumToString(Download::ResumeCapabil
 {
 	if (resumeCapabilityEnum == Download::ResumeCapabilityEnum::UnKnown)
 	{
-		return "Unknown";
+		return "UnKnown";
 	}
 	else if (resumeCapabilityEnum == Download::ResumeCapabilityEnum::Yes)
 	{
-		return "Yes";
+		return "YES";
 	}
 	else if (resumeCapabilityEnum == Download::ResumeCapabilityEnum::No)
 	{
-		return "No";
+		return "NO";
 	}
 }
 

@@ -30,11 +30,11 @@ void MainWindow::CreateMainTableViewControllerForMainWindow()
 	connect(mainTableViewController, &MainTableViewController::SelectedDownloadChanged, this, &MainWindow::ChangedDownloadSelected);
 }
 
-void MainWindow::CreateTreeViewController()
+void MainWindow::CreateMainTreeViewController()
 {
-	treeViewController = new TreeViewController(ui.treeView, this);
-	treeViewController->Set_QueueManager(queueManager);
-	treeViewController->LoadTreeView();
+	mainTreeViewController = new MainTreeViewController(ui.treeView, this);
+	mainTreeViewController->Set_QueueManager(queueManager);
+	mainTreeViewController->LoadTreeView();
 }
 
 void MainWindow::SetDownloadManager(DownloadManager* downloadManager)
@@ -319,5 +319,10 @@ void MainWindow::on_actionDelete_All_Complited_triggered()
 	QAbstractItemModel* model = ui.tableView->model();
 	model->removeRows(0, model->rowCount());
 	mainTableViewController->LoadAllDownloadsFromDatabaseForMainTableView();
+}
+
+void MainWindow::dragEnterEvent(QDragEnterEvent* event)
+{
+	mainTreeViewController->dragEnterEventToTreeView(event);
 }
 

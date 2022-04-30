@@ -11,6 +11,8 @@ ShowDownloadWidget::ShowDownloadWidget(Downloader* downloader,QWidget *parent)
 
 ShowDownloadWidget::~ShowDownloadWidget()
 {
+	qDeleteAll(items);
+	qDebug() << "Show Download widget deleted";
 }
 
 void ShowDownloadWidget::ProcessSetup()
@@ -21,7 +23,7 @@ void ShowDownloadWidget::ProcessSetup()
 	ui.TimeLeft_label->setText("");
 	ui.transferRateInSpeedLimiter_label->setText("");
 	bool is_Downloading = m_Downloader->IsDownloading();
-	QString PauseOrResume= is_Downloading ? tr("Pause"):("Resume");
+	QString PauseOrResume= is_Downloading ? tr("Pause") : tr("Resume");
 	ui.PauseResume_pushButton->setText(PauseOrResume);
 	ui.resumeCapability_label->setText(ProcessEnum::ConvertResumeCapabilityEnumToString(m_Download->ResumeCapability));
 	ui.status_label->setText(ProcessEnum::ConvertDownloadStatusEnumToString(m_Download->downloadStatus));
@@ -31,7 +33,7 @@ void ShowDownloadWidget::ProcessSetup()
 	connect(m_Downloader, &Downloader::SignalForUpdateDownloading, this, &ShowDownloadWidget::UpdateInDownloading);
 	connect(m_Downloader, &Downloader::Started, this, [&]() {ChangePauseOrResume_Download(); });
 	connect(m_Downloader, &Downloader::Paused, this, [&]() {ChangePauseOrResume_Download(); });
-	connect(m_Downloader, &Downloader::CompeletedDownload, this, [&]() {this->close(); this->deleteLater(); });
+	connect(m_Downloader, &Downloader::CompeletedDownload, this, [&]() {this->close(); /*if (this)*/ this->deleteLater(); });
 
 	ui.treeWidget->clear();
 	QList<PartDownload*> partdownloads= m_Download->get_PartDownloads();
@@ -87,11 +89,4 @@ void ShowDownloadWidget::ChangePauseOrResume_Download()
 	for(auto item:items)
 		item->setText(2, InfoString);
 	ui.PauseResume_pushButton->setText(PauseOrResume);
-}
-
-void ShowDownloadWidget::closeEvent(QCloseEvent* event)
-{
-	this->close();
-	qDeleteAll(items);
-	this->deleteLater();
 }

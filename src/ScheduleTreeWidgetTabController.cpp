@@ -11,7 +11,7 @@ ScheduleTreeWidgetTabController::ScheduleTreeWidgetTabController(QTreeWidget* tr
 	horizontalHeader->setSectionsMovable(false);
 	connect(horizontalHeader, &QHeaderView::sectionResized, this, [&](int numberOfColum, int oldsize, int newSize) {ChangeColumnWidth(numberOfColum, newSize); });
 
-
+	treeWidget->setSelectionMode(QAbstractItemView::SelectionMode::SingleSelection);
 
 	for (int columNumber = 0; columNumber < horizontalHeader->count(); columNumber++)
 	{

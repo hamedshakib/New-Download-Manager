@@ -30,9 +30,6 @@ public:
 	ShowDownloadWidget(Downloader* downloader,QWidget *parent=nullptr);
 	~ShowDownloadWidget();
 
-protected slots:
-	void closeEvent(QCloseEvent* event) override;
-
 private:
 	Ui::ShowDownloadWidget ui;
 };
