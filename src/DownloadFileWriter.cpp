@@ -38,8 +38,12 @@ QFile* DownloadFileWriter::BuildFileFromMultipleFiles(QList<QFile*> files, QStri
 		{
 			for (QFile* file : files)
 			{
-				if (!file->isOpen())
-					file->open(QIODevice::ReadOnly);
+				file->close();
+				if (!file->open(QFile::ReadOnly))
+				{
+					qCritical() << "Can't Open File for read for write to one file";
+					return file;
+				}
 				while (!file->atEnd()) {
 					QByteArray bytes;
 					if (file->bytesAvailable() >= 2048)

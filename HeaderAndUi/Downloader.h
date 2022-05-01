@@ -65,6 +65,8 @@ private slots:
 	void HandelPausedPartDownloadSignalEmitted();
 	void UpdateDownloadInUpdatingInDatabase();
 
+	bool Is_downloadedCompletePartDownload(PartDownload* partDownload);
+
 signals:
 	void FinishedThisPeriod(qint64 bytesDownloaded,qint64 millisecond);
 	void CompeletedDownload();
