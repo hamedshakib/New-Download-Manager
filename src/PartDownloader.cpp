@@ -88,6 +88,11 @@ void PartDownloader::AddByteToLastDownloadedByte(qint64 NumberOfBytes)
 
 void PartDownloader::Resume()
 {
+	if (partDownload->LastDownloadedByte >= partDownload->end_byte)
+	{
+		Is_FinishedPartDownload = true;
+		return;
+	}
 	is_Paused = false;
 	Is_PartDownloadEndInBuffer = false;
 	connect(reply, &QNetworkReply::finished, this, &PartDownloader::ProcessApplyPauseOrFinishedPartDownloader);

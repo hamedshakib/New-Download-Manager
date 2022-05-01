@@ -356,32 +356,32 @@
     <message>
         <location filename="../src/MainTreeViewController.cpp" line="27"/>
         <source>Categories</source>
-        <translation type="unfinished">دسته بندی</translation>
+        <translation>دسته بندی</translation>
     </message>
     <message>
         <location filename="../src/MainTreeViewController.cpp" line="29"/>
         <source>Queues</source>
-        <translation type="unfinished">صف ها</translation>
+        <translation>صف ها</translation>
     </message>
     <message>
         <location filename="../src/MainTreeViewController.cpp" line="57"/>
         <source>Category</source>
-        <translation type="unfinished">دسته</translation>
+        <translation>دسته</translation>
     </message>
     <message>
         <location filename="../src/MainTreeViewController.cpp" line="100"/>
         <source>Pause</source>
-        <translation type="unfinished">توقف</translation>
+        <translation>توقف</translation>
     </message>
     <message>
         <location filename="../src/MainTreeViewController.cpp" line="106"/>
         <source>Resume</source>
-        <translation type="unfinished">ادامه</translation>
+        <translation>ادامه</translation>
     </message>
     <message>
         <location filename="../src/MainTreeViewController.cpp" line="114"/>
         <source>Delete</source>
-        <translation type="unfinished">حذف</translation>
+        <translation>حذف</translation>
     </message>
 </context>
 <context>
