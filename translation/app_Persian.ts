@@ -1120,35 +1120,35 @@
     <name>ShowDownloadWidget</name>
     <message>
         <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="14"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="264"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="269"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="264"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="264"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="267"/>
         <source>ShowDownloadWidget</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="20"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="265"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="270"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="265"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="265"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="268"/>
         <location filename="../src/ShowDownloadWidget.cpp" line="26"/>
-        <location filename="../src/ShowDownloadWidget.cpp" line="86"/>
+        <location filename="../src/ShowDownloadWidget.cpp" line="101"/>
         <source>Pause</source>
         <translation>توقف</translation>
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="27"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="266"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="271"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="266"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="266"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="269"/>
         <source>Cancel</source>
         <translation>انصراف</translation>
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="67"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="280"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="285"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="280"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="280"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="283"/>
         <source>Download status</source>
         <translation>وضعیت دانلود</translation>
     </message>
@@ -1160,15 +1160,15 @@
         <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="143"/>
         <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="150"/>
         <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="157"/>
-        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="226"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="267"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="269"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="275"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="276"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="277"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="278"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="279"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="285"/>
+        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="242"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="272"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="274"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="280"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="281"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="282"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="283"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="284"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="290"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="267"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="269"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="275"/>
@@ -1177,227 +1177,227 @@
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="278"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="279"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="285"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="267"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="269"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="275"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="276"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="277"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="270"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="272"/>
         <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="278"/>
         <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="279"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="285"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="280"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="281"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="282"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="288"/>
         <source>TextLabel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="80"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="268"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="273"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="268"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="268"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="271"/>
         <source>status :</source>
         <translation>: وضعیت</translation>
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="94"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="270"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="275"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="270"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="270"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="273"/>
         <source>file size :</source>
         <translation>: اندازه فایل</translation>
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="101"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="271"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="276"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="271"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="271"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="274"/>
         <source>downloaded :</source>
         <translation>: دانلود شده</translation>
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="108"/>
-        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="219"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="272"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="284"/>
+        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="235"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="277"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="289"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="272"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="284"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="272"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="284"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="275"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="287"/>
         <source>transfer rate :</source>
         <translation>: نرخ انتقال</translation>
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="115"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="273"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="278"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="273"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="273"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="276"/>
         <source>time left :</source>
         <translation>: زمان باقی مانده</translation>
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="122"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="274"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="279"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="274"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="274"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="277"/>
         <source>resume capability :</source>
         <translation>:قابلیت ادامه دادن</translation>
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="165"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="286"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="291"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="286"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="286"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="289"/>
         <source>Speed limiter</source>
         <translation>محدودیت سرعت</translation>
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="180"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="281"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="286"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="281"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="281"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="284"/>
         <source>use limit rate</source>
         <translation>:استفاده از محدودیت سرعت</translation>
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="190"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="282"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="287"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="282"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="282"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="285"/>
         <source>Max transfer rate :</source>
         <translation>: حداکثر نرخ انتقال</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="200"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="283"/>
+        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="197"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="288"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="283"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="283"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="286"/>
         <source>KByte/sec</source>
         <translatorcomment>کیلوبایت بر ثانیه</translatorcomment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="269"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="290"/>
+        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="285"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="295"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="290"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="290"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="293"/>
         <source>N</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="274"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="289"/>
+        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="290"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="294"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="289"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="289"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="292"/>
         <source>downloaded</source>
         <translation>دانلود شده</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="279"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="288"/>
+        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="295"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="293"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="288"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="288"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="291"/>
         <source>info</source>
         <translation>اطلاع</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="284"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="295"/>
+        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="300"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="300"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="295"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="295"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="298"/>
         <source>1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="295"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="297"/>
+        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="311"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="302"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="297"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="297"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="300"/>
         <source>2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="300"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="299"/>
+        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="316"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="304"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="299"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="299"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="302"/>
         <source>3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="305"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="301"/>
+        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="321"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="306"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="301"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="301"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="304"/>
         <source>4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="310"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="303"/>
+        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="326"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="308"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="303"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="303"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="306"/>
         <source>5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="315"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="305"/>
+        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="331"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="310"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="305"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="305"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="308"/>
         <source>6</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="320"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="307"/>
+        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="336"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="312"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="307"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="307"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="310"/>
         <source>7</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="325"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="309"/>
+        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="341"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="314"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="309"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="309"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="312"/>
         <source>8</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="330"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="311"/>
+        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="346"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="316"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="311"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="311"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="314"/>
         <source>9</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="335"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="313"/>
+        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="351"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="318"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="313"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="313"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="316"/>
         <source>10</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="340"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="315"/>
+        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="356"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="320"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="315"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="315"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="318"/>
         <source>11</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="345"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="317"/>
+        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="361"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="322"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="317"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="317"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="320"/>
         <source>12</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="350"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="319"/>
+        <location filename="../HeaderAndUi/ShowDownloadWidget.ui" line="366"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="324"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="319"/>
-        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="319"/>
+        <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="322"/>
         <source>13</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1408,13 +1408,13 @@
     </message>
     <message>
         <location filename="../src/ShowDownloadWidget.cpp" line="40"/>
-        <location filename="../src/ShowDownloadWidget.cpp" line="88"/>
+        <location filename="../src/ShowDownloadWidget.cpp" line="103"/>
         <source>Downloading</source>
         <translation>در حال دانلود</translation>
     </message>
     <message>
         <location filename="../src/ShowDownloadWidget.cpp" line="40"/>
-        <location filename="../src/ShowDownloadWidget.cpp" line="88"/>
+        <location filename="../src/ShowDownloadWidget.cpp" line="103"/>
         <source>Paused</source>
         <translation>متوقف شده</translation>
     </message>

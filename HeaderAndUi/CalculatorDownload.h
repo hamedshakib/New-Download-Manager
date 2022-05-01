@@ -15,8 +15,8 @@ private:
 	QTime RemainedTimeToFinish{};
 	qint64 LastSpeeds[3]{};
 
-	qint64 CurrentSpeedBytesPerMillisecond = 0;
-	qint64 AvrageSpeedBytesPerMillisecond;
+	qint64 CurrentSpeedBytesPerSecond = 0;
+	qint64 AvrageSpeedBytesPerSecond;
 
 public:
 	//qint64 CalculateDownloadSpeed(qint64 NowDownloadedbyte,qint64 SpentedTime_Millisecond);
