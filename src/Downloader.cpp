@@ -35,7 +35,8 @@ bool Downloader::StartDownload()
 			return false;
 		}
 	}
-
+	if (CheckForFinishedDownload())
+		return true;
 	Is_Downloading = true;
 
 	elapsedTimer.start();
@@ -45,9 +46,20 @@ bool Downloader::StartDownload()
 	{
 		PartDownload* partDownload = partDownloader->Get_PartDownload();
 		partDownload->LastDownloadedByte = partDownload->start_byte + partDownload->PartDownloadFile->size() - 1;
-		ProcessPreparePartDownloaderFrompartDownload(partDownloader, partDownload);
-		partDownloader->Resume();
+		if (Is_downloadedCompletePartDownload(partDownload))
+		{
+			PartDownloader_list.removeOne(partDownloader);
+			partDownloader->deleteLater();
+			CheckForFinishedDownload();
+		}
+		else
+		{
+			ProcessPreparePartDownloaderFrompartDownload(partDownloader, partDownload);
+			partDownloader->Resume();
+		}
 	}
+	if (PartDownloader_list.isEmpty())
+		return true;
 	download->Set_downloadStatus(Download::DownloadStatusEnum::Downloading);
 	download->LastTryTime = QDateTime::currentDateTime();
 	emit Started();
@@ -70,9 +82,17 @@ bool Downloader::PauseDownload()
 			partDownload->PartDownloadFile->open(QIODevice::WriteOnly|QIODevice::Append);
 		//qDebug() << partDownload->PartDownloadFile->size();
 		partDownload->LastDownloadedByte = partDownload->start_byte + partDownload->PartDownloadFile->size() - 1;
+		if (Is_downloadedCompletePartDownload(partDownload))
+		{
+			PartDownloader_list.removeOne(partDownloader);
+			partDownloader->deleteLater();
+			CheckForFinishedDownload();
+		}
 	}
-
-
+	if (PartDownloader_list.isEmpty())
+	{
+		return true;
+	}
 
 
 	emit Paused();
@@ -85,8 +105,8 @@ bool Downloader::ProcessPreparePartDownloaders()
 	foreach(PartDownload * partDownload,PartDownloads)
 	{
 		PartDownloader* tempPartDownloader = new PartDownloader(this);
-		ProcessPreparePartDownloaderFrompartDownload(tempPartDownloader, partDownload);
 		PartDownloader_list.append(tempPartDownloader);
+		ProcessPreparePartDownloaderFrompartDownload(tempPartDownloader, partDownload);
 		Download* download1 = download;
 
 
@@ -182,12 +202,18 @@ qint64 Downloader::ProcessOfDownload(qint64 BytesshouldBeDownloadAtThisPeriod)
 
 bool Downloader::ProcessPreparePartDownloaderFrompartDownload(PartDownloader* partDownloader,PartDownload* partDownload)
 {
+	partDownload->LastDownloadedByte= partDownload->start_byte + partDownload->PartDownloadFile->size() - 1;
+	if (Is_downloadedCompletePartDownload(partDownload))
+	{
+		PartDownloader_list.removeOne(partDownloader);
+		partDownloader->deleteLater();
+		return false;
+	}
 	QNetworkRequest request(download->get_Url());
 	qDebug() <<"downloadUrl:"<<download->get_Url();
 	request.setAttribute(QNetworkRequest::HttpPipeliningAllowedAttribute, true);
 
 	qDebug() << "Started_Byte ::::" << partDownload->start_byte;
-	
 	QString rangeBytes = QString("bytes=%1-%2").arg(partDownload->LastDownloadedByte+1).arg(partDownload->end_byte);
 	qDebug() << "rangeBytes:" << rangeBytes;
 	request.setRawHeader("Range", rangeBytes.toUtf8());
@@ -213,25 +239,23 @@ bool Downloader::CheckForFinishedDownload()
 
 void Downloader::ProcessOfEndOfDownloading()
 {
-	if (download->downloadStatus==Download::Pause)
-	{
-		//Not Finished Download Just Paused;
-		return;
-	}
 	qDebug() << "Process Of End Of Downloading";
 	Is_Downloading = false;
 	QList<PartDownload*> PartDownloads = download->get_PartDownloads();
 	QList<QFile*> FilesOfDownload;
 	for (PartDownload* partDownload : PartDownloads)
 	{
+		qDebug() << partDownload->PartDownloadFile->fileName() << ":" << partDownload->PartDownloadFile->size();
 		FilesOfDownload.append(partDownload->PartDownloadFile);
 	}
 
 
 
+
 	QFile* NewDownloadFile=DownloadFileWriter::BuildFileFromMultipleFiles(FilesOfDownload, download->get_SavaTo().toString());
+
+	qDebug() << NewDownloadFile->fileName() << ":" << NewDownloadFile->size();
 	download->CompletedFile = NewDownloadFile;
-	qDebug() << "NewFile Download" << NewDownloadFile;
 	qDeleteAll(PartDownloads);
 	download->Set_downloadStatus(Download::Completed);
 
@@ -255,8 +279,8 @@ Download* Downloader::Get_Download()
 void Downloader::HandelFinishedPartDownloadSignalEmitted()
 {
 
-
 	PartDownloader* partDownloader = static_cast<PartDownloader*>(sender());
+	qDebug() << partDownloader->Get_PartDownload()->PartDownloadFile->size();
 	qDebug() << "PartDownloader Is Finsished";
 	if (!PartDownloader_list.removeOne(partDownloader))
 	{
@@ -294,4 +318,17 @@ void Downloader::SetMaxSpeed(int maxSpeed)
 int Downloader::Get_MaxSpeed()
 {
 	return MaxSpeedOfThisDownloader;
+}
+
+bool Downloader::Is_downloadedCompletePartDownload(PartDownload* partDownload)
+{
+	if (partDownload->LastDownloadedByte >= partDownload->end_byte)
+	{
+		qDebug() << "**downloadC last:" << partDownload->LastDownloadedByte << " end:" << partDownload->end_byte;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
