@@ -72,6 +72,7 @@ signals:
 	void SignalForUpdateDownloading(QString Status,QString speed, QString TimeLeft);
 	void Started();
 	void Paused();
+	void SpeedChanged(int speed);
 
 private:
 	friend class DatabaseQueryPreparer;

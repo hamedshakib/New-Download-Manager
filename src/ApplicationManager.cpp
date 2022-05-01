@@ -20,7 +20,7 @@ ApplicationManager::ApplicationManager(QObject *parent,int argc,char* argv[])
 	connect(mainWindow, &MainWindow::NewBatchDownload, downloadManager, &DownloadManager::CreateNewDownloadsFromBatch);
 
 
-	mainWindow->CreateTreeViewController();
+	mainWindow->CreateMainTreeViewController();
 
 
 	AddMainSystemTrayToTaskbar();

@@ -1,23 +1,23 @@
-#include "HeaderAndUi/TreeViewController.h"
+#include "HeaderAndUi/MainTreeViewController.h"
 
-TreeViewController::TreeViewController(QTreeView* treeView,QObject *parent)
+MainTreeViewController::MainTreeViewController(QTreeView* treeView,QObject *parent)
 	: QObject(parent)
 {
 	this->m_TreeView = treeView;
 }
 
-TreeViewController::~TreeViewController()
+MainTreeViewController::~MainTreeViewController()
 {
 }
 
-void TreeViewController::Set_QueueManager(QueueManager* queueManager)
+void MainTreeViewController::Set_QueueManager(QueueManager* queueManager)
 {
 	m_queueManager = queueManager;
-	connect(queueManager, &QueueManager::RemovedQueue, this, &TreeViewController::RemoveQueueFromTreeView);
-	connect(queueManager, &QueueManager::AddedQueue, this, &TreeViewController::AddQueueToTreeView);
+	connect(queueManager, &QueueManager::RemovedQueue, this, &MainTreeViewController::RemoveQueueFromTreeView);
+	connect(queueManager, &QueueManager::AddedQueue, this, &MainTreeViewController::AddQueueToTreeView);
 }
 
-void TreeViewController::LoadTreeView()
+void MainTreeViewController::LoadTreeView()
 {
 	model = new QStandardItemModel(this);
 	m_TreeView->setModel(model);
@@ -32,14 +32,22 @@ void TreeViewController::LoadTreeView()
 
 	for (Queue* queue : m_queueManager->Get_ListOfQueues())
 	{
+		MainTreeViewQueueItem* child1 = new MainTreeViewQueueItem(queue,this);
+		//child1->setData(queue->Get_QueueId(), NumberOfDataOfQueue);
+		child1->setEditable(false);
+		child1->setDropEnabled(1);
+		Queueitem->appendRow(child1);
+
+		/*
 		QStandardItem* child1 = new QStandardItem(queue->Get_QueueName());
 		child1->setData(queue->Get_QueueId(),NumberOfDataOfQueue);
 		child1->setEditable(false);
 		child1->setDropEnabled(1);
 		Queueitem->appendRow(child1);
+		*/
 	}
 
-	connect(m_TreeView, &QTreeView::customContextMenuRequested, this,&TreeViewController::customContextMenuRequested );
+	connect(m_TreeView, &QTreeView::customContextMenuRequested, this,&MainTreeViewController::customContextMenuRequested );
 
 
 
@@ -49,7 +57,7 @@ void TreeViewController::LoadTreeView()
 	model->setHorizontalHeaderItem(0, new QStandardItem(tr("Category")));
 }
 
-void TreeViewController::customContextMenuRequested(const QPoint& point)
+void MainTreeViewController::customContextMenuRequested(const QPoint& point)
 {
 	QTreeView* treeView = static_cast<QTreeView*>(sender());
 	QModelIndex index = treeView->indexAt(point);
@@ -62,10 +70,16 @@ void TreeViewController::customContextMenuRequested(const QPoint& point)
 	if (index.parent().model() == Queueitem->model())
 	{
 		//Queue right clicked
-		size_t Queue_id=index.data(NumberOfDataOfQueue).toInt();
-		Queue* queue=m_queueManager->AchiveQueue(Queue_id);
+		QStandardItemModel* sModel = qobject_cast<QStandardItemModel*>(model);
+		MainTreeViewQueueItem* child = static_cast<MainTreeViewQueueItem*>(sModel->itemFromIndex(index));
 
-		CreateMenuForQueueRightClicked(point, queue);
+
+		//size_t Queue_id=index.data(NumberOfDataOfQueue).toInt();
+		//Queue* queue=m_queueManager->AchiveQueue(Queue_id);
+		//CreateMenuForQueueRightClicked(point, queue);
+		CreateMenuForQueueRightClicked(point, child->Get_Queue());
+
+
 	}
 	else if (index.parent().model() == Categoryitem->model())
 	{
@@ -75,7 +89,7 @@ void TreeViewController::customContextMenuRequested(const QPoint& point)
 	
 }
 
-void TreeViewController::CreateMenuForQueueRightClicked(const QPoint& Point, Queue* queue)
+void MainTreeViewController::CreateMenuForQueueRightClicked(const QPoint& Point, Queue* queue)
 {
 
 	QueueManager* queueManager = m_queueManager;
@@ -106,25 +120,32 @@ void TreeViewController::CreateMenuForQueueRightClicked(const QPoint& Point, Que
 	RightClickMenu->exec(m_TreeView->viewport()->mapToGlobal(Point));
 }
 
-void TreeViewController::AddQueueToTreeView(int Queue_id)
+void MainTreeViewController::AddQueueToTreeView(int Queue_id)
 {
 	Queue* queue = m_queueManager->AchiveQueue(Queue_id);
-	QStandardItem* child = new QStandardItem(queue->Get_QueueName());
-	child->setData(queue->Get_QueueId(), NumberOfDataOfQueue);
+
+
+	MainTreeViewQueueItem* child = new MainTreeViewQueueItem(queue,this);
+//	QStandardItem* child = new QStandardItem(queue->Get_QueueName());
+
+
+	//child->setData(queue->Get_QueueId(), NumberOfDataOfQueue);
 	child->setEditable(false);
 	child->setDropEnabled(1);
 	Queueitem->appendRow(child);
 
-	connect(m_TreeView, &QTreeView::customContextMenuRequested, this, &TreeViewController::customContextMenuRequested);
+	connect(m_TreeView, &QTreeView::customContextMenuRequested, this, &MainTreeViewController::customContextMenuRequested);
 }
 
-void TreeViewController::RemoveQueueFromTreeView(int Queue_id)
+void MainTreeViewController::RemoveQueueFromTreeView(int Queue_id)
 {
 	for (int i = 0; i < Queueitem->rowCount(); i++)
 	{
-		int QueuItemId=Queueitem->child(i)->data(NumberOfDataOfQueue).toInt();
+		auto child= static_cast<MainTreeViewQueueItem*>(Queueitem->child(i));
+		int QueuItemId= child->Get_Queue()->Get_QueueId();
 		if (QueuItemId == Queue_id)
 		{
+			child->deleteLater();
 			Queueitem->removeRow(i);
 		}
 		

@@ -186,9 +186,9 @@ set(PROJECT_SOURCES
         ${MY_HeaderAndUi_PATH}/ShowSchedule.h
         ${MY_SOURCE_PATH}/ShowSchedule.cpp
 
-        #TreeViewController
-        ${MY_HeaderAndUi_PATH}/TreeViewController.h
-        ${MY_SOURCE_PATH}/TreeViewController.cpp
+        #MainTreeViewController
+        ${MY_HeaderAndUi_PATH}/MainTreeViewController.h
+        ${MY_SOURCE_PATH}/MainTreeViewController.cpp
 
         #TranslationManager
         ${MY_HeaderAndUi_PATH}/TranslationManager.h
@@ -221,6 +221,10 @@ set(PROJECT_SOURCES
         #ScheduleTreeWidgetController
         ${MY_HeaderAndUi_PATH}/ScheduleTreeWidgetTabController.h
         ${MY_SOURCE_PATH}/ScheduleTreeWidgetTabController.cpp
+
+        #MainTreeViewQueueItem
+        ${MY_HeaderAndUi_PATH}/MainTreeViewQueueItem.h
+        ${MY_SOURCE_PATH}/MainTreeViewQueueItem.cpp
 
 
 

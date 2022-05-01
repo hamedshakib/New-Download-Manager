@@ -128,6 +128,17 @@ void Downloader::DownloadWithSpeedControlled()
 	QString TimeLeftString = calculatorDownload.GetTimeLeftOfDownloadInFormOfString(download->DownloadSize - download->SizeDownloaded);
 	QString DownloadStatus = calculatorDownload.getStatusForTable(download->SizeDownloaded, download->DownloadSize);
 	//emit DownloadedAtAll(download->SizeDownloaded);
+
+
+	if (SpeedString == "")
+	{
+
+	}
+	qDebug() << speed;
+	qDebug() << SpeedString;
+	qDebug() << TimeLeftString;
+
+
 	emit SignalForUpdateDownloading(DownloadStatus, SpeedString, TimeLeftString);
 
 
@@ -277,6 +288,7 @@ void Downloader::UpdateDownloadInUpdatingInDatabase()
 void Downloader::SetMaxSpeed(int maxSpeed)
 {
 	MaxSpeedOfThisDownloader = maxSpeed;
+	emit SpeedChanged(maxSpeed);
 }
 
 int Downloader::Get_MaxSpeed()

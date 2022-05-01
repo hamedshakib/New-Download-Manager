@@ -6,9 +6,11 @@
 #include "QueueManager.h"
 #include "qmenu.h"
 
+#include "MainTreeViewQueueItem.h"
+
 #define NumberOfDataOfQueueId 10
 
-class TreeViewController : public QObject
+class MainTreeViewController : public QObject
 {
 	Q_OBJECT
 
@@ -37,6 +39,6 @@ private slots:
 	void RemoveQueueFromTreeView(int Queue_id);
 
 public:
-	TreeViewController(QTreeView* treeView,QObject *parent);
-	~TreeViewController();
+	MainTreeViewController(QTreeView* treeView,QObject *parent);
+	~MainTreeViewController();
 };

@@ -61,7 +61,6 @@ private slots:
 	void RemoveDownloadFromQueue(Download* download);
 
 
-
 signals:
 	void SelectedDownloadChanged(int Download_id, bool Is_Completed);
 

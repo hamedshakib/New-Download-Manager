@@ -6,10 +6,12 @@ MainTableViewController::MainTableViewController(QTableView* tableView, QObject*
 	listOfColomns << "id" << tr("File Name") << tr("Size") << tr("Status") << tr("Speed") << tr("Time Left") << tr("Last Try Time") << tr("Description") << tr("Save To");
 	model = new QStandardItemModel(this);
 
+	m_tableView->setSelectionMode(QAbstractItemView::SelectionMode::SingleSelection);
+
 	//tableView->setDragDropMode(QAbstractItemView::DragDropMode::DragOnly);
 	//tableView->setDragEnabled(true);
 	//tableView->setDragEnabled(true);//somewhere in constructor
-
+	
 }
 
 MainTableViewController::~MainTableViewController()

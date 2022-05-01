@@ -30,11 +30,11 @@ void MainWindow::CreateMainTableViewControllerForMainWindow()
 	connect(mainTableViewController, &MainTableViewController::SelectedDownloadChanged, this, &MainWindow::ChangedDownloadSelected);
 }
 
-void MainWindow::CreateTreeViewController()
+void MainWindow::CreateMainTreeViewController()
 {
-	treeViewController = new TreeViewController(ui.treeView, this);
-	treeViewController->Set_QueueManager(queueManager);
-	treeViewController->LoadTreeView();
+	mainTreeViewController = new MainTreeViewController(ui.treeView, this);
+	mainTreeViewController->Set_QueueManager(queueManager);
+	mainTreeViewController->LoadTreeView();
 }
 
 void MainWindow::SetDownloadManager(DownloadManager* downloadManager)

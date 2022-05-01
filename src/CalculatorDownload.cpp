@@ -16,12 +16,12 @@ qint64 CalculatorDownload::CalculateDownloadSpeed(qint64 NumberOfBytesThatDownlo
 		return 0;
 	}
 
-	CurrentSpeedBytesPerMillisecond = (NumberOfBytesThatDownloadedInLastPeriod / SpentedTime_Millisecond);
+	CurrentSpeedBytesPerSecond = (NumberOfBytesThatDownloadedInLastPeriod*1000 / SpentedTime_Millisecond);
 	CalculateDownloadSpeedAccordingToLastSpeeds();
 	PutLastSpeeds();
 
 
-	return AvrageSpeedBytesPerMillisecond;
+	return AvrageSpeedBytesPerSecond;
 }
 
 
@@ -29,7 +29,7 @@ QString CalculatorDownload::GetSpeedOfDownloadInFormOfString()
 {
 	//bytes per second
 	QString SpeedInString;
-	qint64 Speed_BytesPerSecond = AvrageSpeedBytesPerMillisecond * 1000;
+	qint64 Speed_BytesPerSecond = AvrageSpeedBytesPerSecond;
 	if (Speed_BytesPerSecond < 0)
 		return "";
 
@@ -55,7 +55,7 @@ QString CalculatorDownload::GetSpeedOfDownloadInFormOfString()
 
 QString CalculatorDownload::GetTimeLeftOfDownloadInFormOfString(qint64 NumberRemainedBytes)
 {
-	qint64 Speed_BytesPerSecond = AvrageSpeedBytesPerMillisecond * 1000;
+	qint64 Speed_BytesPerSecond = AvrageSpeedBytesPerSecond;
 	if (Speed_BytesPerSecond > 0)
 	{
 		RemainedTimeToFinish = QTime(0, 0, 0);
@@ -96,32 +96,32 @@ void CalculatorDownload::CalculateDownloadSpeedAccordingToLastSpeeds()
 	{
 		//just Last speed
 		numberOfEffectedSpeed = 1;
-		SumOfSpeed = CurrentSpeedBytesPerMillisecond;
+		SumOfSpeed = CurrentSpeedBytesPerSecond;
 	}
 	else if (LastSpeeds[1] == 0)
 	{
 		//Effected 2 speeds
 		numberOfEffectedSpeed = 2;
-		SumOfSpeed = LastSpeeds[2] +CurrentSpeedBytesPerMillisecond;
+		SumOfSpeed = LastSpeeds[2] +CurrentSpeedBytesPerSecond;
 	}
 	else if (LastSpeeds[2] == 0)
 	{
 		//Effected 3 speeds
 		numberOfEffectedSpeed = 3;
-		SumOfSpeed = LastSpeeds[1]+LastSpeeds[2] + CurrentSpeedBytesPerMillisecond;
+		SumOfSpeed = LastSpeeds[1]+LastSpeeds[2] + CurrentSpeedBytesPerSecond;
 	}
 	else
 	{
 		//Effected 4 speeds
 		numberOfEffectedSpeed = 4;
-		SumOfSpeed = LastSpeeds[1] +LastSpeeds[1] + LastSpeeds[2] + CurrentSpeedBytesPerMillisecond;
+		SumOfSpeed = LastSpeeds[1] +LastSpeeds[1] + LastSpeeds[2] + CurrentSpeedBytesPerSecond;
 	}
-	AvrageSpeedBytesPerMillisecond = (SumOfSpeed / numberOfEffectedSpeed);
+	AvrageSpeedBytesPerSecond = (SumOfSpeed / numberOfEffectedSpeed);
 }
 
 void CalculatorDownload::PutLastSpeeds()
 {
 	LastSpeeds[0] = LastSpeeds[1];
 	LastSpeeds[1] = LastSpeeds[2];
-	LastSpeeds[2] = CurrentSpeedBytesPerMillisecond;
+	LastSpeeds[2] = CurrentSpeedBytesPerSecond;
 }
