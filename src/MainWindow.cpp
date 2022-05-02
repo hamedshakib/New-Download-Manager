@@ -14,7 +14,6 @@ MainWindow::MainWindow(QWidget *parent)
 	if (SettingInteract::GetValue("Download/IsSpeedLimitted").toBool())
 	{
 		ui.actionSpeedLimitterTurnOnOrOff->setText(tr("Turn off"));
-		//todo
 	}
 }
 
@@ -319,5 +318,10 @@ void MainWindow::on_actionDelete_All_Complited_triggered()
 	QAbstractItemModel* model = ui.tableView->model();
 	model->removeRows(0, model->rowCount());
 	mainTableViewController->LoadAllDownloadsFromDatabaseForMainTableView();
+}
+
+void MainWindow::on_actionColumns_triggered()
+{
+	mainTableViewController->ChooseColumnsHidden();
 }
 

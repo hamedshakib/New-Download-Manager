@@ -113,6 +113,7 @@ void ShowDownloadWidget::ChangeShowSpeedFromDownloader(int Speed)
 		if (!ui.checkBox->isChecked())
 		{
 			ui.checkBox->setChecked(true);
+			ui.spinBox->setEnabled(true);
 		}
 		if (Speed != ui.spinBox->value())
 		{

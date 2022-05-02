@@ -226,6 +226,10 @@ set(PROJECT_SOURCES
         ${MY_HeaderAndUi_PATH}/MainTreeViewQueueItem.h
         ${MY_SOURCE_PATH}/MainTreeViewQueueItem.cpp
 
+        #SelectColumnsForMainTableView
+        ${MY_HeaderAndUi_PATH}/SelectColumnsForMainTableView.h
+        ${MY_SOURCE_PATH}/SelectColumnsForMainTableView.cpp
+
 
 
         #translatation
