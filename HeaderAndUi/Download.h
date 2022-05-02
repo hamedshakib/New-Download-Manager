@@ -57,6 +57,8 @@ private:
 	QList<PartDownload*> DownloadParts;
 	ResumeCapabilityEnum ResumeCapability;
 	int Queue_id = -1;
+	QString Username;
+	QString Password;
 
 
 

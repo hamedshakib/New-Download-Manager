@@ -13,7 +13,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForLoadDownload(int Download_id)
 {
 	SettingUpDatabase::get_Database();
 	QString queryString = QString(
-		"select D.id,D.FileName,DS.Name as Status,Url,SaveTo,Suffix,DownloadSize,SizeDownloaded,description,LastTryTime,RC.Name as ResumeCapability,Category_id,Queue_id "
+		"select D.id,D.FileName,DS.Name as Status,Url,SaveTo,Suffix,DownloadSize,SizeDownloaded,description,LastTryTime,RC.Name as ResumeCapability,Category_id,Queue_id,User,Password "
 		"From Download as D join DownloadStatus as DS on D.DownloadStatus_id = DS.id join ResumeCapability as RC on D.ResumeCapability_id = RC.id "
 		"where D.id=:id "
 	);
@@ -59,7 +59,8 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForCreateNewDownload(Download* dow
 		"SizeDownloaded,description,"
 		"LastTryTime,"
 		"MaxSpeed,ResumeCapability_id,"
-		"Category_id,Queue_id"
+		"Category_id,Queue_id,"
+		"User,Password"
 		") "
 
 
@@ -69,7 +70,8 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForCreateNewDownload(Download* dow
 		"0,:description,"
 		":lastTryTime,"
 		"0,:resumeCapability_id,"
-		":category_id,:queue_id"
+		":category_id,:queue_id,"
+		":user,:password"
 		");"
 	);
 
@@ -91,6 +93,10 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForCreateNewDownload(Download* dow
 
 
 	query->bindValue(":queue_id", download->Queue_id > -1 ? QVariant(download->Queue_id) : QVariant("NULL"));
+
+	query->bindValue(":user", download->Username);
+	query->bindValue(":password", download->Password);
+
 
 	return query;
 	
@@ -152,7 +158,9 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForUpdateAllFieldDownload(Download
 		"MaxSpeed = :maxSpeed,"
 		"ResumeCapability_id = :resumeCapability_id,"
 		"Category_id = :category_id,"
-		"Queue_id = :queue_id "
+		"Queue_id = :queue_id,"
+		"User = :user,"
+		"Password: :password "
 		"WHERE id = :id;"
 	);
 
@@ -181,6 +189,8 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForUpdateAllFieldDownload(Download
 
 
 	query->bindValue(":queue_id", download->Queue_id > -1 ? download->Queue_id : QVariant("NULL"));
+	query->bindValue(":user", download->Username);
+	query->bindValue(":password", download->Password);
 	
 	query->bindValue(":id",download->IdDownload);
 

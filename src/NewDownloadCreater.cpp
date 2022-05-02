@@ -50,6 +50,8 @@ void  NewDownloadCreater::GetInformationFromUrl(QUrl url, QString UserName, QStr
 {
 		BaseUrl = url;
 		RealDownloadUrl = url;
+		this->UserName = UserName;
+		this->Password = Password;
 
 		int NumberOfTry = 0;
 		while (!TryToGetInformationFromUrl(RealDownloadUrl, UserName, Password))
@@ -70,43 +72,60 @@ void  NewDownloadCreater::GetInformationFromUrl(QUrl url, QString UserName, QStr
 		}
 }
 
-bool NewDownloadCreater::TryToGetInformationFromUrl(QUrl url, QString UserName,QString Password)
+bool NewDownloadCreater::TryToGetInformationFromUrl(QUrl url, QString UserName, QString Password)
 {
-	if (UserName.isEmpty() || Password.isEmpty())
+	QNetworkRequest request;
+
+	
+	if (!UserName.isEmpty() && !Password.isEmpty())
 	{
-		QNetworkRequest request(url);
-		qDebug() << "url:" << url.toString();
+		url.setUserName(UserName);
+		url.setPassword(Password);
+	}
 
-		//connect(&m_networkAccessManager,&QNetworkAccessManager::finished,this, &NewDownloadCreater::ProcessInformationFromUrl);
-		m_networkReply = m_networkAccessManager.head(request);
 
-		//connect(m_networkReply, &QNetworkReply::finished, this, &NewDownloadCreater::ProcessInformationFromUrl);
+	request.setUrl(url);
 
-		connect(m_networkReply, &QNetworkReply::finished, &eventloop, &QEventLoop::quit);
-		eventloop.exec();
 
-		qDebug() << m_networkReply->header(QNetworkRequest::ContentLengthHeader);
-		qDebug() << m_networkReply->header(QNetworkRequest::KnownHeaders::ContentTypeHeader);
-		long long sizeOfDownload = m_networkReply->header(QNetworkRequest::ContentLengthHeader).toLongLong();
-		if (sizeOfDownload == 0)
-		{
-			return false;
-		}
-		else
-		{
-			return true;
-		}
+	//connect(&m_networkAccessManager, &QNetworkAccessManager::authenticationRequired, this,[&](QNetworkReply* rep, QAuthenticator* authenticator) {qDebug() << "HHH"; });
 
-		
+
+	/*
+	if (!UserName.isEmpty() && !Password.isEmpty())
+	{
+		QString concatenated = UserName + ":" + Password;
+		QByteArray data = concatenated.toLocal8Bit().toBase64();
+		QString headerData = "Basic " + data;
+		request.setRawHeader("Authorization", headerData.toLocal8Bit());
+	}
+	*/
+
+	m_networkReply = m_networkAccessManager.head(request);
+
+
+	connect(m_networkReply, &QNetworkReply::finished, &eventloop, &QEventLoop::quit);
+	eventloop.exec();
+
+	qDebug() << m_networkReply->header(QNetworkRequest::ContentLengthHeader);
+	qDebug() << m_networkReply->header(QNetworkRequest::KnownHeaders::ContentTypeHeader);
+	long long sizeOfDownload = m_networkReply->header(QNetworkRequest::ContentLengthHeader).toLongLong();
+	if (sizeOfDownload == 0)
+	{
+		return false;
 	}
 	else
 	{
-
+		return true;
 	}
 }
 
 void NewDownloadCreater::ProcessInitialInformationFromUrl()
 {
+	qDebug() << m_networkReply->rawHeaderList();
+	for (QByteArray arrey : m_networkReply->rawHeaderList())
+	{
+		qDebug() << arrey << ":" << m_networkReply->rawHeader(arrey);
+	}
 	this->description= m_networkReply->header(QNetworkRequest::KnownHeaders::ContentDispositionHeader).toString().remove("attachment;");
 	this->DownloadSize= m_networkReply->header(QNetworkRequest::ContentLengthHeader).toLongLong();
 	this->suffix = DeterminerDownloadFileType::DetermineDownloadFileType(m_networkReply);
@@ -122,6 +141,8 @@ void NewDownloadCreater::ProcessCompleteInformation()
 	download->Set_downloadStatus(Download::DownloadStatusEnum::NotStarted);
 	download->ResumeCapability = ProcessEnum::ConvertHeaderToResumeCapabilityEnum(m_networkReply->rawHeader("Accept-Ranges").constData());
 	download->LastTryTime = DateTimeManager::GetCurrentDateTime();
+	download->Username = UserName;
+	download->Password = Password;
 	
 	m_networkReply->deleteLater();
 	m_networkReply = nullptr;
