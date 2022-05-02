@@ -293,60 +293,60 @@
         <translation>محل ذخیره</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="88"/>
+        <location filename="../src/MainTableViewController.cpp" line="101"/>
         <source>Colomns...</source>
         <translation>ستون ها...</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="174"/>
+        <location filename="../src/MainTableViewController.cpp" line="190"/>
         <source>Open</source>
         <translation>باز کردن</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="180"/>
+        <location filename="../src/MainTableViewController.cpp" line="196"/>
         <source>Open with</source>
         <translation>باز کردن با</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="184"/>
+        <location filename="../src/MainTableViewController.cpp" line="200"/>
         <source>Open folder</source>
         <translation>باز کردن فولدر</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="200"/>
-        <location filename="../src/MainTableViewController.cpp" line="330"/>
+        <location filename="../src/MainTableViewController.cpp" line="216"/>
+        <location filename="../src/MainTableViewController.cpp" line="346"/>
         <source>Resume</source>
         <translation>ادامه</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="209"/>
-        <location filename="../src/MainTableViewController.cpp" line="334"/>
+        <location filename="../src/MainTableViewController.cpp" line="225"/>
+        <location filename="../src/MainTableViewController.cpp" line="350"/>
         <source>Pause</source>
         <translation>توقف</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="223"/>
+        <location filename="../src/MainTableViewController.cpp" line="239"/>
         <source>Delete From Queue</source>
         <translation>حذف کردن از صف</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="231"/>
+        <location filename="../src/MainTableViewController.cpp" line="247"/>
         <source>Add To Queue</source>
         <translation>افزودن به صف</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="251"/>
+        <location filename="../src/MainTableViewController.cpp" line="267"/>
         <source>Remove</source>
         <translation>حذف</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="260"/>
+        <location filename="../src/MainTableViewController.cpp" line="276"/>
         <source>Properties</source>
         <translation>جزئیات</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="303"/>
-        <location filename="../src/MainTableViewController.cpp" line="394"/>
+        <location filename="../src/MainTableViewController.cpp" line="319"/>
+        <location filename="../src/MainTableViewController.cpp" line="410"/>
         <source>Complete</source>
         <translation>تکمیل شده</translation>
     </message>
@@ -388,7 +388,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../HeaderAndUi/MainWindow.ui" line="14"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="273"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="277"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_MainWindow.h" line="273"/>
         <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_MainWindow.h" line="273"/>
         <source>Download Manager</source>
@@ -396,7 +396,7 @@
     </message>
     <message>
         <location filename="../HeaderAndUi/MainWindow.ui" line="122"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="294"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="299"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_MainWindow.h" line="294"/>
         <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_MainWindow.h" line="294"/>
         <source>Tasks</source>
@@ -404,7 +404,7 @@
     </message>
     <message>
         <location filename="../HeaderAndUi/MainWindow.ui" line="131"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="295"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="300"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_MainWindow.h" line="295"/>
         <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_MainWindow.h" line="295"/>
         <source>Downloads</source>
@@ -412,7 +412,7 @@
     </message>
     <message>
         <location filename="../HeaderAndUi/MainWindow.ui" line="156"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="297"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="302"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_MainWindow.h" line="297"/>
         <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_MainWindow.h" line="297"/>
         <source>Help</source>
@@ -420,7 +420,7 @@
     </message>
     <message>
         <location filename="../HeaderAndUi/MainWindow.ui" line="164"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="298"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="303"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_MainWindow.h" line="298"/>
         <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_MainWindow.h" line="298"/>
         <source>View</source>
@@ -428,176 +428,182 @@
     </message>
     <message>
         <location filename="../HeaderAndUi/MainWindow.ui" line="168"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="299"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="304"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_MainWindow.h" line="299"/>
         <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_MainWindow.h" line="299"/>
         <source>Languages</source>
         <translation>زبان ها</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/MainWindow.ui" line="198"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="274"/>
+        <location filename="../HeaderAndUi/MainWindow.ui" line="199"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="278"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_MainWindow.h" line="274"/>
         <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_MainWindow.h" line="274"/>
         <source>Add new Download</source>
         <translation>افزودن دانلود جدید</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/MainWindow.ui" line="203"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="275"/>
+        <location filename="../HeaderAndUi/MainWindow.ui" line="204"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="279"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_MainWindow.h" line="275"/>
         <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_MainWindow.h" line="275"/>
         <source>Add batch download</source>
         <translation>افزودن دسته دانلود</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/MainWindow.ui" line="208"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="276"/>
+        <location filename="../HeaderAndUi/MainWindow.ui" line="209"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="280"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_MainWindow.h" line="276"/>
         <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_MainWindow.h" line="276"/>
         <source>Import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/MainWindow.ui" line="213"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="277"/>
+        <location filename="../HeaderAndUi/MainWindow.ui" line="214"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="281"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_MainWindow.h" line="277"/>
         <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_MainWindow.h" line="277"/>
         <source>Export</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/MainWindow.ui" line="222"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="278"/>
+        <location filename="../HeaderAndUi/MainWindow.ui" line="223"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="282"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_MainWindow.h" line="278"/>
         <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_MainWindow.h" line="278"/>
         <source>Exit</source>
         <translation>خروج</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/MainWindow.ui" line="231"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="279"/>
+        <location filename="../HeaderAndUi/MainWindow.ui" line="232"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="283"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_MainWindow.h" line="279"/>
         <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_MainWindow.h" line="279"/>
         <source>Download Now</source>
         <translation>دانلود حالا</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/MainWindow.ui" line="240"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="280"/>
+        <location filename="../HeaderAndUi/MainWindow.ui" line="241"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="284"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_MainWindow.h" line="280"/>
         <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_MainWindow.h" line="280"/>
         <source>Stop Download</source>
         <translation>توقف دانلود</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/MainWindow.ui" line="249"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="281"/>
+        <location filename="../HeaderAndUi/MainWindow.ui" line="250"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="285"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_MainWindow.h" line="281"/>
         <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_MainWindow.h" line="281"/>
         <source>Remove</source>
         <translation>حذف</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/MainWindow.ui" line="258"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="282"/>
+        <location filename="../HeaderAndUi/MainWindow.ui" line="259"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="286"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_MainWindow.h" line="282"/>
         <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_MainWindow.h" line="282"/>
         <source>Stop All</source>
         <translation>توقف همه</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/MainWindow.ui" line="263"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="283"/>
+        <location filename="../HeaderAndUi/MainWindow.ui" line="264"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="287"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_MainWindow.h" line="283"/>
         <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_MainWindow.h" line="283"/>
         <source>Delete All Complited</source>
         <translation>حذف همه کامل شده ها</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/MainWindow.ui" line="272"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="284"/>
+        <location filename="../HeaderAndUi/MainWindow.ui" line="273"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="288"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_MainWindow.h" line="284"/>
         <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_MainWindow.h" line="284"/>
         <source>Scheduler</source>
         <translation>برنامه ریزی</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/MainWindow.ui" line="277"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="285"/>
+        <location filename="../HeaderAndUi/MainWindow.ui" line="278"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="289"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_MainWindow.h" line="285"/>
         <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_MainWindow.h" line="285"/>
         <source>Start Queue</source>
         <translation>شروع صف</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/MainWindow.ui" line="282"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="286"/>
+        <location filename="../HeaderAndUi/MainWindow.ui" line="283"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="290"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_MainWindow.h" line="286"/>
         <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_MainWindow.h" line="286"/>
         <source>Stop Queue</source>
         <translation>توقف صف</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/MainWindow.ui" line="331"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="292"/>
+        <location filename="../HeaderAndUi/MainWindow.ui" line="332"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="296"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_MainWindow.h" line="292"/>
         <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_MainWindow.h" line="292"/>
-        <location filename="../src/MainWindow.cpp" line="295"/>
+        <location filename="../src/MainWindow.cpp" line="294"/>
         <source>Turn on</source>
         <translation>روشن</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/MainWindow.ui" line="336"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="293"/>
+        <location filename="../HeaderAndUi/MainWindow.ui" line="337"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="297"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_MainWindow.h" line="293"/>
         <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_MainWindow.h" line="293"/>
         <source>Setting</source>
         <translation>تنظیمات</translation>
     </message>
     <message>
+        <location filename="../HeaderAndUi/MainWindow.ui" line="342"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="298"/>
+        <source>Columns</source>
+        <translation>ستون ها</translation>
+    </message>
+    <message>
         <location filename="../HeaderAndUi/MainWindow.ui" line="135"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="296"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="301"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_MainWindow.h" line="296"/>
         <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_MainWindow.h" line="296"/>
         <source>Speed Limiter</source>
         <translation>محدودیت سرعت</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/MainWindow.ui" line="291"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="287"/>
+        <location filename="../HeaderAndUi/MainWindow.ui" line="292"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="291"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_MainWindow.h" line="287"/>
         <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_MainWindow.h" line="287"/>
         <source>Options</source>
         <translation>گزینه ها</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/MainWindow.ui" line="299"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="288"/>
+        <location filename="../HeaderAndUi/MainWindow.ui" line="300"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="292"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_MainWindow.h" line="288"/>
         <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_MainWindow.h" line="288"/>
         <source>Check for updates</source>
         <translation>بررسی بروزرسانی</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/MainWindow.ui" line="308"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="289"/>
+        <location filename="../HeaderAndUi/MainWindow.ui" line="309"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="293"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_MainWindow.h" line="289"/>
         <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_MainWindow.h" line="289"/>
         <source>About</source>
         <translation>درباره</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/MainWindow.ui" line="317"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="290"/>
+        <location filename="../HeaderAndUi/MainWindow.ui" line="318"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="294"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_MainWindow.h" line="290"/>
         <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_MainWindow.h" line="290"/>
         <source>English</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/MainWindow.ui" line="326"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="291"/>
+        <location filename="../HeaderAndUi/MainWindow.ui" line="327"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_MainWindow.h" line="295"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_MainWindow.h" line="291"/>
         <location filename="../out/build/x64-Release/DownloadManager_autogen/include/ui_MainWindow.h" line="291"/>
         <source>Persian</source>
@@ -605,23 +611,23 @@
     </message>
     <message>
         <location filename="../src/MainWindow.cpp" line="16"/>
-        <location filename="../src/MainWindow.cpp" line="292"/>
-        <location filename="../src/MainWindow.cpp" line="302"/>
+        <location filename="../src/MainWindow.cpp" line="291"/>
+        <location filename="../src/MainWindow.cpp" line="301"/>
         <source>Turn off</source>
         <translation>خاموش</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="75"/>
+        <location filename="../src/MainWindow.cpp" line="74"/>
         <source>Download Manager developed by Hamed shakib</source>
         <translation>دانلود منیجر توسط حامد شکیب توسعه داده شده است</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="269"/>
+        <location filename="../src/MainWindow.cpp" line="268"/>
         <source>Do you want restart download manager For apply change language?</source>
         <translation>آیا می خواهید برای اعمال شدن تغییرات زبان دانلود منیجر ریستارت شود؟</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="311"/>
+        <location filename="../src/MainWindow.cpp" line="310"/>
         <source>Enter Speed limit For All downloads (KB/sec)</source>
         <translation>سرعت محدود شده را برای همه دانلود ها وارد کنید. (KB/Sec)</translation>
     </message>
@@ -1026,6 +1032,69 @@
     <message>
         <source>Socks5</source>
         <translation type="vanished">ساکس5</translation>
+    </message>
+</context>
+<context>
+    <name>SelectColumnsForMainTableView</name>
+    <message>
+        <location filename="../HeaderAndUi/SelectColumnsForMainTableView.ui" line="14"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_SelectColumnsForMainTableView.h" line="114"/>
+        <source>SelectColumnsForMainTableView</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/SelectColumnsForMainTableView.ui" line="20"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_SelectColumnsForMainTableView.h" line="115"/>
+        <source>Size</source>
+        <translation>سایز</translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/SelectColumnsForMainTableView.ui" line="30"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_SelectColumnsForMainTableView.h" line="116"/>
+        <source>Save To</source>
+        <translation>محل ذخیره</translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/SelectColumnsForMainTableView.ui" line="40"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_SelectColumnsForMainTableView.h" line="117"/>
+        <source>File Name</source>
+        <translation>نام فایل</translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/SelectColumnsForMainTableView.ui" line="50"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_SelectColumnsForMainTableView.h" line="118"/>
+        <source>Last Try Time</source>
+        <translation>آخرین زمان تلاش</translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/SelectColumnsForMainTableView.ui" line="60"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_SelectColumnsForMainTableView.h" line="119"/>
+        <source>Description</source>
+        <translation>توضیحات</translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/SelectColumnsForMainTableView.ui" line="70"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_SelectColumnsForMainTableView.h" line="120"/>
+        <source>Select solumns that want to see : </source>
+        <translation>ستون هایی که می خواهید مشاهده کنید را انتخاب کنید : </translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/SelectColumnsForMainTableView.ui" line="77"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_SelectColumnsForMainTableView.h" line="121"/>
+        <source>Time Left</source>
+        <translation>زمان باقی مانده</translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/SelectColumnsForMainTableView.ui" line="87"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_SelectColumnsForMainTableView.h" line="122"/>
+        <source>Speed</source>
+        <translation>سرعت</translation>
+    </message>
+    <message>
+        <location filename="../HeaderAndUi/SelectColumnsForMainTableView.ui" line="97"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_SelectColumnsForMainTableView.h" line="123"/>
+        <source>Status</source>
+        <translation>وضعیت</translation>
     </message>
 </context>
 <context>

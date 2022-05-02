@@ -174,6 +174,7 @@
      <addaction name="actionEnglish"/>
      <addaction name="actionPersian"/>
     </widget>
+    <addaction name="actionColumns"/>
     <addaction name="menuLanguages"/>
    </widget>
    <addaction name="menuTasks"/>
@@ -334,6 +335,11 @@
   <action name="actionSpeedLimitterSetting">
    <property name="text">
     <string>Setting</string>
+   </property>
+  </action>
+  <action name="actionColumns">
+   <property name="text">
+    <string>Columns</string>
    </property>
   </action>
  </widget>

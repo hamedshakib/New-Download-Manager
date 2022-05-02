@@ -11,7 +11,14 @@ MainTableViewController::MainTableViewController(QTableView* tableView, QObject*
 	//tableView->setDragDropMode(QAbstractItemView::DragDropMode::DragOnly);
 	//tableView->setDragEnabled(true);
 	//tableView->setDragEnabled(true);//somewhere in constructor
-	
+	QStringList HiddenColumnsStringList= SettingInteract::GetValue("TableView/MainTableView/HiddenColumns").toString().split(",");
+	if (!HiddenColumnsStringList[0].isEmpty())
+	{
+		for (QString numberColumn : HiddenColumnsStringList)
+		{
+			HiddenColumns.append(numberColumn.toInt());
+		}
+	}
 }
 
 MainTableViewController::~MainTableViewController()
@@ -51,6 +58,13 @@ void MainTableViewController::ProcessSetupOfTableView()
 	connect(horizontalHeader, &QHeaderView::sectionResized, this, [&](int numberOfColum, int oldsize, int newSize) {ChangeColumnWidth(numberOfColum, newSize); });
 
 
+
+	//Hidden Some Columns
+	HideOrShowColumns();
+
+
+
+
 	//Set double click on rows 
 	//connect(m_tableView, &QTableView::doubleClicked, this, &MainTableViewController::doubleClickedOnRow);
 	connect(m_tableView, &QTableView::doubleClicked, this, [&](const QModelIndex& modelindex) {doubleClickedOnRow(modelindex); ClickedOnRow(modelindex); });
@@ -84,10 +98,12 @@ void MainTableViewController::AdjusteTableViewProperty()
 
 void MainTableViewController::OnHeaderRightClicked(const QPoint& pos)
 {
-	//ToDo Make Colomns Settings
-	QAction ColomnsSetting(tr("Colomns..."), this);
+	QAction *ColomnsSetting=new QAction(tr("Colomns..."), this);
 	QMenu menu;
-	menu.addAction(&ColomnsSetting);
+	menu.addAction(ColomnsSetting);
+	connect(ColomnsSetting, &QAction::triggered, this, [&](bool clicked) {
+		ChooseColumnsHidden();
+		});
 	menu.exec(QCursor::pos());
 }
 
@@ -411,4 +427,34 @@ void MainTableViewController::ChangeColumnWidth(int numberOfColumn, int NewColum
 {
 	QString SettingStringKey = "TableView/MainTableView/WidthColum" + QString::number(numberOfColumn);
 	SettingInteract::SetValue(SettingStringKey, NewColumnWidth);
+}
+
+void MainTableViewController::ChooseColumnsHidden()
+{
+	SelectColumnsForMainTableView* selectColumnsForMainTableViewWidget = new SelectColumnsForMainTableView();
+	selectColumnsForMainTableViewWidget->LoadColumnsHide();
+	selectColumnsForMainTableViewWidget->show();
+	HiddenColumns.clear();
+	QList<int>& hiddencolumns = HiddenColumns;
+	connect(selectColumnsForMainTableViewWidget, &SelectColumnsForMainTableView::HideColumns, this, [=,&hiddencolumns](QList<int> columns) {hiddencolumns.clear(); hiddencolumns.append(columns); HideOrShowColumns(); });
+
+}
+
+void MainTableViewController::HideOrShowColumns()
+{
+	for (int i = 1; i < listOfColomns.count(); i++)
+	{
+		if (HiddenColumns.contains(i))
+		{
+			m_tableView->setColumnHidden(i, true);
+		}
+		else
+		{
+			m_tableView->setColumnHidden(i, false);
+			if (m_tableView->columnWidth(i) == 0)
+			{
+				m_tableView->setColumnWidth(i, 100);
+			}
+		}
+	}
 }

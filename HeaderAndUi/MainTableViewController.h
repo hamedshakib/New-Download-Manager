@@ -15,6 +15,9 @@
 #include "ShowDownloadWidget.h"
 #include "ShowDownloadProperties.h"
 #include "QueueManager.h"
+#include "SelectColumnsForMainTableView.h"
+#include "qinputdialog.h"
+
 
 class MainTableViewController : public TableViewController
 {
@@ -60,6 +63,9 @@ private slots:
 	void AddDownloadToQueue(Queue* queue, Download* download);
 	void RemoveDownloadFromQueue(Download* download);
 
+	void HideOrShowColumns();
+public slots:
+	void ChooseColumnsHidden();
 
 signals:
 	void SelectedDownloadChanged(int Download_id, bool Is_Completed);
@@ -78,6 +84,8 @@ private:
 
 	QMap<Downloader*, ShowDownloadWidget*> MapOfShowDownloadWidgets;
 	int SelectedFinishedDownload_id = 0;
+
+	QList<int> HiddenColumns;
 
 public:
 	MainTableViewController(QTableView* tableView,QObject *parent);
