@@ -17,6 +17,7 @@
 #include "qnetworkrequest.h"
 #include "qnetworkaccessmanager.h"
 #include "qstandardpaths.h"
+#include "qauthenticator.h"
 
 class NewDownloadCreater : public QObject
 {

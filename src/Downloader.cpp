@@ -209,7 +209,18 @@ bool Downloader::ProcessPreparePartDownloaderFrompartDownload(PartDownloader* pa
 		partDownloader->deleteLater();
 		return false;
 	}
-	QNetworkRequest request(download->get_Url());
+
+
+	QNetworkRequest request;
+	QUrl url= download->get_Url();
+	if (!download->Username.isEmpty() && download->Password.isEmpty())
+	{
+		url.setUserName(download->Username);
+		url.setPassword(download->Password);
+	}
+	request.setUrl(url);
+
+
 	qDebug() <<"downloadUrl:"<<download->get_Url();
 	request.setAttribute(QNetworkRequest::HttpPipeliningAllowedAttribute, true);
 
@@ -217,6 +228,7 @@ bool Downloader::ProcessPreparePartDownloaderFrompartDownload(PartDownloader* pa
 	QString rangeBytes = QString("bytes=%1-%2").arg(partDownload->LastDownloadedByte+1).arg(partDownload->end_byte);
 	qDebug() << "rangeBytes:" << rangeBytes;
 	request.setRawHeader("Range", rangeBytes.toUtf8());
+
 
 	QNetworkReply* reply = manager->get(request);
 	partDownloader->Set_NetworkReply(reply);

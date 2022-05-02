@@ -32,7 +32,8 @@ bool ProcessDatabaseOutput::ProcessPutLoadedDownloadInformationInDownloadObject(
 //	download->Category = record.value("Url").toString();
 	download->Queue_id = record.value("Queue_id").toInt();
 	download->Url = record.value("Url").toString();
-
+	download->Username = record.value("User").toString();
+	download->Password = record.value("Password").toString();
 
 	return true;
 }

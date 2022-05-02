@@ -17,7 +17,7 @@ NewDownloadUrlWidget::~NewDownloadUrlWidget()
 
 void NewDownloadUrlWidget::Accepted()
 {
-	emit GetInformations(ui.Url_lineEdit->text(), ui.lineEdit->text(), ui.lineEdit_2->text());
+	emit GetInformations(ui.Url_lineEdit->text(), ui.Username_lineEdit->text(), ui.Password_lineEdit->text());
 	SignalEmmited = true;
 }
 
