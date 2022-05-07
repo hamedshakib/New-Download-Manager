@@ -305,12 +305,22 @@
            <widget class="QPushButton" name="Down_pushButton">
             <property name="maximumSize">
              <size>
-              <width>50</width>
+              <width>30</width>
               <height>16777215</height>
              </size>
             </property>
             <property name="text">
-             <string>Down</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="../main.qrc">
+              <normaloff>:/Icons/Icons/down.png</normaloff>:/Icons/Icons/down.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
             </property>
            </widget>
           </item>
@@ -318,12 +328,22 @@
            <widget class="QPushButton" name="Remove_pushButton">
             <property name="maximumSize">
              <size>
-              <width>50</width>
+              <width>30</width>
               <height>16777215</height>
              </size>
             </property>
             <property name="text">
-             <string>Remove</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="../main.qrc">
+              <normaloff>:/Icons/Icons/remove.png</normaloff>:/Icons/Icons/remove.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
             </property>
            </widget>
           </item>
@@ -337,12 +357,22 @@
             </property>
             <property name="maximumSize">
              <size>
-              <width>50</width>
+              <width>30</width>
               <height>16777215</height>
              </size>
             </property>
             <property name="text">
-             <string>Up</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="../main.qrc">
+              <normaloff>:/Icons/Icons/up.png</normaloff>:/Icons/Icons/up.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
             </property>
            </widget>
           </item>
@@ -420,6 +450,8 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="../main.qrc"/>
+ </resources>
  <connections/>
 </ui>

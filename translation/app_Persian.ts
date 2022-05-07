@@ -1656,7 +1656,7 @@
     <name>ShowSchedule</name>
     <message>
         <location filename="../HeaderAndUi/ShowSchedule.ui" line="14"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="396"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="409"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="396"/>
         <location filename="../out/build/x64-Release-Real/DownloadManager_autogen/include/ui_ShowSchedule.h" line="396"/>
         <location filename="../out/build/x64-Release1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="396"/>
@@ -1665,7 +1665,7 @@
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowSchedule.ui" line="42"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="397"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="410"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="397"/>
         <location filename="../out/build/x64-Release-Real/DownloadManager_autogen/include/ui_ShowSchedule.h" line="397"/>
         <location filename="../out/build/x64-Release1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="397"/>
@@ -1674,7 +1674,7 @@
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowSchedule.ui" line="49"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="398"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="411"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="398"/>
         <location filename="../out/build/x64-Release-Real/DownloadManager_autogen/include/ui_ShowSchedule.h" line="398"/>
         <location filename="../out/build/x64-Release1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="398"/>
@@ -1683,7 +1683,7 @@
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowSchedule.ui" line="96"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="402"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="415"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="402"/>
         <location filename="../out/build/x64-Release-Real/DownloadManager_autogen/include/ui_ShowSchedule.h" line="402"/>
         <location filename="../out/build/x64-Release1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="402"/>
@@ -1692,7 +1692,7 @@
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowSchedule.ui" line="89"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="401"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="414"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="401"/>
         <location filename="../out/build/x64-Release-Real/DownloadManager_autogen/include/ui_ShowSchedule.h" line="401"/>
         <location filename="../out/build/x64-Release1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="401"/>
@@ -1701,7 +1701,7 @@
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowSchedule.ui" line="82"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="400"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="413"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="400"/>
         <location filename="../out/build/x64-Release-Real/DownloadManager_autogen/include/ui_ShowSchedule.h" line="400"/>
         <location filename="../out/build/x64-Release1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="400"/>
@@ -1710,7 +1710,7 @@
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowSchedule.ui" line="113"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="417"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="430"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="417"/>
         <location filename="../out/build/x64-Release-Real/DownloadManager_autogen/include/ui_ShowSchedule.h" line="417"/>
         <location filename="../out/build/x64-Release1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="417"/>
@@ -1719,7 +1719,7 @@
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowSchedule.ui" line="130"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="403"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="416"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="403"/>
         <location filename="../out/build/x64-Release-Real/DownloadManager_autogen/include/ui_ShowSchedule.h" line="403"/>
         <location filename="../out/build/x64-Release1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="403"/>
@@ -1728,7 +1728,7 @@
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowSchedule.ui" line="137"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="404"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="417"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="404"/>
         <location filename="../out/build/x64-Release-Real/DownloadManager_autogen/include/ui_ShowSchedule.h" line="404"/>
         <location filename="../out/build/x64-Release1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="404"/>
@@ -1737,7 +1737,7 @@
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowSchedule.ui" line="144"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="405"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="418"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="405"/>
         <location filename="../out/build/x64-Release-Real/DownloadManager_autogen/include/ui_ShowSchedule.h" line="405"/>
         <location filename="../out/build/x64-Release1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="405"/>
@@ -1746,7 +1746,7 @@
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowSchedule.ui" line="151"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="406"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="419"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="406"/>
         <location filename="../out/build/x64-Release-Real/DownloadManager_autogen/include/ui_ShowSchedule.h" line="406"/>
         <location filename="../out/build/x64-Release1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="406"/>
@@ -1755,7 +1755,7 @@
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowSchedule.ui" line="173"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="407"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="420"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="407"/>
         <location filename="../out/build/x64-Release-Real/DownloadManager_autogen/include/ui_ShowSchedule.h" line="407"/>
         <location filename="../out/build/x64-Release1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="407"/>
@@ -1764,7 +1764,7 @@
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowSchedule.ui" line="180"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="408"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="421"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="408"/>
         <location filename="../out/build/x64-Release-Real/DownloadManager_autogen/include/ui_ShowSchedule.h" line="408"/>
         <location filename="../out/build/x64-Release1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="408"/>
@@ -1773,7 +1773,7 @@
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowSchedule.ui" line="187"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="409"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="422"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="409"/>
         <location filename="../out/build/x64-Release-Real/DownloadManager_autogen/include/ui_ShowSchedule.h" line="409"/>
         <location filename="../out/build/x64-Release1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="409"/>
@@ -1782,7 +1782,7 @@
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowSchedule.ui" line="194"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="410"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="423"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="410"/>
         <location filename="../out/build/x64-Release-Real/DownloadManager_autogen/include/ui_ShowSchedule.h" line="410"/>
         <location filename="../out/build/x64-Release1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="410"/>
@@ -1791,7 +1791,7 @@
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowSchedule.ui" line="201"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="411"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="424"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="411"/>
         <location filename="../out/build/x64-Release-Real/DownloadManager_autogen/include/ui_ShowSchedule.h" line="411"/>
         <location filename="../out/build/x64-Release1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="411"/>
@@ -1800,7 +1800,7 @@
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowSchedule.ui" line="208"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="412"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="425"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="412"/>
         <location filename="../out/build/x64-Release-Real/DownloadManager_autogen/include/ui_ShowSchedule.h" line="412"/>
         <location filename="../out/build/x64-Release1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="412"/>
@@ -1809,7 +1809,7 @@
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowSchedule.ui" line="215"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="413"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="426"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="413"/>
         <location filename="../out/build/x64-Release-Real/DownloadManager_autogen/include/ui_ShowSchedule.h" line="413"/>
         <location filename="../out/build/x64-Release1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="413"/>
@@ -1818,7 +1818,7 @@
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowSchedule.ui" line="232"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="414"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="427"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="414"/>
         <location filename="../out/build/x64-Release-Real/DownloadManager_autogen/include/ui_ShowSchedule.h" line="414"/>
         <location filename="../out/build/x64-Release1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="414"/>
@@ -1827,7 +1827,7 @@
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowSchedule.ui" line="242"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="415"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="428"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="415"/>
         <location filename="../out/build/x64-Release-Real/DownloadManager_autogen/include/ui_ShowSchedule.h" line="415"/>
         <location filename="../out/build/x64-Release1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="415"/>
@@ -1836,7 +1836,7 @@
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowSchedule.ui" line="249"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="416"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="429"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="416"/>
         <location filename="../out/build/x64-Release-Real/DownloadManager_autogen/include/ui_ShowSchedule.h" line="416"/>
         <location filename="../out/build/x64-Release1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="416"/>
@@ -1845,7 +1845,7 @@
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowSchedule.ui" line="279"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="427"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="440"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="427"/>
         <location filename="../out/build/x64-Release-Real/DownloadManager_autogen/include/ui_ShowSchedule.h" line="427"/>
         <location filename="../out/build/x64-Release1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="427"/>
@@ -1853,8 +1853,6 @@
         <translation>فایل در صف</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="313"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="418"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="418"/>
         <location filename="../out/build/x64-Release-Real/DownloadManager_autogen/include/ui_ShowSchedule.h" line="418"/>
         <location filename="../out/build/x64-Release1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="418"/>
@@ -1862,8 +1860,6 @@
         <translation>پایین</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="326"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="419"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="419"/>
         <location filename="../out/build/x64-Release-Real/DownloadManager_autogen/include/ui_ShowSchedule.h" line="419"/>
         <location filename="../out/build/x64-Release1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="419"/>
@@ -1871,8 +1867,6 @@
         <translation>حذف</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="345"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="420"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="420"/>
         <location filename="../out/build/x64-Release-Real/DownloadManager_autogen/include/ui_ShowSchedule.h" line="420"/>
         <location filename="../out/build/x64-Release1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="420"/>
@@ -1880,8 +1874,8 @@
         <translation>بالا</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="352"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="421"/>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="382"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="434"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="421"/>
         <location filename="../out/build/x64-Release-Real/DownloadManager_autogen/include/ui_ShowSchedule.h" line="421"/>
         <location filename="../out/build/x64-Release1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="421"/>
@@ -1889,8 +1883,8 @@
         <translation>تعداد دانلود فایل همزمان</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="376"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="426"/>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="406"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="439"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="426"/>
         <location filename="../out/build/x64-Release-Real/DownloadManager_autogen/include/ui_ShowSchedule.h" line="426"/>
         <location filename="../out/build/x64-Release1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="426"/>
@@ -1898,8 +1892,8 @@
         <translation>نام فایل</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="381"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="425"/>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="411"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="438"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="425"/>
         <location filename="../out/build/x64-Release-Real/DownloadManager_autogen/include/ui_ShowSchedule.h" line="425"/>
         <location filename="../out/build/x64-Release1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="425"/>
@@ -1907,8 +1901,8 @@
         <translation>سایز</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="386"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="424"/>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="416"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="437"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="424"/>
         <location filename="../out/build/x64-Release-Real/DownloadManager_autogen/include/ui_ShowSchedule.h" line="424"/>
         <location filename="../out/build/x64-Release1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="424"/>
@@ -1916,8 +1910,8 @@
         <translation>وضعیت</translation>
     </message>
     <message>
-        <location filename="../HeaderAndUi/ShowSchedule.ui" line="391"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="423"/>
+        <location filename="../HeaderAndUi/ShowSchedule.ui" line="421"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="436"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="423"/>
         <location filename="../out/build/x64-Release-Real/DownloadManager_autogen/include/ui_ShowSchedule.h" line="423"/>
         <location filename="../out/build/x64-Release1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="423"/>
@@ -1926,7 +1920,7 @@
     </message>
     <message>
         <location filename="../HeaderAndUi/ShowSchedule.ui" line="68"/>
-        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="399"/>
+        <location filename="../out/build/x64-Debug/DownloadManager_autogen/include/ui_ShowSchedule.h" line="412"/>
         <location filename="../out/build/x64-Debug1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="399"/>
         <location filename="../out/build/x64-Release-Real/DownloadManager_autogen/include/ui_ShowSchedule.h" line="399"/>
         <location filename="../out/build/x64-Release1/DownloadManager_autogen/include/ui_ShowSchedule.h" line="399"/>

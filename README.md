@@ -55,3 +55,6 @@ Download Manager with the following capabilities:<br/>
 <br/>
 <br/>
 ![alt text](https://github.com/hamedshakib/New-Download-Manager/blob/develop/Images/7.jpg?raw=true)
+<br/>
+<br/>
+![alt text](https://github.com/hamedshakib/New-Download-Manager/blob/develop/Images/8.jpg?raw=true)
