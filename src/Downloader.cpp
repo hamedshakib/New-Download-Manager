@@ -284,15 +284,11 @@ void Downloader::ProcessOfEndOfDownloading()
 	//Check for show comlete dialog
 	if (SettingInteract::GetValue("Download/ShowCompleteDialog").toBool())
 	{
-		//QFuture<bool> future1 = QtConcurrent::run(ShowCompleteDialog,download, NewDownloadFile);
-
 		Download* download1 = download;
-		//QFuture<void> future1= QtConcurrent::run(this->ShowCompleteDialog, download1, NewDownloadFile);
-		//future1.waitForFinished();
-
-		
+		QMutex mutux;
+		mutux.lock();
 		QMetaObject::invokeMethod(qApp, [&, download1, NewDownloadFile]() {ShowCompleteDialog(download1, NewDownloadFile); }, Qt::QueuedConnection);
-		//ShowCompleteDialog(download, NewDownloadFile);
+		mutux.unlock();
 	}
 
 

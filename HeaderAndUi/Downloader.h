@@ -16,10 +16,6 @@
 #include "qelapsedtimer.h"
 #include "qtimer.h"
 #include "qfileinfo.h"
-#include "qtconcurrentrun.h"
-#include "QtConcurrent/qtconcurrentfunctionwrappers.h"
-#include "QtConcurrent/qtconcurrentrunbase.h"
-#include "QtConcurrent/qtconcurrent_global.h"
 
 class Downloader : public QObject
 {
