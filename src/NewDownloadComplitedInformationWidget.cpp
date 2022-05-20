@@ -1,16 +1,20 @@
 #include "HeaderAndUi/NewDownloadComplitedInformationWidget.h"
 
-NewDownloadComplitedInformationWidget::NewDownloadComplitedInformationWidget(QUrl BaseUrl,QWidget *parent)
-	: QWidget(parent)
+NewDownloadComplitedInformationWidget::NewDownloadComplitedInformationWidget(QWidget *parent)
+	:QWidget(NULL)
 {
 	ui.setupUi(this);
-	this->setWindowTitle("New Download Information");
-	ui.Url_lineEdit->setText(BaseUrl.toString());
 }
 
 NewDownloadComplitedInformationWidget::~NewDownloadComplitedInformationWidget()
 {
 
+}
+
+void NewDownloadComplitedInformationWidget::initNewDownloadComplitedInformationWidget(QUrl BaseUrl)
+{
+	this->setWindowTitle("New Download Information");
+	ui.Url_lineEdit->setText(BaseUrl.toString());
 }
 
 bool NewDownloadComplitedInformationWidget::SetMoreCompliteInformation(QUrl RealUrl, QString TypeFile, QString Size, QString SaveTo, QString description)

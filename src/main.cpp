@@ -5,6 +5,7 @@
 #include "HeaderAndUi/ApplicationManager.h"
 #include "HeaderAndUi/TranslationManager.h"
 #include "HeaderAndUi/RunGuard.h"
+#include "qthread.h"
 
 
 int main(int argc,char* argv[])
@@ -17,6 +18,7 @@ int main(int argc,char* argv[])
 
 	//qDebug() << argc << argv;
 	QDir::setCurrent(qApp->applicationDirPath());
+	QThread::currentThread()->setObjectName("Main Thread");
 	QApplication::setApplicationName("Download Manager");
 	
 	TranslationManager translationMaager(&app, &app);

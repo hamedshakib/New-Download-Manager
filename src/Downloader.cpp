@@ -1,16 +1,28 @@
 #include "HeaderAndUi/Downloader.h"
 
 //qint64 spentedTime;
-Downloader::Downloader(Download* download, QObject* parent)
+Downloader::Downloader(QObject* parent)
 	:QObject(parent)
 {
+
+}
+
+Downloader::~Downloader()
+{
+	qDebug() << "Downlader Deleted";
+	qDeleteAll(PartDownloader_list);
+}
+
+void Downloader::initDownloader(Download* download)
+{
 	this->download = download;
-	manager = new QNetworkAccessManager(this);
+	manager = new QNetworkAccessManager();
+	manager->moveToThread(this->thread());
 	connect(this, &Downloader::FinishedThisPeriod, this, [&](qint64 Bytes, qint64 spentedTime) {
-		if (spentedTime < 1000) 
+		if (spentedTime < 1000)
 		{
 			//it's mean pause for other other of one second and wait for next second
-			timer.singleShot(995- spentedTime, this, &Downloader::DownloadWithSpeedControlled);
+			timer.singleShot(995 - spentedTime, this, &Downloader::DownloadWithSpeedControlled);
 		}
 		else
 		{
@@ -18,12 +30,6 @@ Downloader::Downloader(Download* download, QObject* parent)
 			DownloadWithSpeedControlled();
 		}
 		});
-}
-
-Downloader::~Downloader()
-{
-	qDebug() << "Downlader Deleted";
-	qDeleteAll(PartDownloader_list);
 }
 
 bool Downloader::StartDownload()
@@ -104,7 +110,8 @@ bool Downloader::ProcessPreparePartDownloaders()
 	QList<PartDownload*> PartDownloads = download->get_PartDownloads();
 	foreach(PartDownload * partDownload,PartDownloads)
 	{
-		PartDownloader* tempPartDownloader = new PartDownloader(this);
+		PartDownloader* tempPartDownloader = new PartDownloader();
+
 		PartDownloader_list.append(tempPartDownloader);
 		ProcessPreparePartDownloaderFrompartDownload(tempPartDownloader, partDownload);
 		Download* download1 = download;
@@ -231,8 +238,10 @@ bool Downloader::ProcessPreparePartDownloaderFrompartDownload(PartDownloader* pa
 
 
 	QNetworkReply* reply = manager->get(request);
+	reply->moveToThread(download->thread());
 	partDownloader->Set_NetworkReply(reply);
 	partDownloader->Set_PartDownload(partDownload);
+	partDownloader->moveToThread(download->thread());
 	return true;
 }
 
@@ -275,7 +284,15 @@ void Downloader::ProcessOfEndOfDownloading()
 	//Check for show comlete dialog
 	if (SettingInteract::GetValue("Download/ShowCompleteDialog").toBool())
 	{
-		ShowCompleteDialog(download, NewDownloadFile);
+		//QFuture<bool> future1 = QtConcurrent::run(ShowCompleteDialog,download, NewDownloadFile);
+
+		Download* download1 = download;
+		//QFuture<void> future1= QtConcurrent::run(this->ShowCompleteDialog, download1, NewDownloadFile);
+		//future1.waitForFinished();
+
+		
+		QMetaObject::invokeMethod(qApp, [&, download1, NewDownloadFile]() {ShowCompleteDialog(download1, NewDownloadFile); }, Qt::QueuedConnection);
+		//ShowCompleteDialog(download, NewDownloadFile);
 	}
 
 
@@ -311,6 +328,7 @@ void Downloader::HandelPausedPartDownloadSignalEmitted()
 bool Downloader::ShowCompleteDialog(Download* download,QFile* newDownloadFile)
 {
 	QString SizeDownloadString = ConverterSizeToSuitableString::ConvertSizeToSuitableString(download->DownloadSize) + QString(" (%1 Bytes)").arg(download->DownloadSize);
+	qDebug()<<qApp->thread()->objectName();
 	CompleteDownloadDialog* completeDownloadDialog = new CompleteDownloadDialog(newDownloadFile->fileName(), SizeDownloadString, download->Url.toString());
 	completeDownloadDialog->show();
 	return true;
@@ -344,3 +362,5 @@ bool Downloader::Is_downloadedCompletePartDownload(PartDownload* partDownload)
 		return false;
 	}
 }
+
+

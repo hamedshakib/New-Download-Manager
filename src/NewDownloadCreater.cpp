@@ -41,7 +41,8 @@ void NewDownloadCreater::StartProcessOfCreateNewDownloadFromBatch(QList<QString>
 
 Download* NewDownloadCreater::CreateNewDownload(QObject* parent)
 {
-	Download* download = new Download(parent);
+	Download* download = new Download();
+	download->moveToThread(this->thread());
 	return download;
 }
 
@@ -99,14 +100,18 @@ bool NewDownloadCreater::TryToGetInformationFromUrl(QUrl url, QString UserName, 
 		request.setRawHeader("Authorization", headerData.toLocal8Bit());
 	}
 	*/
-
-	m_networkReply = m_networkAccessManager.head(request);
+	if (m_networkAccessManager)
+	{
+		m_networkAccessManager = new QNetworkAccessManager();
+		m_networkAccessManager->moveToThread(this->thread());
+	}
+	m_networkReply = m_networkAccessManager->head(request);
 
 
 	connect(m_networkReply, &QNetworkReply::finished, &eventloop, &QEventLoop::quit);
 	eventloop.exec();
 
-	qDebug() << m_networkReply->header(QNetworkRequest::ContentLengthHeader);
+	//qDebug() << m_networkReply->header(QNetworkRequest::ContentLengthHeader);
 	qDebug() << m_networkReply->header(QNetworkRequest::KnownHeaders::ContentTypeHeader);
 	long long sizeOfDownload = m_networkReply->header(QNetworkRequest::ContentLengthHeader).toLongLong();
 	if (sizeOfDownload == 0)
@@ -157,6 +162,8 @@ void NewDownloadCreater::CancelNewDownload()
 bool NewDownloadCreater::ProcessNewDownloadUrlWidget()
 {
 	newDownloadUrlWidget = new NewDownloadUrlWidget();
+	newDownloadUrlWidget->moveToThread(this->thread());
+	newDownloadUrlWidget->initNewDownloadUrlWidget();
 	connect(newDownloadUrlWidget, &NewDownloadUrlWidget::GetInformations, this, [&](QUrl url, QString Username, QString Password)
 		{
 			if (!url.isEmpty())
@@ -176,7 +183,7 @@ bool NewDownloadCreater::ProcessNewDownloadUrlWidget()
 			{
 				qCritical() << "Url is Empty!!";
 			}
-		});
+		},Qt::ConnectionType::DirectConnection);
 	newDownloadUrlWidget->show();
 	return 0;
 }
@@ -197,7 +204,9 @@ size_t NewDownloadCreater::DefaultPartForDownload()
 
 bool NewDownloadCreater::ProcessNewDownloadMoreComplitedInformationWidget()
 {
-	newDownloadComplitedInformationWidget = new NewDownloadComplitedInformationWidget(BaseUrl);
+	newDownloadComplitedInformationWidget = new NewDownloadComplitedInformationWidget();
+	newDownloadComplitedInformationWidget->moveToThread(this->thread());
+	newDownloadComplitedInformationWidget->initNewDownloadComplitedInformationWidget(BaseUrl);
 	//connect(newDownloadComplitedInformationWidget, &NewDownloadComplitedInformationWidget::DownloadNow, this, &NewDownloadCreater::VerifiedDownload_DownloadNow);
 	//connect(newDownloadComplitedInformationWidget, &NewDownloadComplitedInformationWidget::DownloadLater, this, &NewDownloadCreater::VerifiedDownload_DownloadLater);
 	connect(newDownloadComplitedInformationWidget, &NewDownloadComplitedInformationWidget::VerifiedDownload, this, &NewDownloadCreater::VerifiedDownload);
@@ -286,12 +295,15 @@ bool NewDownloadCreater::ProcessCreatePartDownloadsFromDownload(QString FileName
 		//For until penult Part
 		for (downloadPartNumber = 0; downloadPartNumber < defaultPartForDownload-1; downloadPartNumber++, StartByte = StartByte + rangeOfEachDlownload+1)
 		{
-			PartDownload* partDownload = new PartDownload(parent);
+			QThread* partDownloadThread = new QThread();
+			PartDownload* partDownload = new PartDownload();
+			partDownload->moveToThread(partDownloadThread);
 			partDownload->start_byte = StartByte;
 			partDownload->end_byte = StartByte+ rangeOfEachDlownload;
 			partDownload->LastDownloadedByte = StartByte-1;
 			partDownload->id_download = download->IdDownload;
 			partDownload->PartDownloadFile = new QFile(GeneratePartDownloadAddressFromAddressOfDownloadFile(downloadPartNumber, FileName));
+			partDownload->PartDownloadFile->moveToThread(partDownloadThread);
 			download->DownloadParts.append(partDownload);
 		}
 
@@ -300,12 +312,16 @@ bool NewDownloadCreater::ProcessCreatePartDownloadsFromDownload(QString FileName
 
 
 	//For End Part
-	PartDownload* partDownload = new PartDownload(parent);
+	QThread* partDownloadThread = new QThread();
+	partDownloadThread->setObjectName("partDownloadThread");
+	PartDownload* partDownload = new PartDownload();
+	partDownload->moveToThread(partDownloadThread);
 	partDownload->start_byte = StartByte;
 	partDownload->end_byte = DownloadSize - 1;
 	partDownload->LastDownloadedByte = StartByte - 1;
 	partDownload->id_download = download->IdDownload;
 	partDownload->PartDownloadFile = new QFile(GeneratePartDownloadAddressFromAddressOfDownloadFile(downloadPartNumber, FileName));
+	partDownload->PartDownloadFile->moveToThread(partDownloadThread);
 	download->DownloadParts.append(partDownload);
 	
 	return true;

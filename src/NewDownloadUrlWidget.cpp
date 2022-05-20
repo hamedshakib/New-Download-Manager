@@ -4,15 +4,19 @@ NewDownloadUrlWidget::NewDownloadUrlWidget(QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
-	this->setWindowTitle("New Download");
-	connect(ui.buttonBox, &QDialogButtonBox::accepted, this, &NewDownloadUrlWidget::Accepted);
-	connect(ui.buttonBox, &QDialogButtonBox::rejected, this, &NewDownloadUrlWidget::Rejected);
 }
 
 NewDownloadUrlWidget::~NewDownloadUrlWidget()
 {
 	if(SignalEmmited==false)
 		emit GetInformations(QUrl(""), "", "");
+}
+
+void NewDownloadUrlWidget::initNewDownloadUrlWidget()
+{
+	this->setWindowTitle("New Download");
+	connect(ui.buttonBox, &QDialogButtonBox::accepted, this, &NewDownloadUrlWidget::Accepted);
+	connect(ui.buttonBox, &QDialogButtonBox::rejected, this, &NewDownloadUrlWidget::Rejected);
 }
 
 void NewDownloadUrlWidget::Accepted()

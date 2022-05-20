@@ -6,6 +6,7 @@
 #include "qnetworkreply.h"
 #include "qmutex.h"
 #include "qtimer.h"
+#include "qthread.h"
 
 class PartDownloader : public QObject
 {
@@ -17,6 +18,7 @@ class PartDownloader : public QObject
 	bool Is_Downloading;
 	QNetworkReply* reply=nullptr;
 	PartDownload* partDownload;
+	DownloadFileWriter* downloadFileWriter;
 	//bool is_Downloading = false;
 	QTimer timer;
 	QMutex mutex;
@@ -32,6 +34,7 @@ public slots:
 public:
 	bool Set_PartDownload(PartDownload* partDownload);
 	bool Set_NetworkReply(QNetworkReply* reply);
+	bool Set_DownloadFileWriter(DownloadFileWriter* downloadFileWriter);
 	PartDownload* Get_PartDownload();
 
 	void AddByteToLastDownloadedByte(qint64 NumberOfBytes);
@@ -45,6 +48,6 @@ signals:
 	void Paused();
 
 public:
-	PartDownloader(QObject *parent);
+	PartDownloader(QObject *parent=nullptr);
 	~PartDownloader();
 };

@@ -18,6 +18,7 @@
 #include "qnetworkaccessmanager.h"
 #include "qstandardpaths.h"
 #include "qauthenticator.h"
+#include "qthread.h"
 
 class NewDownloadCreater : public QObject
 {
@@ -35,7 +36,7 @@ private:
 	Download* download;
 	QUrl BaseUrl,RealDownloadUrl;
 	QString UserName, Password;
-	QNetworkAccessManager m_networkAccessManager;
+	QNetworkAccessManager *m_networkAccessManager;
 	QNetworkReply* m_networkReply=nullptr;
 	NewDownloadUrlWidget* newDownloadUrlWidget=nullptr;
 	NewDownloadComplitedInformationWidget* newDownloadComplitedInformationWidget=nullptr;
@@ -82,6 +83,6 @@ signals:
 	void DownloadNow(Download* download);
 
 public:
-	NewDownloadCreater(QObject *parent);
+	NewDownloadCreater(QObject *parent=nullptr);
 	~NewDownloadCreater();
 };

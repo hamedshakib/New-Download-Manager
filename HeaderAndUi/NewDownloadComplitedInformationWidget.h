@@ -4,14 +4,17 @@
 #include "ui_NewDownloadComplitedInformationWidget.h"
 #include "qfiledialog.h"
 #include "qcombobox.h"
+#include "qthread.h"
 
 class NewDownloadComplitedInformationWidget : public QWidget
 {
 	Q_OBJECT
 
 public:
-	NewDownloadComplitedInformationWidget(QUrl BaseUrl, QWidget* parent = nullptr);
+	NewDownloadComplitedInformationWidget(QWidget* parent = nullptr);
 	~NewDownloadComplitedInformationWidget();
+
+	void initNewDownloadComplitedInformationWidget(QUrl BaseUrl);
 
 	bool SetMoreCompliteInformation(QUrl RealUrl, QString TypeFile, QString Size, QString SaveTo, QString description = "");
 	//bool SetQueueManager(QueueManager* queueManager);

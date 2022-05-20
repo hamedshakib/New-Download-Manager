@@ -16,6 +16,10 @@
 #include "qelapsedtimer.h"
 #include "qtimer.h"
 #include "qfileinfo.h"
+#include "qtconcurrentrun.h"
+#include "QtConcurrent/qtconcurrentfunctionwrappers.h"
+#include "QtConcurrent/qtconcurrentrunbase.h"
+#include "QtConcurrent/qtconcurrent_global.h"
 
 class Downloader : public QObject
 {
@@ -36,6 +40,7 @@ private:
 	bool DownloadFinished = false;
 
 public:
+	void initDownloader(Download* download);
 	bool StartDownload();
 	bool PauseDownload();
 
@@ -79,7 +84,7 @@ signals:
 private:
 	friend class DatabaseQueryPreparer;
 public:
-	Downloader(Download* download,QObject *parent);
+	Downloader(QObject *parent=nullptr);
 	~Downloader();
 };
 

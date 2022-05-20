@@ -21,6 +21,6 @@ public:
 	friend class ProcessDatabaseOutput;
 
 public:
-	PartDownload(QObject *parent);
+	PartDownload(QObject *parent=nullptr);
 	~PartDownload();
 };

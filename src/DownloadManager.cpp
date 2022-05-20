@@ -17,7 +17,12 @@ DownloadManager::~DownloadManager()
 
 Download* DownloadManager::CreateDownloadFromDatabase(int download_id)
 {
-	Download* download = new Download(this);
+	QThread* DownloadThread = new QThread(this->thread());
+	DownloadThread->setObjectName("Download Thread");
+	DownloadThread->start();
+	Download* download = new Download();
+	download->moveToThread(DownloadThread);
+
 	DatabaseManager manager(this);
 	if (manager.LoadDownloadComplete(download_id, download))
 	{
@@ -32,7 +37,11 @@ Download* DownloadManager::CreateDownloadFromDatabase(int download_id)
 
 bool DownloadManager::CreateNewDownload()
 {
-	NewDownloadCreater *newDownloadCreater=new NewDownloadCreater(this);
+	QThread* DownloadThread = new QThread(this->thread());
+	DownloadThread->setObjectName("Download Thread");
+	DownloadThread->start();
+	NewDownloadCreater *newDownloadCreater=new NewDownloadCreater();
+	newDownloadCreater->moveToThread(DownloadThread);
 //	connect(newDownloadCreater, &NewDownloadCreater::CreatedNewDownload, this, &DownloadManager::AddCreatedDownloadToDownloadList);
 	connect(newDownloadCreater, &NewDownloadCreater::CreatedNewDownload, this, [&](Download* download) {
 		AddCreatedDownloadToDownloadList(download);
@@ -53,7 +62,10 @@ void DownloadManager::AddCreatedDownloadToDownloadList(Download* download)
 
 Downloader* DownloadManager::CreateDownloader(Download* download)
 {
-	Downloader* downloader = new Downloader(download, this);
+
+	Downloader* downloader = new Downloader();
+	downloader->moveToThread(download->thread());
+	downloader->initDownloader(download);
 	connect(downloader, &Downloader::Started, this, [&, download]() {DatabaseManager::UpdateDownloadInStartOfDownloadOnDatabase(download); });
 	connect(downloader, &Downloader::SignalForUpdateDownloading, this, [&, download]() {DatabaseManager::UpdateInDownloadingOnDataBase(download); });
 	connect(downloader, &Downloader::CompeletedDownload, this, [&, download]() {

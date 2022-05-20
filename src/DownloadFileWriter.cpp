@@ -1,5 +1,11 @@
 #include "HeaderAndUi/DownloadFileWriter.h"
 
+DownloadFileWriter::DownloadFileWriter(QObject* parent)
+	:QObject(parent)
+{
+
+}
+
 bool DownloadFileWriter::WriteDownloadToFile(QByteArray& byteArray, QFile* file, bool CloseFileAfterWrite)
 {
 	if (!file->isOpen())

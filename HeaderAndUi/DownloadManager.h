@@ -7,6 +7,7 @@
 #include "qdebug.h"
 #include "qsqldatabase.h"
 #include "qeventloop.h"
+#include "qthread.h"
 #include "NewDownloadCreater.h"
 
 class DownloadManager : public QObject

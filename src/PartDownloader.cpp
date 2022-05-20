@@ -24,6 +24,7 @@ bool PartDownloader::Set_PartDownload(PartDownload* partDownload)
 
 qint64 PartDownloader::ReadReadybytes(qint64 bytes)
 {
+	qDebug() <<"++:" << QThread::currentThread()->objectName();
 	qint64 ReadedBytes = 0;
 	QByteArray byteArray;
 
@@ -42,7 +43,7 @@ qint64 PartDownloader::ReadReadybytes(qint64 bytes)
 	if (ReadedBytes > 0)
 		Is_Downloading = true;
 	
-	if (DownloadFileWriter::WriteDownloadToFile(byteArray, partDownload->PartDownloadFile))
+	if (downloadFileWriter->WriteDownloadToFile(byteArray, partDownload->PartDownloadFile))
 	{
 
 		if (Is_PartDownloadEndInBuffer && reply->bytesAvailable() == 0)
@@ -118,5 +119,11 @@ void PartDownloader::ProcessApplyPauseOrFinishedPartDownloader()
 	{
 		Is_FinishedPartDownload = true;
 	}
+}
+
+bool PartDownloader::Set_DownloadFileWriter(DownloadFileWriter* downloadFileWriter)
+{
+	this->downloadFileWriter = downloadFileWriter;
+	return true;
 }
 

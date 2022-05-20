@@ -96,6 +96,6 @@ signals:
 	void DownloadStatusChanged(Download::DownloadStatusEnum NewStatus);
 
 public:
-	Download(QObject *parent);
+	Download(QObject *parent=nullptr);
 	~Download();
 };
