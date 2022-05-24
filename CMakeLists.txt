@@ -25,6 +25,7 @@ set(CMAKE_PREFIX_PATH "C:/Programs/QT/6.2.4/msvc2019_64")
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets Core Sql Network Quick LinguistTools REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets Core Sql Network Quick LinguistTools REQUIRED)
+find_package(GTest)
 
 set(TS_FILES 
         ${MY_TRANSLATION_PATH}/app_Persian.ts
@@ -49,9 +50,13 @@ set(PROJECT_SOURCES
         ${MY_HeaderAndUi_PATH}/Download.h
         ${MY_SOURCE_PATH}/Download.cpp
 
-        #Downloader
-        ${MY_HeaderAndUi_PATH}/Downloader.h
-        ${MY_SOURCE_PATH}/Downloader.cpp
+#       #Downloader
+#        ${MY_HeaderAndUi_PATH}/Downloader.h
+#        ${MY_SOURCE_PATH}/Downloader.cpp
+
+        #DownloadControl
+        ${MY_HeaderAndUi_PATH}/DownloadControl.h
+        ${MY_SOURCE_PATH}/DownloadControl.cpp
 
         #PartDownloader
         ${MY_HeaderAndUi_PATH}/PartDownload.h

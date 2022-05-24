@@ -3,6 +3,7 @@
 #include <QObject>
 #include "qfile.h"
 #include "qdebug.h"
+#include "qthread.h"
 
 class DownloadFileWriter : public QObject
 {

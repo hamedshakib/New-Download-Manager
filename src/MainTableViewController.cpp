@@ -29,7 +29,7 @@ void MainTableViewController::Set_DownloadManager(DownloadManager* downloadManag
 {
 	m_downloadManager = downloadManager;
 	connect(m_downloadManager, &DownloadManager::CreatedNewDownload, this, &MainTableViewController::AddNewDownloadToTableView);
-	connect(m_downloadManager, &DownloadManager::CreatedDownloader, this, &MainTableViewController::ConnectorDownloaderToTableUpdateInDownloading);
+	connect(m_downloadManager, &DownloadManager::CreatedDownloadControl, this, &MainTableViewController::ConnectorDownloaderToTableUpdateInDownloading);
 }
 
 void MainTableViewController::ProcessSetupOfTableView()
@@ -120,20 +120,20 @@ void MainTableViewController::doubleClickedOnRow(const QModelIndex& modelindex)
 	else
 	{
 		//Not Completed Download
-		Downloader* downloader = m_downloadManager->ProcessAchieveDownloader(doubleClickedDownload);
+		DownloadControl* downloadControl = m_downloadManager->ProcessAchieveDownloadControl(doubleClickedDownload);
 		ShowDownloadWidget* showDownloadWidget;
 
-		if (MapOfShowDownloadWidgets.find(downloader) != MapOfShowDownloadWidgets.end())
+		if (MapOfShowDownloadWidgets.find(downloadControl) != MapOfShowDownloadWidgets.end())
 		{
 			//found
-			showDownloadWidget = MapOfShowDownloadWidgets.find(downloader).value();
+			showDownloadWidget = MapOfShowDownloadWidgets.find(downloadControl).value();
 			//MapOfShowDownloadWidgets.insert(downloader, showDownloadWidget);
 		}
 		else
 		{
 			//not found
-			showDownloadWidget = CreaterShowDownloadWidget(downloader);
-			MapOfShowDownloadWidgets.insert(downloader, showDownloadWidget);
+			showDownloadWidget = CreaterShowDownloadWidget(downloadControl);
+			MapOfShowDownloadWidgets.insert(downloadControl, showDownloadWidget);
 		}
 		showDownloadWidget->show();
 
@@ -283,9 +283,9 @@ QMenu* MainTableViewController::CreaterRightClickMenuForRowRightClicked(int Down
 	return menu;
 }
 
-void MainTableViewController::ConnectorDownloaderToTableUpdateInDownloading(Downloader* downloader)
+void MainTableViewController::ConnectorDownloaderToTableUpdateInDownloading(DownloadControl* downloadControl)
 {
-	size_t Download_id = downloader->Get_Download()->get_Id();
+	size_t Download_id = downloadControl->Get_Download()->get_Id();
 	size_t Row = 0;
 	for (size_t i = 0; i < model->rowCount(); i++)
 	{
@@ -298,23 +298,23 @@ void MainTableViewController::ConnectorDownloaderToTableUpdateInDownloading(Down
 	}
 	if (Row >= 0)
 	{
-		connect(downloader, &Downloader::SignalForUpdateDownloading, this, [&, Row](QString Status, QString Speed, QString TimeLeft) {UpdateRowInDownloading(Row, Status, Speed, TimeLeft); });
-		connect(downloader, &Downloader::Started, this, [&, Row, downloader]() {
+//		connect(downloadControl, &DownloadControl::UpdateDownloaded, this, [&, Row](QString Status, QString Speed, QString TimeLeft) {UpdateRowInDownloading(Row, Status, Speed, TimeLeft); });
+		connect(downloadControl, &DownloadControl::Started, this, [&, Row, downloadControl]() {
 			//Update LastStartedTime
-			model->setData(model->index(Row, 6), DateTimeManager::ConvertDataTimeToString(downloader->Get_Download()->get_LastTryTime()));
+			model->setData(model->index(Row, 6), DateTimeManager::ConvertDataTimeToString(downloadControl->Get_Download()->get_LastTryTime()));
 			});
 	}
 }
 
 bool MainTableViewController::UpdateRowInDownloading(size_t row, QString Status, QString Speed, QString TimeLeft)
 {
-	Downloader* downloader = static_cast<Downloader*>(sender());
+	DownloadControl* downloadControl = static_cast<DownloadControl*>(sender());
 
 	QModelIndex Status_index = model->index(row, 3);
 	QModelIndex Speed_index = model->index(row, 4);
 	QModelIndex TimeLeft_index = model->index(row, 5);
 
-	if (downloader->Get_Download()->get_Status() == Download::DownloadStatusEnum::Completed)
+	if (downloadControl->Get_Download()->get_Status() == Download::DownloadStatusEnum::Completed)
 	{
 		Status = tr("Complete");
 		Speed = "";
@@ -333,9 +333,9 @@ void MainTableViewController::AddNewDownloadToTableView(Download* download)
 	model->appendRow(TableViewRowCreater::PrepareDataForRowForMainTableView(download));
 }
 
-ShowDownloadWidget* MainTableViewController::CreaterShowDownloadWidget(Downloader* downloader)
+ShowDownloadWidget* MainTableViewController::CreaterShowDownloadWidget(DownloadControl* downloadControl)
 {
-	ShowDownloadWidget* showDownload = new ShowDownloadWidget(downloader);
+	ShowDownloadWidget* showDownload = new ShowDownloadWidget(downloadControl);
 	showDownload->ProcessSetup();
 	return showDownload;
 }
@@ -345,11 +345,11 @@ void MainTableViewController::PauseOrResumeActionTriggered(QAction* pauseOrResum
 
 	if (pauseOrResumeAction->text() == tr("Resume"))
 	{
-		m_downloadManager->ProcessAchieveDownloader(download)->StartDownload();
+		m_downloadManager->ProcessAchieveDownloadControl(download)->StartDownload();
 	}
 	else if (pauseOrResumeAction->text() == tr("Pause"))
 	{
-		m_downloadManager->ProcessAchieveDownloader(download)->PauseDownload();
+		m_downloadManager->ProcessAchieveDownloadControl(download)->PauseDownload();
 	}
 }
 

@@ -16,6 +16,7 @@ PartDownloader::~PartDownloader()
 	}
 }
 
+/*
 bool PartDownloader::Set_PartDownload(PartDownload* partDownload)
 {
 	this->partDownload = partDownload;
@@ -24,6 +25,8 @@ bool PartDownloader::Set_PartDownload(PartDownload* partDownload)
 
 qint64 PartDownloader::ReadReadybytes(qint64 bytes)
 {
+	qDebug() << "T";
+	int b = 1 + 2;
 	qDebug() <<"++:" << QThread::currentThread()->objectName();
 	qint64 ReadedBytes = 0;
 	QByteArray byteArray;
@@ -63,10 +66,13 @@ qint64 PartDownloader::ReadReadybytes(qint64 bytes)
 		}
 
 
+		if (Is_DownloadItSelf)
+		{
+			emit DownloadedBytes(ReadedBytes);
+		}
 
 		return ReadedBytes;
 	}
-
 	return true;
 }
 
@@ -125,5 +131,111 @@ bool PartDownloader::Set_DownloadFileWriter(DownloadFileWriter* downloadFileWrit
 {
 	this->downloadFileWriter = downloadFileWriter;
 	return true;
+}
+
+bool PartDownloader::StartDownloadItSelf()
+{
+	Is_DownloadItSelf = true;
+	connect(this, &PartDownloader::DownloadedBytes, this, &PartDownloader::ProcessDownloadItSelf);
+	return true;
+}
+
+bool PartDownloader::StopDownloadItSelf()
+{
+	Is_DownloadItSelf = false;
+	return true;
+}
+
+void PartDownloader::ProcessDownloadItSelf(qint64 downloadedInLastPeriod)
+{
+	AddByteToLastDownloadedByte(downloadedInLastPeriod);
+	qDebug() << "Downloaded:" << downloadedInLastPeriod;
+	if (Is_Downloading)
+	{
+		if (Is_DownloadItSelf)
+		{
+			if(!Is_FinishedPartDownload && this)
+				ReadReadybytes();
+		}
+	}
+}
+*/
+
+void PartDownloader::initPartDownlolader(PartDownload* partDownload, QNetworkReply* reply, qint64 readBytesEachTimes)
+{
+	this->partDownload = partDownload;
+	this->reply = reply;
+	qDebug()<<"range partDownload:"<<partDownload->start_byte<<"-" <<partDownload->end_byte<<"  " << this->reply->bytesAvailable();
+	this->downloadFileWriter = new DownloadFileWriter();
+	downloadFileWriter->moveToThread(this->thread());
+	connect(reply, &QNetworkReply::readyRead, this, &PartDownloader::ReadyRead);
+	connect(reply, &QNetworkReply::finished, this, &PartDownloader::CheckFinished);
+}
+
+void PartDownloader::Resume(bool ItSelf)
+{
+	this->is_Downloading = true;
+	partDownloaderStatus = PartDownloaderStatus::PartDownloadDownloading;
+	qDebug() << "range partDownload:" << partDownload->start_byte << "-" << partDownload->end_byte;
+
+	qDebug() << this->reply->bytesAvailable();
+	if (ItSelf)
+	{
+		if (reply->bytesAvailable() > 0)
+		{
+			emit ReadyRead();
+		}
+	}
+}
+
+void PartDownloader::Pause()
+{
+	this->is_Downloading = false;
+	partDownloaderStatus = PartDownloaderStatus::PartDownloadPaused;
+	this->reply->abort();
+}
+
+void PartDownloader::ReadyRead()
+{
+	if (!this->is_Downloading)
+	{
+		return;
+	}
+
+	qint64 ReadedBytes = 0;
+	QByteArray byteArray;
+	//if (bytes > 0)
+	//{
+		byteArray = reply->read(5000000);
+		ReadedBytes =byteArray.size();
+	//}
+	downloadFileWriter->WriteDownloadToFile(byteArray,partDownload->PartDownloadFile);
+	qDebug() << "Downloaded " << ReadedBytes << "Bytes From Thread " << QThread::currentThread()->objectName();
+	emit DownloadedBytes(ReadedBytes);
+}
+
+PartDownload* PartDownloader::Get_PartDownload()
+{
+	return this->partDownload;
+}
+
+bool PartDownloader::ProcessSetNewReply(QNetworkReply* reply)
+{
+	if (this->reply != reply)
+	{
+		this->reply->deleteLater();
+		this->reply = reply;
+		connect(reply, &QNetworkReply::readyRead, this, &PartDownloader::ReadyRead, Qt::ConnectionType::QueuedConnection);
+		connect(reply, &QNetworkReply::finished, this, &PartDownloader::CheckFinished);
+	}
+	return true;
+}
+
+void PartDownloader::CheckFinished()
+{
+	if (partDownloaderStatus == PartDownloaderStatus::PartDownloadDownloading)
+	{
+		emit Finished();
+	}
 }
 

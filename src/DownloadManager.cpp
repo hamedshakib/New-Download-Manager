@@ -50,7 +50,7 @@ bool DownloadManager::CreateNewDownload()
 
 
 
-	connect(newDownloadCreater, &NewDownloadCreater::DownloadNow, this, &DownloadManager::CreateDownloaderAndStartDownload);
+	connect(newDownloadCreater, &NewDownloadCreater::DownloadNow, this, &DownloadManager::CreateDownloadControlAndStartDownload);
 	newDownloadCreater->StartProcessOfCreateANewDownload(this);
 	return true;
 }
@@ -60,35 +60,35 @@ void DownloadManager::AddCreatedDownloadToDownloadList(Download* download)
 	ListOfActiveDownloads.append(download);
 }
 
-Downloader* DownloadManager::CreateDownloader(Download* download)
+DownloadControl* DownloadManager::CreateDownloadControl(Download* download)
 {
 
-	Downloader* downloader = new Downloader();
-	downloader->moveToThread(download->thread());
-	downloader->initDownloader(download);
-	connect(downloader, &Downloader::Started, this, [&, download]() {DatabaseManager::UpdateDownloadInStartOfDownloadOnDatabase(download); });
-	connect(downloader, &Downloader::SignalForUpdateDownloading, this, [&, download]() {DatabaseManager::UpdateInDownloadingOnDataBase(download); });
-	connect(downloader, &Downloader::CompeletedDownload, this, [&, download]() {
+	DownloadControl* downloadControl = new DownloadControl();
+	downloadControl->moveToThread(download->thread());
+	downloadControl->initDownloadControl(download);
+	connect(downloadControl, &DownloadControl::Started, this, [&, download]() {DatabaseManager::UpdateDownloadInStartOfDownloadOnDatabase(download); });
+	connect(downloadControl, &DownloadControl::UpdateDownloaded, this, [&, download]() {DatabaseManager::UpdateInDownloadingOnDataBase(download); });
+	connect(downloadControl, &DownloadControl::CompeletedDownload, this, [&, download]() {
 		/*DatabaseManager::UpdateAllFieldDownloadOnDataBase(download);*/
 		DatabaseManager::FinishDownloadOnDatabase(download);
 		emit FinishedDownload(download);
 		qDebug() << "Finished Update Download"; });
-	emit CreatedDownloader(downloader);
-	downloader->SetMaxSpeed(SpeedLimit);
-	return downloader;
+	emit CreatedDownloadControl(downloadControl);
+	downloadControl->SetMaxSpeed(SpeedLimit);
+	return downloadControl;
 }
 
-bool DownloadManager::StartDownloader(Downloader* downloader)
+bool DownloadManager::StartDownload(DownloadControl* downloadControl)
 {
-	downloader->StartDownload();
+	downloadControl->StartDownload();
 	return true;
 }
 
-bool DownloadManager::CreateDownloaderAndStartDownload(Download* download)
+bool DownloadManager::CreateDownloadControlAndStartDownload(Download* download)
 {
-	Downloader* downloader = CreateDownloader(download);
-	ListOfDownloaders.append(downloader);
-	StartDownloader(downloader);
+	DownloadControl* downloadControl = CreateDownloadControl(download);
+	ListOfDownloadControls.append(downloadControl);
+	StartDownload(downloadControl);
 
 	//connect(downloader, &Downloader::SignalForUpdateDownloading, this, [&, download]() {DatabaseManager::UpdateInDownloadingOnDataBase(download); });
 	//connect(downloader, &Downloader::CompeletedDownload, this, [&, download]() {
@@ -121,20 +121,20 @@ Download* DownloadManager::ProcessAchieveDownload(int Download_id)
 	return downloadWithSpecialId;
 }
 
-Downloader* DownloadManager::ProcessAchieveDownloader(Download* download)
+DownloadControl* DownloadManager::ProcessAchieveDownloadControl(Download* download)
 {
-	for (Downloader* downloader : ListOfDownloaders)
+	for (DownloadControl* downloadControl : ListOfDownloadControls)
 	{
-		if (downloader->Get_Download() == download)
+		if (downloadControl->Get_Download() == download)
 		{
-			return downloader;
+			return downloadControl;
 		}
 	}
 
-	//Not Found Downloader So Load From Database
-	Downloader* downloader = CreateDownloader(download);
-	ListOfDownloaders.append(downloader);
-	return downloader;
+	//Not Found DownloadControl So Load From Database
+	DownloadControl* downloadControl = CreateDownloadControl(download);
+	ListOfDownloadControls.append(downloadControl);
+	return downloadControl;
 }
 
 bool DownloadManager::CreatePartDownloadAndPutInDownloadFromDatabase(Download* download)
@@ -150,12 +150,12 @@ bool DownloadManager::CreatePartDownloadAndPutInDownloadFromDatabase(Download* d
 bool DownloadManager::ProcessRemoveDownload(int download_id, bool is_RemoveFromDisk)
 {
 	Download* download = ProcessAchieveDownload(download_id);
-	Downloader* downloader = ProcessAchieveDownloader(download);
+	DownloadControl* downloadControl = ProcessAchieveDownloadControl(download);
 
-	downloader->Paused();
-	ListOfDownloaders.removeOne(downloader);
-	downloader->deleteLater();
-	downloader = nullptr;
+	downloadControl->PauseDownload();
+	ListOfDownloadControls.removeOne(downloadControl);
+	downloadControl->deleteLater();
+	downloadControl = nullptr;
 
 
 	if (is_RemoveFromDisk)
@@ -178,11 +178,11 @@ bool DownloadManager::ProcessRemoveDownload(int download_id, bool is_RemoveFromD
 
 bool DownloadManager::ProcessRemoveDownload(Download* download, bool is_RemoveFromDisk)
 {
-	Downloader* downloader = ProcessAchieveDownloader(download);
+	DownloadControl* downloadControl = ProcessAchieveDownloadControl(download);
 
-	downloader->Paused();
-	ListOfDownloaders.removeOne(downloader);
-	downloader->deleteLater();
+	downloadControl->PauseDownload();
+	ListOfDownloadControls.removeOne(downloadControl);
+	downloadControl->deleteLater();
 
 
 	if (is_RemoveFromDisk)
@@ -205,9 +205,9 @@ bool DownloadManager::ProcessRemoveDownload(Download* download, bool is_RemoveFr
 
 bool DownloadManager::StopAllDownload()
 {
-	for(Downloader* downloader:ListOfDownloaders)
+	for(DownloadControl* downloadControl :ListOfDownloadControls)
 	{
-		downloader->PauseDownload();
+		downloadControl->PauseDownload();
 	}
 	return true;
 }
@@ -223,16 +223,16 @@ bool DownloadManager::CreateNewDownloadsFromBatch(QList<QString> listOfAddress, 
 
 
 
-	connect(newDownloadCreater, &NewDownloadCreater::DownloadNow, this, &DownloadManager::CreateDownloaderAndStartDownload);
+	connect(newDownloadCreater, &NewDownloadCreater::DownloadNow, this, &DownloadManager::CreateDownloadControlAndStartDownload);
 	newDownloadCreater->StartProcessOfCreateNewDownloadFromBatch(listOfAddress, SaveTo, Username, Password,this);
 	return true;
 }
 
 bool DownloadManager::SpeedLimitForAllDownload()
 {
-	for (Downloader* downloader : ListOfDownloaders)
+	for (DownloadControl* downloadControl : ListOfDownloadControls)
 	{
-		downloader->SetMaxSpeed(SpeedLimit);
+		downloadControl->SetMaxSpeed(SpeedLimit);
 	}
 	return true;
 }

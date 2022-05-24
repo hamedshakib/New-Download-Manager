@@ -2,7 +2,8 @@
 
 #include <QObject>
 //#include "Download.h"
-#include "Downloader.h"
+//#include "Downloader.h"
+#include "DownloadControl.h"
 #include "DatabaseManager.h"
 #include "qdebug.h"
 #include "qsqldatabase.h"
@@ -23,34 +24,34 @@ private:
 public:
 	bool CreateNewDownload();
 	bool CreateNewDownloadsFromBatch(QList<QString> listOfAddress, QString SaveTo, QString Username, QString Password);
-	bool StartDownloader(Downloader* downloader);
+	bool StartDownload(DownloadControl* downloadControl);
 	bool StopAllDownload();
 	bool Set_SpeedLimit(int maxSpeed);
 
 
 
 	Download* ProcessAchieveDownload(int Download_id);
-	Downloader* ProcessAchieveDownloader(Download* download);
+	DownloadControl* ProcessAchieveDownloadControl(Download* download);
 
 	bool ProcessRemoveDownload(int download_id,bool is_RemoveFromDisk=false);
 	bool ProcessRemoveDownload(Download* download, bool is_RemoveFromDisk = false);
 
 private slots:
 	void AddCreatedDownloadToDownloadList(Download* download);
-	bool CreateDownloaderAndStartDownload(Download* download);
-	Downloader* CreateDownloader(Download* download);
+	bool CreateDownloadControlAndStartDownload(Download* download);
+	DownloadControl* CreateDownloadControl(Download* download);
 	bool SpeedLimitForAllDownload();
 
 private:
 
 	//friend class TableViewController;
 	QList<Download*> ListOfActiveDownloads;
-	QList<Downloader*> ListOfDownloaders;
+	QList<DownloadControl*> ListOfDownloadControls;
 	int SpeedLimit = 0;
 
 
 signals:
-	void CreatedDownloader(Downloader* downloader);
+	void CreatedDownloadControl(DownloadControl* downloadControl);
 	void CreatedNewDownload(Download* download);
 	void FinishedDownload(Download* download);
 

@@ -2,6 +2,7 @@
 
 #include <QObject>
 #include "qfile.h"
+#include "qdebug.h"
 //#include <utility>
 
 class PartDownload : public QObject
@@ -9,6 +10,7 @@ class PartDownload : public QObject
 	Q_OBJECT
 
 public:
+	bool is_Finished = false;
 	int id_PartDownload;
 	qint64 start_byte;
 	qint64 end_byte;
@@ -21,6 +23,9 @@ public:
 	friend class ProcessDatabaseOutput;
 
 public:
+	bool IsPartDownloadFinished();
+	void UpdatePartDownloadLastDownloadedByte();
+
 	PartDownload(QObject *parent=nullptr);
 	~PartDownload();
 };

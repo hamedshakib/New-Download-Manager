@@ -8,6 +8,7 @@ DownloadFileWriter::DownloadFileWriter(QObject* parent)
 
 bool DownloadFileWriter::WriteDownloadToFile(QByteArray& byteArray, QFile* file, bool CloseFileAfterWrite)
 {
+	qDebug() << "Write download Thread :" << QThread::currentThread()->objectName();
 	if (!file->isOpen())
 	{
 		if (!file->open(QIODevice::WriteOnly | QIODevice::Append))

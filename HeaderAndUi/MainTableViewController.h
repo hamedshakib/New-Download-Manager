@@ -47,10 +47,10 @@ private slots:
 
 	bool UpdateRowInDownloading(size_t row, QString Status, QString Speed, QString TimeLeft);
 
-	void ConnectorDownloaderToTableUpdateInDownloading(Downloader* downloader);
+	void ConnectorDownloaderToTableUpdateInDownloading(DownloadControl* DownloadControl);
 	void AddNewDownloadToTableView(Download* download);
 
-	ShowDownloadWidget* CreaterShowDownloadWidget(Downloader* downloader);
+	ShowDownloadWidget* CreaterShowDownloadWidget(DownloadControl* DownloadControl);
 
 
 	void PauseOrResumeActionTriggered(QAction* pauseOrResumeAction, Download* download);
@@ -82,7 +82,7 @@ private:
 	QHeaderView* horizontalHeader;
 
 
-	QMap<Downloader*, ShowDownloadWidget*> MapOfShowDownloadWidgets;
+	QMap<DownloadControl*, ShowDownloadWidget*> MapOfShowDownloadWidgets;
 	int SelectedFinishedDownload_id = 0;
 
 	QList<int> HiddenColumns;

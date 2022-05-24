@@ -12,10 +12,12 @@ class PartDownloader : public QObject
 {
 	Q_OBJECT
 
+	/*
 	bool Is_PartDownloadEndInBuffer = false;
 	bool is_Paused = false;
 	bool Is_FinishedPartDownload=false;
 	bool Is_Downloading;
+	bool Is_DownloadItSelf = false;
 	QNetworkReply* reply=nullptr;
 	PartDownload* partDownload;
 	DownloadFileWriter* downloadFileWriter;
@@ -39,13 +41,62 @@ public:
 
 	void AddByteToLastDownloadedByte(qint64 NumberOfBytes);
 
+	bool StartDownloadItSelf();
+	bool StopDownloadItSelf();
 
 private slots:
 	void ProcessApplyPauseOrFinishedPartDownloader();
+	void ProcessDownloadItSelf(qint64 downloadedInLastPeriod);
 
 signals:
-	void Finished();
+	void Started();
 	void Paused();
+	void FinishedReadyReadBytes();
+	void Finished();
+	void DownloadedBytes(qint64 ReadedBytes);
+	*/
+
+	enum PartDownloaderStatus {
+		PartDownloadPaused, PartDownloadDownloading, PartDownloadFinishedReciveBytes
+	};
+
+
+private:
+	qint64 ReadBytesInEachTime; //Bytes
+	QNetworkReply* reply = nullptr;
+	PartDownload* partDownload;
+	DownloadFileWriter* downloadFileWriter;
+	bool is_Downloading = false;
+	QTimer timer;
+	QMutex mutex;
+	PartDownloaderStatus partDownloaderStatus= PartDownloadPaused;
+
+public:
+	PartDownload* Get_PartDownload();
+	bool ProcessSetNewReply(QNetworkReply* reply);
+
+public slots:
+	void initPartDownlolader(PartDownload* paerDownload, QNetworkReply* reply,qint64 readBytesEachTimes);
+	void Resume(bool ItSelf=true);
+	void Pause();
+
+private slots:
+	void ReadyRead();
+	void CheckFinished();
+
+
+
+
+
+
+signals:
+	void Started();
+	void Paused();
+	void FinishedReadyReadBytes();
+	void Finished();
+	void DownloadedBytes(qint64 ReadedBytes);
+
+
 
 public:
 	PartDownloader(QObject *parent=nullptr);

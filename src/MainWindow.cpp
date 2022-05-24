@@ -213,8 +213,8 @@ void MainWindow::on_actionDownload_Now_triggered()
 {
 	if (SelectedDownload != nullptr)
 	{
-		Downloader *downloader = downloadManagerPointer->ProcessAchieveDownloader(SelectedDownload);
-		downloader->StartDownload();
+		DownloadControl *downloadControl = downloadManagerPointer->ProcessAchieveDownloadControl(SelectedDownload);
+		downloadControl->StartDownload();
 	}
 }
 
@@ -222,8 +222,8 @@ void MainWindow::on_actionStop_Download_triggered()
 {
 	if (SelectedDownload != nullptr)
 	{
-		Downloader* downloader = downloadManagerPointer->ProcessAchieveDownloader(SelectedDownload);
-		downloader->PauseDownload();
+		DownloadControl* downloadControl = downloadManagerPointer->ProcessAchieveDownloadControl(SelectedDownload);
+		downloadControl->PauseDownload();
 	}
 }
 

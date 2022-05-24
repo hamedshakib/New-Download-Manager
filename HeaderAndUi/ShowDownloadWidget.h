@@ -2,7 +2,8 @@
 
 #include <QWidget>
 #include "ui_ShowDownloadWidget.h"
-#include "Downloader.h"
+//#include "Downloader.h"
+#include "DownloadControl.h"
 #include "qdebug.h"
 #include "ProcessEnum.h"
 #include "ConverterSizeToSuitableString.h"
@@ -14,7 +15,7 @@ class ShowDownloadWidget : public QWidget
 
 private:
 	Download* m_Download;
-	Downloader* m_Downloader;
+	DownloadControl* m_DownloadControl;
 	QMap< QTreeWidgetItem*, PartDownload*> TreeWidgetMap;
 	QList<QTreeWidgetItem*> items;
 
@@ -36,7 +37,7 @@ private slots:
 
 
 public:
-	ShowDownloadWidget(Downloader* downloader,QWidget *parent=nullptr);
+	ShowDownloadWidget(DownloadControl* downloadControl,QWidget *parent=nullptr);
 	~ShowDownloadWidget();
 
 private:
