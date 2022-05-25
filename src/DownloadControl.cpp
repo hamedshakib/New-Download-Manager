@@ -89,6 +89,7 @@ bool DownloadControl::PauseDownload()
 		partDownload->UpdatePartDownloadLastDownloadedByte();
 
 	}
+	download->Set_downloadStatus(Download::DownloadStatusEnum::Pause);
 	timer->stop();
 	emit Paused();
 	return true;

@@ -214,7 +214,11 @@ bool DownloadManager::StopAllDownload()
 
 bool DownloadManager::CreateNewDownloadsFromBatch(QList<QString> listOfAddress, QString SaveTo, QString Username, QString Password)
 {
-	NewDownloadCreater* newDownloadCreater = new NewDownloadCreater(this);
+	QThread* DownloadThread = new QThread(this->thread());
+	DownloadThread->setObjectName("Download Thread");
+	DownloadThread->start();
+	NewDownloadCreater* newDownloadCreater = new NewDownloadCreater();
+	newDownloadCreater->moveToThread(DownloadThread);
 	//	connect(newDownloadCreater, &NewDownloadCreater::CreatedNewDownload, this, &DownloadManager::AddCreatedDownloadToDownloadList);
 	connect(newDownloadCreater, &NewDownloadCreater::CreatedNewDownload, this, [&](Download* download) {
 		AddCreatedDownloadToDownloadList(download);
