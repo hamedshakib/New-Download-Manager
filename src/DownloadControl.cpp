@@ -130,10 +130,11 @@ bool DownloadControl::ProcessPreparePartDownloaders()
 		{
 			partDownload->UpdatePartDownloadLastDownloadedByte();
 			PartDownloader* tempPartDownloader = new PartDownloader();
+			tempPartDownloader->moveToThread(partDownload->thread());
+			qDebug() << partDownload->thread();
 
 			PartDownloader_list.append(tempPartDownloader);
 			tempPartDownloader->initPartDownlolader(partDownload, 500000000);
-			qDebug() << partDownload->thread();
 
 			Download* download1 = download;
 			connect(tempPartDownloader, &PartDownloader::Started, this, &DownloadControl::HandelStartedPartDownloaderSignalEmitted);

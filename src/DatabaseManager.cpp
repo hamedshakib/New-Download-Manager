@@ -151,11 +151,15 @@ QList<PartDownload*> DatabaseManager::CreatePartDownloadsOfDownload(int Download
 	{
 		while (query->next())
 		{
-				PartDownload* partDownload = new PartDownload(nullptr);
-				if (ProcessDatabaseOutput::ProcessPutLoadedPartDownloadInInPartDownloadObject(query->record(), partDownload, Download_id))
-				{
-					ListOfPartDownloadsOfDownload.append(partDownload);
-				}
+			QThread* thread = new QThread();
+			thread->setObjectName("PartDownload Thread");
+			thread->start();
+			PartDownload* partDownload = new PartDownload(nullptr);
+			partDownload->moveToThread(thread);
+			if (ProcessDatabaseOutput::ProcessPutLoadedPartDownloadInInPartDownloadObject(query->record(), partDownload, Download_id))
+			{
+				ListOfPartDownloadsOfDownload.append(partDownload);
+			}
 
 		}
 	}

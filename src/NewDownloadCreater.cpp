@@ -296,8 +296,12 @@ bool NewDownloadCreater::ProcessCreatePartDownloadsFromDownload(QString FileName
 		for (downloadPartNumber = 0; downloadPartNumber < defaultPartForDownload-1; downloadPartNumber++, StartByte = StartByte + rangeOfEachDlownload+1)
 		{
 			QThread* partDownloadThread = new QThread();
+			partDownloadThread->setObjectName("PartDownload Thread");
+			partDownloadThread->start();
 			PartDownload* partDownload = new PartDownload();
 			partDownload->moveToThread(partDownloadThread);
+
+
 			partDownload->start_byte = StartByte;
 			partDownload->end_byte = StartByte+ rangeOfEachDlownload;
 			partDownload->LastDownloadedByte = StartByte-1;
@@ -313,7 +317,8 @@ bool NewDownloadCreater::ProcessCreatePartDownloadsFromDownload(QString FileName
 
 	//For End Part
 	QThread* partDownloadThread = new QThread();
-	partDownloadThread->setObjectName("partDownloadThread");
+	partDownloadThread->setObjectName("PartDownload Thread");
+	partDownloadThread->start();
 	PartDownload* partDownload = new PartDownload();
 	partDownload->moveToThread(partDownloadThread);
 	partDownload->start_byte = StartByte;

@@ -7,6 +7,7 @@
 #include "ProcessDatabaseOutput.h"
 #include "qstandarditemmodel.h"
 #include <QTreeWidgetItem>
+#include "qthread.h"
 
 
 #include "qsqlrecord.h"
