@@ -25,7 +25,7 @@ public slots:
 	void ProcessSetup();
 
 private slots:
-	void UpdateInDownloading(QString Status, QString speed, QString TimeLeft);
+	void UpdateInDownloading(QString Status, QString speed, QString TimeLeft,QList<qint64> DownloadedBytesEachPartDownloadList);
 	void on_PauseResume_pushButton_clicked();
 	void ChangePauseOrResume_Download();
 
@@ -34,6 +34,7 @@ private slots:
 	void ChangeDownloaderSpeed(int speed);
 	void ClickedCheckBox(bool is_checked);
 	void SpinBoxValueChanged(int newValue);
+
 
 
 public:

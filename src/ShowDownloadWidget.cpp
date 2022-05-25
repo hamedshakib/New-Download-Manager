@@ -30,7 +30,7 @@ void ShowDownloadWidget::ProcessSetup()
 	ui.FileSize_label->setText(ConverterSizeToSuitableString::ConvertSizeToSuitableString(m_Download->DownloadSize));
 	ui.Downloded_label->setText(ConverterSizeToSuitableString::ConvertSizeToSuitableString(m_Download->SizeDownloaded));
 	ui.progressBar->setValue((int)(m_Download->SizeDownloaded*100 / m_Download->DownloadSize));
-//	connect(m_DownloadControl, &DownloadControl::UpdateDownloaded, this, &ShowDownloadWidget::UpdateInDownloading);
+	connect(m_DownloadControl, &DownloadControl::UpdateDownloaded, this, &ShowDownloadWidget::UpdateInDownloading);
 	connect(m_DownloadControl, &DownloadControl::Started, this, [&]() {ChangePauseOrResume_Download(); });
 	connect(m_DownloadControl, &DownloadControl::Paused, this, [&]() {ChangePauseOrResume_Download(); });
 	connect(m_DownloadControl, &DownloadControl::CompeletedDownload, this, [&]() {this->close(); /*if (this)*/ this->deleteLater(); });
@@ -65,7 +65,7 @@ void ShowDownloadWidget::ProcessSetup()
 
 }
 
-void ShowDownloadWidget::UpdateInDownloading(QString Status, QString speed, QString TimeLeft)
+void ShowDownloadWidget::UpdateInDownloading(QString Status, QString speed, QString TimeLeft,QList<qint64> DownloadedBytesEachPartDownloadList)
 {
 	ui.Downloded_label->setText(ConverterSizeToSuitableString::ConvertSizeToSuitableString(m_Download->SizeDownloaded));
 	ui.status_label->setText(Status);
@@ -74,12 +74,11 @@ void ShowDownloadWidget::UpdateInDownloading(QString Status, QString speed, QStr
 	ui.TimeLeft_label->setText(TimeLeft);
 	ui.progressBar->setValue((int)(m_Download->SizeDownloaded*100 / m_Download->DownloadSize));
 
-
-	for(auto item:items)
+	for(int i=0;i< items.count();i++)
+	//for(auto item:items)
 	{
-		PartDownload* partDownload = TreeWidgetMap.value(item);
-		if(partDownload)
-			item->setText(1, ConverterSizeToSuitableString::ConvertSizeToSuitableString(partDownload->LastDownloadedByte+1 - partDownload->start_byte));
+		items[i]->setText(1, ConverterSizeToSuitableString::ConvertSizeToSuitableString(DownloadedBytesEachPartDownloadList[i]));
+		//item->setText(1, ConverterSizeToSuitableString::ConvertSizeToSuitableString(DownloadedBytesEachPartDownloadList));
 	}
 }
 
@@ -162,3 +161,19 @@ void ShowDownloadWidget::SpinBoxValueChanged(int newValue)
 		m_DownloadControl->SetMaxSpeed(newValue);
 	}
 }
+
+/*
+void ShowDownloadWidget::ShowDownloadCompleteDialog()
+{
+	qDebug() << QThread::currentThread()->objectName();
+	if (SettingInteract::GetValue("Download/ShowCompleteDialog").toBool())
+	{
+		QString SizeDownloadString = ConverterSizeToSuitableString::ConvertSizeToSuitableString(m_Download->DownloadSize) + QString(" (%1 Bytes)").arg(m_Download->DownloadSize);
+		qDebug() << qApp->thread()->objectName();
+		qDebug() << m_Download->CompletedFile->fileName();
+		CompleteDownloadDialog* completeDownloadDialog = new CompleteDownloadDialog(m_Download->CompletedFile->fileName(), SizeDownloadString, m_Download->Url.toString());
+		completeDownloadDialog->show();
+		//QMetaObject::invokeMethod(qApp, [&, download1, NewDownloadFile]() {ShowCompleteDialog(download1, NewDownloadFile); }, Qt::QueuedConnection);
+	}
+}
+*/

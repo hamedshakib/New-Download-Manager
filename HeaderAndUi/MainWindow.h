@@ -16,6 +16,7 @@
 #include "ShowSchedule.h"
 #include "OptionsWidget.h"
 #include "BatchDownloadCreatorWidget.h"
+#include "CompleteDownloadDialog.h"
 #include <QResizeEvent>
 #include "qmessagebox.h"
 #include "qpixmap.h"

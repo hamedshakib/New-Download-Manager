@@ -161,15 +161,11 @@ void PartDownloader::ProcessDownloadItSelf(qint64 downloadedInLastPeriod)
 }
 */
 
-void PartDownloader::initPartDownlolader(PartDownload* partDownload, QNetworkReply* reply, qint64 readBytesEachTimes)
+void PartDownloader::initPartDownlolader(PartDownload* partDownload,qint64 readBytesEachTimes)
 {
 	this->partDownload = partDownload;
-	this->reply = reply;
-	qDebug()<<"range partDownload:"<<partDownload->start_byte<<"-" <<partDownload->end_byte<<"  " << this->reply->bytesAvailable();
 	this->downloadFileWriter = new DownloadFileWriter();
 	downloadFileWriter->moveToThread(this->thread());
-	connect(reply, &QNetworkReply::readyRead, this, &PartDownloader::ReadyRead);
-	connect(reply, &QNetworkReply::finished, this, &PartDownloader::CheckFinished);
 }
 
 void PartDownloader::Resume(bool ItSelf)
@@ -209,9 +205,14 @@ void PartDownloader::ReadyRead()
 		byteArray = reply->read(5000000);
 		ReadedBytes =byteArray.size();
 	//}
-	downloadFileWriter->WriteDownloadToFile(byteArray,partDownload->PartDownloadFile);
+	if (ReadedBytes > 0)
+	{
+			downloadFileWriter->WriteDownloadToFile(byteArray, partDownload->PartDownloadFile);
+	}
 	qDebug() << "Downloaded " << ReadedBytes << "Bytes From Thread " << QThread::currentThread()->objectName();
+	partDownload->LastDownloadedByte += ReadedBytes;
 	emit DownloadedBytes(ReadedBytes);
+	
 }
 
 PartDownload* PartDownloader::Get_PartDownload()

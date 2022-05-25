@@ -298,11 +298,13 @@ void MainTableViewController::ConnectorDownloaderToTableUpdateInDownloading(Down
 	}
 	if (Row >= 0)
 	{
-//		connect(downloadControl, &DownloadControl::UpdateDownloaded, this, [&, Row](QString Status, QString Speed, QString TimeLeft) {UpdateRowInDownloading(Row, Status, Speed, TimeLeft); });
+		connect(downloadControl, &DownloadControl::UpdateDownloaded, this, [&, Row](QString Status, QString Speed, QString TimeLeft,QList<qint64> list) {UpdateRowInDownloading(Row, Status, Speed, TimeLeft); });
+		connect(downloadControl, &DownloadControl::CompeletedDownload, this, [&, Row]() {CompeletedDownload(Row); });
 		connect(downloadControl, &DownloadControl::Started, this, [&, Row, downloadControl]() {
 			//Update LastStartedTime
 			model->setData(model->index(Row, 6), DateTimeManager::ConvertDataTimeToString(downloadControl->Get_Download()->get_LastTryTime()));
 			});
+
 	}
 }
 
@@ -457,4 +459,15 @@ void MainTableViewController::HideOrShowColumns()
 			}
 		}
 	}
+}
+
+void MainTableViewController::CompeletedDownload(size_t row)
+{
+	QModelIndex Status_index = model->index(row, 3);
+	QModelIndex Speed_index = model->index(row, 4);
+	QModelIndex TimeLeft_index = model->index(row, 5);
+
+	model->setData(Status_index, tr("Complete"));
+	model->setData(Speed_index, "");
+	model->setData(TimeLeft_index, "");
 }

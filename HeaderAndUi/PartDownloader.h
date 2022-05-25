@@ -64,7 +64,7 @@ signals:
 private:
 	qint64 ReadBytesInEachTime; //Bytes
 	QNetworkReply* reply = nullptr;
-	PartDownload* partDownload;
+	PartDownload* partDownload=nullptr;
 	DownloadFileWriter* downloadFileWriter;
 	bool is_Downloading = false;
 	QTimer timer;
@@ -76,7 +76,7 @@ public:
 	bool ProcessSetNewReply(QNetworkReply* reply);
 
 public slots:
-	void initPartDownlolader(PartDownload* paerDownload, QNetworkReply* reply,qint64 readBytesEachTimes);
+	void initPartDownlolader(PartDownload* paerDownload,qint64 readBytesEachTimes);
 	void Resume(bool ItSelf=true);
 	void Pause();
 

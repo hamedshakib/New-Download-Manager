@@ -64,6 +64,9 @@ private slots:
 	void RemoveDownloadFromQueue(Download* download);
 
 	void HideOrShowColumns();
+
+	void CompeletedDownload(size_t row);
+
 public slots:
 	void ChooseColumnsHidden();
 

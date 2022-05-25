@@ -380,13 +380,13 @@
     </message>
     <message>
         <location filename="../src/MainTableViewController.cpp" line="216"/>
-        <location filename="../src/MainTableViewController.cpp" line="346"/>
+        <location filename="../src/MainTableViewController.cpp" line="348"/>
         <source>Resume</source>
         <translation>ادامه</translation>
     </message>
     <message>
         <location filename="../src/MainTableViewController.cpp" line="225"/>
-        <location filename="../src/MainTableViewController.cpp" line="350"/>
+        <location filename="../src/MainTableViewController.cpp" line="352"/>
         <source>Pause</source>
         <translation>توقف</translation>
     </message>
@@ -411,8 +411,9 @@
         <translation>جزئیات</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="319"/>
-        <location filename="../src/MainTableViewController.cpp" line="410"/>
+        <location filename="../src/MainTableViewController.cpp" line="321"/>
+        <location filename="../src/MainTableViewController.cpp" line="412"/>
+        <location filename="../src/MainTableViewController.cpp" line="470"/>
         <source>Complete</source>
         <translation>تکمیل شده</translation>
     </message>
@@ -1441,7 +1442,7 @@
         <location filename="../out/build/x64-Release-Real1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="270"/>
         <location filename="../out/build/x64-Release1/DownloadManager_autogen/include/ui_ShowDownloadWidget.h" line="268"/>
         <location filename="../src/ShowDownloadWidget.cpp" line="26"/>
-        <location filename="../src/ShowDownloadWidget.cpp" line="101"/>
+        <location filename="../src/ShowDownloadWidget.cpp" line="100"/>
         <source>Pause</source>
         <translation>توقف</translation>
     </message>
@@ -1791,13 +1792,13 @@
     </message>
     <message>
         <location filename="../src/ShowDownloadWidget.cpp" line="40"/>
-        <location filename="../src/ShowDownloadWidget.cpp" line="103"/>
+        <location filename="../src/ShowDownloadWidget.cpp" line="102"/>
         <source>Downloading</source>
         <translation>در حال دانلود</translation>
     </message>
     <message>
         <location filename="../src/ShowDownloadWidget.cpp" line="40"/>
-        <location filename="../src/ShowDownloadWidget.cpp" line="103"/>
+        <location filename="../src/ShowDownloadWidget.cpp" line="102"/>
         <source>Paused</source>
         <translation>متوقف شده</translation>
     </message>

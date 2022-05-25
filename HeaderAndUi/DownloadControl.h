@@ -57,8 +57,9 @@ signals:
 	void Started();
 	void Paused();
 	void CompeletedDownload();
-	void UpdateDownloaded();
+	//void UpdateDownloaded();
 	void SpeedChanged(int speed);
+	void UpdateDownloaded(QString Status, QString speed, QString TimeLeft,QList<qint64> DownloadedBytesEachPartDownloadList);
 
 private slots:
 	bool ProcessPreparePartDownloaders();
@@ -75,4 +76,9 @@ private slots:
 
 	bool CheckDownloadFinished();
 	bool ProcessFinishDownload();
+
+	void ProcessForShowDownloadCompleteDialog();
+	void ShowCompleteDialog(Download* download,QString SaveTo);
+
+	void TimerTimeOut();
 };
