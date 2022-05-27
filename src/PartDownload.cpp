@@ -32,5 +32,6 @@ bool PartDownload::IsPartDownloadFinished()
 
 void PartDownload::UpdatePartDownloadLastDownloadedByte()
 {
+	if(this->PartDownloadFile)
 	this->LastDownloadedByte = this->start_byte + this->PartDownloadFile->size() - 1;
 }

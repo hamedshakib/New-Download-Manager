@@ -31,15 +31,20 @@ private:
 	QNetworkAccessManager* manager;
 	Download* download;
 	QList<PartDownloader*> PartDownloader_list;
+	QList<PartDownloader*> ActivePartDownloader_list;
 	CalculatorDownload calculatorDownload;
 	size_t MaxSpeed; //   KB/Sec
 	bool Is_PreparePartDownloaders = false;
 	bool Is_Downloading = false;
 	bool DownloadFinished = false;
+
+	bool RecentlyUpdatedActivePartDownloader_list = false;
 	QElapsedTimer *elapsedTimer;
+	QElapsedTimer* elapsedTimerForIndependentSpeed;
+	qint64 spentedTimeFromLastPeriod;
 	QTimer *timer;
 	qint64 NumberOfBytesDownloadedInLastPeriod = 0;
-
+	qint64 NumberOfBytesDownloadedInLastPeriodOfDownloadSpeedLimitted = 0;
 
 
 public:
@@ -52,6 +57,8 @@ public:
 	Download* Get_Download();
 	void SetMaxSpeed(int maxSpeed);
 	int Get_MaxSpeed();
+	bool IsSpeedLimitted();
+
 
 signals:
 	void Started();
@@ -60,6 +67,8 @@ signals:
 	//void UpdateDownloaded();
 	void SpeedChanged(int speed);
 	void UpdateDownloaded(QString Status, QString speed, QString TimeLeft,QList<qint64> DownloadedBytesEachPartDownloadList);
+
+	void FinishedLastControlledSpeedPriod(qint64 spentedTime);
 
 private slots:
 	bool ProcessPreparePartDownloaders();
@@ -70,7 +79,7 @@ private slots:
 
 	void HandelStartedPartDownloaderSignalEmitted();
 	void HandelPausedPartDownloaderSignalEmitted();
-	void HandelFinishedReadyReadBytesPartDownloaderSignalEmitted();
+	void HandelFinishedRecivedBytesPartDownloaderSignalEmitted();
 	void HandelFinishedPartDownloaderSignalEmitted();
 	void HandelDownloadedBytesPartDownloaderSignalEmitted(qint64 ReadedBytes);
 
@@ -79,6 +88,13 @@ private slots:
 
 	void ProcessForShowDownloadCompleteDialog();
 	void ShowCompleteDialog(Download* download,QString SaveTo);
+
+	void SetMaxSpeedForPartDownloaders();
+	void ProcessSetPartDownloaderMaxSpeed(PartDownloader* partDownlader, bool is_SpeedLimited);
+	void UpdateListOfActivePartDownloaders();
+
+	void ProcessScheduleControledLimittedSpeed();
+	void DownloadForControlSpeed();
 
 	void TimerTimeOut();
 };

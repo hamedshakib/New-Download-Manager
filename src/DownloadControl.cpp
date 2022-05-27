@@ -16,10 +16,10 @@ void DownloadControl::initDownloadControl(Download* download)
 	manager->moveToThread(this->thread());
 	timer = new QTimer();
 	//timer->moveToThread(this->thread());
-	//timer->start(500);
 	connect(timer, &QTimer::timeout, this, &DownloadControl::TimerTimeOut);
 	connect(this, &DownloadControl::CompeletedDownload, this, &DownloadControl::ProcessForShowDownloadCompleteDialog);
 	elapsedTimer = new QElapsedTimer();
+	elapsedTimerForIndependentSpeed= new QElapsedTimer();
 }
 
 bool DownloadControl::StartDownload()
@@ -44,7 +44,7 @@ bool DownloadControl::StartDownload()
 	Is_Downloading = true;
 	elapsedTimer->start();
 
-
+	bool is_SpeedLimited = IsSpeedLimitted();
 	for (PartDownloader* partDownloader : PartDownloader_list)
 	{
 		PartDownload* partDownload = partDownloader->Get_PartDownload();
@@ -52,10 +52,12 @@ bool DownloadControl::StartDownload()
 		if (!partDownload->IsPartDownloadFinished())
 		{
 			ProcessPreparePartDownloaderFromPartdownload(partDownloader, partDownload);
+			ProcessSetPartDownloaderMaxSpeed(partDownloader, is_SpeedLimited);
 			StartPartDownloader(partDownloader);
 		}
 		
 	}
+	UpdateListOfActivePartDownloaders();
 
 	if (CheckDownloadFinished())
 	{
@@ -68,12 +70,12 @@ bool DownloadControl::StartDownload()
 	emit Started();
 	Is_Downloading = true;
 	elapsedTimer->restart();
-	timer->start(500);
-
-	//[deprature]
-	//DownloadWithSpeedControlled();
-
-	//ProcessDownload();
+	timer->start(1000);
+	if (is_SpeedLimited)
+	{
+		elapsedTimer->restart();
+		ProcessScheduleControledLimittedSpeed();
+	}
 }
 
 bool DownloadControl::PauseDownload()
@@ -108,12 +110,58 @@ Download* DownloadControl::Get_Download()
 void DownloadControl::SetMaxSpeed(int maxSpeed)
 {
 	this->MaxSpeed = maxSpeed;
+	SetMaxSpeedForPartDownloaders();
+	if (Is_Downloading && maxSpeed>0)
+	{
+		elapsedTimer->restart();
+		DownloadForControlSpeed();
+	}
+/*
+	if (maxSpeed>0)
+	{
+		disconnect(timer, &QTimer::timeout, this, &DownloadControl::TimerTimeOut);
+	}
+	else
+	{
+		connect(timer, &QTimer::timeout, this, &DownloadControl::TimerTimeOut, Qt::ConnectionType::UniqueConnection);
+	}
+*/
 	SpeedChanged(maxSpeed);
 }
 
 int DownloadControl::Get_MaxSpeed()
 {
 	return this->MaxSpeed;
+}
+
+bool DownloadControl::IsSpeedLimitted()
+{
+	if (this->MaxSpeed > 0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+void DownloadControl::SetMaxSpeedForPartDownloaders()
+{
+	UpdateListOfActivePartDownloaders();
+	bool is_SpeedLimited=IsSpeedLimitted();
+	if (ActivePartDownloader_list.count() > 0)
+	{
+		for (auto partDownloader : ActivePartDownloader_list)
+		{
+			ProcessSetPartDownloaderMaxSpeed(partDownloader, is_SpeedLimited);
+		}
+	}
+}
+
+void DownloadControl::ProcessSetPartDownloaderMaxSpeed(PartDownloader* partDownloader,bool is_SpeedLimited)
+{
+	partDownloader->SetSpeedLimited(is_SpeedLimited);
 }
 
 /*bool DownloadControl::CreatePartDownloaderFromDatabase()
@@ -139,9 +187,9 @@ bool DownloadControl::ProcessPreparePartDownloaders()
 			Download* download1 = download;
 			connect(tempPartDownloader, &PartDownloader::Started, this, &DownloadControl::HandelStartedPartDownloaderSignalEmitted);
 			connect(tempPartDownloader, &PartDownloader::Paused, this, &DownloadControl::HandelPausedPartDownloaderSignalEmitted);
-			connect(tempPartDownloader, &PartDownloader::FinishedReadyReadBytes, this, &DownloadControl::HandelFinishedReadyReadBytesPartDownloaderSignalEmitted);
+			connect(tempPartDownloader, &PartDownloader::FinishedRecivedBytes, this, &DownloadControl::HandelFinishedRecivedBytesPartDownloaderSignalEmitted);
 			connect(tempPartDownloader, &PartDownloader::Finished, this, &DownloadControl::HandelFinishedPartDownloaderSignalEmitted);
-			connect(tempPartDownloader, &PartDownloader::DownloadedBytes, this, &DownloadControl::HandelDownloadedBytesPartDownloaderSignalEmitted);
+			connect(tempPartDownloader, &PartDownloader::DownloadedBytes, this, &DownloadControl::HandelDownloadedBytesPartDownloaderSignalEmitted,Qt::ConnectionType::UniqueConnection);
 		}
 	}
 	Is_PreparePartDownloaders = true;
@@ -166,23 +214,23 @@ bool DownloadControl::ProcessPreparePartDownloaderFromPartdownload(PartDownloade
 	request.setUrl(url);
 
 
-	qDebug() << "downloadUrl:" << download->get_Url();
+	//qDebug() << "downloadUrl:" << download->get_Url();
 	request.setAttribute(QNetworkRequest::HttpPipeliningAllowedAttribute, true);
 
-	qDebug() << "Started_Byte ::::" << partDownload->start_byte;
+	//qDebug() << "Started_Byte ::::" << partDownload->start_byte;
 	QString rangeBytes = QString("bytes=%1-%2").arg(partDownload->LastDownloadedByte + 1).arg(partDownload->end_byte);
-	qDebug() << "rangeBytes:" << rangeBytes;
+	//qDebug() << "rangeBytes:" << rangeBytes;
 	request.setRawHeader("Range", rangeBytes.toUtf8());
 
-	qDebug() << manager->thread()->objectName();
-	qDebug() << QThread::currentThread()->objectName();
-	qDebug() << this->thread();
+	//qDebug() << manager->thread()->objectName();
+	//qDebug() << QThread::currentThread()->objectName();
+	//qDebug() << this->thread();
 
 	QNetworkReply* reply = manager->get(request);
-	qDebug() << reply->bytesAvailable();
+	//qDebug() << reply->bytesAvailable();
 	
 	reply->moveToThread(download->thread());
-	qDebug() << reply->thread()->objectName();
+	//qDebug() << reply->thread()->objectName();
 	partDownloader->moveToThread(download->thread());
 
 	partDownloader->ProcessSetNewReply(reply);
@@ -201,17 +249,19 @@ void DownloadControl::HandelPausedPartDownloaderSignalEmitted()
 
 }
 
-void DownloadControl::HandelFinishedReadyReadBytesPartDownloaderSignalEmitted()
+void DownloadControl::HandelFinishedRecivedBytesPartDownloaderSignalEmitted()
 {
 
 }
 
 void DownloadControl::HandelFinishedPartDownloaderSignalEmitted()
 {
+	SetMaxSpeedForPartDownloaders();
 	if (CheckDownloadFinished())
 	{
 		ProcessFinishDownload();
 	}
+	UpdateListOfActivePartDownloaders();
 }
 
 void DownloadControl::HandelDownloadedBytesPartDownloaderSignalEmitted(qint64 ReadedBytes)
@@ -236,7 +286,7 @@ bool DownloadControl::CheckDownloadFinished()
 {
 	for (PartDownloader* partDownloader : PartDownloader_list)
 	{
-		qDebug() << "Count PartDownloaders:" << PartDownloader_list.count();
+		//qDebug() << "Count PartDownloaders:" << PartDownloader_list.count();
 		PartDownload* partDownload=partDownloader->Get_PartDownload();
 		partDownload->UpdatePartDownloadLastDownloadedByte();
 		if (!partDownload->IsPartDownloadFinished())
@@ -256,7 +306,7 @@ bool DownloadControl::ProcessFinishDownload()
 	QList<QFile*> FilesOfDownload;
 	for (PartDownload* partDownload : PartDownloads)
 	{
-		qDebug() << partDownload->PartDownloadFile->fileName() << ":" << partDownload->PartDownloadFile->size();
+		//qDebug() << partDownload->PartDownloadFile->fileName() << ":" << partDownload->PartDownloadFile->size();
 		FilesOfDownload.append(partDownload->PartDownloadFile);
 	}
 
@@ -290,21 +340,23 @@ bool DownloadControl::ProcessFinishDownload()
 void DownloadControl::TimerTimeOut()
 {
 	qint64 downloadedByte = this->NumberOfBytesDownloadedInLastPeriod;
-	this->NumberOfBytesDownloadedInLastPeriod = 0;
-
-	qint64 speed = calculatorDownload.CalculateDownloadSpeed(downloadedByte, 500);
-	QString SpeedString = calculatorDownload.GetSpeedOfDownloadInFormOfString();
-	qDebug() << "Speed:" << SpeedString;
-	QString TimeLeftString = calculatorDownload.GetTimeLeftOfDownloadInFormOfString(download->DownloadSize - download->SizeDownloaded);
-	QString DownloadStatus = calculatorDownload.getStatusForTable(download->SizeDownloaded, download->DownloadSize);
-	//emit DownloadedAtAll(download->SizeDownloaded);
-	QList<qint64> DownloadedBytesEachPartDownloadList;
-	for (PartDownload* partDownload : download->get_PartDownloads())
+	if (downloadedByte > 0)
 	{
-		DownloadedBytesEachPartDownloadList.append(partDownload->LastDownloadedByte - partDownload->start_byte + 1);
-	}
+		this->NumberOfBytesDownloadedInLastPeriod = 0;
+		qint64 timerSpent = elapsedTimerForIndependentSpeed->restart();
+		qint64 speed = calculatorDownload.CalculateDownloadSpeed(downloadedByte, timerSpent);
+		QString SpeedString = calculatorDownload.GetSpeedOfDownloadInFormOfString();
+		QString TimeLeftString = calculatorDownload.GetTimeLeftOfDownloadInFormOfString(download->DownloadSize - download->SizeDownloaded);
+		QString DownloadStatus = calculatorDownload.getStatusForTable(download->SizeDownloaded, download->DownloadSize);
+		//emit DownloadedAtAll(download->SizeDownloaded);
+		QList<qint64> DownloadedBytesEachPartDownloadList;
+		for (PartDownload* partDownload : download->get_PartDownloads())
+		{
+			DownloadedBytesEachPartDownloadList.append(partDownload->LastDownloadedByte - partDownload->start_byte + 1);
+		}
 
-	emit UpdateDownloaded(DownloadStatus, SpeedString,TimeLeftString,DownloadedBytesEachPartDownloadList);
+		emit UpdateDownloaded(DownloadStatus, SpeedString, TimeLeftString, DownloadedBytesEachPartDownloadList);
+	}
 }
 
 void DownloadControl::ProcessForShowDownloadCompleteDialog()
@@ -325,4 +377,87 @@ void DownloadControl::ShowCompleteDialog(Download* download, QString SaveTo)
 	QString SizeDownloadString = ConverterSizeToSuitableString::ConvertSizeToSuitableString(download->DownloadSize) + QString(" (%1 Bytes)").arg(download->DownloadSize);
 	CompleteDownloadDialog* completeDownloadDialog = new CompleteDownloadDialog(SaveTo, SizeDownloadString, download->Url.toString());
 	completeDownloadDialog->show();
+}
+
+void DownloadControl::UpdateListOfActivePartDownloaders()
+{
+	int numberOfActivePartDownloaders = ActivePartDownloader_list.count();
+	QList<PartDownloader*> ActivePartDownloader_list;
+	for (auto partDownloader : PartDownloader_list)
+	{
+		if (!partDownloader->Get_PartDownload()->IsPartDownloadFinished())
+			ActivePartDownloader_list.append(partDownloader);
+	}
+	
+	this->ActivePartDownloader_list = ActivePartDownloader_list;
+
+	if (numberOfActivePartDownloaders != this->ActivePartDownloader_list.count())
+		RecentlyUpdatedActivePartDownloader_list = true;
+}
+
+void DownloadControl::DownloadForControlSpeed()
+{
+	if (Is_Downloading)
+	{
+		qint64 spentedTimeFromLastPeriod = elapsedTimer->restart();
+		NumberOfBytesDownloadedInLastPeriodOfDownloadSpeedLimitted = 0;
+		bool anyDownloaded = false;
+		qint64 ReadedBytes = 0;
+		if (MaxSpeed > 0)
+		{
+			qint64 spentedTimeOfThisPeriod = 0;
+			while (spentedTimeOfThisPeriod<995 && MaxSpeed * 1024 >NumberOfBytesDownloadedInLastPeriodOfDownloadSpeedLimitted)
+			{
+				qint64 BytesShouldDownload = MaxSpeed * 1024 - NumberOfBytesDownloadedInLastPeriodOfDownloadSpeedLimitted;
+				RecentlyUpdatedActivePartDownloader_list = false;
+				for (PartDownloader* partDownloader : ActivePartDownloader_list)
+				{
+					if (partDownloader->IsAvaliableByteForRead())
+					{
+						anyDownloaded = true;
+						ReadedBytes = partDownloader->DownloadByteInSpeedControl(BytesShouldDownload);
+						this->NumberOfBytesDownloadedInLastPeriod += ReadedBytes;
+						this->NumberOfBytesDownloadedInLastPeriodOfDownloadSpeedLimitted += ReadedBytes;
+						download->SizeDownloaded += ReadedBytes;
+						BytesShouldDownload -= ReadedBytes;
+						if (RecentlyUpdatedActivePartDownloader_list)
+						{
+							break;
+						}
+					}
+				}
+				if (!anyDownloaded)
+				{
+					break;
+				}
+				spentedTimeOfThisPeriod = elapsedTimer->elapsed();
+
+			}
+		}
+		emit FinishedLastControlledSpeedPriod(elapsedTimer->elapsed());
+	}
+}
+
+void DownloadControl::ProcessScheduleControledLimittedSpeed()
+{
+
+
+
+
+
+	connect(this, &DownloadControl::FinishedLastControlledSpeedPriod, this, [&](qint64 spentedTime) {
+//		qint64 timeSpented = elapsedTimer->elapsed();
+		if (spentedTime < 1000)
+		{
+			//it's mean pause for other other of one second and wait for next second
+			QTimer::singleShot(999 - spentedTime, this, &DownloadControl::DownloadForControlSpeed);
+		}
+		else
+		{
+			DownloadForControlSpeed();
+			//elapsedTimer->restart();
+		}
+		});
+
+	DownloadForControlSpeed();
 }
