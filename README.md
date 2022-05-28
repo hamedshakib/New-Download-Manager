@@ -1,9 +1,10 @@
-#Download manager<br/>
+Download manager<br/>
 <br/>
 Download Manager with the following capabilities:<br/>
 - Create queues for downloads<br/>
 - Schedule to start and stop queues<br/>
 - Stop and resume download<br/>
+- Multi Thread</br>
 - Add sequential Downloads<br/>
 - Move completed download by drag and drop from Competed download dialog<br/>
 - Show completed download in folder<br/>
@@ -23,6 +24,7 @@ Download Manager with the following capabilities:<br/>
 - ساخت صف ها برای دانلود ها<br/>
 -زمان بندی برای شروع و توقف صف ها<br/>
 -توقف و ادامه صف ها<br/>
+-چند نخی (پردازش موازی) </br>
 -افزودن دانلود های متوالی<br/>
 -انتقال دانلود تکمیل شده توسط کشیدن و رها کردن در صفحه نمایش اتمام دانلود<br/>
 -نمایش دانلود تکمیل شده در فولدر<br/>
