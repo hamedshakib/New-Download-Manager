@@ -175,9 +175,8 @@ bool DownloadControl::IsSpeedLimitted()
 void DownloadControl::SetMaxSpeedForPartDownloaders()
 {
 	//UpdateListOfActivePartDownloaders();
-	QMutex mutex;
-	mutex.lock();
 	bool is_SpeedLimited=IsSpeedLimitted();
+	locker.lockForRead();
 	if (ActivePartDownloader_list.count() > 0)
 	{
 		qDebug() <<"count of ActivePartDownloader_list:" << ActivePartDownloader_list.count();
@@ -187,7 +186,7 @@ void DownloadControl::SetMaxSpeedForPartDownloaders()
 			qDebug() << "After One set dolwnloader speed:";
 		}
 	}
-	mutex.unlock();
+	locker.unlock();
 }
 
 void DownloadControl::ProcessSetPartDownloaderMaxSpeed(PartDownloader* partDownloader,bool is_SpeedLimited)
@@ -433,6 +432,7 @@ void DownloadControl::ShowCompleteDialog(Download* download, QString SaveTo)
 
 void DownloadControl::UpdateListOfActivePartDownloaders()
 {
+	locker.lockForWrite();
 	int numberOfActivePartDownloaders = ActivePartDownloader_list.count();
 	QList<PartDownloader*> ActivePartDownloader_list;
 	for (auto partDownloader : PartDownloader_list)
@@ -445,6 +445,8 @@ void DownloadControl::UpdateListOfActivePartDownloaders()
 
 	if (numberOfActivePartDownloaders != this->ActivePartDownloader_list.count())
 		RecentlyUpdatedActivePartDownloader_list = true;
+
+	locker.unlock();
 }
 
 void DownloadControl::DownloadForControlSpeed()

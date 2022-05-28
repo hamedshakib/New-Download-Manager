@@ -16,6 +16,7 @@
 #include "qelapsedtimer.h"
 #include "qtimer.h"
 #include "qfileinfo.h"
+#include "qreadwritelock.h"
 
 class DownloadControl : public QObject
 {
@@ -34,7 +35,7 @@ public:
 
 private:
 	DownloadStatus statusOfDownload = DownloadStatus::Pause;
-
+	QReadWriteLock locker;
 
 
 	QMetaObject::Connection speedControlConnection;
