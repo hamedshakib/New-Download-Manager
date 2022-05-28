@@ -21,6 +21,11 @@ class DownloadControl : public QObject
 {
 	Q_OBJECT
 
+	enum DownloadStatus
+	{
+		Downloading,Pause,StartFinsh,Finidshed
+	};
+
 public:
 	DownloadControl(QObject *parent=nullptr);
 	~DownloadControl();
@@ -28,6 +33,11 @@ public:
 
 
 private:
+	DownloadStatus statusOfDownload = DownloadStatus::Pause;
+
+
+
+	QMetaObject::Connection speedControlConnection;
 	QNetworkAccessManager* manager;
 	Download* download;
 	QList<PartDownloader*> PartDownloader_list;

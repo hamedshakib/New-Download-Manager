@@ -248,7 +248,10 @@ qint64 PartDownloader::DownloadByteInSpeedControl(qint64 maxReadBytes)
 
 PartDownload* PartDownloader::Get_PartDownload()
 {
-	return this->partDownload;
+	if (this->partDownload != nullptr)
+		return this->partDownload;
+	else
+		return nullptr;
 }
 
 bool PartDownloader::ProcessSetNewReply(QNetworkReply* reply)
@@ -273,6 +276,7 @@ void PartDownloader::CheckFinishedRecivedBytes()
 	if (partDownloaderStatus == PartDownloaderStatus::PartDownloadDownloading)
 	{
 		partDownloaderStatus = PartDownloaderStatus::PartDownloadFinishedReciveBytes;
+		qDebug() << "Finsih recive byte PartDownload emit";
 		emit FinishedRecivedBytes();
 	}
 }
@@ -283,6 +287,7 @@ void PartDownloader::CheckFinishedPartDownloader()
 	{
 		if (partDownload->IsPartDownloadFinished())
 		{
+			qDebug() << "Finsih PartDownload emit";
 			emit Finished();
 		}
 	}
@@ -300,20 +305,21 @@ bool PartDownloader::SetSpeedLimited(bool is_SpeedLimited)
 		this->is_SpeedLimit = is_SpeedLimited;
 		if (is_SpeedLimited == false)
 		{
-			qDebug() <<"Count ReadyRead signal" << receivers("ReadyRead");
+			//qDebug() <<"Count ReadyRead signal" << receivers("ReadyRead");
 			if (QObject::receivers("readyRead") == 0)
 			{
 				connect(reply, &QNetworkReply::readyRead, this, &PartDownloader::ReadyRead, Qt::ConnectionType::UniqueConnection);
-				if(reply->bytesAvailable()>0)
+				if (reply->bytesAvailable() > 0)
 					ReadyRead();
+				}
 			}
-		}
 		else
 		{
 			//Speed Limitted
 			disconnect(reply, &QNetworkReply::readyRead, this, &PartDownloader::ReadyRead);
 		}
 		return true;
+		
 	}
 }
 
