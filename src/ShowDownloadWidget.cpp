@@ -56,10 +56,10 @@ void ShowDownloadWidget::ProcessSetup()
 	int MaxSpeed = m_DownloadControl->Get_MaxSpeed();
 	if (MaxSpeed > 0)
 	{
-		ChangeShowSpeedFromDownloader(MaxSpeed);
+		ChangeShowSpeedFromDownloadControl(MaxSpeed);
 	}
 	
-	connect(m_DownloadControl, &DownloadControl::SpeedChanged, this, &ShowDownloadWidget::ChangeShowSpeedFromDownloader);
+	connect(m_DownloadControl, &DownloadControl::SpeedChanged, this, &ShowDownloadWidget::ChangeShowSpeedFromDownloadControl);
 	connect(ui.checkBox, &QCheckBox::clicked, this,&ShowDownloadWidget::ClickedCheckBox);
 	connect(ui.spinBox, &QSpinBox::valueChanged, this,&ShowDownloadWidget::SpinBoxValueChanged);
 
@@ -105,7 +105,7 @@ void ShowDownloadWidget::ChangePauseOrResume_Download()
 	ui.PauseResume_pushButton->setText(PauseOrResume);
 }
 
-void ShowDownloadWidget::ChangeShowSpeedFromDownloader(int Speed)
+void ShowDownloadWidget::ChangeShowSpeedFromDownloadControl(int Speed)
 {
 	if (Speed > 0)
 	{
@@ -149,7 +149,7 @@ void ShowDownloadWidget::ClickedCheckBox(bool is_checked)
 	}
 }
 
-void ShowDownloadWidget::ChangeDownloaderSpeed(int speed)
+void ShowDownloadWidget::ChangeDownloadControlSpeed(int speed)
 {
 	m_DownloadControl->SetMaxSpeed(speed);
 }
@@ -161,19 +161,3 @@ void ShowDownloadWidget::SpinBoxValueChanged(int newValue)
 		m_DownloadControl->SetMaxSpeed(newValue);
 	}
 }
-
-/*
-void ShowDownloadWidget::ShowDownloadCompleteDialog()
-{
-	qDebug() << QThread::currentThread()->objectName();
-	if (SettingInteract::GetValue("Download/ShowCompleteDialog").toBool())
-	{
-		QString SizeDownloadString = ConverterSizeToSuitableString::ConvertSizeToSuitableString(m_Download->DownloadSize) + QString(" (%1 Bytes)").arg(m_Download->DownloadSize);
-		qDebug() << qApp->thread()->objectName();
-		qDebug() << m_Download->CompletedFile->fileName();
-		CompleteDownloadDialog* completeDownloadDialog = new CompleteDownloadDialog(m_Download->CompletedFile->fileName(), SizeDownloadString, m_Download->Url.toString());
-		completeDownloadDialog->show();
-		//QMetaObject::invokeMethod(qApp, [&, download1, NewDownloadFile]() {ShowCompleteDialog(download1, NewDownloadFile); }, Qt::QueuedConnection);
-	}
-}
-*/

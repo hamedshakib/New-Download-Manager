@@ -364,56 +364,56 @@
         <translation>ستون ها...</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="190"/>
+        <location filename="../src/MainTableViewController.cpp" line="184"/>
         <source>Open</source>
         <translation>باز کردن</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="196"/>
+        <location filename="../src/MainTableViewController.cpp" line="190"/>
         <source>Open with</source>
         <translation>باز کردن با</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="200"/>
+        <location filename="../src/MainTableViewController.cpp" line="194"/>
         <source>Open folder</source>
         <translation>باز کردن فولدر</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="216"/>
-        <location filename="../src/MainTableViewController.cpp" line="348"/>
+        <location filename="../src/MainTableViewController.cpp" line="210"/>
+        <location filename="../src/MainTableViewController.cpp" line="342"/>
         <source>Resume</source>
         <translation>ادامه</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="225"/>
-        <location filename="../src/MainTableViewController.cpp" line="352"/>
+        <location filename="../src/MainTableViewController.cpp" line="219"/>
+        <location filename="../src/MainTableViewController.cpp" line="346"/>
         <source>Pause</source>
         <translation>توقف</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="239"/>
+        <location filename="../src/MainTableViewController.cpp" line="233"/>
         <source>Delete From Queue</source>
         <translation>حذف کردن از صف</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="247"/>
+        <location filename="../src/MainTableViewController.cpp" line="241"/>
         <source>Add To Queue</source>
         <translation>افزودن به صف</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="267"/>
+        <location filename="../src/MainTableViewController.cpp" line="261"/>
         <source>Remove</source>
         <translation>حذف</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="276"/>
+        <location filename="../src/MainTableViewController.cpp" line="270"/>
         <source>Properties</source>
         <translation>جزئیات</translation>
     </message>
     <message>
-        <location filename="../src/MainTableViewController.cpp" line="321"/>
-        <location filename="../src/MainTableViewController.cpp" line="412"/>
-        <location filename="../src/MainTableViewController.cpp" line="470"/>
+        <location filename="../src/MainTableViewController.cpp" line="315"/>
+        <location filename="../src/MainTableViewController.cpp" line="406"/>
+        <location filename="../src/MainTableViewController.cpp" line="464"/>
         <source>Complete</source>
         <translation>تکمیل شده</translation>
     </message>

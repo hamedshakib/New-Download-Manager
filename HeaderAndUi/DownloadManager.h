@@ -2,7 +2,6 @@
 
 #include <QObject>
 //#include "Download.h"
-//#include "Downloader.h"
 #include "DownloadControl.h"
 #include "DatabaseManager.h"
 #include "qdebug.h"

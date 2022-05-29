@@ -74,13 +74,6 @@ bool DownloadControl::StartDownload()
 	timer->start(1000);
 	if (is_SpeedLimited)
 	{
-		//elapsedTimer->restart();
-		//disconnect(this, &DownloadControl::FinishedLastControlledSpeedPriod, this, [&](qint64 spentedTime);
-		//disconnect()
-		//disconnect(this, &DownloadControl::FinishedLastControlledSpeedPriod, this);
-		//ProcessScheduleControledLimittedSpeed();
-		//DownloadForControlSpeed();
-
 		disconnect(speedControlConnection);
 		if (this->MaxSpeed > 0)
 		{
@@ -130,28 +123,14 @@ void DownloadControl::SetMaxSpeed(int maxSpeed)
 	//qDebug() << "Max Speed is " << maxSpeed;
 	if (Is_Downloading)
 	{
-		//elapsedTimer->restart();
-		//DownloadForControlSpeed();
+
 		disconnect(speedControlConnection);
 		if (maxSpeed > 0)
 		{
 			ProcessScheduleControledLimittedSpeed();
-			//DownloadForControlSpeed();
 			emit FinishedLastControlledSpeedPriod(elapsedTimer->elapsed());
 		}
-		//DownloadForControlSpeed();
-		//ProcessScheduleControledLimittedSpeed();
 	}
-/*
-	if (maxSpeed>0)
-	{
-		disconnect(timer, &QTimer::timeout, this, &DownloadControl::TimerTimeOut);
-	}
-	else
-	{
-		connect(timer, &QTimer::timeout, this, &DownloadControl::TimerTimeOut, Qt::ConnectionType::UniqueConnection);
-	}
-*/
 	emit SpeedChanged(maxSpeed);
 }
 
@@ -183,7 +162,6 @@ void DownloadControl::SetMaxSpeedForPartDownloaders()
 		for (auto partDownloader : ActivePartDownloader_list)
 		{
 			ProcessSetPartDownloaderMaxSpeed(partDownloader, is_SpeedLimited);
-			qDebug() << "After One set dolwnloader speed:";
 		}
 	}
 	locker.unlock();
@@ -288,7 +266,7 @@ void DownloadControl::HandelFinishedRecivedBytesPartDownloaderSignalEmitted()
 void DownloadControl::HandelFinishedPartDownloaderSignalEmitted()
 {
 	//SetMaxSpeedForPartDownloaders();
-	qDebug() << "recuved finished of partDownload emited";
+	qDebug() << "receive finished of partDownload";
 	if (CheckDownloadFinished())
 	{
 		qDebug() << "Before Process Of End Of Downloading";
@@ -323,28 +301,31 @@ bool DownloadControl::CheckDownloadFinished()
 {
 	QMutex mutex;
 	mutex.lock();
-	if(statusOfDownload==DownloadStatus::Downloading || statusOfDownload == DownloadStatus::Pause)
-	for (PartDownloader* partDownloader : PartDownloader_list)
+	qDebug() << "Check For Download Finish";
+	if (statusOfDownload == DownloadStatus::Downloading || statusOfDownload == DownloadStatus::Pause)
 	{
-		//qDebug() << "Count PartDownloaders:" << PartDownloader_list.count();
-		PartDownload* partDownload=partDownloader->Get_PartDownload();
-		if (partDownload != nullptr)
+		for (PartDownloader* partDownloader : PartDownloader_list)
 		{
-			qDebug() << "In Check Download Finsish";
-			partDownload->UpdatePartDownloadLastDownloadedByte();
-			if (!partDownload->IsPartDownloadFinished())
+			//qDebug() << "Count PartDownloaders:" << PartDownloader_list.count();
+			PartDownload* partDownload = partDownloader->Get_PartDownload();
+			if (partDownload != nullptr)
 			{
-				qDebug() << " Exit In Check Download Finsish not fin";
-				mutex.unlock();
-				return false;
+				//qDebug() << "In Check Download Finsish";
+				partDownload->UpdatePartDownloadLastDownloadedByte();
+				if (!partDownload->IsPartDownloadFinished())
+				{
+					qDebug() << " Exit In Check Download Finsish: not finish";
+					mutex.unlock();
+					return false;
+				}
+			}
+			else
+			{
+				continue;
 			}
 		}
-		else
-		{
-			continue;
-		}
 	}
-	qDebug() << " Exit In Check Download Finsish yes fin";
+	qDebug() << " Exit In Check Download Finsish: finished";
 	mutex.unlock();
 	return true;
 }
@@ -499,24 +480,16 @@ void DownloadControl::DownloadForControlSpeed()
 
 void DownloadControl::ProcessScheduleControledLimittedSpeed()
 {
-
-
-
-
-
 	speedControlConnection =connect(this, &DownloadControl::FinishedLastControlledSpeedPriod, this, [&](qint64 spentedTime) {
-//		qint64 timeSpented = elapsedTimer->elapsed();
-		if (spentedTime < 1000)
-		{
-			//it's mean pause for other other of one second and wait for next second
-			QTimer::singleShot(999 - spentedTime, this, &DownloadControl::DownloadForControlSpeed);
-		}
-		else
-		{
-			DownloadForControlSpeed();
-			//elapsedTimer->restart();
-		}
-		},Qt::ConnectionType::UniqueConnection);
-
-	//DownloadForControlSpeed();
+	if (spentedTime < 1000)
+	{
+		//it's mean pause for other other of one second and wait for next second
+		QTimer::singleShot(999 - spentedTime, this, &DownloadControl::DownloadForControlSpeed);
+	}
+	else
+	{
+		DownloadForControlSpeed();
+		//elapsedTimer->restart();
+	}
+	},Qt::ConnectionType::UniqueConnection);
 }
