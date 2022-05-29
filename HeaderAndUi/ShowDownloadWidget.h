@@ -2,7 +2,6 @@
 
 #include <QWidget>
 #include "ui_ShowDownloadWidget.h"
-//#include "Downloader.h"
 #include "DownloadControl.h"
 #include "qdebug.h"
 #include "ProcessEnum.h"
@@ -30,8 +29,8 @@ private slots:
 	void ChangePauseOrResume_Download();
 
 
-	void ChangeShowSpeedFromDownloader(int Speed);
-	void ChangeDownloaderSpeed(int speed);
+	void ChangeShowSpeedFromDownloadControl(int Speed);
+	void ChangeDownloadControlSpeed(int speed);
 	void ClickedCheckBox(bool is_checked);
 	void SpinBoxValueChanged(int newValue);
 

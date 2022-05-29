@@ -29,7 +29,7 @@ void MainTableViewController::Set_DownloadManager(DownloadManager* downloadManag
 {
 	m_downloadManager = downloadManager;
 	connect(m_downloadManager, &DownloadManager::CreatedNewDownload, this, &MainTableViewController::AddNewDownloadToTableView);
-	connect(m_downloadManager, &DownloadManager::CreatedDownloadControl, this, &MainTableViewController::ConnectorDownloaderToTableUpdateInDownloading);
+	connect(m_downloadManager, &DownloadManager::CreatedDownloadControl, this, &MainTableViewController::ConnectorDownloadControlToTableUpdateInDownloading);
 }
 
 void MainTableViewController::ProcessSetupOfTableView()
@@ -127,7 +127,6 @@ void MainTableViewController::doubleClickedOnRow(const QModelIndex& modelindex)
 		{
 			//found
 			showDownloadWidget = MapOfShowDownloadWidgets.find(downloadControl).value();
-			//MapOfShowDownloadWidgets.insert(downloader, showDownloadWidget);
 		}
 		else
 		{
@@ -169,11 +168,6 @@ void MainTableViewController::ProcessCheckAndApply_RightClickOnTable(const QPoin
 	menu->popup(m_tableView->viewport()->mapToGlobal(point));
 
 	ClickedOnRow(index);
-}
-
-void MainTableViewController::GetDownloaderOfDownloadId(int DownloadId)
-{
-
 }
 
 QMenu* MainTableViewController::CreaterRightClickMenuForRowRightClicked(int Download_id)
@@ -283,7 +277,7 @@ QMenu* MainTableViewController::CreaterRightClickMenuForRowRightClicked(int Down
 	return menu;
 }
 
-void MainTableViewController::ConnectorDownloaderToTableUpdateInDownloading(DownloadControl* downloadControl)
+void MainTableViewController::ConnectorDownloadControlToTableUpdateInDownloading(DownloadControl* downloadControl)
 {
 	size_t Download_id = downloadControl->Get_Download()->get_Id();
 	size_t Row = 0;

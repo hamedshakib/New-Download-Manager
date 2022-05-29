@@ -41,13 +41,12 @@ private slots:
 	int FindDownloadIdFromRow(const QModelIndex& modelindex);
 	void ProcessCheckAndApply_RightClickOnTable(const QPoint& point);
 	void AdjusteTableViewProperty();
-	void GetDownloaderOfDownloadId(int DownloadId);
 
 	QMenu* CreaterRightClickMenuForRowRightClicked(int Download_id);
 
 	bool UpdateRowInDownloading(size_t row, QString Status, QString Speed, QString TimeLeft);
 
-	void ConnectorDownloaderToTableUpdateInDownloading(DownloadControl* DownloadControl);
+	void ConnectorDownloadControlToTableUpdateInDownloading(DownloadControl* DownloadControl);
 	void AddNewDownloadToTableView(Download* download);
 
 	ShowDownloadWidget* CreaterShowDownloadWidget(DownloadControl* DownloadControl);

@@ -2,7 +2,6 @@
 
 #include <QObject>
 #include "Download.h"
-//#include "Downloader.h"
 #include "qsqlquery.h"
 #include "SettingUpDatabase.h"
 #include "ProcessEnum.h"

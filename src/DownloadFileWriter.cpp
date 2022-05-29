@@ -8,7 +8,7 @@ DownloadFileWriter::DownloadFileWriter(QObject* parent)
 
 bool DownloadFileWriter::WriteDownloadToFile(QByteArray& byteArray, QFile* file, bool CloseFileAfterWrite)
 {
-	qDebug() << "Write download Thread :" << QThread::currentThread()->objectName();
+	//qDebug() << "Write download Thread :" << QThread::currentThread()->objectName();
 	if (!file->isOpen())
 	{
 		if (!file->open(QIODevice::WriteOnly | QIODevice::Append))
@@ -31,7 +31,6 @@ bool DownloadFileWriter::WriteDownloadToFile(QByteArray& byteArray, QFile* file,
 
 QFile* DownloadFileWriter::BuildFileFromMultipleFiles(QList<QFile*> files, QString AddressOfFile)
 {
-	
 	if (files.count() == 1)
 	{
 

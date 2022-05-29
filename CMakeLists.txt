@@ -50,10 +50,6 @@ set(PROJECT_SOURCES
         ${MY_HeaderAndUi_PATH}/Download.h
         ${MY_SOURCE_PATH}/Download.cpp
 
-#       #Downloader
-#        ${MY_HeaderAndUi_PATH}/Downloader.h
-#        ${MY_SOURCE_PATH}/Downloader.cpp
-
         #DownloadControl
         ${MY_HeaderAndUi_PATH}/DownloadControl.h
         ${MY_SOURCE_PATH}/DownloadControl.cpp

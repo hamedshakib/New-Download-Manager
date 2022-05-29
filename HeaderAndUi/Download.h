@@ -9,7 +9,6 @@
 #include "qurl.h"
 #include "qlist.h"
 
-//class Downloader;
 class Download : public QObject
 {
 	Q_OBJECT
@@ -68,7 +67,6 @@ private:
 	friend class DatabaseQueryPreparer;
 	friend class TableViewRowCreater;
 	friend class ShowDownloadWidget;
-	//friend class Downloader;
 	friend class DownloadControl;
 
 public:

@@ -90,13 +90,6 @@ bool DownloadManager::CreateDownloadControlAndStartDownload(Download* download)
 	ListOfDownloadControls.append(downloadControl);
 	StartDownload(downloadControl);
 
-	//connect(downloader, &Downloader::SignalForUpdateDownloading, this, [&, download]() {DatabaseManager::UpdateInDownloadingOnDataBase(download); });
-	//connect(downloader, &Downloader::CompeletedDownload, this, [&, download]() {
-	//	/*DatabaseManager::UpdateAllFieldDownloadOnDataBase(download);*/
-	//	DatabaseManager::FinishDownloadOnDatabase(download);
-	//	qDebug() << "Finished Update Download"; });
-
-
 	return true;
 }
 
