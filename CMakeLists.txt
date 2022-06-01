@@ -25,7 +25,6 @@ set(CMAKE_PREFIX_PATH "C:/Programs/QT/6.2.4/msvc2019_64")
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets Core Sql Network Quick LinguistTools REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets Core Sql Network Quick LinguistTools REQUIRED)
-find_package(GTest)
 
 set(TS_FILES 
         ${MY_TRANSLATION_PATH}/app_Persian.ts
@@ -330,4 +329,11 @@ endif()
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_import_qml_plugins(${PROJECT_NAME})
     qt_finalize_executable(${PROJECT_NAME})
+endif()
+
+
+#googleTest
+option(UsegoogleTest "Use From Google test for testing" on)
+if(UsegoogleTest)
+    add_subdirectory(test)
 endif()
