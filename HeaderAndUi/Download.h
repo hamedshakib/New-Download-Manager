@@ -63,7 +63,7 @@ private:
 
 
 	friend class ProcessDatabaseOutput;
-	friend class NewDownloadCreater;
+	//friend class NewDownloadCreater;
 	friend class DatabaseQueryPreparer;
 	friend class TableViewRowCreater;
 	friend class ShowDownloadWidget;
@@ -84,12 +84,34 @@ public:
 	qint64 get_SizeDownload();
 	qint64 get_DownloadedSize();
 
-
-	void Set_QueueId(int Queue_id);
-
-
-	void Set_downloadStatus(Download::DownloadStatusEnum status);
 	void AppendPartDownloadToPartDownloadListOfDownload(PartDownload* partDownload);
+
+
+	//new
+	QString get_Username();
+	QString get_Password();
+	QTime get_TimeLeft();
+	QString get_FileName();
+	QString get_Suffix();
+	ResumeCapabilityEnum get_ResumeCapability();
+
+	void Set_Username(QString);
+	void Set_Password(QString);
+	void Set_Url(QUrl );
+	void Set_MaxSpeed(size_t);
+	void Set_SavaTo(QUrl);
+	void Set_Id(size_t);
+	void Set_downloadStatus(Download::DownloadStatusEnum status);
+	void Set_QueueId(int Queue_id);
+	void Set_LastTryTime(QDateTime);
+	void Set_FullFileName(QString);
+	void Set_Description(QString);
+	void Set_SizeDownload(qint64);
+	void Set_DownloadedSize(qint64);
+	void Set_TimeLeft(QTime);
+	void Set_ResumeCapability(ResumeCapabilityEnum);
+	void Set_FileName(QString);
+	void Set_Suffix(QString);
 
 signals:
 	void DownloadStatusChanged(Download::DownloadStatusEnum NewStatus);
