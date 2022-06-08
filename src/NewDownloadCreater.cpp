@@ -280,7 +280,7 @@ void NewDownloadCreater::WritePartDownloadsInDatabase()
 	auto partDownloads= download->get_PartDownloads();
 	for (int i = 0; i < partDownloads.count(); i++)
 	{
-		partDownloads[i]->id_PartDownload = DatabaseManager::CreateNewPartDownloadOnDatabase(partDownloads[i]);
+		partDownloads[i]->Set_PartDownloadId(DatabaseManager::CreateNewPartDownloadOnDatabase(partDownloads[i]));
 	}
 }
 
@@ -304,12 +304,12 @@ bool NewDownloadCreater::ProcessCreatePartDownloadsFromDownload(QString FileName
 			partDownload->moveToThread(partDownloadThread);
 
 
-			partDownload->start_byte = StartByte;
-			partDownload->end_byte = StartByte+ rangeOfEachDlownload;
-			partDownload->LastDownloadedByte = StartByte-1;
-			partDownload->id_download = download->get_Id();
-			partDownload->PartDownloadFile = new QFile(GeneratePartDownloadAddressFromAddressOfDownloadFile(downloadPartNumber, FileName));
-			partDownload->PartDownloadFile->moveToThread(partDownloadThread);
+			partDownload->Set_StartByte(StartByte);
+			partDownload->Set_EndByte(StartByte+ rangeOfEachDlownload);
+			partDownload->Set_LastDownloadedByte(StartByte-1);
+			partDownload->Set_DownloadId(download->get_Id());
+			partDownload->Set_PartDownloadFile(new QFile(GeneratePartDownloadAddressFromAddressOfDownloadFile(downloadPartNumber, FileName)));
+			partDownload->get_PartDownloadFile()->moveToThread(partDownloadThread);
 			download->AppendPartDownloadToPartDownloadListOfDownload(partDownload);
 		}
 
@@ -323,12 +323,12 @@ bool NewDownloadCreater::ProcessCreatePartDownloadsFromDownload(QString FileName
 	partDownloadThread->start();
 	PartDownload* partDownload = new PartDownload();
 	partDownload->moveToThread(partDownloadThread);
-	partDownload->start_byte = StartByte;
-	partDownload->end_byte = DownloadSize - 1;
-	partDownload->LastDownloadedByte = StartByte - 1;
-	partDownload->id_download = download->get_Id();
-	partDownload->PartDownloadFile = new QFile(GeneratePartDownloadAddressFromAddressOfDownloadFile(downloadPartNumber, FileName));
-	partDownload->PartDownloadFile->moveToThread(partDownloadThread);
+	partDownload->Set_StartByte(StartByte);
+	partDownload->Set_EndByte(DownloadSize - 1);
+	partDownload->Set_LastDownloadedByte(StartByte - 1);
+	partDownload->Set_DownloadId(download->get_Id());
+	partDownload->Set_PartDownloadFile(new QFile(GeneratePartDownloadAddressFromAddressOfDownloadFile(downloadPartNumber, FileName)));
+	partDownload->get_PartDownloadFile()->moveToThread(partDownloadThread);
 	download->AppendPartDownloadToPartDownloadListOfDownload(partDownload);
 	
 	return true;

@@ -146,3 +146,15 @@ TEST_F(DownloadTest, Set_Password)
 	m_download->Set_Password("pass1234");
 	EXPECT_EQ(m_download->get_Password(), "pass1234");
 }
+
+TEST_F(DownloadTest, Set_ResumeCapability)
+{
+	m_download->Set_ResumeCapability(Download::ResumeCapabilityEnum::No);
+	EXPECT_EQ(m_download->get_ResumeCapability(), Download::ResumeCapabilityEnum::No);
+
+	m_download->Set_ResumeCapability(Download::ResumeCapabilityEnum::Yes);
+	EXPECT_EQ(m_download->get_ResumeCapability(), Download::ResumeCapabilityEnum::Yes);
+
+	m_download->Set_ResumeCapability(Download::ResumeCapabilityEnum::UnKnown);
+	EXPECT_EQ(m_download->get_ResumeCapability(), Download::ResumeCapabilityEnum::UnKnown);
+}

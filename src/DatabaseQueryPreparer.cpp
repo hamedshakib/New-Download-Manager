@@ -122,10 +122,10 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForCreateNewPartDownload(PartDownl
 	
 	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
 	query->prepare(queryString);
-	query->bindValue(":download_id", partDownload->id_download);
-	query->bindValue(":start_byte", partDownload->start_byte);
-	query->bindValue(":end_byte", partDownload->end_byte);
-	query->bindValue(":partDownload_SaveTo", partDownload->PartDownloadFile->fileName());
+	query->bindValue(":download_id", partDownload->get_DownloadId());
+	query->bindValue(":start_byte", partDownload->get_StartByte());
+	query->bindValue(":end_byte", partDownload->get_EndByte());
+	query->bindValue(":partDownload_SaveTo", partDownload->get_PartDownloadFile()->fileName());
 	
 
 	return query;
@@ -242,8 +242,8 @@ QList<QSqlQuery*> DatabaseQueryPreparer::PrepareQueriesForUpdateInDownloading(Do
 		QSqlQuery* query1 = new QSqlQuery(SettingUpDatabase::get_Database());
 		query1->prepare(queryString1);
 
-		query1->bindValue(":lastDownloaded_byte", partDownload->LastDownloadedByte);
-		query1->bindValue(":id", partDownload->id_PartDownload);
+		query1->bindValue(":lastDownloaded_byte", partDownload->get_LastDownloadedByte());
+		query1->bindValue(":id", partDownload->get_PartDownloadId());
 		listOfQueries.append(query1);
 	}
 

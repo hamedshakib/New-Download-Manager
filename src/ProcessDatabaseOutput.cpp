@@ -16,24 +16,24 @@ bool ProcessDatabaseOutput::ProcessPutLoadedDownloadInformationInDownloadObject(
 //	"From Download as D join DownloadStatus as DS on D.id = DS.id join ResumeCapability as RC on D.ResumeCapability_id = RC.id "
 //	"where id=:id "
 	
-	download->IdDownload = record.value("id").toInt();
-	download->FileName = record.value("FileName").toString();
+	download->Set_Id(record.value("id").toInt());
+	download->Set_FileName(record.value("FileName").toString());
 	download->Set_downloadStatus(ProcessEnum::ConvertStringToDownloadStatusEnum(record.value("Status").toString()));
-	download->Url = record.value("Url").toString();
-	download->DownloadSize = record.value("DownloadSize").toLongLong();
-	download->SizeDownloaded = record.value("SizeDownloaded").toLongLong();
-	download->suffix= record.value("Suffix").toString();
-	download->SaveTo = record.value("SaveTo").toString();
-	download->description = record.value("description").toString();
-	download->LastTryTime= DateTimeManager::GetDateTimeFromString(record.value("LastTryTime").toString());
-	download->MaxSpeed = record.value("MaxSpeed").toInt();
-	download->ResumeCapability = ProcessEnum::ConvertDatabseStringToResumeCapabilityEnum(record.value("ResumeCapability").toString());
+	download->Set_Url(record.value("Url").toString());
+	download->Set_SizeDownload(record.value("DownloadSize").toLongLong());
+	download->Set_DownloadedSize(record.value("SizeDownloaded").toLongLong());
+	download->Set_Suffix(record.value("Suffix").toString());
+	download->Set_SavaTo(record.value("SaveTo").toString());
+	download->Set_Description(record.value("description").toString());
+	download->Set_LastTryTime(DateTimeManager::GetDateTimeFromString(record.value("LastTryTime").toString()));
+	download->Set_MaxSpeed(record.value("MaxSpeed").toInt());
+	download->Set_ResumeCapability(ProcessEnum::ConvertDatabseStringToResumeCapabilityEnum(record.value("ResumeCapability").toString()));
 
 //	download->Category = record.value("Url").toString();
-	download->Queue_id = record.value("Queue_id").toInt();
-	download->Url = record.value("Url").toString();
-	download->Username = record.value("User").toString();
-	download->Password = record.value("Password").toString();
+	download->Set_QueueId(record.value("Queue_id").toInt());
+	download->Set_Url(record.value("Url").toString());
+	download->Set_Username(record.value("User").toString());
+	download->Set_Password(record.value("Password").toString());
 
 	return true;
 }
@@ -79,18 +79,18 @@ bool ProcessDatabaseOutput::ProcessPutLoadedPartDownloadInInPartDownloadObject(c
 	//	"LastDownloaded_byte "
 	//	"FROM PartDownload "
 
-	partDownload->id_download = Download_id;
-	partDownload->id_PartDownload= record.value("id").toInt();
+	partDownload->Set_DownloadId(Download_id);
+	partDownload->Set_PartDownloadId(record.value("id").toInt());
 
 
-	partDownload->start_byte = record.value("Start_byte").toLongLong();
-	partDownload->end_byte = record.value("End_byte").toLongLong();
-	partDownload->PartDownloadFile = new QFile(record.value("PartDownload_SaveTo").toString());
+	partDownload->Set_StartByte(record.value("Start_byte").toLongLong());
+	partDownload->Set_EndByte(record.value("End_byte").toLongLong());
+	partDownload->Set_PartDownloadFile(new QFile(record.value("PartDownload_SaveTo").toString()));
 
-	partDownload->PartDownloadFile->open(QIODevice::WriteOnly | QIODevice::Append);
+	partDownload->get_PartDownloadFile()->open(QIODevice::WriteOnly | QIODevice::Append);
 
 
-	partDownload->LastDownloadedByte = partDownload->start_byte+partDownload->PartDownloadFile->size()-1;
+	partDownload->Set_LastDownloadedByte(partDownload->start_byte+partDownload->PartDownloadFile->size()-1);
 
 
 	return true;

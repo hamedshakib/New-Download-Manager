@@ -28,7 +28,7 @@ void PartDownloader::Resume(bool ItSelf)
 {
 	this->is_Downloading = true;
 	partDownloaderStatus = PartDownloaderStatus::PartDownloadDownloading;
-	qDebug() << "range partDownload:" << partDownload->start_byte << "-" << partDownload->end_byte;
+	qDebug() << "range partDownload:" << partDownload->get_StartByte() << "-" << partDownload->get_EndByte();
 
 	qDebug() << this->reply->bytesAvailable();
 	if (ItSelf)
