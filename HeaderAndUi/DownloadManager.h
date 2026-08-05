@@ -3,7 +3,6 @@
 #include <QObject>
 #include "Download.h"
 #include "DownloadControl.h"
-#include "qmutex.h"
 #include "DatabaseManager.h"
 #include "qdebug.h"
 #include "qsqldatabase.h"
@@ -48,7 +47,6 @@ private:
 	QList<Download*> ListOfActiveDownloads;
 	QList<DownloadControl*> ListOfDownloadControls;
 	int SpeedLimit = 0;
-	QMutex mutex;
 
 
 signals:

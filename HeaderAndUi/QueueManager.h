@@ -6,7 +6,6 @@
 #include "DownloadManager.h"
 #include "QueueTimeManager.h"
 #include "qdebug.h"
-#include "qmutex.h"
 
 class QueueManager : public QObject
 {
@@ -17,7 +16,6 @@ private:
 	QList<Queue*> ListOfQueues;
 	DownloadManager* m_downloadManager;
 	QueueTimeManager* m_QueueTimeManager;
-	mutable QMutex mutex;  // Mutable to allow locking in const methods
 
 public:
 	void StartQueue(Queue* queue);
@@ -43,7 +41,6 @@ private slots:
 	void FinishDownloadOfQueue(Download* download, Queue* queue);
 	void ProcessDownloadOfQueue(Queue* queue);
 	bool Is_QueueIsEmpty(Queue* queue);
-
 
 
 	bool RemoveDownloadFromQueue(Download* download);

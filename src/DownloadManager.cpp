@@ -16,52 +16,42 @@ DownloadManager::~DownloadManager()
 	StopAllDownload();
 	
 	// Clean up all download controls
-	{
-		QMutexLocker locker(&mutex);
-		qDeleteAll(ListOfDownloadControls);
-		ListOfDownloadControls.clear();
-	}
+	qDeleteAll(ListOfDownloadControls);
+	ListOfDownloadControls.clear();
 	
 	// Clean up all active downloads
-	{
-		QMutexLocker locker(&mutex);
-		qDeleteAll(ListOfActiveDownloads);
-		ListOfActiveDownloads.clear();
-	}
+	qDeleteAll(ListOfActiveDownloads);
+	ListOfActiveDownloads.clear();
 }
 
 Download* DownloadManager::CreateDownloadFromDatabase(int download_id)
 {
 	Download* download = nullptr;
-	{
-		QMutexLocker locker(&mutex);
-		QThread* DownloadThread = new QThread(this->thread());
-		DownloadThread->setObjectName("Download Thread");
-		DownloadThread->start();
-		download = new Download();
-		download->moveToThread(DownloadThread);
+	QThread* DownloadThread = new QThread(this->thread());
+	DownloadThread->setObjectName("Download Thread");
+	DownloadThread->start();
+	download = new Download();
+	download->moveToThread(DownloadThread);
 
-		DatabaseManager manager(this);
-		if (manager.LoadDownloadComplete(download_id, download))
-		{
-			connect(DownloadThread, &QThread::finished, DownloadThread, &QThread::deleteLater);
-			// When download is deleted, also delete its thread
-			connect(download, &Download::destroyed, DownloadThread, &QThread::quit);
-		}
-		else
-		{
-			// Return nullptr if download loading failed
-			download->deleteLater();
-			DownloadThread->quit();
-			DownloadThread->wait(1000);  // Wait up to 1 second for thread to finish
-			DownloadThread->deleteLater();
-			return nullptr;
-		}
+	DatabaseManager manager(this);
+	if (manager.LoadDownloadComplete(download_id, download))
+	{
+		connect(DownloadThread, &QThread::finished, DownloadThread, &QThread::deleteLater);
+		// When download is deleted, also delete its thread
+		connect(download, &Download::destroyed, DownloadThread, &QThread::quit);
+	}
+	else
+	{
+		// Return nullptr if download loading failed
+		download->deleteLater();
+		DownloadThread->quit();
+		DownloadThread->wait(1000);  // Wait up to 1 second for thread to finish
+		DownloadThread->deleteLater();
+		return nullptr;
 	}
 	
 	// Add to list after successfully created
 	if (download) {
-		QMutexLocker locker(&mutex);
 		AddCreatedDownloadToDownloadList(download);
 	}
 	
@@ -100,7 +90,6 @@ bool DownloadManager::CreateNewDownload()
 void DownloadManager::AddCreatedDownloadToDownloadList(Download* download)
 {
 	if (download) {
-		QMutexLocker locker(&mutex);
 		ListOfActiveDownloads.append(download);
 	}
 }
@@ -112,7 +101,6 @@ DownloadControl* DownloadManager::CreateDownloadControl(Download* download)
 		return nullptr;
 	}
 	
-    QMutexLocker locker(&mutex);
 	DownloadControl* downloadControl = new DownloadControl();
 	downloadControl->moveToThread(download->thread());
 	downloadControl->initDownloadControl(download);
@@ -162,7 +150,6 @@ bool DownloadManager::CreateDownloadControlAndStartDownload(Download* download)
 		return false;
 	}
 	
-    QMutexLocker locker(&mutex);
 	DownloadControl* downloadControl = CreateDownloadControl(download);
 	if (!downloadControl) {
 		return false;
@@ -175,7 +162,6 @@ bool DownloadManager::CreateDownloadControlAndStartDownload(Download* download)
 
 Download* DownloadManager::ProcessAchieveDownload(int Download_id)
 {
-    QMutexLocker locker(&mutex);
 	for (Download* download : ListOfActiveDownloads)
 	{
 		if (download && download->get_Id() == Download_id)
@@ -214,7 +200,6 @@ DownloadControl* DownloadManager::ProcessAchieveDownloadControl(Download* downlo
 		return nullptr;
 	}
 	
-    QMutexLocker locker(&mutex);
 	for (DownloadControl* downloadControl : ListOfDownloadControls)
 	{
 		if (downloadControl->Get_Download() == download)
@@ -248,7 +233,6 @@ bool DownloadManager::CreatePartDownloadAndPutInDownloadFromDatabase(Download* d
 
 bool DownloadManager::ProcessRemoveDownload(int download_id, bool is_RemoveFromDisk)
 {
-    QMutexLocker locker(&mutex);
 	Download* download = ProcessAchieveDownload(download_id);
 	if (!download)
 	{
@@ -293,8 +277,7 @@ bool DownloadManager::ProcessRemoveDownload(Download* download, bool is_RemoveFr
 		qCritical() << "Download pointer is null in ProcessRemoveDownload";
 		return false;
 	}
-    
-    QMutexLocker locker(&mutex);
+	
 	DownloadControl* downloadControl = ProcessAchieveDownloadControl(download);
 	if (!downloadControl)
 	{
@@ -327,7 +310,6 @@ bool DownloadManager::ProcessRemoveDownload(Download* download, bool is_RemoveFr
 
 bool DownloadManager::StopAllDownload()
 {
-    QMutexLocker locker(&mutex);
 	for(DownloadControl* downloadControl :ListOfDownloadControls)
 	{
 		downloadControl->PauseDownload();
@@ -337,7 +319,6 @@ bool DownloadManager::StopAllDownload()
 
 bool DownloadManager::SpeedLimitForAllDownload()
 {
-    QMutexLocker locker(&mutex);
 	for (DownloadControl* downloadControl : ListOfDownloadControls)
 	{
 		downloadControl->SetMaxSpeed(SpeedLimit);
@@ -347,7 +328,6 @@ bool DownloadManager::SpeedLimitForAllDownload()
 
 bool DownloadManager::Set_SpeedLimit(int maxSpeed)
 {
-    QMutexLocker locker(&mutex);
   	this->SpeedLimit = maxSpeed;
   	if (SpeedLimitForAllDownload())
   		return true;

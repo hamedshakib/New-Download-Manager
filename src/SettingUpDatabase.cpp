@@ -3,22 +3,10 @@
 #include "qdir.h"
 #include "qthread.h"
 
-QMutex& SettingUpDatabase::getMutex()
-{
-    static QMutex mutex;
-    return mutex;
-}
-
-QMutex& SettingUpDatabase::getThreadDatabaseMutex()
-{
-    static QMutex mutex;
-    return mutex;
-}
-
+// Main database connection (singleton) - no longer using mutex
+// QThreadStorage handles thread safety for getThreadDatabase()
 QSqlDatabase& SettingUpDatabase::get_Database()
 {
-    QMutexLocker locker(&getMutex());
-    
     static QSqlDatabase db;
     if (!db.isValid())
     {
@@ -37,8 +25,6 @@ QThreadStorage<QSqlDatabase*> SettingUpDatabase::m_threadDatabases;
 
 QSqlDatabase& SettingUpDatabase::getThreadDatabase()
 {
-    QMutexLocker locker(&getThreadDatabaseMutex());
-    
     QThread* currentThread = QThread::currentThread();
     QString threadId = QString::number(reinterpret_cast<quintptr>(currentThread));
     
@@ -55,8 +41,6 @@ QSqlDatabase& SettingUpDatabase::getThreadDatabase()
 
 void SettingUpDatabase::releaseThreadDatabase()
 {
-    QMutexLocker locker(&getThreadDatabaseMutex());
-    
     if (m_threadDatabases.hasLocalData())
     {
         QSqlDatabase* db = m_threadDatabases.localData();
