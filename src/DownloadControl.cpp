@@ -219,12 +219,13 @@ bool DownloadControl::ProcessPreparePartDownloaders()
 			qDebug() << partDownload->thread();
 
 			PartDownloader_list.append(tempPartDownloader);
-			tempPartDownloader->initPartDownlolader(partDownload, 500000000);
+			// Use default buffer size (1MB) instead of hardcoded large value
+			tempPartDownloader->initPartDownlolader(partDownload, 0);  // 0 will use default 1MB
 
 			Download* download1 = download;
 			connect(tempPartDownloader, &PartDownloader::Started, this, &DownloadControl::HandelStartedPartDownloaderSignalEmitted);
 			connect(tempPartDownloader, &PartDownloader::Paused, this, &DownloadControl::HandelPausedPartDownloaderSignalEmitted);
-			connect(tempPartDownloader, &PartDownloader::FinishedRecivedBytes, this, &DownloadControl::HandelFinishedRecivedBytesPartDownloaderSignalEmitted);
+			connect(tempPartDownloader, &PartDownloader::FinishedReceivedBytes, this, &DownloadControl::HandelFinishedRecivedBytesPartDownloaderSignalEmitted);
 			connect(tempPartDownloader, &PartDownloader::Finished, this, &DownloadControl::HandelFinishedPartDownloaderSignalEmitted);
 			connect(tempPartDownloader, &PartDownloader::DownloadedBytes, this, &DownloadControl::HandelDownloadedBytesPartDownloaderSignalEmitted,Qt::ConnectionType::UniqueConnection);
 		}

@@ -71,6 +71,8 @@ public slots:
 
 signals:
 	void SelectedDownloadChanged(int Download_id, bool Is_Completed);
+	void BatchUpdateStarted();
+	void BatchUpdateFinished();
 
 private:
 	QTableView* m_tableView;

@@ -18,15 +18,20 @@ class PartDownloader : public QObject
 	};
 
 private:
-	qint64 ReadBytesInEachTime=500000000000000000; //Bytes
-	QNetworkReply* reply = nullptr;
-	PartDownload* partDownload=nullptr;
-	DownloadFileWriter* downloadFileWriter;
-	bool is_SpeedLimit;
-	bool is_Downloading = false;
-	QTimer timer;
-	QMutex mutex;
-	PartDownloaderStatus partDownloaderStatus= PartDownloadPaused;
+    // Default buffer size of 1MB (1048576 bytes)
+    // Maximum recommended buffer size is 1MB to prevent memory issues
+    qint64 ReadBytesInEachTime = 1048576;  // 1MB
+    QNetworkReply* reply = nullptr;
+    PartDownload* partDownload=nullptr;
+    DownloadFileWriter* downloadFileWriter;
+    bool is_SpeedLimit;
+    bool is_Downloading = false;
+    QTimer timer;
+    QMutex mutex;
+    PartDownloaderStatus partDownloaderStatus= PartDownloadPaused;
+    
+    // Error recovery tracking
+    int retryCount;
 
 public:
 	PartDownload* Get_PartDownload();
@@ -53,9 +58,11 @@ private slots:
 signals:
 	void Started();
 	void Paused();
-	void FinishedRecivedBytes();
+	void FinishedReceivedBytes();
 	void Finished();
 	void DownloadedBytes(qint64 ReadedBytes);
+	void DownloadError(QString errorMessage, int retryAttempt);
+	void NetworkReplyReady(QNetworkReply* reply);
 
 
 

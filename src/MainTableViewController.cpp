@@ -306,6 +306,21 @@ bool MainTableViewController::UpdateRowInDownloading(size_t row, QString Status,
 {
 	DownloadControl* downloadControl = static_cast<DownloadControl*>(sender());
 
+	// Validate row index
+	if (row >= static_cast<size_t>(model->rowCount())) {
+		qWarning() << "UpdateRowInDownloading: Invalid row index" << row;
+		return false;
+	}
+
+	// Validate download control
+	if (!downloadControl) {
+		qWarning() << "UpdateRowInDownloading: Invalid download control";
+		return false;
+	}
+
+	// Emit batch update started for better performance
+	emit BatchUpdateStarted();
+
 	QModelIndex Status_index = model->index(row, 3);
 	QModelIndex Speed_index = model->index(row, 4);
 	QModelIndex TimeLeft_index = model->index(row, 5);
@@ -316,10 +331,13 @@ bool MainTableViewController::UpdateRowInDownloading(size_t row, QString Status,
 		Speed = "";
 		TimeLeft = "";
 	}
+	
 	model->setData(Status_index, Status);
 	model->setData(Speed_index, Speed);
 	model->setData(TimeLeft_index, TimeLeft);
 
+	// Emit batch update finished
+	emit BatchUpdateFinished();
 
 	return true;
 }
