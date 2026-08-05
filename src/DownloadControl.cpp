@@ -1,4 +1,5 @@
 #include "HeaderAndUi/DownloadControl.h"
+#include "qdebug.h"
 
 DownloadControl::DownloadControl(QObject *parent)
 	: QObject(parent)
@@ -7,6 +8,14 @@ DownloadControl::DownloadControl(QObject *parent)
 
 DownloadControl::~DownloadControl()
 {
+	// Stop any ongoing downloads
+	PauseDownload();
+	
+	// Disconnect speed control connection if active
+	if (speedControlConnection.isConnected()) {
+		disconnect(speedControlConnection);
+	}
+	
 	// Delete PartDownloader objects
 	qDeleteAll(PartDownloader_list);
 	PartDownloader_list.clear();
@@ -22,6 +31,7 @@ DownloadControl::~DownloadControl()
 	}
 	
 	if (timer != nullptr) {
+		timer->stop();
 		timer->deleteLater();
 		timer = nullptr;
 	}
@@ -42,12 +52,18 @@ void DownloadControl::initDownloadControl(Download* download)
 	this->download = download;
 	manager = new QNetworkAccessManager();
 	manager->moveToThread(this->thread());
+	
 	timer = new QTimer();
-	//timer->moveToThread(this->thread());
-	connect(timer, &QTimer::timeout, this, &DownloadControl::TimerTimeOut);
+	timer->moveToThread(this->thread());  // Fix: Move timer to the correct thread
+	connect(timer, &QTimer::timeout, this, &DownloadControl::TimerTimeOut, Qt::QueuedConnection);
 	connect(this, &DownloadControl::CompeletedDownload, this, &DownloadControl::ProcessForShowDownloadCompleteDialog);
+	
 	elapsedTimer = new QElapsedTimer();
-	elapsedTimerForIndependentSpeed= new QElapsedTimer();
+	elapsedTimerForIndependentSpeed = new QElapsedTimer();
+	
+	// Initialize elapsed timers
+	elapsedTimer->start();
+	elapsedTimerForIndependentSpeed->start();
 }
 
 bool DownloadControl::StartDownload()

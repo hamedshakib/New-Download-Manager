@@ -1,4 +1,5 @@
 #include "HeaderAndUi/DownloadManager.h"
+#include "qdebug.h"
 
 DownloadManager::DownloadManager(QObject *parent)
 	: QObject(parent)
@@ -7,12 +8,21 @@ DownloadManager::DownloadManager(QObject *parent)
 	{
 		this->SpeedLimit = SettingInteract::GetValue("Download/DefaultSpeedLimit").toInt();
 	}
-
 }
 
 DownloadManager::~DownloadManager()
 {
-
+	// Stop all downloads before cleanup
+	StopAllDownload();
+	
+	// Clean up all download controls
+	QMutexLocker locker(&mutex);
+	qDeleteAll(ListOfDownloadControls);
+	ListOfDownloadControls.clear();
+	
+	// Clean up all active downloads
+	qDeleteAll(ListOfActiveDownloads);
+	ListOfActiveDownloads.clear();
 }
 
 Download* DownloadManager::CreateDownloadFromDatabase(int download_id)

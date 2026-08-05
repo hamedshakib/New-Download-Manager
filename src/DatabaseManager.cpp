@@ -1,4 +1,5 @@
 #include "HeaderAndUi/DatabaseManager.h"
+#include "qdebug.h"
 
 DatabaseManager::DatabaseManager(QObject *parent)
 	: QObject(parent)
@@ -7,7 +8,9 @@ DatabaseManager::DatabaseManager(QObject *parent)
 
 DatabaseManager::~DatabaseManager()
 {
-	SettingUpDatabase::get_Database().close();
+	// Note: The database connection is managed by SettingUpDatabase singleton
+	// We should NOT close it here as it may be used by other threads/objects
+	// The database will be closed automatically when the application exits
 }
 
 bool DatabaseManager::LoadDownloadComplete(int Download_id,Download* download)

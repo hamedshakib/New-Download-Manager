@@ -174,8 +174,16 @@ PartDownload* PartDownloader::Get_PartDownload()
 
 void PartDownloader::HandleNetworkError(QNetworkReply::NetworkError error)
 {
+    // Use mutex to ensure thread-safe access
+    QMutexLocker locker(&mutex);
+    
     if (!is_Downloading || partDownloaderStatus == PartDownloaderStatus::PartDownloadPaused) {
         return;  // Don't retry if download is paused or stopped
+    }
+    
+    if (!reply) {
+        qWarning() << "Network error but reply is null - cannot retry";
+        return;
     }
     
     QString errorString = reply->errorString();
@@ -193,11 +201,23 @@ void PartDownloader::HandleNetworkError(QNetworkReply::NetworkError error)
     }
     
     // Schedule retry after delay
-    QTimer::singleShot(RETRY_DELAY_MS, this, [this]() {
-        // Reset status and attempt retry
-        if (this->reply && !this->is_Downloading) {
-            this->Resume(false);  // Don't emit ReadyRead immediately
+    QTimer::singleShot(RETRY_DELAY_MS, this, [this, errorString]() {
+        // Use mutex to ensure thread-safe access
+        QMutexLocker locker(&mutex);
+        
+        // Check if we should retry
+        if (!this->reply) {
+            qWarning() << "Cannot retry - reply no longer valid";
+            return;
         }
+        
+        if (!this->is_Downloading) {
+            qWarning() << "Cannot retry - download is not active";
+            return;
+        }
+        
+        // Reset retry status and resume
+        this->Resume(false);  // Don't emit ReadyRead immediately
     });
 }
 

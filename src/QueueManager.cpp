@@ -1,4 +1,5 @@
 #include "HeaderAndUi/QueueManager.h"
+#include "qdebug.h"
 
 QueueManager::QueueManager(DownloadManager* downloadManager,QObject *parent)
 	: QObject(parent)
@@ -12,6 +13,20 @@ QueueManager::QueueManager(DownloadManager* downloadManager,QObject *parent)
 
 QueueManager::~QueueManager()
 {
+	// Stop all queues before cleanup
+	for (Queue* queue : ListOfQueues) {
+		StopQueue(queue);
+	}
+	
+	// Clean up queue time manager
+	if (m_QueueTimeManager) {
+		m_QueueTimeManager->deleteLater();
+		m_QueueTimeManager = nullptr;
+	}
+	
+	// Clean up queue objects
+	qDeleteAll(ListOfQueues);
+	ListOfQueues.clear();
 }
 
 void QueueManager::StartQueue(Queue* queue)
