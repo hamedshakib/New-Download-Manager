@@ -2,10 +2,16 @@
 
 bool DatabaseInteract::ExectionQueryForReadData(QSqlQuery* query)
 {
+	// Add nullptr check for safety
+	if (!query) {
+		qCritical() << "Database Error: query is nullptr";
+		return false;
+	}
+	
 	bool is_Ok = query->exec();
 	if (is_Ok)
 	{
-			return true;
+		return true;
 	}
 	else
 	{
@@ -16,6 +22,12 @@ bool DatabaseInteract::ExectionQueryForReadData(QSqlQuery* query)
 
 bool DatabaseInteract::ExectionQueryForUpdateData(QSqlQuery* query)
 {
+	// Add nullptr check for safety
+	if (!query) {
+		qCritical() << "Database Error: query is nullptr";
+		return false;
+	}
+	
 	bool is_Ok = query->exec();
 	if (is_Ok)
 	{
@@ -30,6 +42,12 @@ bool DatabaseInteract::ExectionQueryForUpdateData(QSqlQuery* query)
 
 bool DatabaseInteract::ExectionQueryForInsertData(QSqlQuery* query)
 {
+	// Add nullptr check for safety
+	if (!query) {
+		qCritical() << "Database Error: query is nullptr";
+		return false;
+	}
+	
 	bool is_Ok = query->exec();
 	if (is_Ok)
 	{
@@ -44,6 +62,12 @@ bool DatabaseInteract::ExectionQueryForInsertData(QSqlQuery* query)
 
 bool DatabaseInteract::ExectionQueryForCreateTable(QSqlQuery* query)
 {
+	// Add nullptr check for safety
+	if (!query) {
+		qCritical() << "Database Error: query is nullptr";
+		return false;
+	}
+	
 	bool is_Ok = query->exec();
 	if (is_Ok)
 	{
@@ -58,6 +82,12 @@ bool DatabaseInteract::ExectionQueryForCreateTable(QSqlQuery* query)
 
 bool DatabaseInteract::ExectionQueryForDeleteData(QSqlQuery* query)
 {
+	// Add nullptr check for safety
+	if (!query) {
+		qCritical() << "Database Error: query is nullptr";
+		return false;
+	}
+	
 	bool is_Ok = query->exec();
 	if (is_Ok)
 	{
