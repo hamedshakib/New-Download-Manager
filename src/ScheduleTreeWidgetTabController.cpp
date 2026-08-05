@@ -1,5 +1,4 @@
 #include "HeaderAndUi/ScheduleTreeWidgetTabController.h"
-Queue* m_Currentqueue111;
 ScheduleTreeWidgetTabController::ScheduleTreeWidgetTabController(QTreeWidget* treeWidget,QObject *parent)
 	: QObject(parent)
 {
@@ -23,6 +22,13 @@ ScheduleTreeWidgetTabController::ScheduleTreeWidgetTabController(QTreeWidget* tr
 
 ScheduleTreeWidgetTabController::~ScheduleTreeWidgetTabController()
 {
+	// Clean up QTreeWidgetItem objects
+	for (QTreeWidgetItem* item : TreeWidgetItems) {
+		if (item) {
+			delete item;
+		}
+	}
+	TreeWidgetItems.clear();
 }
 
 void ScheduleTreeWidgetTabController::Set_QueueManager(QueueManager* queueManager)

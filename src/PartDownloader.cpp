@@ -35,6 +35,9 @@ PartDownloader::~PartDownloader()
 
 void PartDownloader::initPartDownlolader(PartDownload* partDownload, qint64 readBytesEachTimes)
 {
+    // Move timer to the correct thread first
+    timer.moveToThread(this->thread());
+    
     this->partDownload = partDownload;
     this->downloadFileWriter = new DownloadFileWriter();
     downloadFileWriter->moveToThread(this->thread());
@@ -131,13 +134,14 @@ qint64 PartDownloader::ReadBytes(qint64 bytes)
 	
 	qDebug() << "Downloaded " << ReadedBytes << "Bytes From Thread " << QThread::currentThread()->objectName();
 	partDownload->LastDownloadedByte += ReadedBytes;
-	mutex.unlock();
-	
-	if (!is_SpeedLimit.load())
-	{
-		emit DownloadedBytes(ReadedBytes);
-	}
-	return ReadedBytes;
+    mutex.unlock();
+    
+    // Emit signal outside of lock to prevent potential deadlocks
+    if (!is_SpeedLimit.load())
+    {
+        emit DownloadedBytes(ReadedBytes);
+    }
+    return ReadedBytes;
 }
 
 void PartDownloader::ReadyRead()

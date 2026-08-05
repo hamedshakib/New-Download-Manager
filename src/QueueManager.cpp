@@ -86,13 +86,20 @@ void QueueManager::ProcessDownloadOfQueue(Queue* queue)
 
 void QueueManager::FinishDownloadOfQueue(Download *download, Queue* queue)
 {
-	if (!Is_QueueIsEmpty(queue))
-	{
-		ProcessDownloadOfQueue(queue);
-	}
-	else
-	{
-		queue->Is_Downloading = false;
+	if (queue && download) {
+		// Remove download from downloading list
+		queue->Downloading_list.removeOne(download);
+		
+		if (!Is_QueueIsEmpty(queue)) {
+			// Only start next download if not already processing
+			// This prevents potential infinite recursion
+			if (!queue->Is_Downloading.load()) {
+				queue->Is_Downloading.store(true);
+				ProcessDownloadOfQueue(queue);
+			}
+		} else {
+			queue->Is_Downloading.store(false);
+		}
 	}
 }
 

@@ -18,7 +18,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForLoadDownload(int Download_id)
 		"where D.id=:id "
 	);
 	
-	QSqlQuery* query = new QSqlQuery();
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query (null pointer)";
 		return nullptr;
@@ -862,9 +862,12 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForUpdateNumberOfDownloadAtSameTim
 
 QSqlQuery* DatabaseQueryPreparer::PrepareQueryForRemoveAllCompletedDownload()
 {
+	// Use constant instead of hardcoded value for maintainability
+	const int CompletedStatusId = 3;
+	
 	QString queryString = QString(
 		"DELETE FROM Download "
-		"WHERE DownloadStatus_id = 3; "
+		"WHERE DownloadStatus_id = :statusId; "
 	);
 
 	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
@@ -873,6 +876,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForRemoveAllCompletedDownload()
 		return nullptr;
 	}
 	query->prepare(queryString);
+	query->bindValue(":statusId", CompletedStatusId);
 
 	return query;
 }

@@ -10,6 +10,15 @@ Download::Download(QObject *parent)
 
 Download::~Download()
 {
+	// Clean up all PartDownload objects
+	qDeleteAll(DownloadParts);
+	DownloadParts.clear();
+	
+	// Clean up completed file if exists
+	if (CompletedFile) {
+		CompletedFile->deleteLater();
+		CompletedFile = nullptr;
+	}
 }
 
 QUrl Download::get_Url()

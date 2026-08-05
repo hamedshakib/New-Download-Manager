@@ -73,8 +73,9 @@ void ShowSchedule::on_Apply_pushButton_clicked()
 
 void ShowSchedule::on_Cancel_pushButton_clicked()
 {
-	this->close();
-	this->deleteLater();
+	// Note: close() should not be called here as it causes infinite loop
+	// deleteLater() will handle the cleanup properly
+	// The dialog will be auto-deleted when closed due to Qt::WA_DeleteOnClose
 }
 
 void ShowSchedule::on_AddQueue_pushButton_clicked()

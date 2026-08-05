@@ -7,11 +7,28 @@ NewDownloadCreater::NewDownloadCreater(QObject *parent)
 
 NewDownloadCreater::~NewDownloadCreater()
 {
-	if(m_networkReply!=nullptr)
+	if(m_networkReply!=nullptr) {
+		m_networkReply->abort();
 		m_networkReply->deleteLater();
+		m_networkReply = nullptr;
+	}
 
-	if (newDownloadUrlWidget!=nullptr)
+	if (newDownloadUrlWidget!=nullptr) {
+		newDownloadUrlWidget->close();
 		newDownloadUrlWidget->deleteLater();
+		newDownloadUrlWidget = nullptr;
+	}
+	
+	if (newDownloadComplitedInformationWidget!=nullptr) {
+		newDownloadComplitedInformationWidget->close();
+		newDownloadComplitedInformationWidget->deleteLater();
+		newDownloadComplitedInformationWidget = nullptr;
+	}
+	
+	if (m_networkAccessManager!=nullptr) {
+		m_networkAccessManager->deleteLater();
+		m_networkAccessManager = nullptr;
+	}
 }
 
 void NewDownloadCreater::StartProcessOfCreateANewDownload(QObject* parent)

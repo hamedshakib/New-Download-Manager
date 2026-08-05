@@ -47,8 +47,9 @@ void OptionsWidget::LoadOptions()
 void OptionsWidget::Accepted()
 {
 	//Proxy
-	ProxyManager proxyManager;
-	proxyManager.SetProxyForApplication(ProcessEnum::ConvertProxyTypeStringToProxyTypeEnum(ui.ProxyType_comboBox->currentText()),ui.AddressServer_lineEdit->text(),ui.Port_spinBox->value(),ui.Username_lineEdit->text(),ui.Password_lineEdit->text());
+	ProxyManager* proxyManager = new ProxyManager();
+	proxyManager->SetProxyForApplication(ProcessEnum::ConvertProxyTypeStringToProxyTypeEnum(ui.ProxyType_comboBox->currentText()),ui.AddressServer_lineEdit->text(),ui.Port_spinBox->value(),ui.Username_lineEdit->text(),ui.Password_lineEdit->text());
+	// proxyManager will be deleted in ApplicationManager destructor
 
 	QString EnglishStringProxyType=ProcessEnum::ConvertTypeProxyEnumToEnglishStringProxyType(ProcessEnum::ConvertProxyTypeStringToProxyTypeEnum(ui.ProxyType_comboBox->currentText()));
 	SettingInteract::SetValue("Proxy/Type", EnglishStringProxyType);
@@ -87,8 +88,8 @@ void OptionsWidget::Accepted()
 
 void OptionsWidget::Rejected()
 {
-	this->close();
-	this->deleteLater();
+	// Note: close() should not be called here as it causes infinite loop
+	// deleteLater() will handle the cleanup properly
 }
 
 void OptionsWidget::on_TempDirectory_toolButton_clicked()

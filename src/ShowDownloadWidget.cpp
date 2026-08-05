@@ -17,10 +17,14 @@ ShowDownloadWidget::~ShowDownloadWidget()
 
 void ShowDownloadWidget::ProcessSetup()
 {
+	if (!m_Download || !m_DownloadControl) {
+		qCritical() << "ShowDownloadWidget: Download or DownloadControl is null";
+		return;
+	}
+	
 	ui.Url_label->setText(m_Download->get_Url().toString());
 	ui.TimeLeft_label->setText("");
 	ui.TransferRate_label->setText("");
-	ui.TimeLeft_label->setText("");
 	ui.transferRateInSpeedLimiter_label->setText("");
 	bool is_Downloading = m_DownloadControl->IsDownloading();
 	QString PauseOrResume= is_Downloading ? tr("Pause") : tr("Resume");

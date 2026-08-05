@@ -54,6 +54,9 @@ void CompleteDownloadDialog::mousePressEvent(QMouseEvent* event)
 
 void CompleteDownloadDialog::closeEvent(QCloseEvent* event)
 {
-	this->close();
-	this->deleteLater();
+	// Note: close() should not be called here as it causes infinite loop
+	// deleteLater() will handle the cleanup properly
+	// event->ignore() could be used if we want to prevent closing
+	// But since we have Qt::WA_DeleteOnClose attribute set in MainWindow.cpp
+	// the dialog will be auto-deleted when closed
 }

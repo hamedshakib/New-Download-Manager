@@ -8,6 +8,11 @@ Queue::Queue(QObject *parent)
 
 Queue::~Queue()
 {
+	// Clean up all Download objects in the queue
+	qDeleteAll(Downloading_list);
+	Downloading_list.clear();
+	
+	// Note: List_DownloadId contains IDs only, not pointers
 }
 
 int Queue::Get_QueueId()

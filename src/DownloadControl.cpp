@@ -455,8 +455,14 @@ void DownloadControl::ProcessForShowDownloadCompleteDialog()
 
 void DownloadControl::ShowCompleteDialog(Download* download, QString SaveTo)
 {
+	if (!download) {
+		qCritical() << "ShowCompleteDialog called with null download";
+		return;
+	}
+	
 	QString SizeDownloadString = ConverterSizeToSuitableString::ConvertSizeToSuitableString(download->DownloadSize) + QString(" (%1 Bytes)").arg(download->DownloadSize);
 	CompleteDownloadDialog* completeDownloadDialog = new CompleteDownloadDialog(SaveTo, SizeDownloadString, download->Url.toString());
+	completeDownloadDialog->setAttribute(Qt::WA_DeleteOnClose);
 	completeDownloadDialog->show();
 }
 

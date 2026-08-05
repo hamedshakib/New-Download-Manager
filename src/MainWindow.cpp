@@ -19,6 +19,20 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+	// Clean up MainTableViewController
+	if (mainTableViewController) {
+		mainTableViewController->deleteLater();
+		mainTableViewController = nullptr;
+	}
+	
+	// Clean up MainTreeViewController
+	if (mainTreeViewController) {
+		mainTreeViewController->deleteLater();
+		mainTreeViewController = nullptr;
+	}
+	
+	// The downloadManagerPointer and queueManager are owned by ApplicationManager
+	// We should NOT delete them here as they may be used elsewhere
 }
 void MainWindow::CreateMainTableViewControllerForMainWindow()
 {

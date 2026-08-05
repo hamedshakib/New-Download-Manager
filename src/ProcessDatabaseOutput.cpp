@@ -95,8 +95,9 @@ void ProcessDatabaseOutput::ProcessPrepareLoadedInformationForMainTableView(cons
 	}
 	else
 	{
-		float Present = (long double)DownloadedSize / DownloadSize;
-		Status = QString::number(Present*100, 'f', 2)+"%";
+		// Use double precision for accurate percentage calculation
+		double Present = static_cast<double>(DownloadedSize) / static_cast<double>(DownloadSize);
+		Status = QString::number(Present * 100.0, 'f', 2) + "%";
 	}
 	
 
