@@ -763,7 +763,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForExitAllDownloadFrom_Queue_Downl
 {
 	QString queryString = QString(
 		"DELETE FROM Queue_Download "
-		"WHERE Queue_id = :queue_id'; "
+		"WHERE Queue_id = :queue_id; "
 	);
 
 	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());

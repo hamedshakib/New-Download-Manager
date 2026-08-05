@@ -33,5 +33,9 @@ bool PartDownload::IsPartDownloadFinished()
 
 void PartDownload::UpdatePartDownloadLastDownloadedByte()
 {
-	this->LastDownloadedByte = this->start_byte + this->PartDownloadFile->size() - 1;
+	if (PartDownloadFile != nullptr) {
+		this->LastDownloadedByte = this->start_byte + PartDownloadFile->size() - 1;
+	} else {
+		qWarning() << "PartDownload: PartDownloadFile is null, cannot update LastDownloadedByte";
+	}
 }

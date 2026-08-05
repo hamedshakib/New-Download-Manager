@@ -15,6 +15,12 @@ PartDownloader::~PartDownloader()
 {
 	qDebug() << "delete PartDownloader";
 
+	// Clean up downloadFileWriter
+	if (downloadFileWriter != nullptr) {
+		downloadFileWriter->deleteLater();
+		downloadFileWriter = nullptr;
+	}
+
 	if (reply != nullptr)
 	{
 		// Disconnect all signals before deleting reply
@@ -84,27 +90,49 @@ void PartDownloader::Pause()
 
 qint64 PartDownloader::ReadBytes(qint64 bytes)
 {
+	// Check is_Downloading before locking mutex for better performance
 	if (!this->is_Downloading)
 	{
 		return 0;
 	}
 
-
+	// Lock mutex for thread-safe access
 	mutex.lock();
+	
 	qint64 ReadedBytes = 0;
 	QByteArray byteArray;
+	
+	// Check if reply is still valid
+	if (!reply) {
+		qWarning() << "ReadBytes called but reply is null";
+		mutex.unlock();
+		return 0;
+	}
+	
+	// Check if download is still active after acquiring lock
+	if (!this->is_Downloading) {
+		qWarning() << "ReadBytes called but download is not active";
+		mutex.unlock();
+		return 0;
+	}
+	
 	if (bytes > 0)
 	{
 		byteArray = reply->read(bytes);
 		ReadedBytes = byteArray.size();
 	}
-	if (ReadedBytes > 0)
-	{
-		downloadFileWriter->WriteDownloadToFile(byteArray, partDownload->PartDownloadFile);
+	
+	// Check downloadFileWriter validity before use
+	if (ReadedBytes > 0) {
+		if (downloadFileWriter) {
+			downloadFileWriter->WriteDownloadToFile(byteArray, partDownload->PartDownloadFile);
+		}
 	}
+	
 	qDebug() << "Downloaded " << ReadedBytes << "Bytes From Thread " << QThread::currentThread()->objectName();
 	partDownload->LastDownloadedByte += ReadedBytes;
 	mutex.unlock();
+	
 	if (!is_SpeedLimit)
 	{
 		emit DownloadedBytes(ReadedBytes);
@@ -155,8 +183,7 @@ void PartDownloader::ReadyRead()
 
 qint64 PartDownloader::DownloadByteInSpeedControl(qint64 maxReadBytes)
 {
-
-	qint64 ReadedBytes= ReadBytes(maxReadBytes);
+	qint64 ReadedBytes = ReadBytes(maxReadBytes);
 	if (partDownloaderStatus == PartDownloaderStatus::PartDownloadFinishedReciveBytes)
 	{
 		CheckFinishedPartDownloader();
@@ -268,7 +295,7 @@ void PartDownloader::CheckFinishedPartDownloader()
 {
 	if (partDownloaderStatus == PartDownloaderStatus::PartDownloadFinishedReciveBytes)
 	{
-		if (partDownload->IsPartDownloadFinished())
+		if (partDownload && partDownload->IsPartDownloadFinished())
 		{
 			qDebug() << "Finsih PartDownload";
 			emit Finished();
@@ -291,18 +318,21 @@ bool PartDownloader::SetSpeedLimited(bool is_SpeedLimited)
 			//qDebug() <<"Count ReadyRead signal" << receivers("ReadyRead");
 			if (QObject::receivers("readyRead") == 0)
 			{
-				connect(reply, &QNetworkReply::readyRead, this, &PartDownloader::ReadyRead, Qt::ConnectionType::UniqueConnection);
-				if (reply->bytesAvailable() > 0)
-					ReadyRead();
+				if (reply) {
+					connect(reply, &QNetworkReply::readyRead, this, &PartDownloader::ReadyRead, Qt::ConnectionType::UniqueConnection);
+					if (reply->bytesAvailable() > 0)
+						ReadyRead();
 				}
 			}
+		}
 		else
 		{
 			//Speed Limitted
-			disconnect(reply, &QNetworkReply::readyRead, this, &PartDownloader::ReadyRead);
+			if (reply) {
+				disconnect(reply, &QNetworkReply::readyRead, this, &PartDownloader::ReadyRead);
+			}
 		}
 		return true;
-		
 	}
 }
 
@@ -318,4 +348,3 @@ bool PartDownloader::IsAvaliableByteForRead()
 	}
 	return reply->bytesAvailable() > 0;
 }
-

@@ -3,12 +3,16 @@
 DownloadFileWriter::DownloadFileWriter(QObject* parent)
 	:QObject(parent)
 {
-
 }
 
 bool DownloadFileWriter::WriteDownloadToFile(QByteArray& byteArray, QFile* file, bool CloseFileAfterWrite)
 {
 	//qDebug() << "Write download Thread :" << QThread::currentThread()->objectName();
+	if (!file) {
+		qCritical() << "WriteDownloadToFile: file pointer is null";
+		return false;
+	}
+	
 	if (!file->isOpen())
 	{
 		if (!file->open(QIODevice::WriteOnly | QIODevice::Append))
@@ -79,6 +83,8 @@ QFile* DownloadFileWriter::BuildFileFromMultipleFiles(QList<QFile*> files, QStri
 		else
 		{
 			qCritical() << "BuildFileFromMultipleFiles: Failed to open new file for writing:" << AddressOfFile;
+			// Clean up the newly created file
+			NewFile->remove();
 			delete NewFile;
 			return nullptr;
 		}

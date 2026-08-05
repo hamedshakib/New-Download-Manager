@@ -214,7 +214,9 @@ bool ProcessDatabaseOutput::PutDownloadInformationOfQueueForScheduleTreeWidget(c
 		item->setText(2, tr("Started"));
 	}
 
-	item->setText(3, record.value("").toString());
+ 	// Fix: Empty string in record.value("") will cause undefined behavior
+ 	// The SQL query doesn't select a field for column 3, so we should use a default value
+ 	item->setText(3, "");  // Empty string or appropriate default value
 
-	return true;
+ 	return true;
 }

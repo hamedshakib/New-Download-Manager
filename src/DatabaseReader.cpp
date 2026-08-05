@@ -22,6 +22,7 @@ bool DatabaseReader::LoadDownloadFromDatabase(int Download_id, Download* downloa
 		return false;
 	}
 	
+	// Query is already prepared by PrepareQueryForLoadDownload
 	bool is_Ok = query->exec();
 	if (is_Ok) {
 		if (query->next()) {

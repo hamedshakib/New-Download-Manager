@@ -16,10 +16,9 @@ qint64 CalculatorDownload::CalculateDownloadSpeed(qint64 NumberOfBytesThatDownlo
 		return 0;
 	}
 
-	CurrentSpeedBytesPerSecond = (NumberOfBytesThatDownloadedInLastPeriod*1000 / SpentedTime_Millisecond);
+	CurrentSpeedBytesPerSecond = (NumberOfBytesThatDownloadedInLastPeriod * 1000 / SpentedTime_Millisecond);
 	CalculateDownloadSpeedAccordingToLastSpeeds();
 	PutLastSpeeds();
-
 
 	return AvrageSpeedBytesPerSecond;
 }
@@ -40,15 +39,15 @@ QString CalculatorDownload::GetSpeedOfDownloadInFormOfString()
 	}
 	else if (Speed_BytesPerSecond >= 1024 && Speed_BytesPerSecond < 1024 * 1024)
 	{
-		SpeedInString = QString::number(Speed_BytesPerSecond/1024) + " KBytes/sec";
+		SpeedInString = QString::number(Speed_BytesPerSecond / 1024) + " KBytes/sec";
 	}
 	else if (Speed_BytesPerSecond >= 1024 * 1024 && Speed_BytesPerSecond < 1024 * 1024 * 1024)
 	{
-		SpeedInString = QString::number(Speed_BytesPerSecond / 1024*1024) + " MBytes/sec";
+		SpeedInString = QString::number(Speed_BytesPerSecond / (1024 * 1024)) + " MBytes/sec";
 	}
 	else if (Speed_BytesPerSecond >= 1024 * 1024 * 1024 && Speed_BytesPerSecond < 1024 * 1024 * 1024 * 1024)
 	{
-		SpeedInString = QString::number(Speed_BytesPerSecond / 1024 * 1024 *1024) + " GBytes/sec";
+		SpeedInString = QString::number(Speed_BytesPerSecond / (1024 * 1024 * 1024)) + " GBytes/sec";
 	}
 	return SpeedInString;
 }
@@ -59,22 +58,22 @@ QString CalculatorDownload::GetTimeLeftOfDownloadInFormOfString(qint64 NumberRem
 	if (Speed_BytesPerSecond > 0)
 	{
 		RemainedTimeToFinish = QTime(0, 0, 0);
-		RemainedTimeToFinish =RemainedTimeToFinish.addSecs(NumberRemainedBytes / Speed_BytesPerSecond);
+		RemainedTimeToFinish = RemainedTimeToFinish.addSecs(NumberRemainedBytes / Speed_BytesPerSecond);
 	}
 
 
 	QString RemainedTimeString;
 	if (RemainedTimeToFinish.hour() > 0)
 	{
-		RemainedTimeString= RemainedTimeToFinish.toString("hh") + " hour(s) " + RemainedTimeToFinish.toString("mm") + " min";
+		RemainedTimeString = RemainedTimeToFinish.toString("hh") + " hour(s) " + RemainedTimeToFinish.toString("mm") + " min";
 	}
 	else if (RemainedTimeToFinish.minute() > 0)
 	{
-		RemainedTimeString = RemainedTimeToFinish.toString("mm")+" min "+ RemainedTimeToFinish.toString("ss")+" sec";
+		RemainedTimeString = RemainedTimeToFinish.toString("mm") + " min " + RemainedTimeToFinish.toString("ss") + " sec";
 	}
 	else
 	{
-		RemainedTimeString = RemainedTimeToFinish.toString("ss")+" sec";
+		RemainedTimeString = RemainedTimeToFinish.toString("ss") + " sec";
 	}
 	return RemainedTimeString;
 }
@@ -82,47 +81,48 @@ QString CalculatorDownload::GetTimeLeftOfDownloadInFormOfString(qint64 NumberRem
 QString CalculatorDownload::getStatusForTable(qint64 DownloadedSize, qint64 SizeDownload)
 {
 	QString DownloadStatus;
-	
+
 	// Handle division by zero
 	if (SizeDownload <= 0) {
 		return "0.00%";
 	}
-	
+
 	float Present = (long double)DownloadedSize / SizeDownload;
 	DownloadStatus = QString::number(Present * 100, 'f', 2) + "%";
 	return DownloadStatus;
 }
 
-	void CalculatorDownload::CalculateDownloadSpeedAccordingToLastSpeeds()
+void CalculatorDownload::CalculateDownloadSpeedAccordingToLastSpeeds()
+{
+	qint64 SumOfSpeed;
+	int numberOfEffectedSpeed;
+	if (LastSpeeds[0] == 0)
 	{
-		qint64 SumOfSpeed;
-		int numberOfEffectedSpeed;
-		if (LastSpeeds[0] == 0)
-		{
-			//just Current speed
-			numberOfEffectedSpeed = 1;
-			SumOfSpeed = CurrentSpeedBytesPerSecond;
-		}
-		else if (LastSpeeds[1] == 0)
-		{
-			//Effected 2 speeds (Current + Last)
-			numberOfEffectedSpeed = 2;
-			SumOfSpeed = LastSpeeds[2] + CurrentSpeedBytesPerSecond;
-		}
-		else if (LastSpeeds[2] == 0)
-		{
-			//Effected 3 speeds (Current + Last 2)
-			numberOfEffectedSpeed = 3;
-			SumOfSpeed = LastSpeeds[1] + LastSpeeds[2] + CurrentSpeedBytesPerSecond;
-		}
-		else
-		{
-			//Effected 4 speeds (Current + Last 3)
-			numberOfEffectedSpeed = 4;
-			SumOfSpeed = LastSpeeds[0] + LastSpeeds[1] + LastSpeeds[2] + CurrentSpeedBytesPerSecond;
-		}
-		AvrageSpeedBytesPerSecond = (SumOfSpeed / numberOfEffectedSpeed);
+		//just Current speed
+		numberOfEffectedSpeed = 1;
+		SumOfSpeed = CurrentSpeedBytesPerSecond;
 	}
+	else if (LastSpeeds[1] == 0)
+	{
+		//Effected 2 speeds (Current + Last)
+		numberOfEffectedSpeed = 2;
+		SumOfSpeed = LastSpeeds[0] + CurrentSpeedBytesPerSecond;
+	}
+	else if (LastSpeeds[2] == 0)
+	{
+		//Effected 3 speeds (Current + Last 2)
+		numberOfEffectedSpeed = 3;
+		SumOfSpeed = LastSpeeds[0] + LastSpeeds[1] + CurrentSpeedBytesPerSecond;
+	}
+ 	else
+ 	{
+ 		//Effected 4 speeds (Current + Last 3)
+ 		numberOfEffectedSpeed = 4;
+ 		SumOfSpeed = LastSpeeds[0] + LastSpeeds[1] + LastSpeeds[2] + CurrentSpeedBytesPerSecond;
+ 	}
+ 	// Use floating-point division for accurate average
+ 	AvrageSpeedBytesPerSecond = static_cast<qint64>(SumOfSpeed / static_cast<double>(numberOfEffectedSpeed));
+}
 
 void CalculatorDownload::PutLastSpeeds()
 {

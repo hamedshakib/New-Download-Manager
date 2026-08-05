@@ -96,13 +96,14 @@ DownloadControl* DownloadManager::CreateDownloadControl(Download* download)
 	DownloadControl* downloadControl = new DownloadControl();
 	downloadControl->moveToThread(download->thread());
 	downloadControl->initDownloadControl(download);
-	connect(downloadControl, &DownloadControl::Started, this, [&, download]() {DatabaseManager::UpdateDownloadInStartOfDownloadOnDatabase(download); });
-	connect(downloadControl, &DownloadControl::UpdateDownloaded, this, [&, download]() {DatabaseManager::UpdateInDownloadingOnDataBase(download); });
+	// Use Qt::QueuedConnection for cross-thread safety
+	connect(downloadControl, &DownloadControl::Started, this, [&, download]() {DatabaseManager::UpdateDownloadInStartOfDownloadOnDatabase(download); }, Qt::QueuedConnection);
+	connect(downloadControl, &DownloadControl::UpdateDownloaded, this, [&, download]() {DatabaseManager::UpdateInDownloadingOnDataBase(download); }, Qt::QueuedConnection);
 	connect(downloadControl, &DownloadControl::CompeletedDownload, this, [&, download]() {
 		/*DatabaseManager::UpdateAllFieldDownloadOnDataBase(download);*/
 		DatabaseManager::FinishDownloadOnDatabase(download);
 		emit FinishedDownload(download);
-		qDebug() << "Finished Update Download"; });
+		qDebug() << "Finished Update Download"; }, Qt::QueuedConnection);
 	emit CreatedDownloadControl(downloadControl);
 	downloadControl->SetMaxSpeed(SpeedLimit);
 	return downloadControl;

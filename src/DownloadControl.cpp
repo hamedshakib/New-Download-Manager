@@ -4,6 +4,8 @@
 DownloadControl::DownloadControl(QObject *parent)
 	: QObject(parent)
 {
+	// Initialize speedControlConnection to a valid (disconnected) state
+	speedControlConnection = QMetaObject::Connection();
 }
 
 DownloadControl::~DownloadControl()
@@ -56,7 +58,8 @@ void DownloadControl::initDownloadControl(Download* download)
 	timer = new QTimer();
 	timer->moveToThread(this->thread());  // Fix: Move timer to the correct thread
 	connect(timer, &QTimer::timeout, this, &DownloadControl::TimerTimeOut, Qt::QueuedConnection);
-	connect(this, &DownloadControl::CompeletedDownload, this, &DownloadControl::ProcessForShowDownloadCompleteDialog);
+	// Use Qt::QueuedConnection for cross-thread safety when emitting signals across threads
+	connect(this, &DownloadControl::CompeletedDownload, this, &DownloadControl::ProcessForShowDownloadCompleteDialog, Qt::QueuedConnection);
 	
 	elapsedTimer = new QElapsedTimer();
 	elapsedTimerForIndependentSpeed = new QElapsedTimer();
