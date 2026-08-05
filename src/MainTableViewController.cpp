@@ -280,17 +280,25 @@ QMenu* MainTableViewController::CreaterRightClickMenuForRowRightClicked(int Down
 void MainTableViewController::ConnectorDownloadControlToTableUpdateInDownloading(DownloadControl* downloadControl)
 {
 	size_t Download_id = downloadControl->Get_Download()->get_Id();
+	
+	// First check if we have cached row index
 	size_t Row = 0;
-	for (size_t i = 0; i < model->rowCount(); i++)
-	{
-		qDebug() << model->index(i, 0).data().toInt();
-		if (model->index(i, 0).data().toInt() == Download_id)
+	if (DownloadIdToRowMap.contains(Download_id)) {
+		Row = DownloadIdToRowMap[Download_id];
+	} else {
+		// Fallback: search through model (for downloads loaded from database)
+		for (size_t i = 0; i < model->rowCount(); i++)
 		{
-			Row = i;
-			break;
+			if (model->index(i, 0).data().toInt() == Download_id)
+			{
+				Row = i;
+				DownloadIdToRowMap[Download_id] = Row;
+				break;
+			}
 		}
 	}
-	if (Row >= 0)
+	
+	if (Row < static_cast<size_t>(model->rowCount()))
 	{
 		connect(downloadControl, &DownloadControl::UpdateDownloaded, this, [&, Row](QString Status, QString Speed, QString TimeLeft,QList<qint64> list) {UpdateRowInDownloading(Row, Status, Speed, TimeLeft); });
 		connect(downloadControl, &DownloadControl::CompeletedDownload, this, [&, Row]() {CompeletedDownload(Row); });

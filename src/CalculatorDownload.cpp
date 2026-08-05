@@ -88,36 +88,36 @@ QString CalculatorDownload::getStatusForTable(qint64 DownloadedSize,qint64 SizeD
 	return DownloadStatus;
 }
 
-void CalculatorDownload::CalculateDownloadSpeedAccordingToLastSpeeds()
-{
-	qint64 SumOfSpeed;
-	int numberOfEffectedSpeed;
-	if (LastSpeeds[0] == 0)
+	void CalculatorDownload::CalculateDownloadSpeedAccordingToLastSpeeds()
 	{
-		//just Last speed
-		numberOfEffectedSpeed = 1;
-		SumOfSpeed = CurrentSpeedBytesPerSecond;
+		qint64 SumOfSpeed;
+		int numberOfEffectedSpeed;
+		if (LastSpeeds[0] == 0)
+		{
+			//just Current speed
+			numberOfEffectedSpeed = 1;
+			SumOfSpeed = CurrentSpeedBytesPerSecond;
+		}
+		else if (LastSpeeds[1] == 0)
+		{
+			//Effected 2 speeds (Current + Last)
+			numberOfEffectedSpeed = 2;
+			SumOfSpeed = LastSpeeds[2] + CurrentSpeedBytesPerSecond;
+		}
+		else if (LastSpeeds[2] == 0)
+		{
+			//Effected 3 speeds (Current + Last 2)
+			numberOfEffectedSpeed = 3;
+			SumOfSpeed = LastSpeeds[1] + LastSpeeds[2] + CurrentSpeedBytesPerSecond;
+		}
+		else
+		{
+			//Effected 4 speeds (Current + Last 3)
+			numberOfEffectedSpeed = 4;
+			SumOfSpeed = LastSpeeds[0] + LastSpeeds[1] + LastSpeeds[2] + CurrentSpeedBytesPerSecond;
+		}
+		AvrageSpeedBytesPerSecond = (SumOfSpeed / numberOfEffectedSpeed);
 	}
-	else if (LastSpeeds[1] == 0)
-	{
-		//Effected 2 speeds
-		numberOfEffectedSpeed = 2;
-		SumOfSpeed = LastSpeeds[2] +CurrentSpeedBytesPerSecond;
-	}
-	else if (LastSpeeds[2] == 0)
-	{
-		//Effected 3 speeds
-		numberOfEffectedSpeed = 3;
-		SumOfSpeed = LastSpeeds[1]+LastSpeeds[2] + CurrentSpeedBytesPerSecond;
-	}
-	else
-	{
-		//Effected 4 speeds
-		numberOfEffectedSpeed = 4;
-		SumOfSpeed = LastSpeeds[1] +LastSpeeds[1] + LastSpeeds[2] + CurrentSpeedBytesPerSecond;
-	}
-	AvrageSpeedBytesPerSecond = (SumOfSpeed / numberOfEffectedSpeed);
-}
 
 void CalculatorDownload::PutLastSpeeds()
 {

@@ -328,8 +328,7 @@ bool DownloadControl::StopPartDownloader(PartDownloader* partDownloader)
 
 bool DownloadControl::CheckDownloadFinished()
 {
-	QMutex mutex;
-	mutex.lock();
+	QMutexLocker locker(&mutex);
 	qDebug() << "Check For Download Finish";
 	if (statusOfDownload == DownloadStatus::Downloading || statusOfDownload == DownloadStatus::Pause)
 	{
@@ -344,7 +343,6 @@ bool DownloadControl::CheckDownloadFinished()
 				if (!partDownload->IsPartDownloadFinished())
 				{
 					qDebug() << " Exit In Check Download Finsish: not finish";
-					mutex.unlock();
 					return false;
 				}
 			}
@@ -355,17 +353,13 @@ bool DownloadControl::CheckDownloadFinished()
 		}
 	}
 	qDebug() << " Exit In Check Download Finsish: finished";
-	mutex.unlock();
 	return true;
 }
 
 bool DownloadControl::ProcessFinishDownload()
 {
-	QMutex mutex;
-	mutex.lock();
 	if (statusOfDownload == DownloadStatus::Finidshed)
 	{
-		mutex.unlock();
 		return false;
 	}
 	statusOfDownload = DownloadStatus::StartFinsh;
@@ -373,28 +367,31 @@ bool DownloadControl::ProcessFinishDownload()
 	qDebug() << "Process Of End Of Downloading "<<QThread::currentThread()->objectName() ;
 	Is_Downloading = false;
 	timer->stop();
-	QList<PartDownload*> PartDownloads = download->get_PartDownloads();
+	
+	// Use PartDownloader_list instead of get_PartDownloads() to properly access PartDownload objects
 	QList<QFile*> FilesOfDownload;
-	for (PartDownload* partDownload : PartDownloads)
+	for (PartDownloader* partDownloader : PartDownloader_list)
 	{
-		//qDebug() << partDownload->PartDownloadFile->fileName() << ":" << partDownload->PartDownloadFile->size();
-		FilesOfDownload.append(partDownload->PartDownloadFile);
+		PartDownload* partDownload = partDownloader->Get_PartDownload();
+		if (partDownload && partDownload->PartDownloadFile)
+		{
+			//qDebug() << partDownload->PartDownloadFile->fileName() << ":" << partDownload->PartDownloadFile->size();
+			FilesOfDownload.append(partDownload->PartDownloadFile);
+		}
 	}
-
-
-
-
+	
 	QFile* NewDownloadFile = DownloadFileWriter::BuildFileFromMultipleFiles(FilesOfDownload, download->get_SavaTo().toString());
-
 	qDebug() << NewDownloadFile->fileName() << ":" << NewDownloadFile->size();
 	download->CompletedFile = NewDownloadFile;
-	qDeleteAll(PartDownloads);
+	
+	// Properly delete PartDownload objects through PartDownloader_list
+	// Note: PartDownloader objects will be deleted in DownloadControl destructor
+	// which calls qDeleteAll(PartDownloader_list) and qDeleteAll(ActivePartDownloader_list)
+	
 	download->Set_downloadStatus(Download::Completed);
-
 	NewDownloadFile->deleteLater();
 	emit CompeletedDownload();
 	statusOfDownload = DownloadStatus::Finidshed;
-	mutex.unlock();
 	return true;
 }
 

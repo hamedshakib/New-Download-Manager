@@ -27,6 +27,8 @@ ApplicationManager::ApplicationManager(QObject *parent,int argc,char* argv[])
 	QApplication::setQuitOnLastWindowClosed(false);
 	QApplication::setWindowIcon(QIcon(":Icons/Download_Icon.png"));
 
+	// Create proxyManager as member variable
+	proxyManager = new ProxyManager();
 	LoadProxySettings();
 }
 
@@ -53,6 +55,11 @@ ApplicationManager::~ApplicationManager()
 	if (queueManager != nullptr) {
 		queueManager->deleteLater();
 		queueManager = nullptr;
+	}
+	
+	if (proxyManager != nullptr) {
+		proxyManager->deleteLater();
+		proxyManager = nullptr;
 	}
 }
 
@@ -92,8 +99,10 @@ void ApplicationManager::LoadProxySettings()
 	QString ProxyUsername=SettingInteract::GetValue("Proxy/User").toString();
 	QString ProxyPassword=SettingInteract::GetValue("Proxy/Password").toString();
 
-	ProxyManager proxyManager;
-	proxyManager.SetProxyForApplication(Proxytype, ProxyHostname, ProxyPort, ProxyUsername, ProxyPassword);
+	// Use member proxyManager instead of local variable
+	if (proxyManager) {
+		proxyManager->SetProxyForApplication(Proxytype, ProxyHostname, ProxyPort, ProxyUsername, ProxyPassword);
+	}
 }
 
 void ApplicationManager::ProcessArguments(int argc, char* argv[])

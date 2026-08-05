@@ -50,16 +50,12 @@ QFile* DownloadFileWriter::BuildFileFromMultipleFiles(QList<QFile*> files, QStri
 					qCritical() << "Can't Open File for read for write to one file";
 					return file;
 				}
+				// Use 64KB buffer for better performance
+				const int BUFFER_SIZE = 65536;
 				while (!file->atEnd()) {
-					QByteArray bytes;
-					if (file->bytesAvailable() >= 2048)
-					{
-						bytes = file->read(2048);
-					}
-					else
-					{
-						bytes = file->readAll();
-					}
+					QByteArray bytes = file->read(BUFFER_SIZE);
+					if (bytes.isEmpty())
+						break;
 					NewFile->write(bytes);
 				}
 				file->remove();

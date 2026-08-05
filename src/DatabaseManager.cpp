@@ -120,26 +120,62 @@ bool DatabaseManager::UpdateDownloadInStartOfDownloadOnDatabase(Download* downlo
 
 bool DatabaseManager::UpdateInDownloadingOnDataBase(Download* download)
 {
-	auto Queries = DatabaseQueryPreparer::PrepareQueriesForUpdateInDownloading(download);
-	for (int i = 0; i < Queries.size(); i++)
-	{
-		DatabaseInteract::ExectionQueryForUpdateData(Queries[i]);
+	QSqlDatabase db = SettingUpDatabase::get_Database();
+	
+	// Use transaction for better performance and data consistency
+	if (db.transaction()) {
+		auto Queries = DatabaseQueryPreparer::PrepareQueriesForUpdateInDownloading(download);
+		bool success = true;
+		
+		for (int i = 0; i < Queries.size(); i++) {
+			if (!DatabaseInteract::ExectionQueryForUpdateData(Queries[i])) {
+				success = false;
+				break;
+			}
+		}
+		
+		qDeleteAll(Queries);
+		
+		if (success) {
+			db.commit();
+			return true;
+		} else {
+			db.rollback();
+			return false;
+		}
 	}
-
-
-	qDeleteAll(Queries);
-	return true;
+	
+	return false;
 }
 
 bool DatabaseManager::FinishDownloadOnDatabase(Download* download)
 {
-	auto Queries = DatabaseQueryPreparer::PrepareQueryForFinishDownload(download);
-	for (int i = 0; i < Queries.size(); i++)
-	{
-		DatabaseInteract::ExectionQueryForUpdateData(Queries[i]);
+	QSqlDatabase db = SettingUpDatabase::get_Database();
+	
+	// Use transaction for better performance and data consistency
+	if (db.transaction()) {
+		auto Queries = DatabaseQueryPreparer::PrepareQueryForFinishDownload(download);
+		bool success = true;
+		
+		for (int i = 0; i < Queries.size(); i++) {
+			if (!DatabaseInteract::ExectionQueryForUpdateData(Queries[i])) {
+				success = false;
+				break;
+			}
+		}
+		
+		qDeleteAll(Queries);
+		
+		if (success) {
+			db.commit();
+			return true;
+		} else {
+			db.rollback();
+			return false;
+		}
 	}
-	qDeleteAll(Queries);
-	return true;
+	
+	return false;
 }
 
 QList<PartDownload*> DatabaseManager::CreatePartDownloadsOfDownload(int Download_id)
@@ -150,26 +186,14 @@ QList<PartDownload*> DatabaseManager::CreatePartDownloadsOfDownload(int Download
 	{
 		while (query->next())
 		{
-			QThread* thread = new QThread();
-			thread->setObjectName("PartDownload Thread");
-			
+			// Removed unnecessary thread creation for each PartDownload
+			// PartDownload objects now run in the same thread as their parent Download
 			PartDownload* partDownload = new PartDownload(nullptr);
-			partDownload->moveToThread(thread);
-			
-			// Connect thread finished signal to deletePartDownload
-			connect(thread, &QThread::finished, partDownload, &PartDownload::deleteLater);
-			connect(thread, &QThread::finished, thread, &QThread::deleteLater);
-			
-			// Emit finished signal when part download is complete
-			connect(partDownload, &PartDownload::Finished, thread, &QThread::quit);
-			
-			thread->start();
 			
 			if (ProcessDatabaseOutput::ProcessPutLoadedPartDownloadInInPartDownloadObject(query->record(), partDownload, Download_id))
 			{
 				ListOfPartDownloadsOfDownload.append(partDownload);
 			}
-
 		}
 	}
 	delete query;

@@ -171,7 +171,8 @@ void MainWindow::ChangedDownloadSelected(int Download_id,bool Is_Completed)
 
 
 		SelectedDownload = downloadManagerPointer->ProcessAchieveDownload(Download_id);
-		connect(SelectedDownload, &Download::DownloadStatusChanged, this, &MainWindow::ChangedStatusOfSeletedDownload);
+		// Use QueuedConnection because Download is in a different thread than MainWindow
+		connect(SelectedDownload, &Download::DownloadStatusChanged, this, &MainWindow::ChangedStatusOfSeletedDownload, Qt::QueuedConnection);
 
 		if (SelectedDownload->get_Status() == Download::NotStarted || SelectedDownload->get_Status() == Download::Pause)
 		{

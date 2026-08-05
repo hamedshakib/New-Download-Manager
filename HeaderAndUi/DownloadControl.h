@@ -17,6 +17,7 @@
 #include "qtimer.h"
 #include "qfileinfo.h"
 #include "qreadwritelock.h"
+#include "qmutex.h"
 
 class DownloadControl : public QObject
 {
@@ -36,6 +37,7 @@ public:
 private:
 	DownloadStatus statusOfDownload = DownloadStatus::Pause;
 	QReadWriteLock locker;
+	QMutex mutex;  // Mutex for thread-safe operations
 
 
 	QMetaObject::Connection speedControlConnection;

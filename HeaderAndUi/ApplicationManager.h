@@ -20,6 +20,7 @@ private:
 	DownloadManager* downloadManager;
 	QueueManager* queueManager;
 	MainWindow* mainWindow;
+	ProxyManager* proxyManager;
 
 private slots:
 	void AddMainSystemTrayToTaskbar();
