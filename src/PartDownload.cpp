@@ -17,6 +17,7 @@ PartDownload::~PartDownload()
 
 bool PartDownload::IsPartDownloadFinished()
 {
+	QMutexLocker lock(&stateMutex);
 	qDebug() << LastDownloadedByte;
 	if (this->LastDownloadedByte >= this->end_byte)
 	{
@@ -32,5 +33,24 @@ bool PartDownload::IsPartDownloadFinished()
 
 void PartDownload::UpdatePartDownloadLastDownloadedByte()
 {
+	QMutexLocker lock(&stateMutex);
 	this->LastDownloadedByte = this->start_byte + this->PartDownloadFile->size() - 1;
+}
+
+qint64 PartDownload::GetLastDownloadedByte() const
+{
+	QMutexLocker lock(&stateMutex);
+	return LastDownloadedByte;
+}
+
+void PartDownload::SetLastDownloadedByte(qint64 value)
+{
+	QMutexLocker lock(&stateMutex);
+	LastDownloadedByte = value;
+}
+
+void PartDownload::AddToLastDownloadedByte(qint64 bytes)
+{
+	QMutexLocker lock(&stateMutex);
+	LastDownloadedByte += bytes;
 }

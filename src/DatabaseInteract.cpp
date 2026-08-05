@@ -1,7 +1,12 @@
 #include "HeaderAndUi/DatabaseInteract.h"
 
+//Serialize all SQLite operations across threads. SQLite only allows a single
+//writer; without this, concurrent per-thread connections produce
+//"database is locked" errors and possible corruption.
+
 bool DatabaseInteract::ExectionQueryForReadData(QSqlQuery* query)
 {
+	QMutexLocker locker(&SettingUpDatabase::databaseMutex());
 	bool is_Ok = query->exec();
 	if (is_Ok)
 	{
@@ -16,6 +21,7 @@ bool DatabaseInteract::ExectionQueryForReadData(QSqlQuery* query)
 
 bool DatabaseInteract::ExectionQueryForUpdateData(QSqlQuery* query)
 {
+	QMutexLocker locker(&SettingUpDatabase::databaseMutex());
 	bool is_Ok = query->exec();
 	if (is_Ok)
 	{
@@ -30,6 +36,7 @@ bool DatabaseInteract::ExectionQueryForUpdateData(QSqlQuery* query)
 
 bool DatabaseInteract::ExectionQueryForInsertData(QSqlQuery* query)
 {
+	QMutexLocker locker(&SettingUpDatabase::databaseMutex());
 	bool is_Ok = query->exec();
 	if (is_Ok)
 	{
@@ -44,6 +51,7 @@ bool DatabaseInteract::ExectionQueryForInsertData(QSqlQuery* query)
 
 bool DatabaseInteract::ExectionQueryForCreateTable(QSqlQuery* query)
 {
+	QMutexLocker locker(&SettingUpDatabase::databaseMutex());
 	bool is_Ok = query->exec();
 	if (is_Ok)
 	{
@@ -58,6 +66,7 @@ bool DatabaseInteract::ExectionQueryForCreateTable(QSqlQuery* query)
 
 bool DatabaseInteract::ExectionQueryForDeleteData(QSqlQuery* query)
 {
+	QMutexLocker locker(&SettingUpDatabase::databaseMutex());
 	bool is_Ok = query->exec();
 	if (is_Ok)
 	{

@@ -39,7 +39,6 @@ private:
 
 
 	QMetaObject::Connection speedControlConnection;
-	QNetworkAccessManager* manager;
 	Download* download;
 	QList<PartDownloader*> PartDownloader_list;
 	QList<PartDownloader*> ActivePartDownloader_list;

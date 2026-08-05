@@ -42,7 +42,7 @@ void ShowDownloadWidget::ProcessSetup()
 	{
 		QTreeWidgetItem* item = new QTreeWidgetItem();
 		item->setText(0,QString::number(i));
-		item->setText(1, ConverterSizeToSuitableString::ConvertSizeToSuitableString(partdownloads[i]->LastDownloadedByte+1 - partdownloads[i]->start_byte));
+		item->setText(1, ConverterSizeToSuitableString::ConvertSizeToSuitableString(partdownloads[i]->GetLastDownloadedByte()+1 - partdownloads[i]->start_byte));
 		item->setText(2, InfoString);
 		TreeWidgetMap.insert(item, m_Download->get_PartDownloads()[i]);
 		items.append(item);

@@ -12,8 +12,8 @@ DownloadControl::~DownloadControl()
 void DownloadControl::initDownloadControl(Download* download)
 {
 	this->download = download;
-	manager = new QNetworkAccessManager();
-	manager->moveToThread(this->thread());
+	//Each PartDownloader now owns its own QNetworkAccessManager on its own thread,
+	//so no shared manager is created here.
 	timer = new QTimer();
 	//timer->moveToThread(this->thread());
 	connect(timer, &QTimer::timeout, this, &DownloadControl::TimerTimeOut);
@@ -170,7 +170,13 @@ void DownloadControl::SetMaxSpeedForPartDownloaders()
 void DownloadControl::ProcessSetPartDownloaderMaxSpeed(PartDownloader* partDownloader,bool is_SpeedLimited)
 {
 	if (statusOfDownload == DownloadStatus::Downloading || statusOfDownload == DownloadStatus::Pause)
-		partDownloader->SetSpeedLimited(is_SpeedLimited);
+	{
+		//SetSpeedLimited (de)connects the reply readyRead signal, so it must run on
+		//the PartDownloader's own thread.
+		QMetaObject::invokeMethod(partDownloader, [partDownloader, is_SpeedLimited]() {
+			partDownloader->SetSpeedLimited(is_SpeedLimited);
+		}, Qt::QueuedConnection);
+	}
 }
 
 /*bool DownloadControl::CreatePartDownloaderFromDatabase()
@@ -191,7 +197,11 @@ bool DownloadControl::ProcessPreparePartDownloaders()
 			qDebug() << partDownload->thread();
 
 			PartDownloader_list.append(tempPartDownloader);
-			tempPartDownloader->initPartDownlolader(partDownload, 500000000);
+			//Run init on the PartDownloader's own thread (queued). This is where its
+			//QNetworkAccessManager and file writer are created on the correct thread.
+			QMetaObject::invokeMethod(tempPartDownloader, [tempPartDownloader, partDownload]() {
+				tempPartDownloader->initPartDownlolader(partDownload, 500000000);
+			}, Qt::QueuedConnection);
 
 			Download* download1 = download;
 			connect(tempPartDownloader, &PartDownloader::Started, this, &DownloadControl::HandelStartedPartDownloaderSignalEmitted);
@@ -213,37 +223,23 @@ bool DownloadControl::ProcessPreparePartDownloaderFromPartdownload(PartDownloade
 		return false;
 	}
 
-	QNetworkRequest request;
 	QUrl url = download->get_Url();
-	if (!download->Username.isEmpty() && download->Password.isEmpty())
+	if (!download->Username.isEmpty() && !download->Password.isEmpty())
 	{
 		url.setUserName(download->Username);
 		url.setPassword(download->Password);
 	}
-	request.setUrl(url);
 
+	qint64 startByte = partDownload->GetLastDownloadedByte() + 1;
+	qint64 endByte = partDownload->end_byte;
+	QString user = download->Username;
+	QString pass = download->Password;
 
-	//qDebug() << "downloadUrl:" << download->get_Url();
-	request.setAttribute(QNetworkRequest::HttpPipeliningAllowedAttribute, true);
-
-	//qDebug() << "Started_Byte ::::" << partDownload->start_byte;
-	QString rangeBytes = QString("bytes=%1-%2").arg(partDownload->LastDownloadedByte + 1).arg(partDownload->end_byte);
-	//qDebug() << "rangeBytes:" << rangeBytes;
-	request.setRawHeader("Range", rangeBytes.toUtf8());
-
-	//qDebug() << manager->thread()->objectName();
-	//qDebug() << QThread::currentThread()->objectName();
-	//qDebug() << this->thread();
-
-	QNetworkReply* reply = manager->get(request);
-	//qDebug() << reply->bytesAvailable();
-	
-	reply->moveToThread(download->thread());
-	//qDebug() << reply->thread()->objectName();
-	partDownloader->moveToThread(download->thread());
-
-	partDownloader->ProcessSetNewReply(reply);
-	
+	//The PartDownloader issues the ranged request on its own thread using its own
+	//QNetworkAccessManager; this yields real per-part parallelism.
+	QMetaObject::invokeMethod(partDownloader, [partDownloader, url, user, pass, startByte, endByte]() {
+		partDownloader->StartRequest(url, user, pass, startByte, endByte);
+	}, Qt::QueuedConnection);
 
 	return true;
 }
@@ -287,20 +283,24 @@ void DownloadControl::HandelDownloadedBytesPartDownloaderSignalEmitted(qint64 Re
 
 bool DownloadControl::StartPartDownloader(PartDownloader* partDownloader)
 {
-	partDownloader->Resume();
+	//Resume must run on the PartDownloader's own thread.
+	QMetaObject::invokeMethod(partDownloader, [partDownloader]() {
+		partDownloader->Resume();
+	}, Qt::QueuedConnection);
 	return true;
 }
 
 bool DownloadControl::StopPartDownloader(PartDownloader* partDownloader)
 {
-	partDownloader->Pause();
+	//Pause must run on the PartDownloader's own thread.
+	QMetaObject::invokeMethod(partDownloader, [partDownloader]() {
+		partDownloader->Pause();
+	}, Qt::QueuedConnection);
 	return true;
 }
 
 bool DownloadControl::CheckDownloadFinished()
 {
-	QMutex mutex;
-	mutex.lock();
 	qDebug() << "Check For Download Finish";
 	if (statusOfDownload == DownloadStatus::Downloading || statusOfDownload == DownloadStatus::Pause)
 	{
@@ -315,7 +315,6 @@ bool DownloadControl::CheckDownloadFinished()
 				if (!partDownload->IsPartDownloadFinished())
 				{
 					qDebug() << " Exit In Check Download Finsish: not finish";
-					mutex.unlock();
 					return false;
 				}
 			}
@@ -326,22 +325,18 @@ bool DownloadControl::CheckDownloadFinished()
 		}
 	}
 	qDebug() << " Exit In Check Download Finsish: finished";
-	mutex.unlock();
 	return true;
 }
 
 bool DownloadControl::ProcessFinishDownload()
 {
-	QMutex mutex;
-	mutex.lock();
 	if (statusOfDownload == DownloadStatus::Finidshed)
 	{
-		mutex.unlock();
 		return false;
 	}
 	statusOfDownload = DownloadStatus::StartFinsh;
 	disconnect(speedControlConnection);
-	qDebug() << "Process Of End Of Downloading "<<QThread::currentThread()->objectName() ;
+	qDebug() << "Process Of End Of Downloading " << QThread::currentThread()->objectName();
 	Is_Downloading = false;
 	timer->stop();
 	QList<PartDownload*> PartDownloads = download->get_PartDownloads();
@@ -352,20 +347,22 @@ bool DownloadControl::ProcessFinishDownload()
 		FilesOfDownload.append(partDownload->PartDownloadFile);
 	}
 
-
-
-
 	QFile* NewDownloadFile = DownloadFileWriter::BuildFileFromMultipleFiles(FilesOfDownload, download->get_SavaTo().toString());
 
 	qDebug() << NewDownloadFile->fileName() << ":" << NewDownloadFile->size();
 	download->CompletedFile = NewDownloadFile;
-	qDeleteAll(PartDownloads);
+	//deleteLater() queues deletion on each PartDownload's own thread. PartDownload objects
+	//may live on worker threads, so a direct qDeleteAll() from here (a different thread)
+	//would be an unsafe cross-thread deletion of QObjects.
+	for (PartDownload* partDownload : PartDownloads)
+	{
+		partDownload->deleteLater();
+	}
 	download->Set_downloadStatus(Download::Completed);
 
 	NewDownloadFile->deleteLater();
 	emit CompeletedDownload();
 	statusOfDownload = DownloadStatus::Finidshed;
-	mutex.unlock();
 	return true;
 }
 
@@ -384,7 +381,7 @@ void DownloadControl::TimerTimeOut()
 		QList<qint64> DownloadedBytesEachPartDownloadList;
 		for (PartDownload* partDownload : download->get_PartDownloads())
 		{
-			DownloadedBytesEachPartDownloadList.append(partDownload->LastDownloadedByte - partDownload->start_byte + 1);
+			DownloadedBytesEachPartDownloadList.append(partDownload->GetLastDownloadedByte() - partDownload->start_byte + 1);
 		}
 
 		emit UpdateDownloaded(DownloadStatus, SpeedString, TimeLeftString, DownloadedBytesEachPartDownloadList);
@@ -393,14 +390,10 @@ void DownloadControl::TimerTimeOut()
 
 void DownloadControl::ProcessForShowDownloadCompleteDialog()
 {
-	
 	if (SettingInteract::GetValue("Download/ShowCompleteDialog").toBool())
 	{
 		Download* download1 = download;
-		QMutex mutux;
-		mutux.lock();
 		QMetaObject::invokeMethod(qApp, [&, download1]() {ShowCompleteDialog(download1,download1->get_SavaTo().toString()); }, Qt::QueuedConnection);
-		mutux.unlock();
 	}
 }
 
@@ -413,29 +406,28 @@ void DownloadControl::ShowCompleteDialog(Download* download, QString SaveTo)
 
 void DownloadControl::UpdateListOfActivePartDownloaders()
 {
-	locker.lockForWrite();
+	QWriteLocker guard(&locker);
 	int numberOfActivePartDownloaders = ActivePartDownloader_list.count();
-	QList<PartDownloader*> ActivePartDownloader_list;
+	//A local build list is used to avoid the member being modified while iterating.
+	QList<PartDownloader*> newActiveList;
 	for (auto partDownloader : PartDownloader_list)
 	{
 		if (!partDownloader->Get_PartDownload()->IsPartDownloadFinished())
-			ActivePartDownloader_list.append(partDownloader);
+			newActiveList.append(partDownloader);
 	}
-	
-	this->ActivePartDownloader_list = ActivePartDownloader_list;
 
-	if (numberOfActivePartDownloaders != this->ActivePartDownloader_list.count())
+	ActivePartDownloader_list = newActiveList;
+
+	if (numberOfActivePartDownloaders != ActivePartDownloader_list.count())
 		RecentlyUpdatedActivePartDownloader_list = true;
-
-	locker.unlock();
 }
 
 void DownloadControl::DownloadForControlSpeed()
 {
 	if (Is_Downloading)
 	{
-		QMutex mutex;
-		mutex.lock();
+		//Protect the shared ActivePartDownloader_list (also written under the same lock).
+		QReadLocker listGuard(&locker);
 
 		qint64 spentedTimeFromLastPeriod = elapsedTimer->restart();
 		NumberOfBytesDownloadedInLastPeriodOfDownloadSpeedLimitted = 0;
@@ -474,7 +466,6 @@ void DownloadControl::DownloadForControlSpeed()
 			}
 		emit FinishedLastControlledSpeedPriod(elapsedTimer->elapsed());
 		}
-		mutex.unlock();
 	}
 }
 

@@ -17,11 +17,10 @@ DownloadManager::~DownloadManager()
 
 Download* DownloadManager::CreateDownloadFromDatabase(int download_id)
 {
-	QThread* DownloadThread = new QThread(this->thread());
-	DownloadThread->setObjectName("Download Thread");
-	DownloadThread->start();
+	//Resume/load-from-database runs on the main thread. The download, its parts and
+	//its DownloadControl all share this thread, which avoids the cross-thread
+	//QFile/PartDownload access that happened when a separate worker thread was used.
 	Download* download = new Download();
-	download->moveToThread(DownloadThread);
 
 	DatabaseManager manager(this);
 	if (manager.LoadDownloadComplete(download_id, download))
@@ -30,8 +29,8 @@ Download* DownloadManager::CreateDownloadFromDatabase(int download_id)
 	}
 	else
 	{
-		Download* download;
-		return download;
+		//The download could not be loaded.
+		return nullptr;
 	}
 }
 
@@ -66,6 +65,20 @@ DownloadControl* DownloadManager::CreateDownloadControl(Download* download)
 	DownloadControl* downloadControl = new DownloadControl();
 	downloadControl->moveToThread(download->thread());
 	downloadControl->initDownloadControl(download);
+
+	//Worker-thread lifecycle: when the DownloadControl (which lives on the
+	//download's worker thread) is destroyed, quit that thread; the QThread object
+	//then deletes itself when it finishes. This stops the leaked "Download Thread"
+	//QThread objects. The main thread (resume path) is never touched.
+	QThread* dlThread = download->thread();
+	if (dlThread != nullptr && dlThread != this->thread())
+	{
+		QObject::connect(downloadControl, &QObject::destroyed, dlThread, [dlThread]() {
+			dlThread->quit();
+		});
+		QObject::connect(dlThread, &QThread::finished, dlThread, &QObject::deleteLater);
+	}
+
 	connect(downloadControl, &DownloadControl::Started, this, [&, download]() {DatabaseManager::UpdateDownloadInStartOfDownloadOnDatabase(download); });
 	connect(downloadControl, &DownloadControl::UpdateDownloaded, this, [&, download]() {DatabaseManager::UpdateInDownloadingOnDataBase(download); });
 	connect(downloadControl, &DownloadControl::CompeletedDownload, this, [&, download]() {

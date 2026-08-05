@@ -7,7 +7,8 @@ DatabaseManager::DatabaseManager(QObject *parent)
 
 DatabaseManager::~DatabaseManager()
 {
-	SettingUpDatabase::get_Database().close();
+	//Remove the database connection that belongs to the current (main) thread.
+	SettingUpDatabase::removeThreadConnection();
 }
 
 bool DatabaseManager::LoadDownloadComplete(int Download_id,Download* download)
@@ -151,16 +152,14 @@ QList<PartDownload*> DatabaseManager::CreatePartDownloadsOfDownload(int Download
 	{
 		while (query->next())
 		{
-			QThread* thread = new QThread();
-			thread->setObjectName("PartDownload Thread");
-			thread->start();
+			//The PartDownload (and its QFile) is created on the calling thread so it
+			//matches the download's thread (DownloadControl lives there too). No
+			//separate worker thread is created here.
 			PartDownload* partDownload = new PartDownload(nullptr);
-			partDownload->moveToThread(thread);
 			if (ProcessDatabaseOutput::ProcessPutLoadedPartDownloadInInPartDownloadObject(query->record(), partDownload, Download_id))
 			{
 				ListOfPartDownloadsOfDownload.append(partDownload);
 			}
-
 		}
 	}
 	delete query;
