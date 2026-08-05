@@ -3,6 +3,7 @@
 #include <QObject>
 #include "qsqldatabase.h"
 #include "qdebug.h"
+#include "qmutex.h"
 
 class SettingUpDatabase : public QObject
 {
@@ -13,6 +14,8 @@ public:
 
 private:
 	static bool SettingUp(QSqlDatabase& db);
+	
+	static QMutex& getMutex();
 /*
 public:
 	SettingUpDatabase(QObject *parent);

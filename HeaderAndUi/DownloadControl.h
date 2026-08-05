@@ -23,9 +23,12 @@ class DownloadControl : public QObject
 {
 	Q_OBJECT
 
-	enum DownloadStatus
+enum DownloadStatus
 	{
-		Downloading,Pause,StartFinsh,Finidshed
+		Downloading,
+		Pause,
+		StartFinish,
+		Finished
 	};
 
 public:
@@ -82,6 +85,7 @@ signals:
 	void UpdateDownloaded(QString Status, QString speed, QString TimeLeft,QList<qint64> DownloadedBytesEachPartDownloadList);
 
 	void FinishedLastControlledSpeedPriod(qint64 spentedTime);
+	void ErrorDownload();
 
 private slots:
 	bool ProcessPreparePartDownloaders();

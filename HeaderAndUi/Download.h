@@ -20,7 +20,8 @@ public:
 		NotStarted,
 		Downloading,
 		Pause,
-		Completed
+		Completed,
+		Error
 	};
 	enum ResumeCapabilityEnum
 	{

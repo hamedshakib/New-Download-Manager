@@ -13,8 +13,16 @@ SettingUpDatabase::~SettingUpDatabase()
 }
 */
 
+QMutex& SettingUpDatabase::getMutex()
+{
+    static QMutex mutex;
+    return mutex;
+}
+
 QSqlDatabase& SettingUpDatabase::get_Database()
 {
+    QMutexLocker locker(&getMutex());
+    
     static QSqlDatabase db;
     if (!db.isValid())
     {

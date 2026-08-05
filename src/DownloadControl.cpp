@@ -374,11 +374,11 @@ bool DownloadControl::CheckDownloadFinished()
 
 bool DownloadControl::ProcessFinishDownload()
 {
-	if (statusOfDownload == DownloadStatus::Finidshed)
+	if (statusOfDownload == DownloadStatus::Finished)
 	{
 		return false;
 	}
-	statusOfDownload = DownloadStatus::StartFinsh;
+	statusOfDownload = DownloadStatus::StartFinish;
 	disconnect(speedControlConnection);
 	qDebug() << "Process Of End Of Downloading "<<QThread::currentThread()->objectName() ;
 	Is_Downloading = false;
@@ -414,7 +414,7 @@ bool DownloadControl::ProcessFinishDownload()
 	download->Set_downloadStatus(Download::Completed);
 	NewDownloadFile->deleteLater();
 	emit CompeletedDownload();
-	statusOfDownload = DownloadStatus::Finidshed;
+	statusOfDownload = DownloadStatus::Finished;
 	return true;
 }
 

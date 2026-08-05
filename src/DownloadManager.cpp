@@ -38,6 +38,8 @@ Download* DownloadManager::CreateDownloadFromDatabase(int download_id)
 	if (manager.LoadDownloadComplete(download_id, download))
 	{
 		connect(DownloadThread, &QThread::finished, DownloadThread, &QThread::deleteLater);
+		// When download is deleted, also delete its thread
+		connect(download, &Download::destroyed, DownloadThread, &QThread::quit);
 		return download;
 	}
 	else
@@ -126,7 +128,7 @@ Download* DownloadManager::ProcessAchieveDownload(int Download_id)
     QMutexLocker locker(&mutex);
 	for (Download* download : ListOfActiveDownloads)
 	{
-		if (download->get_Id() == Download_id)
+		if (download && download->get_Id() == Download_id)
 		{
 			return download;
 		}
@@ -137,8 +139,20 @@ Download* DownloadManager::ProcessAchieveDownload(int Download_id)
 	Download* downloadWithSpecialId = CreateDownloadFromDatabase(Download_id);
 	if (downloadWithSpecialId != nullptr)
 	{
-		CreatePartDownloadAndPutInDownloadFromDatabase(downloadWithSpecialId);
-		AddCreatedDownloadToDownloadList(downloadWithSpecialId);
+		if (CreatePartDownloadAndPutInDownloadFromDatabase(downloadWithSpecialId))
+		{
+			AddCreatedDownloadToDownloadList(downloadWithSpecialId);
+		}
+		else
+		{
+			qCritical() << "Failed to create part downloads for download ID:" << Download_id;
+			downloadWithSpecialId->deleteLater();
+			return nullptr;
+		}
+	}
+	else
+	{
+		qCritical() << "Download not found in database with ID:" << Download_id;
 	}
 	return downloadWithSpecialId;
 }
@@ -174,7 +188,18 @@ bool DownloadManager::ProcessRemoveDownload(int download_id, bool is_RemoveFromD
 {
     QMutexLocker locker(&mutex);
 	Download* download = ProcessAchieveDownload(download_id);
+	if (!download)
+	{
+		qCritical() << "Download not found with ID:" << download_id << "for removal";
+		return false;
+	}
+	
 	DownloadControl* downloadControl = ProcessAchieveDownloadControl(download);
+	if (!downloadControl)
+	{
+		qCritical() << "DownloadControl not found for download ID:" << download_id;
+		return false;
+	}
 
 	downloadControl->PauseDownload();
 	ListOfDownloadControls.removeOne(downloadControl);
@@ -202,8 +227,19 @@ bool DownloadManager::ProcessRemoveDownload(int download_id, bool is_RemoveFromD
 
 bool DownloadManager::ProcessRemoveDownload(Download* download, bool is_RemoveFromDisk)
 {
+	if (!download)
+	{
+		qCritical() << "Download pointer is null in ProcessRemoveDownload";
+		return false;
+	}
+    
     QMutexLocker locker(&mutex);
 	DownloadControl* downloadControl = ProcessAchieveDownloadControl(download);
+	if (!downloadControl)
+	{
+		qCritical() << "DownloadControl not found for download ID:" << download->get_Id();
+		return false;
+	}
 
 	downloadControl->PauseDownload();
 	ListOfDownloadControls.removeOne(downloadControl);

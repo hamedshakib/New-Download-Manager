@@ -152,7 +152,7 @@ void MainWindow::ChangedDownloadSelected(int Download_id,bool Is_Completed)
 {
 	qDebug() << "Download_id:"<< Download_id;
 	
-	// Disconnect old connection if exists
+	// Disconnect old connection if exists (before setting SelectedDownload to nullptr)
 	if (SelectedDownload != nullptr)
 	{
 		disconnect(SelectedDownload, &Download::DownloadStatusChanged, this, &MainWindow::ChangedStatusOfSeletedDownload);
@@ -171,6 +171,12 @@ void MainWindow::ChangedDownloadSelected(int Download_id,bool Is_Completed)
 		return;
 	}
 	
+	if (!downloadManagerPointer)
+	{
+		qCritical() << "DownloadManager pointer is null in MainWindow";
+		return;
+	}
+	
 	// Download Not Completed - get download from manager
 	SelectedDownload = downloadManagerPointer->ProcessAchieveDownload(Download_id);
 	
@@ -178,7 +184,6 @@ void MainWindow::ChangedDownloadSelected(int Download_id,bool Is_Completed)
 	if (!SelectedDownload)
 	{
 		qWarning() << "Failed to load download with ID:" << Download_id;
-		SelectedDownload = nullptr;
 		return;
 	}
 	
@@ -200,6 +205,12 @@ void MainWindow::ChangedDownloadSelected(int Download_id,bool Is_Completed)
 
 void MainWindow::ChangedStatusOfSeletedDownload(Download::DownloadStatusEnum NewStatus)
 {
+	if (!SelectedDownload)
+	{
+		qWarning() << "ChangedStatusOfSeletedDownload: SelectedDownload is null";
+		return;
+	}
+	
 	ui.actionRemove->setEnabled(true);
 	if (SelectedDownload->get_Status() == Download::NotStarted || SelectedDownload->get_Status() == Download::Pause)
 	{
@@ -217,57 +228,110 @@ void MainWindow::ChangedStatusOfSeletedDownload(Download::DownloadStatusEnum New
 		ui.actionDownload_Now->setEnabled(false);
 		ui.actionStop_Download->setEnabled(false);
 	}
-
 }
 
 void MainWindow::on_actionDownload_Now_triggered()
 {
-	if (SelectedDownload != nullptr)
+	if (!SelectedDownload)
 	{
-		DownloadControl *downloadControl = downloadManagerPointer->ProcessAchieveDownloadControl(SelectedDownload);
+		qWarning() << "on_actionDownload_Now_triggered: SelectedDownload is null";
+		return;
+	}
+	
+	if (!downloadManagerPointer)
+	{
+		qCritical() << "DownloadManager pointer is null";
+		return;
+	}
+	
+	DownloadControl *downloadControl = downloadManagerPointer->ProcessAchieveDownloadControl(SelectedDownload);
+	if (downloadControl)
+	{
 		downloadControl->StartDownload();
+	}
+	else
+	{
+		qCritical() << "Failed to get DownloadControl for download ID:" << SelectedDownload->get_Id();
 	}
 }
 
 void MainWindow::on_actionStop_Download_triggered()
 {
-	if (SelectedDownload != nullptr)
+	if (!SelectedDownload)
 	{
-		DownloadControl* downloadControl = downloadManagerPointer->ProcessAchieveDownloadControl(SelectedDownload);
+		qWarning() << "on_actionStop_Download_triggered: SelectedDownload is null";
+		return;
+	}
+	
+	if (!downloadManagerPointer)
+	{
+		qCritical() << "DownloadManager pointer is null";
+		return;
+	}
+	
+	DownloadControl* downloadControl = downloadManagerPointer->ProcessAchieveDownloadControl(SelectedDownload);
+	if (downloadControl)
+	{
 		downloadControl->PauseDownload();
+	}
+	else
+	{
+		qCritical() << "Failed to get DownloadControl for download ID:" << SelectedDownload->get_Id();
 	}
 }
 
 void MainWindow::on_actionRemove_triggered()
 {
+	if (!downloadManagerPointer)
+	{
+		qCritical() << "DownloadManager pointer is null";
+		return;
+	}
+	
 	if (SelectedDownload != nullptr)
 	{
-		mainTableViewController->RemoveActionTriggered(SelectedDownload);
-	}
-	else
-	{
-		int Download_id = mainTableViewController->Get_SeletedFinisedDownloadId();
-		if (Download_id > 0)
+		if (mainTableViewController)
 		{
-			// Load download from database
-			Download* download = downloadManagerPointer->ProcessAchieveDownload(Download_id);
-			
-			// Check if download was successfully loaded
-			if (download)
+			mainTableViewController->RemoveActionTriggered(SelectedDownload);
+		}
+		else
+		{
+			qCritical() << "mainTableViewController pointer is null";
+		}
+		return;
+	}
+	
+	int Download_id = mainTableViewController ? mainTableViewController->Get_SeletedFinisedDownloadId() : -1;
+	if (Download_id > 0)
+	{
+		// Load download from database
+		Download* download = downloadManagerPointer->ProcessAchieveDownload(Download_id);
+		
+		// Check if download was successfully loaded
+		if (download)
+		{
+			if (mainTableViewController)
 			{
 				mainTableViewController->RemoveActionTriggered(download);
 			}
-			else
-			{
-				qWarning() << "Failed to load download with ID:" << Download_id << "for removal";
-			}
+		}
+		else
+		{
+			qWarning() << "Failed to load download with ID:" << Download_id << "for removal";
 		}
 	}
 }
 
 void MainWindow::on_actionStop_All_triggered()
 {
-	downloadManagerPointer->StopAllDownload();
+	if (downloadManagerPointer)
+	{
+		downloadManagerPointer->StopAllDownload();
+	}
+	else
+	{
+		qCritical() << "downloadManagerPointer is null in on_actionStop_All_triggered";
+	}
 }
 
 void MainWindow::on_actionEnglish_triggered()
