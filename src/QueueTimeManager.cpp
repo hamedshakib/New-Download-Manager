@@ -167,6 +167,13 @@ bool QueueTimeManager::CheckQueueForEvent(Queue* queue)
 
 bool QueueTimeManager::AddSingleShot(Queue* queue)
 {
+	if (!queue) {
+		qWarning() << "QueueTimeManager::AddSingleShot called with null queue";
+		return false;
+	}
+	
+	bool hasSchedule = false;
+	
 	if (Is_TodayaDayOfDownload(queue->DownloadDays))
 	{
 		if (queue->startDownload.is_active)
@@ -175,19 +182,22 @@ bool QueueTimeManager::AddSingleShot(Queue* queue)
 			if (secondsToStart > 0)
 			{
 				QTimer::singleShot(secondsToStart*1000, [&, queue]() {CheckQueueForEvent(queue); });
+				hasSchedule = true;
 			}
 		}
 	}
+	
 	if (queue->stopDownload.is_active)
 	{
-			int secondsToStop = QTime::currentTime().secsTo(queue->stopDownload.Time);
-			if (secondsToStop > 0)
-			{
-				QTimer::singleShot(secondsToStop*1000, [&, queue]() {CheckQueueForEvent(queue); });
-			}
+		int secondsToStop = QTime::currentTime().secsTo(queue->stopDownload.Time);
+		if (secondsToStop > 0)
+		{
+			QTimer::singleShot(secondsToStop*1000, [&, queue]() {CheckQueueForEvent(queue); });
+			hasSchedule = true;
+		}
 	}
 	
-	return false;
+	return hasSchedule;
 }
 
 

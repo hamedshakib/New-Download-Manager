@@ -79,12 +79,17 @@ QString CalculatorDownload::GetTimeLeftOfDownloadInFormOfString(qint64 NumberRem
 	return RemainedTimeString;
 }
 
-QString CalculatorDownload::getStatusForTable(qint64 DownloadedSize,qint64 SizeDownload)
+QString CalculatorDownload::getStatusForTable(qint64 DownloadedSize, qint64 SizeDownload)
 {
 	QString DownloadStatus;
-
+	
+	// Handle division by zero
+	if (SizeDownload <= 0) {
+		return "0.00%";
+	}
+	
 	float Present = (long double)DownloadedSize / SizeDownload;
-	DownloadStatus = QString::number(Present*100, 'f', 2) +"%";
+	DownloadStatus = QString::number(Present * 100, 'f', 2) + "%";
 	return DownloadStatus;
 }
 

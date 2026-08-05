@@ -178,9 +178,13 @@ Queue* QueueManager::AchiveQueue(size_t Queue_id)
 
 bool QueueManager::DeleteQueueByQueueId(size_t queue_id)
 {
-	//ToDo
+	Queue* queue = AchiveQueue(queue_id);
 	
-	Queue* queue=AchiveQueue(queue_id);
+	if (!queue) {
+		qWarning() << "QueueManager: Queue not found for deletion, ID:" << queue_id;
+		return false;
+	}
+	
 	StopQueue(queue);
 	DatabaseManager::ExitAllDownloadFrom_Queue_Download(queue);
 	DatabaseManager::ExitAllDownloadFromQueue(queue);
@@ -198,19 +202,23 @@ QList<Queue*> QueueManager::Get_ListOfQueues()
 
 bool QueueManager::HandelSingleShots()
 {
-	
-	//int DeffirentSecond=QTime::currentTime().secsTo(QTime(23, 59, 59));
+	//int DeffirentSecond = QTime::currentTime().secsTo(QTime(23, 59, 59));
 	//timer->singleShot(DeffirentSecond, this, &QueueManager::HandelSingleShots);
 	
+	// Placeholder implementation - needs proper timer-based scheduling logic
+	// This method should handle single-shot queue scheduling
 	
-
-	return 0;
+	return true;
 }
 
 bool QueueManager::ChangeStartOrStopTimeForQueue(Queue* queue)
 {
-	m_QueueTimeManager->AddSingleShot(queue);
-	return 0;
+	if (!queue) {
+		qWarning() << "QueueManager::ChangeStartOrStopTimeForQueue called with null queue";
+		return false;
+	}
+	
+	return m_QueueTimeManager->AddSingleShot(queue);
 }
 
 bool QueueManager::MoveDownloadInQueue(Queue* queue, Download* download, int moveNumber)

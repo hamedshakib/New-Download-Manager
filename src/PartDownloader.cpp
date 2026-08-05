@@ -74,7 +74,12 @@ void PartDownloader::Pause()
 {
 	this->is_Downloading = false;
 	partDownloaderStatus = PartDownloaderStatus::PartDownloadPaused;
-	this->reply->abort();
+	
+	if (reply) {
+		reply->abort();
+	} else {
+		qWarning() << "PartDownloader::Pause() called but reply is null";
+	}
 }
 
 qint64 PartDownloader::ReadBytes(qint64 bytes)
@@ -283,6 +288,9 @@ bool PartDownloader::IsSpeedLimiter()
 
 bool PartDownloader::IsAvaliableByteForRead()
 {
-	return reply->bytesAvailable()>0 ? true:false;
+	if (!reply) {
+		return false;
+	}
+	return reply->bytesAvailable() > 0;
 }
 
