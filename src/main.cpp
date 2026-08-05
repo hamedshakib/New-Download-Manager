@@ -25,12 +25,21 @@ int main(int argc,char* argv[])
 	translationMaager.Translate();
 
 	
+	// Load OpenSSL libraries with error checking
 	QLibrary library1("libssl-1_1-x64");
-	library1.load();
+	if (!library1.load()) {
+		qDebug() << "Failed to load libssl-1_1-x64:" << library1.errorString();
+	}
+	
 	QLibrary library2("libcrypto-1_1-x64");
-	library2.load();
+	if (!library2.load()) {
+		qDebug() << "Failed to load libcrypto-1_1-x64:" << library2.errorString();
+	}
+	
 	QLibrary library3("vcruntime140");
-	library3.load();
+	if (!library3.load()) {
+		qDebug() << "Failed to load vcruntime140:" << library3.errorString();
+	}
 	
 	
 

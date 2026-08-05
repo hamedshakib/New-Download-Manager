@@ -9,6 +9,9 @@ class PartDownload : public QObject
 {
 	Q_OBJECT
 
+signals:
+	void Finished();
+
 public:
 	bool is_Finished = false;
 	int id_PartDownload;

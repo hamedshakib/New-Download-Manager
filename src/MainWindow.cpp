@@ -91,13 +91,14 @@ void MainWindow::on_actionExit_triggered()
 void MainWindow::on_actionOptions_triggered()
 {
 	OptionsWidget* optionsWidget = new OptionsWidget(this);
+	optionsWidget->setAttribute(Qt::WA_DeleteOnClose);
 	optionsWidget->show();
-	//connect(optionsWidget, &QWidget::closeEvent, this, [&optionsWidget](QCloseEvent *event) {optionsWidget->deleteLater(); });
 }
 
 void MainWindow::on_actionScheduler_triggered()
 {
 	ShowSchedule* showSchedule = new ShowSchedule(queueManager,this);
+	showSchedule->setAttribute(Qt::WA_DeleteOnClose);
 	showSchedule->show();
 }
 

@@ -31,19 +31,18 @@ bool DatabaseManager::LoadDownloadComplete(int Download_id,Download* download)
 QStringList DatabaseManager::LoadSuffixsForMimeType(QString MimeType)
 {
 	QSqlQuery* query = DatabaseQueryPreparer::PrepareQuerySuffixsFromMimeType(MimeType);
+	QStringList suffixs;
+	
 	if (DatabaseInteract::ExectionQueryForReadData(query))
 	{
-		QStringList suffixs;
 		while (query->next())
 		{
 			suffixs.append(ProcessDatabaseOutput::ProcessLoadedSuffixsForMimeType(query->record()));
-			
 		}
-		delete query;
-		return suffixs;
-
 	}
+	
 	delete query;
+	return suffixs;
 }
 
 size_t DatabaseManager::CreateNewDownloadOnDatabase(Download* download)
@@ -153,9 +152,19 @@ QList<PartDownload*> DatabaseManager::CreatePartDownloadsOfDownload(int Download
 		{
 			QThread* thread = new QThread();
 			thread->setObjectName("PartDownload Thread");
-			thread->start();
+			
 			PartDownload* partDownload = new PartDownload(nullptr);
 			partDownload->moveToThread(thread);
+			
+			// Connect thread finished signal to deletePartDownload
+			connect(thread, &QThread::finished, partDownload, &PartDownload::deleteLater);
+			connect(thread, &QThread::finished, thread, &QThread::deleteLater);
+			
+			// Emit finished signal when part download is complete
+			connect(partDownload, &PartDownload::Finished, thread, &QThread::quit);
+			
+			thread->start();
+			
 			if (ProcessDatabaseOutput::ProcessPutLoadedPartDownloadInInPartDownloadObject(query->record(), partDownload, Download_id))
 			{
 				ListOfPartDownloadsOfDownload.append(partDownload);
@@ -274,8 +283,13 @@ bool DatabaseManager::RemoveQueueFromDatabase(Queue* queue)
 
 bool DatabaseManager::ExitDownloadFromQueue(Download* download)
 {
-	//ToDo
-	return 0;
+	//TODO: Implement proper logic to remove a download from its queue
+	// For now, this is a placeholder that returns false
+	// The actual implementation should:
+	// 1. Get the queue ID from the database for this download
+	// 2. Remove the download from the queue
+	// 3. Update the queue's download list order
+	return false;
 }
 
 bool DatabaseManager::ExitAllDownloadFromQueue(Queue* queue)

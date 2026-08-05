@@ -30,12 +30,14 @@ void PartDownloader::Resume(bool ItSelf)
 	partDownloaderStatus = PartDownloaderStatus::PartDownloadDownloading;
 	qDebug() << "range partDownload:" << partDownload->start_byte << "-" << partDownload->end_byte;
 
-	qDebug() << this->reply->bytesAvailable();
-	if (ItSelf)
-	{
-		if (reply->bytesAvailable() > 0)
+	if (reply != nullptr) {
+		qDebug() << this->reply->bytesAvailable();
+		if (ItSelf)
 		{
-			emit ReadyRead();
+			if (reply->bytesAvailable() > 0)
+			{
+				emit ReadyRead();
+			}
 		}
 	}
 }
@@ -112,15 +114,18 @@ bool PartDownloader::ProcessSetNewReply(QNetworkReply* reply)
 {
 	if (this->reply != reply)
 	{
-		disconnect(reply, &QNetworkReply::readyRead, this, &PartDownloader::ReadyRead);
-		disconnect(reply, &QNetworkReply::finished, this, &PartDownloader::CheckFinishedRecivedBytes);
-		this->reply->deleteLater();
+		if (this->reply != nullptr) {
+			disconnect(this->reply, &QNetworkReply::readyRead, this, &PartDownloader::ReadyRead);
+			disconnect(this->reply, &QNetworkReply::finished, this, &PartDownloader::CheckFinishedRecivedBytes);
+			this->reply->deleteLater();
+		}
 		this->reply = reply;
 		if (QObject::receivers("readyRead") == 0)
 		{
 			connect(reply, &QNetworkReply::readyRead, this, &PartDownloader::ReadyRead, Qt::ConnectionType::UniqueConnection);
 		}
-		connect(reply, &QNetworkReply::finished, this, &PartDownloader::CheckFinishedRecivedBytes,Qt::DirectConnection);
+		// Use default connection type instead of Qt::DirectConnection to avoid thread safety issues
+		connect(reply, &QNetworkReply::finished, this, &PartDownloader::CheckFinishedRecivedBytes);
 	}
 	return true;
 }

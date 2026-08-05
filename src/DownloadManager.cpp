@@ -30,8 +30,10 @@ Download* DownloadManager::CreateDownloadFromDatabase(int download_id)
 	}
 	else
 	{
-		Download* download;
-		return download;
+		// Return nullptr if download loading failed
+		download->deleteLater();
+		DownloadThread->deleteLater();
+		return nullptr;
 	}
 }
 

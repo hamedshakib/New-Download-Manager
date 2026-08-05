@@ -7,6 +7,34 @@ DownloadControl::DownloadControl(QObject *parent)
 
 DownloadControl::~DownloadControl()
 {
+	// Delete PartDownloader objects
+	qDeleteAll(PartDownloader_list);
+	PartDownloader_list.clear();
+	
+	// Delete ActivePartDownloader_list objects
+	qDeleteAll(ActivePartDownloader_list);
+	ActivePartDownloader_list.clear();
+	
+	// Delete other resources
+	if (manager != nullptr) {
+		manager->deleteLater();
+		manager = nullptr;
+	}
+	
+	if (timer != nullptr) {
+		timer->deleteLater();
+		timer = nullptr;
+	}
+	
+	if (elapsedTimer != nullptr) {
+		elapsedTimer->deleteLater();
+		elapsedTimer = nullptr;
+	}
+	
+	if (elapsedTimerForIndependentSpeed != nullptr) {
+		elapsedTimerForIndependentSpeed->deleteLater();
+		elapsedTimerForIndependentSpeed = nullptr;
+	}
 }
 
 void DownloadControl::initDownloadControl(Download* download)

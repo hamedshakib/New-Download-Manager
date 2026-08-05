@@ -22,6 +22,7 @@ bool PartDownload::IsPartDownloadFinished()
 	{
 		qDebug() << "**downloadC last:" << this->LastDownloadedByte << " end:" << this->end_byte;
 		is_Finished = true;
+		emit Finished();  // Emit finished signal when part download is complete
 		return true;
 	}
 	else

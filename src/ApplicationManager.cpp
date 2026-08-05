@@ -32,7 +32,28 @@ ApplicationManager::ApplicationManager(QObject *parent,int argc,char* argv[])
 
 ApplicationManager::~ApplicationManager()
 {
-	mainWindow->deleteLater();
+	// Properly delete all objects
+	if (m_trayIcon != nullptr) {
+		// The menu will be deleted when the trayIcon is deleted
+		// But we need to explicitly delete actions and menu if not properly connected
+		m_trayIcon->deleteLater();
+		m_trayIcon = nullptr;
+	}
+	
+	if (mainWindow != nullptr) {
+		mainWindow->deleteLater();
+		mainWindow = nullptr;
+	}
+	
+	if (downloadManager != nullptr) {
+		downloadManager->deleteLater();
+		downloadManager = nullptr;
+	}
+	
+	if (queueManager != nullptr) {
+		queueManager->deleteLater();
+		queueManager = nullptr;
+	}
 }
 
 void ApplicationManager::AddMainSystemTrayToTaskbar()
