@@ -397,6 +397,13 @@ bool DownloadControl::ProcessFinishDownload()
 	}
 	
 	QFile* NewDownloadFile = DownloadFileWriter::BuildFileFromMultipleFiles(FilesOfDownload, download->get_SavaTo().toString());
+	if (!NewDownloadFile) {
+		qCritical() << "DownloadControl: Failed to build file from multiple files for download ID:" << download->get_Id();
+		download->Set_downloadStatus(Download::Error);
+		emit ErrorDownload();
+		statusOfDownload = DownloadStatus::Error;
+		return false;
+	}
 	qDebug() << NewDownloadFile->fileName() << ":" << NewDownloadFile->size();
 	download->CompletedFile = NewDownloadFile;
 	
@@ -456,16 +463,16 @@ void DownloadControl::UpdateListOfActivePartDownloaders()
 {
 	locker.lockForWrite();
 	int numberOfActivePartDownloaders = ActivePartDownloader_list.count();
-	QList<PartDownloader*> ActivePartDownloader_list;
+	QList<PartDownloader*> tempActivePartDownloaders;
 	for (auto partDownloader : PartDownloader_list)
 	{
 		if (!partDownloader->Get_PartDownload()->IsPartDownloadFinished())
-			ActivePartDownloader_list.append(partDownloader);
+			tempActivePartDownloaders.append(partDownloader);
 	}
 	
-	this->ActivePartDownloader_list = ActivePartDownloader_list;
+	ActivePartDownloader_list = tempActivePartDownloaders;
 
-	if (numberOfActivePartDownloaders != this->ActivePartDownloader_list.count())
+	if (numberOfActivePartDownloaders != ActivePartDownloader_list.count())
 		RecentlyUpdatedActivePartDownloader_list = true;
 
 	locker.unlock();

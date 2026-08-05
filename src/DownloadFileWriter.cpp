@@ -31,15 +31,24 @@ bool DownloadFileWriter::WriteDownloadToFile(QByteArray& byteArray, QFile* file,
 
 QFile* DownloadFileWriter::BuildFileFromMultipleFiles(QList<QFile*> files, QString AddressOfFile)
 {
+	if (files.count() == 0) {
+		qCritical() << "BuildFileFromMultipleFiles: No files provided";
+		return nullptr;
+	}
+	
 	if (files.count() == 1)
 	{
-
 		files[0]->setFileName(AddressOfFile);
 		return files[0];
 	}
 	else
 	{
 		QFile* NewFile = new QFile(AddressOfFile);
+		if (!NewFile) {
+			qCritical() << "BuildFileFromMultipleFiles: Failed to create new file object";
+			return nullptr;
+		}
+		
 		if (NewFile->open(QIODevice::WriteOnly))
 		{
 			for (QFile* file : files)
@@ -47,8 +56,12 @@ QFile* DownloadFileWriter::BuildFileFromMultipleFiles(QList<QFile*> files, QStri
 				file->close();
 				if (!file->open(QFile::ReadOnly))
 				{
-					qCritical() << "Can't Open File for read for write to one file";
-					return file;
+					qCritical() << "Can't Open File for read for write to one file:" << file->fileName();
+					// Clean up the newly created file
+					NewFile->remove();
+					NewFile->close();
+					delete NewFile;
+					return nullptr;
 				}
 				// Use 64KB buffer for better performance
 				const int BUFFER_SIZE = 65536;
@@ -62,6 +75,12 @@ QFile* DownloadFileWriter::BuildFileFromMultipleFiles(QList<QFile*> files, QStri
 			}
 			NewFile->flush();
 			NewFile->close();
+		}
+		else
+		{
+			qCritical() << "BuildFileFromMultipleFiles: Failed to open new file for writing:" << AddressOfFile;
+			delete NewFile;
+			return nullptr;
 		}
 		return NewFile;
 	}

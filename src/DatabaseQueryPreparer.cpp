@@ -112,7 +112,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForCreateNewDownload(Download* dow
 	query->bindValue(":resumeCapability_id", ProcessEnum::ConvertResumeCapabilityEnumToResumeCapabilityId(download->ResumeCapability));
 
 
-	query->bindValue(":category_id", QVariant("NULL"));
+	query->bindValue(":category_id", QVariant());
 
 
 
@@ -191,7 +191,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForUpdateAllFieldDownload(Download
 		"Category_id = :category_id,"
 		"Queue_id = :queue_id,"
 		"User = :user,"
-		"Password: :password "
+		"Password=:password "
 		"WHERE id = :id;"
 	);
 

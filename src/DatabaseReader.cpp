@@ -38,20 +38,3 @@ bool DatabaseReader::LoadDownloadFromDatabase(int Download_id, Download* downloa
 	delete query;
 	return true;
 }
-
-
-/*
-QStringList DatabaseReader::LoadSuffixsForMimeType()
-{
-	QSqlQuery* query =DatabaseQueryPreparer::PrepareQuerySuffixsFromMimeType();
-	bool is_Ok = query->exec();
-	if (is_Ok)
-	{
-		while (query->next())
-		{
-
-		}
-	}
-	//return;
-}
-*/

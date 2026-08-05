@@ -125,6 +125,10 @@ void QueueManager::ProcessRemoveADownloadFromQueue(Download* download)
 void QueueManager::ProcessRemoveADownloadFromQueue(size_t download_id)
 {
 	Download* download=m_downloadManager->ProcessAchieveDownload(download_id);
+	if (!download) {
+		qWarning() << "QueueManager: Failed to load download with ID:" << download_id << "for removal";
+		return;
+	}
 	ProcessRemoveADownloadFromQueue(download);
 }
 
