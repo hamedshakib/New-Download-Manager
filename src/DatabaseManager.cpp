@@ -1,5 +1,6 @@
 #include "HeaderAndUi/DatabaseManager.h"
 #include "qdebug.h"
+#include "HeaderAndUi/DatabaseConnectionPool.h"
 
 DatabaseManager::DatabaseManager(QObject *parent)
 	: QObject(parent)
@@ -110,7 +111,6 @@ bool DatabaseManager::UpdateAllFieldDownloadOnDataBase(Download* download)
 
 bool DatabaseManager::UpdateDownloadInStartOfDownloadOnDatabase(Download* download)
 {
-	//ToDo
 	QSqlQuery* query= DatabaseQueryPreparer::PrepareQueryForUpdateInStartDownload(download);
 	if (DatabaseInteract::ExectionQueryForUpdateData(query))
 	{
@@ -123,7 +123,8 @@ bool DatabaseManager::UpdateDownloadInStartOfDownloadOnDatabase(Download* downlo
 
 bool DatabaseManager::UpdateInDownloadingOnDataBase(Download* download)
 {
-	QSqlDatabase db = SettingUpDatabase::get_Database();
+	// Get connection from pool (uses SettingUpDatabase singleton)
+	QSqlDatabase& db = DatabaseConnectionPool::getDefaultConnection();
 	
 	// Use transaction for better performance and data consistency
 	if (db.transaction()) {
@@ -153,7 +154,8 @@ bool DatabaseManager::UpdateInDownloadingOnDataBase(Download* download)
 
 bool DatabaseManager::FinishDownloadOnDatabase(Download* download)
 {
-	QSqlDatabase db = SettingUpDatabase::get_Database();
+	// Get connection from pool (uses SettingUpDatabase singleton)
+	QSqlDatabase& db = DatabaseConnectionPool::getDefaultConnection();
 	
 	// Use transaction for better performance and data consistency
 	if (db.transaction()) {
@@ -284,12 +286,13 @@ bool DatabaseManager::RemoveDownloadFromQueueOnDatabase(Download* download)
 
 size_t DatabaseManager::CreateNewQueueOnDatabase(Queue* queue)
 {
-	//ToDo
 	size_t queue_id;
 	QSqlQuery* query = DatabaseQueryPreparer::PrepareQueryForCreateNewQueue(queue);
-	if (DatabaseInteract::ExectionQueryForUpdateData(query))
+	if (DatabaseInteract::ExectionQueryForInsertData(query))
 	{
 		queue_id = query->lastInsertId().toInt();
+		delete query;
+		return queue_id;
 	}
 	delete query;
 	return queue_id;
@@ -297,7 +300,6 @@ size_t DatabaseManager::CreateNewQueueOnDatabase(Queue* queue)
 
 bool DatabaseManager::RemoveQueueFromDatabase(Queue* queue)
 {
-	//ToDo
 	QSqlQuery* query = DatabaseQueryPreparer::PrepareQueryForRemoveQueueFromDatabase(queue);
 	if (DatabaseInteract::ExectionQueryForDeleteData(query))
 	{
@@ -310,20 +312,20 @@ bool DatabaseManager::RemoveQueueFromDatabase(Queue* queue)
 
 bool DatabaseManager::ExitDownloadFromQueue(Download* download)
 {
-	//TODO: Implement proper logic to remove a download from its queue
-	// For now, this is a placeholder that returns false
-	// The actual implementation should:
-	// 1. Get the queue ID from the database for this download
-	// 2. Remove the download from the queue
-	// 3. Update the queue's download list order
+	QSqlQuery* query = DatabaseQueryPreparer::PrepareQueryForRemoveDownloadFromQueueOnDatabase(download);
+	if (DatabaseInteract::ExectionQueryForDeleteData(query))
+	{
+		delete query;
+		return true;
+	}
+	delete query;
 	return false;
 }
 
 bool DatabaseManager::ExitAllDownloadFromQueue(Queue* queue)
 {
-	//ToDo
 	QSqlQuery* query = DatabaseQueryPreparer::PrepareQueryForExitAllDownloadFromQueue(queue);
-	if (DatabaseInteract::ExectionQueryForUpdateData(query))
+	if (DatabaseInteract::ExectionQueryForDeleteData(query))
 	{
 		delete query;
 		return true;
@@ -346,7 +348,6 @@ bool DatabaseManager::AddDownloadToQueueOnDatabase(Download* Download, Queue* qu
 
 bool DatabaseManager::UpdateTimeQueueEvents(Queue* queue)
 {
-	//TODO
 	QSqlQuery* query = DatabaseQueryPreparer::PrepareQueryFroEditTimeEventsOfQueue(queue);
 	if (DatabaseInteract::ExectionQueryForUpdateData(query))
 	{

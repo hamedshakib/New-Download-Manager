@@ -112,14 +112,27 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForCreateNewDownload(Download* dow
 	query->bindValue(":resumeCapability_id", ProcessEnum::ConvertResumeCapabilityEnumToResumeCapabilityId(download->ResumeCapability));
 
 
-	query->bindValue(":category_id", QVariant());
+	query->bindValue(":category_id", QVariant());  // NULL category_id
 
+	// Fix: Use QVariant() instead of QVariant("NULL") for proper NULL handling
+	if (download->Queue_id > -1) {
+		query->bindValue(":queue_id", download->Queue_id);
+	} else {
+		query->bindValue(":queue_id", QVariant());  // NULL value
+	}
 
+	// Fix: Use QVariant() instead of QVariant("NULL") for proper NULL handling
+	if (!download->Username.isEmpty()) {
+		query->bindValue(":user", download->Username);
+	} else {
+		query->bindValue(":user", QVariant());  // NULL value
+	}
 
-	query->bindValue(":queue_id", download->Queue_id > -1 ? QVariant(download->Queue_id) : QVariant("NULL"));
-
-	query->bindValue(":user", download->Username);
-	query->bindValue(":password", download->Password);
+	if (!download->Password.isEmpty()) {
+		query->bindValue(":password", download->Password);
+	} else {
+		query->bindValue(":password", QVariant());  // NULL value
+	}
 
 
 	return query;
@@ -215,14 +228,22 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForUpdateAllFieldDownload(Download
 
 
 	query->bindValue(":lastTryTime", DateTimeManager::ConvertDataTimeToString(download->LastTryTime));
-	query->bindValue(":maxSpeed", download->MaxSpeed>0 ? QString::number(download->MaxSpeed):QVariant("NULL"));
-	query->bindValue(":resumeCapability_id",ProcessEnum::ConvertResumeCapabilityEnumToResumeCapabilityId(download->ResumeCapability));
+	// Fix: Use QVariant() instead of QVariant("NULL") for proper NULL handling
+	if (download->MaxSpeed > 0) {
+		query->bindValue(":maxSpeed", QString::number(download->MaxSpeed));
+	} else {
+		query->bindValue(":maxSpeed", QVariant());  // NULL value
+	}
+	query->bindValue(":resumeCapability_id", ProcessEnum::ConvertResumeCapabilityEnumToResumeCapabilityId(download->ResumeCapability));
 
-	query->bindValue(":category_id", QVariant("NULL"));
+	query->bindValue(":category_id", QVariant());  // NULL value
 
-
-
-	query->bindValue(":queue_id", download->Queue_id > -1 ? download->Queue_id : QVariant("NULL"));
+	// Fix: Use QVariant() instead of QVariant("NULL") for proper NULL handling
+	if (download->Queue_id > -1) {
+		query->bindValue(":queue_id", download->Queue_id);
+	} else {
+		query->bindValue(":queue_id", QVariant());  // NULL value
+	}
 	query->bindValue(":user", download->Username);
 	query->bindValue(":password", download->Password);
 	
@@ -443,7 +464,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForRemoveDownloadFromQueueOnDataba
 		return nullptr;
 	}
 	query->prepare(queryString);
-	query->bindValue(":queue_id", QVariant("NULL"));
+	query->bindValue(":queue_id", QVariant());  // NULL value
 	query->bindValue(":id", download->IdDownload);
 	return query;
 }
@@ -480,7 +501,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForExitAllDownloadFromQueue(Queue*
 	}
 	query->prepare(queryString);
 
-	query->bindValue(":null", QVariant("NULL"));
+	query->bindValue(":null", QVariant());  // NULL value
 	query->bindValue(":queue_id", queue->Get_QueueId());
 	return query;
 }
@@ -549,7 +570,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryFroEditTimeEventsOfQueue(Queue* qu
 	}
 	else
 	{
-		query->bindValue(":stopTime", QVariant("NULL"));
+		query->bindValue(":stopTime", QVariant());  // NULL value
 	}
 
 
@@ -564,28 +585,28 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryFroEditTimeEventsOfQueue(Queue* qu
 				DownloadDaysOfWeek.append(day + ",");
 			}
 			query->bindValue(":daysOfWeek", DownloadDaysOfWeek);
-			query->bindValue(":onceTimeAt", QVariant("NULL"));
-			query->bindValue(":eachDays", QVariant("NULL"));
+			query->bindValue(":onceTimeAt", QVariant());  // NULL value
+			query->bindValue(":eachDays", QVariant());  // NULL value
 		}
 		else if (ConverterQueueTime::IsNumberOfDays(queue->Get_DaysOfDownoad()[0]))
 		{
 			query->bindValue(":eachDays", queue->Get_DaysOfDownoad()[0]);
-			query->bindValue(":onceTimeAt", QVariant("NULL"));
-			query->bindValue(":daysOfWeek", QVariant("NULL"));
+			query->bindValue(":onceTimeAt", QVariant());  // NULL value
+			query->bindValue(":daysOfWeek", QVariant());  // NULL value
 		}
 		else
 		{
 			query->bindValue(":onceTimeAt", queue->Get_DaysOfDownoad()[0]);
-			query->bindValue(":eachDays", QVariant("NULL"));
-			query->bindValue(":daysOfWeek", QVariant("NULL"));
+			query->bindValue(":eachDays", QVariant());  // NULL value
+			query->bindValue(":daysOfWeek", QVariant());  // NULL value
 		}
 	}
 	else
 	{
-		query->bindValue(":startTime", QVariant("NULL"));
-		query->bindValue(":onceTimeAt", QVariant("NULL"));
-		query->bindValue(":eachDays", QVariant("NULL"));
-		query->bindValue(":daysOfWeek", QVariant("NULL"));
+		query->bindValue(":startTime", QVariant());  // NULL value
+		query->bindValue(":onceTimeAt", QVariant());  // NULL value
+		query->bindValue(":eachDays", QVariant());  // NULL value
+		query->bindValue(":daysOfWeek", QVariant());  // NULL value
 	}
 	
 

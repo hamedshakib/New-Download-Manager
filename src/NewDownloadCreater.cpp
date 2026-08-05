@@ -16,25 +16,26 @@ NewDownloadCreater::~NewDownloadCreater()
 
 void NewDownloadCreater::StartProcessOfCreateANewDownload(QObject* parent)
 {
-	this->parent = parent;
-	ProcessNewDownloadUrlWidget();
+ 	this->parent = parent;
+ 	ProcessNewDownloadUrlWidget();
 }
 
 void NewDownloadCreater::StartProcessOfCreateNewDownloadFromBatch(QList<QString> ListOfUrl, QString SaveTo, QString Username, QString Password, QObject* parent)
 {
-	this->parent = parent;
-
-	for (QString url : ListOfUrl)
-	{
-		BaseUrl = url;
-		//ProcessNewDownloadMoreComplitedInformationWidget();
-		this->GetInformationFromUrl(url, Username, Password);
-		this->ProcessInitialInformationFromUrl();
-
-		QUrl SaveToForThisDownload=NewDownloadComplitedInformationWidget::ChooseNameForNewDownloadFile(SaveTo, RealDownloadUrl);
-
-		VerifiedDownload(RealDownloadUrl, SaveToForThisDownload, false);
-	}
+ 	this->parent = parent;
+ 
+ 	for (QString url : ListOfUrl)
+ 	{
+ 		BaseUrl = url;
+ 		//ProcessNewDownloadMoreComplitedInformationWidget();
+ 		this->GetInformationFromUrl(url, Username, Password);
+ 		this->ProcessInitialInformationFromUrl();
+ 
+ 		QUrl SaveToForThisDownload=NewDownloadComplitedInformationWidget::ChooseNameForNewDownloadFile(SaveTo, RealDownloadUrl);
+ 
+ 		VerifiedDownload(RealDownloadUrl, SaveToForThisDownload, false);
+ 	}
+ 	emit ThreadFinished();
 }
 
 
@@ -100,7 +101,7 @@ bool NewDownloadCreater::TryToGetInformationFromUrl(QUrl url, QString UserName, 
 		request.setRawHeader("Authorization", headerData.toLocal8Bit());
 	}
 	*/
-	if (m_networkAccessManager)
+	if (!m_networkAccessManager)
 	{
 		m_networkAccessManager = new QNetworkAccessManager();
 		m_networkAccessManager->moveToThread(this->thread());
@@ -164,7 +165,7 @@ bool NewDownloadCreater::ProcessNewDownloadUrlWidget()
 	newDownloadUrlWidget = new NewDownloadUrlWidget();
 	newDownloadUrlWidget->moveToThread(this->thread());
 	newDownloadUrlWidget->initNewDownloadUrlWidget();
-	connect(newDownloadUrlWidget, &NewDownloadUrlWidget::GetInformations, this, [&](QUrl url, QString Username, QString Password)
+		connect(newDownloadUrlWidget, &NewDownloadUrlWidget::GetInformations, this, [&](QUrl url, QString Username, QString Password)
 		{
 			if (!url.isEmpty())
 			{
@@ -209,7 +210,10 @@ bool NewDownloadCreater::ProcessNewDownloadMoreComplitedInformationWidget()
 	newDownloadComplitedInformationWidget->initNewDownloadComplitedInformationWidget(BaseUrl);
 	//connect(newDownloadComplitedInformationWidget, &NewDownloadComplitedInformationWidget::DownloadNow, this, &NewDownloadCreater::VerifiedDownload_DownloadNow);
 	//connect(newDownloadComplitedInformationWidget, &NewDownloadComplitedInformationWidget::DownloadLater, this, &NewDownloadCreater::VerifiedDownload_DownloadLater);
-	connect(newDownloadComplitedInformationWidget, &NewDownloadComplitedInformationWidget::VerifiedDownload, this, &NewDownloadCreater::VerifiedDownload);
+		connect(newDownloadComplitedInformationWidget, &NewDownloadComplitedInformationWidget::VerifiedDownload, this, [this](QUrl url, QUrl FileSaveToAddress, bool Is_DownloadNow) {
+			VerifiedDownload(url, FileSaveToAddress, Is_DownloadNow);
+			emit ThreadFinished();
+		});
 	newDownloadComplitedInformationWidget->show();
 	return true;
 }
@@ -265,8 +269,8 @@ void NewDownloadCreater::VerifiedDownload(QUrl url, QUrl FileSaveToAddress,bool 
 	{
 		emit DownloadNow(download);
 	}
-	if(static_cast<NewDownloadComplitedInformationWidget*>(sender())== newDownloadComplitedInformationWidget)
-		sender()->deleteLater();
+	// ThreadFinished is emitted in the VerifiedDownload slot connection
+	// to ensure it's emitted after all download creation is complete
 }
 
 size_t NewDownloadCreater::WriteDownloadInDatabase()

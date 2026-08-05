@@ -11,10 +11,8 @@ ProcessDatabaseOutput::~ProcessDatabaseOutput()
 
 bool ProcessDatabaseOutput::ProcessPutLoadedDownloadInformationInDownloadObject(const QSqlRecord& record, Download* download, int download_id)
 {
-	
-//	"select D.id,D.FileName,Ds.Name as Status,Url,SaveTo,Suffix,DownloadSize,SizeDownloaded,description,TimeLeft,LastTryTime,RC.Name as ResumeCapability,Category_id,Queue_id "
-//	"From Download as D join DownloadStatus as DS on D.id = DS.id join ResumeCapability as RC on D.ResumeCapability_id = RC.id "
-//	"where id=:id "
+	// Fix NULL value handling for proper SQLite integration
+	// All database fields that can be NULL should be checked before conversion
 	
 	download->IdDownload = record.value("id").toInt();
 	download->FileName = record.value("FileName").toString();
@@ -22,18 +20,53 @@ bool ProcessDatabaseOutput::ProcessPutLoadedDownloadInformationInDownloadObject(
 	download->Url = record.value("Url").toString();
 	download->DownloadSize = record.value("DownloadSize").toLongLong();
 	download->SizeDownloaded = record.value("SizeDownloaded").toLongLong();
-	download->suffix= record.value("Suffix").toString();
+	download->suffix = record.value("Suffix").toString();
 	download->SaveTo = record.value("SaveTo").toString();
-	download->description = record.value("description").toString();
-	download->LastTryTime= DateTimeManager::GetDateTimeFromString(record.value("LastTryTime").toString());
-	download->MaxSpeed = record.value("MaxSpeed").toInt();
+	
+	// Fix NULL handling for description
+	if (record.value("description").isNull()) {
+		download->description = "";
+	} else {
+		download->description = record.value("description").toString();
+	}
+	
+	// Fix NULL handling for LastTryTime
+	QString lastTryTimeString = record.value("LastTryTime").toString();
+	if (!lastTryTimeString.isEmpty()) {
+		download->LastTryTime = DateTimeManager::GetDateTimeFromString(lastTryTimeString);
+	} else {
+		download->LastTryTime = QDateTime::currentDateTime();
+	}
+	
+	// Fix NULL handling for MaxSpeed (NULL means unlimited speed)
+	if (record.value("MaxSpeed").isNull()) {
+		download->MaxSpeed = 0;  // 0 means unlimited speed
+	} else {
+		download->MaxSpeed = record.value("MaxSpeed").toInt();
+	}
+	
 	download->ResumeCapability = ProcessEnum::ConvertDatabseStringToResumeCapabilityEnum(record.value("ResumeCapability").toString());
 
-//	download->Category = record.value("Url").toString();
-	download->Queue_id = record.value("Queue_id").toInt();
-	download->Url = record.value("Url").toString();
-	download->Username = record.value("User").toString();
-	download->Password = record.value("Password").toString();
+	// Fix NULL handling for Queue_id (-1 means no queue assigned)
+	if (record.value("Queue_id").isNull()) {
+		download->Queue_id = -1;  // -1 indicates no queue assignment
+	} else {
+		download->Queue_id = record.value("Queue_id").toInt();
+	}
+	
+	// Fix NULL handling for Username
+	if (record.value("User").isNull()) {
+		download->Username = "";
+	} else {
+		download->Username = record.value("User").toString();
+	}
+	
+	// Fix NULL handling for Password
+	if (record.value("Password").isNull()) {
+		download->Password = "";
+	} else {
+		download->Password = record.value("Password").toString();
+	}
 
 	return true;
 }
@@ -70,71 +103,86 @@ void ProcessDatabaseOutput::ProcessPrepareLoadedInformationForMainTableView(cons
 	model->appendRow(TableViewRowCreater::PrepareDataForRowForMainTableView(id, FileName, ConverterSizeToSuitableString::ConvertSizeToSuitableString(DownloadSize), Status, "", "", LastTryTime, Description, SaveTo));
 }
 
-bool ProcessDatabaseOutput::ProcessPutLoadedPartDownloadInInPartDownloadObject(const QSqlRecord& record, PartDownload* partDownload,int Download_id)
+bool ProcessDatabaseOutput::ProcessPutLoadedPartDownloadInInPartDownloadObject(const QSqlRecord& record, PartDownload* partDownload, int Download_id)
 {
-	//"SELECT id,"
-	//	"Start_byte,"
-	//	"End_byte,"
-	//	"PartDownload_SaveTo,"
-	//	"LastDownloaded_byte "
-	//	"FROM PartDownload "
+	// Fix NULL value handling for PartDownload
 
 	partDownload->id_download = Download_id;
-	partDownload->id_PartDownload= record.value("id").toInt();
+	partDownload->id_PartDownload = record.value("id").toInt();
 
-
+	// Fix NULL handling for start_byte
+	if (record.value("Start_byte").isNull()) {
+		qCritical() << "PartDownload" << partDownload->id_PartDownload << "has NULL start_byte";
+		return false;
+	}
 	partDownload->start_byte = record.value("Start_byte").toLongLong();
+
+	// Fix NULL handling for end_byte
+	if (record.value("End_byte").isNull()) {
+		qCritical() << "PartDownload" << partDownload->id_PartDownload << "has NULL end_byte";
+		return false;
+	}
 	partDownload->end_byte = record.value("End_byte").toLongLong();
-	partDownload->PartDownloadFile = new QFile(record.value("PartDownload_SaveTo").toString());
 
-	partDownload->PartDownloadFile->open(QIODevice::WriteOnly | QIODevice::Append);
+	// Fix NULL handling for PartDownload_SaveTo
+	QString saveToFile = record.value("PartDownload_SaveTo").toString();
+	if (saveToFile.isNull() || saveToFile.isEmpty() || saveToFile == "NULL") {
+		qCritical() << "PartDownload" << partDownload->id_PartDownload << "has NULL or empty PartDownload_SaveTo";
+		return false;
+	}
+	partDownload->PartDownloadFile = new QFile(saveToFile);
 
+	if (!partDownload->PartDownloadFile->open(QIODevice::WriteOnly | QIODevice::Append)) {
+		qCritical() << "Failed to open PartDownload file:" << saveToFile;
+		delete partDownload->PartDownloadFile;
+		partDownload->PartDownloadFile = nullptr;
+		return false;
+	}
 
-	partDownload->LastDownloadedByte = partDownload->start_byte+partDownload->PartDownloadFile->size()-1;
-
+	// Fix NULL handling for LastDownloadedByte calculation
+	partDownload->LastDownloadedByte = partDownload->start_byte + partDownload->PartDownloadFile->size() - 1;
 
 	return true;
 }
 
 bool ProcessDatabaseOutput::ProcessPutLoadedQueueInformationInQueueObject(const QSqlRecord& record, Queue* queue)
 {
-	queue->QueueId=record.value("id").toInt();
+	queue->QueueId = record.value("id").toInt();
 	queue->QueueName = record.value("Name").toString();
-	queue->MaxSpeed=record.value("MaxSpeed").toInt();
-	queue->NumberDownloadAtSameTime= record.value("NumberDownloadSameTime").toInt();
+	
+	// Fix NULL handling for MaxSpeed
+	if (record.value("MaxSpeed").isNull()) {
+		queue->MaxSpeed = 0;
+	} else {
+		queue->MaxSpeed = record.value("MaxSpeed").toInt();
+	}
+	
+	queue->NumberDownloadAtSameTime = record.value("NumberDownloadSameTime").toInt();
 
-	if (record.value("StartTime") != QVariant("NULL"))
-	{
+	// Fix NULL handling for StartTime - use isNull() instead of comparing to QVariant("NULL")
+	if (!record.value("StartTime").isNull()) {
 		queue->startDownload.is_active = true;
-		//qDebug() << record.value("StartTime").toString();
-		//qDebug() << QTime::fromString(record.value("StartTime").toString());
 		queue->startDownload.Time = QTime::fromString(record.value("StartTime").toString());
 
-
-		if (QString DaysOfWeek = record.value("DaysOfWeek").toString();DaysOfWeek!="NULL")
-		{
-			queue->DownloadDays.append(DaysOfWeek.split(","));
+		// Fix NULL handling for DaysOfWeek, OnceTimeAt, EachDays
+		QString daysOfWeek = record.value("DaysOfWeek").toString();
+		QString onceTimeAt = record.value("OnceTimeAt").toString();
+		QString eachDays = record.value("EachDays").toString();
+		
+		if (!daysOfWeek.isNull() && !daysOfWeek.isEmpty() && daysOfWeek != "NULL") {
+			queue->DownloadDays.append(daysOfWeek.split(","));
+		} else if (!onceTimeAt.isNull() && !onceTimeAt.isEmpty() && onceTimeAt != "NULL") {
+			queue->DownloadDays.append(onceTimeAt);
+		} else if (!eachDays.isNull() && !eachDays.isEmpty() && eachDays != "NULL") {
+			queue->DownloadDays.append(eachDays);
 		}
-		else if (QString OnceTimeAt = record.value("OnceTimeAt").toString(); OnceTimeAt != "NULL")
-		{
-			queue->DownloadDays.append(OnceTimeAt);
-		}
-		else
-		{
-			
-			queue->DownloadDays.append(record.value("EachDays").toString());
-		}
-
-
 	}
-	if (record.value("StopTime") != QVariant("NULL"))
-	{
+
+	// Fix NULL handling for StopTime
+	if (!record.value("StopTime").isNull()) {
 		queue->stopDownload.is_active = true;
 		queue->stopDownload.Time = QTime::fromString(record.value("StopTime").toString());
 	}
-	
-
-
 
 	return true;
 }

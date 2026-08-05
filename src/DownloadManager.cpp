@@ -65,6 +65,12 @@ bool DownloadManager::CreateNewDownload()
 	connect(DownloadThread, &QThread::finished, DownloadThread, &QThread::deleteLater);
 	connect(DownloadThread, &QThread::finished, newDownloadCreater, &NewDownloadCreater::deleteLater);
 	
+	// Wait for thread to finish before returning
+	connect(newDownloadCreater, &NewDownloadCreater::ThreadFinished, [DownloadThread, newDownloadCreater]() {
+		DownloadThread->quit();
+		DownloadThread->wait();
+	});
+	
 //	connect(newDownloadCreater, &NewDownloadCreater::CreatedNewDownload, this, &DownloadManager::AddCreatedDownloadToDownloadList);
 	connect(newDownloadCreater, &NewDownloadCreater::CreatedNewDownload, this, [&](Download* download) {
 		AddCreatedDownloadToDownloadList(download);
@@ -306,6 +312,12 @@ bool DownloadManager::CreateNewDownloadsFromBatch(QList<QString> listOfAddress, 
 	// Connect cleanup when thread finishes
 	connect(DownloadThread, &QThread::finished, DownloadThread, &QThread::deleteLater);
 	connect(DownloadThread, &QThread::finished, newDownloadCreater, &NewDownloadCreater::deleteLater);
+	
+	// Wait for thread to finish before returning
+	connect(newDownloadCreater, &NewDownloadCreater::ThreadFinished, [DownloadThread, newDownloadCreater]() {
+		DownloadThread->quit();
+		DownloadThread->wait();
+	});
 	
 	//	connect(newDownloadCreater, &NewDownloadCreater::CreatedNewDownload, this, &DownloadManager::AddCreatedDownloadToDownloadList);
 	connect(newDownloadCreater, &NewDownloadCreater::CreatedNewDownload, this, [&](Download* download) {

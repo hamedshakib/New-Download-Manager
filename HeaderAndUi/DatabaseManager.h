@@ -5,6 +5,7 @@
 #include "DatabaseQueryPreparer.h"
 #include "DatabaseInteract.h"
 #include "ProcessDatabaseOutput.h"
+#include "DatabaseConnectionPool.h"
 #include "qstandarditemmodel.h"
 #include <QTreeWidgetItem>
 #include "qthread.h"

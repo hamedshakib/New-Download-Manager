@@ -8,7 +8,6 @@
 #include "NewDownloadComplitedInformationWidget.h"
 #include "SettingInteract.h"
 #include "ConverterSizeToSuitableString.h"
-#include "DatabaseManager.h"
 #include "ProcessEnum.h"
 #include "DateTimeManager.h"
 
@@ -79,8 +78,9 @@ private slots:
 
 
 signals:
-	void CreatedNewDownload(Download* download);
-	void DownloadNow(Download* download);
+ 	void CreatedNewDownload(Download* download);
+ 	void DownloadNow(Download* download);
+ 	void ThreadFinished();
 
 public:
 	NewDownloadCreater(QObject *parent=nullptr);

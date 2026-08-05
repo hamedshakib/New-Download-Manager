@@ -15,7 +15,11 @@ Download::DownloadStatusEnum ProcessEnum::ConvertStringToDownloadStatusEnum(QStr
 	{
 		return Download::DownloadStatusEnum::NotStarted;
 	}
-	else if (str == "Started")
+	else if (str == "Downloading" || str == "Started")
+	{
+		return Download::DownloadStatusEnum::Downloading;
+	}
+	else if (str == "Pause" || str == "Paused")
 	{
 		return Download::DownloadStatusEnum::Pause;
 	}
@@ -24,6 +28,8 @@ Download::DownloadStatusEnum ProcessEnum::ConvertStringToDownloadStatusEnum(QStr
 		return Download::DownloadStatusEnum::Completed;
 	}
 
+	// Return default value to prevent undefined behavior
+	return Download::DownloadStatusEnum::NotStarted;
 }
 
 Download::ResumeCapabilityEnum ProcessEnum::ConvertHeaderToResumeCapabilityEnum(QString Header)
@@ -48,14 +54,17 @@ int ProcessEnum::ConvertResumeCapabilityEnumToResumeCapabilityId(Download::Resum
 	{
 		return 2;
 	}
-	else if (resumeCapabilityEnum == Download::ResumeCapabilityEnum::Yes)
+	else if (resumeCapabilityEnum == Download::ResumeCapabilityEnum::No)
 	{
 		return 3;
 	}
-	else
+	else  // UnKnown
 	{
 		return 1;
 	}
+
+	// Default return (should not reach here)
+	return 1;
 }
 
 Download::ResumeCapabilityEnum ProcessEnum::ConvertDatabseStringToResumeCapabilityEnum(QString str)
@@ -72,6 +81,9 @@ Download::ResumeCapabilityEnum ProcessEnum::ConvertDatabseStringToResumeCapabili
 	{
 		return Download::ResumeCapabilityEnum::No;
 	}
+
+	// Return default value to prevent undefined behavior
+	return Download::ResumeCapabilityEnum::UnKnown;
 }
 
 QString ProcessEnum::ConvertResumeCapabilityEnumToString(Download::ResumeCapabilityEnum resumeCapabilityEnum)
@@ -88,6 +100,9 @@ QString ProcessEnum::ConvertResumeCapabilityEnumToString(Download::ResumeCapabil
 	{
 		return "NO";
 	}
+
+	// Return default value to prevent undefined behavior
+	return "UnKnown";
 }
 
 int ProcessEnum::ConvertDownloadStatusEnumToDownloadStatusId(Download::DownloadStatusEnum downloadStatusEnum)
@@ -96,7 +111,7 @@ int ProcessEnum::ConvertDownloadStatusEnumToDownloadStatusId(Download::DownloadS
 	{
 		return 3;
 	}
-	else if (downloadStatusEnum == Download::DownloadStatusEnum::Downloading|| downloadStatusEnum == Download::DownloadStatusEnum::Pause)
+	else if (downloadStatusEnum == Download::DownloadStatusEnum::Downloading || downloadStatusEnum == Download::DownloadStatusEnum::Pause)
 	{
 		return 2;
 	}
@@ -104,6 +119,9 @@ int ProcessEnum::ConvertDownloadStatusEnumToDownloadStatusId(Download::DownloadS
 	{
 		return 1;
 	}
+
+	// Return default value to prevent undefined behavior
+	return 1;
 }
 
 QString ProcessEnum::ConvertDownloadStatusEnumToString(Download::DownloadStatusEnum downloadStatusEnum)
@@ -112,7 +130,7 @@ QString ProcessEnum::ConvertDownloadStatusEnumToString(Download::DownloadStatusE
 	{
 		return "Downloading";
 	}
-	else if(Download::DownloadStatusEnum::Pause)
+	else if (downloadStatusEnum == Download::DownloadStatusEnum::Pause)
 	{
 		return "Pause";
 	}
@@ -120,10 +138,13 @@ QString ProcessEnum::ConvertDownloadStatusEnumToString(Download::DownloadStatusE
 	{
 		return "NotStarted";
 	}
-	if (downloadStatusEnum == Download::DownloadStatusEnum::Completed)
+	else if (downloadStatusEnum == Download::DownloadStatusEnum::Completed)
 	{
 		return "Completed";
 	}
+
+	// Return default value to prevent undefined behavior
+	return "Unknown";
 }
 
 //
@@ -141,6 +162,9 @@ QString ProcessEnum::ConvertTypeProxyEnumToEnglishStringProxyType(QNetworkProxy:
 	{
 		return "Socks5";
 	}
+
+	// Return default value to prevent undefined behavior
+	return "No proxy";
 }
 
 QNetworkProxy::ProxyType ProcessEnum::ConvertEnglishStringProxyTypeToProxyTypeEnum(QString EnglishStringProxyType)
@@ -157,6 +181,9 @@ QNetworkProxy::ProxyType ProcessEnum::ConvertEnglishStringProxyTypeToProxyTypeEn
 	{
 		return QNetworkProxy::ProxyType::Socks5Proxy;
 	}
+
+	// Return default value to prevent undefined behavior
+	return QNetworkProxy::ProxyType::NoProxy;
 }
 
 QNetworkProxy::ProxyType ProcessEnum::ConvertProxyTypeStringToProxyTypeEnum(QString proxyTypeString)
@@ -173,6 +200,9 @@ QNetworkProxy::ProxyType ProcessEnum::ConvertProxyTypeStringToProxyTypeEnum(QStr
 	{
 		return QNetworkProxy::ProxyType::Socks5Proxy;
 	}
+
+	// Return default value to prevent undefined behavior
+	return QNetworkProxy::ProxyType::NoProxy;
 }
 
 QString ProcessEnum::ConvertProxyTypeEnumToProxyTypeString(QNetworkProxy::ProxyType proxyType)
@@ -189,5 +219,8 @@ QString ProcessEnum::ConvertProxyTypeEnumToProxyTypeString(QNetworkProxy::ProxyT
 	{
 		return tr("Socks5");
 	}
+
+	// Return default value to prevent undefined behavior
+	return tr("No proxy");
 }
 

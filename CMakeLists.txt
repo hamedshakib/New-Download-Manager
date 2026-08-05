@@ -87,12 +87,16 @@ set(PROJECT_SOURCES
         ${MY_SOURCE_PATH}/ProcessDatabaseOutput.cpp
 
         
-        #DatabaseManager
-        ${MY_HeaderAndUi_PATH}/DatabaseManager.h
-        ${MY_SOURCE_PATH}/DatabaseManager.cpp
+         #DatabaseManager
+         ${MY_HeaderAndUi_PATH}/DatabaseManager.h
+         ${MY_SOURCE_PATH}/DatabaseManager.cpp
+
+         #DatabaseConnectionPool
+         ${MY_HeaderAndUi_PATH}/DatabaseConnectionPool.h
+         ${MY_SOURCE_PATH}/DatabaseConnectionPool.cpp
 
 
-        #ProcessEnum
+         #ProcessEnum
         ${MY_HeaderAndUi_PATH}/ProcessEnum.h
         ${MY_SOURCE_PATH}/ProcessEnum.cpp
 
