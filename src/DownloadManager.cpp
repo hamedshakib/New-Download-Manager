@@ -27,12 +27,15 @@ Download* DownloadManager::CreateDownloadFromDatabase(int download_id)
 	DatabaseManager manager(this);
 	if (manager.LoadDownloadComplete(download_id, download))
 	{
+		connect(DownloadThread, &QThread::finished, DownloadThread, &QThread::deleteLater);
 		return download;
 	}
 	else
 	{
 		// Return nullptr if download loading failed
 		download->deleteLater();
+		DownloadThread->quit();
+		DownloadThread->wait(1000);  // Wait up to 1 second for thread to finish
 		DownloadThread->deleteLater();
 		return nullptr;
 	}
@@ -45,6 +48,11 @@ bool DownloadManager::CreateNewDownload()
 	DownloadThread->start();
 	NewDownloadCreater *newDownloadCreater=new NewDownloadCreater();
 	newDownloadCreater->moveToThread(DownloadThread);
+	
+	// Connect cleanup when thread finishes
+	connect(DownloadThread, &QThread::finished, DownloadThread, &QThread::deleteLater);
+	connect(DownloadThread, &QThread::finished, newDownloadCreater, &NewDownloadCreater::deleteLater);
+	
 //	connect(newDownloadCreater, &NewDownloadCreater::CreatedNewDownload, this, &DownloadManager::AddCreatedDownloadToDownloadList);
 	connect(newDownloadCreater, &NewDownloadCreater::CreatedNewDownload, this, [&](Download* download) {
 		AddCreatedDownloadToDownloadList(download);
@@ -84,8 +92,13 @@ DownloadControl* DownloadManager::CreateDownloadControl(Download* download)
 
 bool DownloadManager::StartDownload(DownloadControl* downloadControl)
 {
+	if (!downloadControl) {
+		qCritical() << "DownloadManager: DownloadControl pointer is null";
+		return false;
+	}
+	
 	downloadControl->StartDownload();
-	return true;
+	return downloadControl->IsDownloading();
 }
 
 bool DownloadManager::CreateDownloadControlAndStartDownload(Download* download)
@@ -243,6 +256,11 @@ bool DownloadManager::CreateNewDownloadsFromBatch(QList<QString> listOfAddress, 
 	DownloadThread->start();
 	NewDownloadCreater* newDownloadCreater = new NewDownloadCreater();
 	newDownloadCreater->moveToThread(DownloadThread);
+	
+	// Connect cleanup when thread finishes
+	connect(DownloadThread, &QThread::finished, DownloadThread, &QThread::deleteLater);
+	connect(DownloadThread, &QThread::finished, newDownloadCreater, &NewDownloadCreater::deleteLater);
+	
 	//	connect(newDownloadCreater, &NewDownloadCreater::CreatedNewDownload, this, &DownloadManager::AddCreatedDownloadToDownloadList);
 	connect(newDownloadCreater, &NewDownloadCreater::CreatedNewDownload, this, [&](Download* download) {
 		AddCreatedDownloadToDownloadList(download);

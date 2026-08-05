@@ -11,32 +11,32 @@ DatabaseReader::~DatabaseReader()
 
 bool DatabaseReader::LoadDownloadFromDatabase(int Download_id, Download* download)
 {
-	QSqlQuery* query = DatabaseQueryPreparer::PrepareQueryForLoadDownload(Download_id);
-	
-	bool is_Ok= query->exec();
-	if (is_Ok)
-	{
-		if (query->next())
-		{
-			/*
-			bool is_Done = query->value(0).toBool();
-			QUrl url = query->value(1).toString();
-			QUrl SaveTo = query->value(2).toString();
-			QString name = query->value(3).toString();
-			QString name = query.value(4).toString();
-			QString name = query.value(5).toString();
-			QString name = query.value(6).toString();
-			QString name = query.value(7).toString();
-			QString name = query.value(8).toString();
-			QString name = query.value(9).toString();
-			QString name = query.value(10).toString();
-			QString name = query.value(11).toString();
-			int salary = query.value(1).toInt();
-			qDebug() << name << salary;
-			*/
-		}
+	if (!download) {
+		qCritical() << "DatabaseReader: Download pointer is null";
+		return false;
 	}
-	return 0;
+	
+	QSqlQuery* query = DatabaseQueryPreparer::PrepareQueryForLoadDownload(Download_id);
+	if (!query) {
+		qCritical() << "DatabaseReader: Failed to create query";
+		return false;
+	}
+	
+	bool is_Ok = query->exec();
+	if (is_Ok) {
+		if (query->next()) {
+			ProcessDatabaseOutput::ProcessPutLoadedDownloadInformationInDownloadObject(query->record(), download, Download_id);
+		} else {
+			qWarning() << "DatabaseReader: No record found for download ID:" << Download_id;
+			return false;
+		}
+	} else {
+		qCritical() << "DatabaseReader: Query execution failed:" << query->lastError().text();
+		return false;
+	}
+	
+	delete query;
+	return true;
 }
 
 

@@ -3,12 +3,30 @@
 ApplicationManager::ApplicationManager(QObject *parent,int argc,char* argv[])
 	: QObject(parent)
 {
-	downloadManager=new DownloadManager(this);
-	mainWindow=new MainWindow();
+	downloadManager = new DownloadManager(this);
+	if (!downloadManager) {
+		qCritical() << "ApplicationManager: Failed to create DownloadManager";
+		return;
+	}
+	
+	mainWindow = new MainWindow();
+	if (!mainWindow) {
+		qCritical() << "ApplicationManager: Failed to create MainWindow";
+		downloadManager->deleteLater();
+		return;
+	}
 	mainWindow->SetDownloadManager(downloadManager);
+	
 	queueManager = new QueueManager(downloadManager,this);
+	if (!queueManager) {
+		qCritical() << "ApplicationManager: Failed to create QueueManager";
+		mainWindow->deleteLater();
+		downloadManager->deleteLater();
+		return;
+	}
 	mainWindow->SetQueueManaget(queueManager);
 	queueManager->LoadQueuesFormDatabase();
+	
 	mainWindow->CreateMainTableViewControllerForMainWindow();
 
 	ProcessArguments(argc, argv);
@@ -29,6 +47,9 @@ ApplicationManager::ApplicationManager(QObject *parent,int argc,char* argv[])
 
 	// Create proxyManager as member variable
 	proxyManager = new ProxyManager();
+	if (!proxyManager) {
+		qCritical() << "ApplicationManager: Failed to create ProxyManager";
+	}
 	LoadProxySettings();
 }
 

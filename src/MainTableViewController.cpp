@@ -11,12 +11,19 @@ MainTableViewController::MainTableViewController(QTableView* tableView, QObject*
 	//tableView->setDragDropMode(QAbstractItemView::DragDropMode::DragOnly);
 	//tableView->setDragEnabled(true);
 	//tableView->setDragEnabled(true);//somewhere in constructor
-	QStringList HiddenColumnsStringList= SettingInteract::GetValue("TableView/MainTableView/HiddenColumns").toString().split(",");
-	if (!HiddenColumnsStringList[0].isEmpty())
-	{
-		for (QString numberColumn : HiddenColumnsStringList)
-		{
-			HiddenColumns.append(numberColumn.toInt());
+	QVariant hiddenColumnsVar = SettingInteract::GetValue("TableView/MainTableView/HiddenColumns");
+	if (hiddenColumnsVar.isValid() && !hiddenColumnsVar.toString().isEmpty()) {
+		QStringList HiddenColumnsStringList = hiddenColumnsVar.toString().split(",");
+		// Filter out empty strings that may result from trailing commas or empty values
+		for (QString numberColumn : HiddenColumnsStringList) {
+			numberColumn = numberColumn.trimmed();
+			if (!numberColumn.isEmpty()) {
+				bool ok = false;
+				int colNumber = numberColumn.toInt(&ok);
+				if (ok && colNumber >= 0 && colNumber < listOfColomns.count()) {
+					HiddenColumns.append(colNumber);
+				}
+			}
 		}
 	}
 }
@@ -51,7 +58,16 @@ void MainTableViewController::ProcessSetupOfTableView()
 	for (int columNumber = 1; columNumber < listOfColomns.count(); columNumber++)
 	{
 		QString SettingStringKey = "TableView/MainTableView/WidthColum" + QString::number(columNumber);
-		int ColumWidth = SettingInteract::GetValue(SettingStringKey).toInt();
+		QVariant columnWidthVar = SettingInteract::GetValue(SettingStringKey);
+		int ColumWidth = columnWidthVar.toInt();
+		
+		// Validate column width (minimum 50 pixels, maximum 1000 pixels)
+		if (ColumWidth < 50) {
+			ColumWidth = 100;  // Default width
+		} else if (ColumWidth > 1000) {
+			ColumWidth = 200;  // Reasonable maximum
+		}
+		
 		m_tableView->setColumnWidth(columNumber, ColumWidth);
 	}
 

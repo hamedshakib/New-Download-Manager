@@ -34,14 +34,19 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryChangeLastbitDownloaded(int PartDo
 {
 	QString queryString = QString(
 		"UPDATE PartDownload "
-		"SET LastDownloaded_bit =%1 "
-		"WHERE id=%2 "
-	).arg(LastbitDownloaded).arg(PartDownload_id);
-	QSqlQuery* query = new QSqlQuery(queryString, SettingUpDatabase::get_Database());
+		"SET LastDownloaded_bit = :lastDownloadedBit "
+		"WHERE id = :id "
+	);
+	
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query for changing last bit (null pointer)";
 		return nullptr;
 	}
+	query->prepare(queryString);
+	query->bindValue(":lastDownloadedBit", LastbitDownloaded);
+	query->bindValue(":id", PartDownload_id);
+	
 	return query;
 }
 
@@ -50,14 +55,17 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQuerySuffixsFromMimeType(QString MimeTy
 	QString queryString = QString(
 		"Select suffix "
 		"From MimeType "
-		"WHERE mimeType='%1' "
-	).arg(MimeType);
-	qDebug() << queryString;
-	QSqlQuery* query = new QSqlQuery(queryString, SettingUpDatabase::get_Database());
+		"WHERE mimeType=:mimeType"
+	);
+	
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query for suffixs from mime type (null pointer)";
 		return nullptr;
 	}
+	query->prepare(queryString);
+	query->bindValue(":mimeType", MimeType);
+	
 	return query;
 }
 
