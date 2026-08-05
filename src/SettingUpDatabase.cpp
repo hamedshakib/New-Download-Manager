@@ -1,4 +1,6 @@
 #include "HeaderAndUi/SettingUpDatabase.h"
+#include "qapplication.h"
+#include "qdir.h"
 
 /*
 SettingUpDatabase::SettingUpDatabase(QObject *parent)
@@ -28,11 +30,16 @@ QSqlDatabase& SettingUpDatabase::get_Database()
 
 bool SettingUpDatabase::SettingUp(QSqlDatabase& db)
 {
+    // Use absolute path based on application directory to ensure
+    // database file is always found regardless of working directory
+    static QString dbPath = QDir(qApp->applicationDirPath()).filePath("DM.db");
+    
     db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("DM.db");
+    db.setDatabaseName(dbPath);
     if (!db.open())
     {
-        qCritical() << "Can not open Database!!!!";
+        qCritical() << "Can not open Database at path:" << dbPath;
+        qCritical() << "Error:" << db.lastError().text();
         return false;
     }
     

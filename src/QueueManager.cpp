@@ -130,6 +130,9 @@ void QueueManager::ProcessRemoveADownloadFromQueue(size_t download_id)
 
 bool QueueManager::RemoveDownloadFromQueue(Download* download)
 {
+	// Lock mutex to ensure thread-safe access to ListOfQueues
+	QMutexLocker locker(&mutex);
+	
 	DatabaseManager::RemoveDownloadFrom_Queue_Download(download);
 	DatabaseManager::RemoveDownloadFromQueueOnDatabase(download);
 	for (Queue* queue : ListOfQueues)
@@ -171,9 +174,12 @@ bool QueueManager::RemoveDownloadFromQueue(Download* download,Queue* queue)
 
 Queue* QueueManager::CreateNewQueue(QString QueueName)
 {
+	// Lock mutex to ensure thread-safe access to ListOfQueues
+	QMutexLocker locker(&mutex);
+	
 	Queue* queue = new Queue(this);
 	queue->QueueName = QueueName;
-	queue->QueueId =DatabaseManager::CreateNewQueueOnDatabase(queue);
+	queue->QueueId = DatabaseManager::CreateNewQueueOnDatabase(queue);
 	ListOfQueues.append(queue);
 	emit AddedQueue(queue->QueueId);
 	return queue;
@@ -181,6 +187,9 @@ Queue* QueueManager::CreateNewQueue(QString QueueName)
 
 Queue* QueueManager::AchiveQueue(size_t Queue_id)
 {
+	// Lock mutex to ensure thread-safe access to ListOfQueues
+	QMutexLocker locker(&mutex);
+	
 	for (Queue* queue : ListOfQueues)
 	{
 		if (queue->QueueId == Queue_id)
@@ -193,6 +202,9 @@ Queue* QueueManager::AchiveQueue(size_t Queue_id)
 
 bool QueueManager::DeleteQueueByQueueId(size_t queue_id)
 {
+	// Lock mutex to ensure thread-safe access to ListOfQueues
+	QMutexLocker locker(&mutex);
+	
 	Queue* queue = AchiveQueue(queue_id);
 	
 	if (!queue) {
@@ -212,6 +224,9 @@ bool QueueManager::DeleteQueueByQueueId(size_t queue_id)
 
 QList<Queue*> QueueManager::Get_ListOfQueues()
 {
+	// Lock mutex to ensure thread-safe access to ListOfQueues
+	QMutexLocker locker(&mutex);
+	
 	return ListOfQueues;
 }
 

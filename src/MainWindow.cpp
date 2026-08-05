@@ -151,42 +151,51 @@ void MainWindow::LoadTreeView()
 void MainWindow::ChangedDownloadSelected(int Download_id,bool Is_Completed)
 {
 	qDebug() << "Download_id:"<< Download_id;
+	
+	// Disconnect old connection if exists
 	if (SelectedDownload != nullptr)
 	{
 		disconnect(SelectedDownload, &Download::DownloadStatusChanged, this, &MainWindow::ChangedStatusOfSeletedDownload);
 	}
-
-	ui.actionRemove->setEnabled(true);
+	
+	// Reset state first
+	SelectedDownload = nullptr;
+	ui.actionRemove->setEnabled(false);
+	ui.actionDownload_Now->setEnabled(false);
+	ui.actionStop_Download->setEnabled(false);
+	
 	if (Is_Completed == true)
 	{
-		ui.actionDownload_Now->setEnabled(false);
-		ui.actionStop_Download->setEnabled(false);
+		// Completed download selected
+		qDebug() << "Completed download selected";
+		return;
+	}
+	
+	// Download Not Completed - get download from manager
+	SelectedDownload = downloadManagerPointer->ProcessAchieveDownload(Download_id);
+	
+	// Check if download was successfully loaded
+	if (!SelectedDownload)
+	{
+		qWarning() << "Failed to load download with ID:" << Download_id;
 		SelectedDownload = nullptr;
+		return;
+	}
+	
+	// Use QueuedConnection because Download is in a different thread than MainWindow
+	connect(SelectedDownload, &Download::DownloadStatusChanged, this, &MainWindow::ChangedStatusOfSeletedDownload, Qt::QueuedConnection);
 
+	if (SelectedDownload->get_Status() == Download::NotStarted || SelectedDownload->get_Status() == Download::Pause)
+	{
+		ui.actionDownload_Now->setEnabled(true);
+		ui.actionStop_Download->setEnabled(false);
 	}
 	else
 	{
-		//Download Not Completed
-
-
-
-		SelectedDownload = downloadManagerPointer->ProcessAchieveDownload(Download_id);
-		// Use QueuedConnection because Download is in a different thread than MainWindow
-		connect(SelectedDownload, &Download::DownloadStatusChanged, this, &MainWindow::ChangedStatusOfSeletedDownload, Qt::QueuedConnection);
-
-		if (SelectedDownload->get_Status() == Download::NotStarted || SelectedDownload->get_Status() == Download::Pause)
-		{
-			ui.actionDownload_Now->setEnabled(true);
-			ui.actionStop_Download->setEnabled(false);
-		}
-		else
-		{
-			//Is Downloading
-			ui.actionDownload_Now->setEnabled(false);
-			ui.actionStop_Download->setEnabled(true);
-		}
+		//Is Downloading
+		ui.actionDownload_Now->setEnabled(false);
+		ui.actionStop_Download->setEnabled(true);
 	}
-
 }
 
 void MainWindow::ChangedStatusOfSeletedDownload(Download::DownloadStatusEnum NewStatus)
@@ -237,12 +246,21 @@ void MainWindow::on_actionRemove_triggered()
 	}
 	else
 	{
-		int Download_id= mainTableViewController->Get_SeletedFinisedDownloadId();
+		int Download_id = mainTableViewController->Get_SeletedFinisedDownloadId();
 		if (Download_id > 0)
 		{
-			//is valid
+			// Load download from database
 			Download* download = downloadManagerPointer->ProcessAchieveDownload(Download_id);
-			mainTableViewController->RemoveActionTriggered(download);
+			
+			// Check if download was successfully loaded
+			if (download)
+			{
+				mainTableViewController->RemoveActionTriggered(download);
+			}
+			else
+			{
+				qWarning() << "Failed to load download with ID:" << Download_id << "for removal";
+			}
 		}
 	}
 }
