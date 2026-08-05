@@ -1,0 +1,89 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 20,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "x64-Debug",
+      "displayName": "x64 Debug",
+      "description": "Target Windows x64 with MSVC (Debug)",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "installDir": "${sourceDir}/out/install/${presetName}",
+      "architecture": {
+        "value": "x64",
+        "strategy": "external"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_PREFIX_PATH": "E:/Programs/QT/6.11.1/msvc2022_64"
+      }
+    },
+    {
+      "name": "x64-Release-withDebugInfo",
+      "displayName": "x64 Release with Debug Info",
+      "description": "Target Windows x64 with MSVC (RelWithDebInfo)",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "installDir": "${sourceDir}/out/install/${presetName}",
+      "architecture": {
+        "value": "x64",
+        "strategy": "external"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "CMAKE_PREFIX_PATH": "E:/Programs/QT/6.11.1/msvc2022_64"
+      }
+    },
+    {
+      "name": "x64-Release-Real",
+      "displayName": "x64 Release Real",
+      "description": "Target Windows x64 with MSVC (Release)",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "installDir": "${sourceDir}/out/install/${presetName}",
+      "architecture": {
+        "value": "x64",
+        "strategy": "external"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_PREFIX_PATH": "E:/Programs/QT/6.11.1/msvc2022_64"
+      }
+    },
+    {
+      "hidden": true,
+      "name": "Qt",
+      "cacheVariables": {
+        "CMAKE_PREFIX_PATH": "$env{QTDIR}"
+      },
+      "vendor": {
+        "qt-project.org/Qt": {
+          "checksum": "wVa86FgEkvdCTVp1/nxvrkaemJc="
+        }
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "x64-Debug",
+      "configurePreset": "x64-Debug"
+    },
+    {
+      "name": "x64-Release-withDebugInfo",
+      "configurePreset": "x64-Release-withDebugInfo"
+    },
+    {
+      "name": "x64-Release-Real",
+      "configurePreset": "x64-Release-Real"
+    }
+  ],
+  "vendor": {
+    "qt-project.org/Presets": {
+      "checksum": "Eqc0ulYHbEciRUYBfaT2zhlB9CE="
+    }
+  }
+}

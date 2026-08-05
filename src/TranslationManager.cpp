@@ -25,7 +25,8 @@ bool TranslationManager::Translate()
 
 bool TranslationManager::TranslateLanguage(QString Language)
 {
-    QString LoadLanguagePath = QString("translations/") + "app_" + Language + ".qm";
+    QString LoadLanguagePath = QCoreApplication::applicationDirPath()
+                             + "/translations/app_" + Language + ".qm";
     if (translator.load(LoadLanguagePath))
     {
         if(m_app->installTranslator(&translator))
