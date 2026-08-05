@@ -233,7 +233,7 @@ set(PROJECT_SOURCES
 
 
 
-        #translatation
+        #translation
         ${TS_FILES}
 )
 
@@ -241,20 +241,19 @@ set(PROJECT_SOURCES
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 
+    # Generate translation files first
+    qt_add_translations(translate
+        TS_FILES ${TS_FILES}
+        QM_FILES_OUTPUT_VARIABLE QM_FILES
+        SOURCES ${PROJECT_SOURCES}
+    )
     
-    qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
-
-   
-
-    add_custom_target(translate DEPENDS ${qm_files})
+    # Set output location for translation files
     set_source_files_properties(${TS_FILES}
         PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/translations")
-
-    qt_add_translations(translate
-    TS_FILES ${TS_FILES}
-    QM_FILES_OUTPUT_VARIABLE qm_files
-    SOURCES ${PROJECT_SOURCES}
-    )
+    
+    # Add QM files to the executable
+    set(QM_FILES ${QM_FILES} PARENT_SCOPE)
 
 
 
