@@ -67,7 +67,7 @@ void MainTableViewController::ProcessSetupOfTableView()
 
 	//Set double click on rows 
 	//connect(m_tableView, &QTableView::doubleClicked, this, &MainTableViewController::doubleClickedOnRow);
-	connect(m_tableView, &QTableView::doubleClicked, this, [&](const QModelIndex& modelindex) {doubleClickedOnRow(modelindex); ClickedOnRow(modelindex); });
+	connect(m_tableView, &QTableView::doubleClicked, this, &MainTableViewController::doubleClickedOnRow);
 
 
 

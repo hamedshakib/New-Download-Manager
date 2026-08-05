@@ -16,9 +16,9 @@ bool QueueTimeManager::Is_TodayaDayOfDownload(QStringList DownloadDays)
 {
 	if (!DownloadDays.isEmpty())
 	{
-		const QString FirstIndexOfDownloadDays;
+		QString FirstIndexOfDownloadDays = DownloadDays.isEmpty() ? QString() : DownloadDays.first();
 		QDate CurrentDate = QDate::currentDate();
-		if (IsNameOfDaysOfWeek(FirstIndexOfDownloadDays))
+		if (!FirstIndexOfDownloadDays.isEmpty() && IsNameOfDaysOfWeek(FirstIndexOfDownloadDays))
 		{
 
 			for (QString DayOfWeek : DownloadDays)
@@ -78,11 +78,12 @@ bool QueueTimeManager::IsNumberOfDays(QString day)
 
 int QueueTimeManager::ConvertDayStringToNumberOfDayOfWeek(QString day)
 {
+	// Qt's dayOfWeek(): 1=Monday, 7=Sunday
+	// Our mapping: Saturday=7, Sunday=1, Monday=2, ..., Friday=6
 	if(day == "Saturday")
 	{ 
 		return 7;
 	}
-
 	else if(day == "Sunday")
 	{
 		return 1;
@@ -107,6 +108,7 @@ int QueueTimeManager::ConvertDayStringToNumberOfDayOfWeek(QString day)
 	{
 		return 6;
 	}
+	return -1;  // Return -1 for invalid day
 }
 
 void QueueTimeManager::DayChangedSlot()

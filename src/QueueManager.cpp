@@ -173,6 +173,7 @@ Queue* QueueManager::AchiveQueue(size_t Queue_id)
 			return queue;
 		}
 	}
+	return nullptr;  // Return nullptr if queue not found
 }
 
 bool QueueManager::DeleteQueueByQueueId(size_t queue_id)
