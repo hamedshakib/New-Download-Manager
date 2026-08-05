@@ -19,7 +19,7 @@
       },
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_PREFIX_PATH": "E:/Programs/QT/6.11.1/msvc2022_64"
+        "CMAKE_PREFIX_PATH": "$env{QT_ROOT}"
       }
     },
     {
@@ -35,7 +35,7 @@
       },
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "RelWithDebInfo",
-        "CMAKE_PREFIX_PATH": "E:/Programs/QT/6.11.1/msvc2022_64"
+        "CMAKE_PREFIX_PATH": "$env{QT_ROOT}"
       }
     },
     {
@@ -51,7 +51,7 @@
       },
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
-        "CMAKE_PREFIX_PATH": "E:/Programs/QT/6.11.1/msvc2022_64"
+        "CMAKE_PREFIX_PATH": "$env{QT_ROOT}"
       }
     },
     {

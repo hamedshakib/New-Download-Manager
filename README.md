@@ -60,3 +60,36 @@ Download Manager with the following capabilities:<br/>
 <br/>
 <br/>
 ![alt text](https://github.com/hamedshakib/New-Download-Manager/blob/develop/Images/8.jpg?raw=true)
+
+<br/>
+<br/>
+
+## نحوه بیلد / Build Instructions
+
+این پروژه از CMake Presets استفاده می‌کند و **هیچ مسیر شخصی/سیستم‌مخصوصی** در فایل‌های مشترک وجود ندارد. مسیر Qt از متغیر محیطی `QT_ROOT` خوانده می‌شود؛ بنابراین روی هر کامپیوتری که Qt نصب است قابل بیلد است.
+
+### ۱) تنظیم متغیر محیطی QT_ROOT (فقط یک‌بار در هر سیستم)
+
+این متغیر باید به پوشه‌ی Qt مخصوص همان کامپیوتر اشاره کند (پوشه‌ای که شامل پوشه‌های `bin`, `lib`, `include` و `lib/cmake` است).
+
+**Windows (پاورشل):**
+```
+setx QT_ROOT "C:/Qt/6.11.1/msvc2022_64"
+```
+(پس از setx، ترمینال را ببندید و دوباره باز کنید تا متغیر بارگذاری شود.)
+
+**Linux/macOS:**
+```bash
+export QT_ROOT=/opt/Qt/6.11.1/gcc_64   # و این خط را به ~/.bashrc یا ~/.zshrc اضافه کنید
+```
+
+### ۲) بیلد
+
+- **از طریق IDE (VS Code / Visual Studio / Qt Creator):** فقط یک پریست (مثلاً `x64-Debug`) را انتخاب کنید؛ بقیه خودکار انجام می‌شود.
+- **از خط فرمان:**
+  ```
+  cmake --preset x64-Debug
+  cmake --build --preset x64-Debug
+  ```
+
+> نکته: `CMakeUserPresets.json` یک فایل شخصی است و عمداً در کنترل نسخه نیست (در `.gitignore` است). هر توسعه‌دهنده می‌تواند پریست شخصی خودش را در آن قرار دهد.

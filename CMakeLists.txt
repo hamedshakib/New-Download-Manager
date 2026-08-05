@@ -21,13 +21,16 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# استفاده از CMAKE_PREFIX_PATH تنها در صورتی که توسط CMakePresets مقداردهی نشده باشد
-if(NOT CMAKE_PREFIX_PATH)
-    set(CMAKE_PREFIX_PATH "E:/Programs/QT/6.11.1/msvc2022_64")
-endif()
-
 # یافتن بسته‌های Qt و GTest
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets Core Sql Network Quick LinguistTools REQUIRED)
+# مسیر Qt از CMAKE_PREFIX_PATH خوانده می‌شود که در CMakePresets.json از متغیر
+# محیطی QT_ROOT گرفته می‌شود (پس روی هر کامپیوتری مستقل از تنظیمات شخصی بیلد می‌شود).
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets Core Sql Network Quick LinguistTools)
+if(NOT QT_FOUND)
+    message(FATAL_ERROR
+        "Qt پیدا نشد. لطفاً در سیستم خودتان متغیر محیطی QT_ROOT را روی مسیر پوشه Qt تنظیم کنید "
+        "(مثلاً C:/Qt/6.11.1/msvc2022_64) و دوباره پیکربندی کنید. یا با پارامتر "
+        "cmake -DCMAKE_PREFIX_PATH=<مسیر Qt> آن را بدهید.")
+endif()
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets Core Sql Network Quick LinguistTools REQUIRED)
 find_package(GTest QUIET)
 
