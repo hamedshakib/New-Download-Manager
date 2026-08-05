@@ -2,7 +2,6 @@
 
 #include <QObject>
 #include "PartDownload.h"
-//#include "ProcessDatabaseOutput.h"
 #include "qfile.h"
 #include "qtimer.h"
 #include "qdatetime.h"

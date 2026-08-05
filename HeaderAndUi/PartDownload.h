@@ -4,7 +4,6 @@
 #include "qfile.h"
 #include "qdebug.h"
 #include "qatomicbool.h"
-//#include <utility>
 
 class PartDownload : public QObject
 {

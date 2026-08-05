@@ -13,7 +13,6 @@ public:
 	DownloadFileWriter(QObject* parent=nullptr);
 
 
-	//static bool WriteDownloadToFile(QByteArray& byteArray, QFile* file,bool CloseFileAfterWrite=false);
 	static QFile* BuildFileFromMultipleFiles(QList<QFile*> files,QString AddressOfFile);
 
 

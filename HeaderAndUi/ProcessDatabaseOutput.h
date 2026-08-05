@@ -21,7 +21,6 @@ public:
 	static bool ProcessPutLoadedDownloadInformationInDownloadObject(const QSqlRecord& record,Download* download,int download_id);
 	static QString ProcessLoadedSuffixsForMimeType(const QSqlRecord& record);
 
-	//static void ProcessPutLoadedInformationOfDownloadForMainTableView(const QSqlRecord& record,QStandardItemModel *model);
 	static void ProcessPrepareLoadedInformationForMainTableView(const QSqlRecord& record, QStandardItemModel* model);
 
 

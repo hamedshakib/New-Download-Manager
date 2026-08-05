@@ -1,6 +1,6 @@
 #include "HeaderAndUi/DatabaseManager.h"
 #include "qdebug.h"
-#include "HeaderAndUi/DatabaseConnectionPool.h"
+#include "HeaderAndUi/SettingUpDatabase.h"
 
 DatabaseManager::DatabaseManager(QObject *parent)
 	: QObject(parent)
@@ -100,7 +100,6 @@ bool DatabaseManager::UpdateAllFieldDownloadOnDataBase(Download* download)
 	{
 		while (query->next())
 		{
-		//	ProcessDatabaseOutput::ProcessPrepareLoadedInformationForMainTableView(query->record(), model);
 		}
 		delete query;
 		return true;
@@ -123,8 +122,7 @@ bool DatabaseManager::UpdateDownloadInStartOfDownloadOnDatabase(Download* downlo
 
 bool DatabaseManager::UpdateInDownloadingOnDataBase(Download* download)
 {
-	// Get connection from pool (uses SettingUpDatabase singleton)
-	QSqlDatabase& db = DatabaseConnectionPool::getDefaultConnection();
+	QSqlDatabase& db = SettingUpDatabase::get_Database();
 	
 	// Use transaction for better performance and data consistency
 	if (db.transaction()) {
@@ -154,8 +152,7 @@ bool DatabaseManager::UpdateInDownloadingOnDataBase(Download* download)
 
 bool DatabaseManager::FinishDownloadOnDatabase(Download* download)
 {
-	// Get connection from pool (uses SettingUpDatabase singleton)
-	QSqlDatabase& db = DatabaseConnectionPool::getDefaultConnection();
+	QSqlDatabase& db = SettingUpDatabase::get_Database();
 	
 	// Use transaction for better performance and data consistency
 	if (db.transaction()) {

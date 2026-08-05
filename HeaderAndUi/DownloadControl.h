@@ -82,7 +82,6 @@ signals:
 	void Started();
 	void Paused();
 	void CompletedDownload();  // Fixed typo: was CompeletedDownload
-	//void UpdateDownloaded();
 	void SpeedChanged(int speed);
 	void UpdateDownloaded(QString Status, QString speed, QString TimeLeft,QList<qint64> DownloadedBytesEachPartDownloadList);
 
@@ -91,7 +90,6 @@ signals:
 
 private slots:
 	bool ProcessPreparePartDownloaders();
-	//bool CreatePartDownloaderFromDatabase();
 	bool ProcessPreparePartDownloaderFromPartdownload(PartDownloader* partDownloader, PartDownload* partDownload);
 	bool StartPartDownloader(PartDownloader* partDownloader);
 	bool StopPartDownloader(PartDownloader* partDownloader);

@@ -14,7 +14,6 @@ class DatabaseReader : public QObject
 
 public:
 	static bool LoadDownloadFromDatabase(int Download_id, Download* download);
-	//static bool LoadCategoryFromDatabase();
 
 public:
 	DatabaseReader(QObject *parent);

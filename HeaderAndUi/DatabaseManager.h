@@ -5,7 +5,7 @@
 #include "DatabaseQueryPreparer.h"
 #include "DatabaseInteract.h"
 #include "ProcessDatabaseOutput.h"
-#include "DatabaseConnectionPool.h"
+#include "SettingUpDatabase.h"
 #include "qstandarditemmodel.h"
 #include <QTreeWidgetItem>
 #include "qthread.h"
@@ -39,7 +39,6 @@ public:
 	static bool FinishDownloadOnDatabase(Download* download);
 
 
-	//static Q LoadStatusAndFileAddressOfDownload(int download_id);
 	static QList<PartDownload*> CreatePartDownloadsOfDownload(int Download_id);
 
 	static bool RemoveDownloadCompleteWithPartDownloadsFromDatabase(Download* download);

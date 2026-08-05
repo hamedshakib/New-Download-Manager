@@ -70,8 +70,6 @@ private slots:
 	void WritePartDownloadsInDatabase();
 
 	void ProcessCompleteInformation();
-	//void VerifiedDownload_DownloadNow(QUrl url, QUrl FileSaveToAddress);
-	//void VerifiedDownload_DownloadLater(QUrl url, QUrl FileSaveToAddress);
 	void VerifiedDownload(QUrl url, QUrl FileSaveToAddress, bool Is_DownloadNow);
 
 

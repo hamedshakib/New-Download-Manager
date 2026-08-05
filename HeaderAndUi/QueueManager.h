@@ -45,7 +45,6 @@ private slots:
 	bool Is_QueueIsEmpty(Queue* queue);
 
 
-	//bool RemoveDownloadFromQueue(Download* download,Queue* queue);
 
 	bool RemoveDownloadFromQueue(Download* download);
 

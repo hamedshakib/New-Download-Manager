@@ -17,11 +17,8 @@ public:
 	void initNewDownloadComplitedInformationWidget(QUrl BaseUrl);
 
 	bool SetMoreCompliteInformation(QUrl RealUrl, QString TypeFile, QString Size, QString SaveTo, QString description = "");
-	//bool SetQueueManager(QueueManager* queueManager);
 
 signals:
-	//void DownloadNow  (QUrl url,QUrl FileSaveToAddress);
-	//void DownloadLater(QUrl url,QUrl FileSaveToAddress);
 	void VerifiedDownload(QUrl url, QUrl FileSaveToAddress,bool Is_DownloadNow);
 
 private slots:

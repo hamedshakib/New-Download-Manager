@@ -28,10 +28,6 @@ bool NewDownloadComplitedInformationWidget::SetMoreCompliteInformation(QUrl Real
 	return true;
 }
 
-//bool NewDownloadComplitedInformationWidget::SetQueueManager(QueueManager* queueManager)
-//{
-//	return 1;
-//}
 
 void NewDownloadComplitedInformationWidget::on_SaveAs_toolButton_clicked()
 {

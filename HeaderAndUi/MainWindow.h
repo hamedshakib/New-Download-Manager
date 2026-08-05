@@ -8,7 +8,6 @@
 #include "SettingUpDatabase.h"
 #include "qabstractitemmodel.h"
 #include "qstandarditemmodel.h"
-//#include "TableViewController.h"
 #include "MainTableViewController.h"
 #include "MainTreeViewController.h"
 #include "DownloadManager.h"

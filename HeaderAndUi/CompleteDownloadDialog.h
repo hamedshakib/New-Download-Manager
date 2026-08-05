@@ -8,10 +8,6 @@
 #include "qevent.h"
 #include "OpenFileForUser.h"
 
-//#include <iostream>
-//#include <cstring>
-//#include <fstream>
-
 class CompleteDownloadDialog : public QDialog
 {
 	Q_OBJECT

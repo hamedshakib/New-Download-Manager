@@ -164,8 +164,7 @@ void DownloadControl::SetMaxSpeed(int maxSpeed)
 {
 	this->MaxSpeed = maxSpeed;
 	SetMaxSpeedForPartDownloaders();
-	qDebug() << "After Set M";
-	//qDebug() << "Max Speed is " << maxSpeed;
+	//qDebug() << "After Set M";
 	if (Is_Downloading.load())
 	{
 
