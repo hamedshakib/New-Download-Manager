@@ -17,6 +17,7 @@ DownloadManager::~DownloadManager()
 
 Download* DownloadManager::CreateDownloadFromDatabase(int download_id)
 {
+    QMutexLocker locker(&mutex);
 	QThread* DownloadThread = new QThread(this->thread());
 	DownloadThread->setObjectName("Download Thread");
 	DownloadThread->start();
@@ -59,12 +60,13 @@ bool DownloadManager::CreateNewDownload()
 
 void DownloadManager::AddCreatedDownloadToDownloadList(Download* download)
 {
+    QMutexLocker locker(&mutex);
 	ListOfActiveDownloads.append(download);
 }
 
 DownloadControl* DownloadManager::CreateDownloadControl(Download* download)
 {
-
+    QMutexLocker locker(&mutex);
 	DownloadControl* downloadControl = new DownloadControl();
 	downloadControl->moveToThread(download->thread());
 	downloadControl->initDownloadControl(download);
@@ -88,6 +90,7 @@ bool DownloadManager::StartDownload(DownloadControl* downloadControl)
 
 bool DownloadManager::CreateDownloadControlAndStartDownload(Download* download)
 {
+    QMutexLocker locker(&mutex);
 	DownloadControl* downloadControl = CreateDownloadControl(download);
 	ListOfDownloadControls.append(downloadControl);
 	StartDownload(downloadControl);
@@ -97,6 +100,7 @@ bool DownloadManager::CreateDownloadControlAndStartDownload(Download* download)
 
 Download* DownloadManager::ProcessAchieveDownload(int Download_id)
 {
+    QMutexLocker locker(&mutex);
 	for (Download* download : ListOfActiveDownloads)
 	{
 		if (download->get_Id() == Download_id)
@@ -118,6 +122,7 @@ Download* DownloadManager::ProcessAchieveDownload(int Download_id)
 
 DownloadControl* DownloadManager::ProcessAchieveDownloadControl(Download* download)
 {
+    QMutexLocker locker(&mutex);
 	for (DownloadControl* downloadControl : ListOfDownloadControls)
 	{
 		if (downloadControl->Get_Download() == download)
@@ -144,6 +149,7 @@ bool DownloadManager::CreatePartDownloadAndPutInDownloadFromDatabase(Download* d
 
 bool DownloadManager::ProcessRemoveDownload(int download_id, bool is_RemoveFromDisk)
 {
+    QMutexLocker locker(&mutex);
 	Download* download = ProcessAchieveDownload(download_id);
 	DownloadControl* downloadControl = ProcessAchieveDownloadControl(download);
 
@@ -173,6 +179,7 @@ bool DownloadManager::ProcessRemoveDownload(int download_id, bool is_RemoveFromD
 
 bool DownloadManager::ProcessRemoveDownload(Download* download, bool is_RemoveFromDisk)
 {
+    QMutexLocker locker(&mutex);
 	DownloadControl* downloadControl = ProcessAchieveDownloadControl(download);
 
 	downloadControl->PauseDownload();
@@ -200,12 +207,34 @@ bool DownloadManager::ProcessRemoveDownload(Download* download, bool is_RemoveFr
 
 bool DownloadManager::StopAllDownload()
 {
+    QMutexLocker locker(&mutex);
 	for(DownloadControl* downloadControl :ListOfDownloadControls)
 	{
 		downloadControl->PauseDownload();
 	}
 	return true;
 }
+
+bool DownloadManager::SpeedLimitForAllDownload()
+{
+    QMutexLocker locker(&mutex);
+	for (DownloadControl* downloadControl : ListOfDownloadControls)
+	{
+		downloadControl->SetMaxSpeed(SpeedLimit);
+	}
+	return true;
+}
+
+bool DownloadManager::Set_SpeedLimit(int maxSpeed)
+{
+    QMutexLocker locker(&mutex);
+ 	this->SpeedLimit = maxSpeed;
+ 	if (SpeedLimitForAllDownload())
+ 		return true;
+ 	else
+ 		return false;
+
+ }
 
 bool DownloadManager::CreateNewDownloadsFromBatch(QList<QString> listOfAddress, QString SaveTo, QString Username, QString Password)
 {
@@ -225,24 +254,5 @@ bool DownloadManager::CreateNewDownloadsFromBatch(QList<QString> listOfAddress, 
 	connect(newDownloadCreater, &NewDownloadCreater::DownloadNow, this, &DownloadManager::CreateDownloadControlAndStartDownload);
 	newDownloadCreater->StartProcessOfCreateNewDownloadFromBatch(listOfAddress, SaveTo, Username, Password,this);
 	return true;
-}
-
-bool DownloadManager::SpeedLimitForAllDownload()
-{
-	for (DownloadControl* downloadControl : ListOfDownloadControls)
-	{
-		downloadControl->SetMaxSpeed(SpeedLimit);
-	}
-	return true;
-}
-
-bool DownloadManager::Set_SpeedLimit(int maxSpeed)
-{
-	this->SpeedLimit = maxSpeed;
-	if (SpeedLimitForAllDownload())
-		return true;
-	else
-		return false;
-
 }
 
