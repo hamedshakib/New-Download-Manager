@@ -4,6 +4,7 @@
 #include "qtimer.h"
 #include "qdatetime.h"
 #include "Queue.h"
+#include "qmutex.h"
 
 class QueueTimeManager : public QObject
 {

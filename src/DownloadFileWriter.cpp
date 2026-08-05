@@ -27,7 +27,9 @@ bool DownloadFileWriter::WriteDownloadToFile(QByteArray& byteArray, QFile* file,
 
 	if (CloseFileAfterWrite)
 	{
-		file->close();
+		if (file->isOpen()) {
+			file->close();
+		}
 	}
 	return true;
 

@@ -2,6 +2,8 @@
 
 #include <QObject>
 #include "Download.h"
+#include "qatomicbool.h"
+#include <atomic>
 
 class Queue : public QObject
 {
@@ -17,14 +19,14 @@ private:
 
 	struct EventTime
 	{
-		bool is_active=false;
+		std::atomic<bool> is_active=false;
 		QTime Time;
 	}startDownload, stopDownload;
 
 	QStringList DownloadDays;
 
 
-	bool Is_Downloading = false;
+	QAtomicBool Is_Downloading = false;
 
 	friend class QueueManager;
 	friend class ProcessDatabaseOutput;

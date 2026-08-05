@@ -59,7 +59,7 @@ void DownloadControl::initDownloadControl(Download* download)
 	timer->moveToThread(this->thread());  // Fix: Move timer to the correct thread
 	connect(timer, &QTimer::timeout, this, &DownloadControl::TimerTimeOut, Qt::QueuedConnection);
 	// Use Qt::QueuedConnection for cross-thread safety when emitting signals across threads
-	connect(this, &DownloadControl::CompeletedDownload, this, &DownloadControl::ProcessForShowDownloadCompleteDialog, Qt::QueuedConnection);
+connect(this, &DownloadControl::CompletedDownload, this, &DownloadControl::ProcessForShowDownloadCompleteDialog, Qt::QueuedConnection);
 	
 	elapsedTimer = new QElapsedTimer();
 	elapsedTimerForIndependentSpeed = new QElapsedTimer();
@@ -71,7 +71,7 @@ void DownloadControl::initDownloadControl(Download* download)
 
 bool DownloadControl::StartDownload()
 {
-	this->Is_Downloading = true;
+	Is_Downloading.store(true);
 	statusOfDownload = DownloadStatus::Downloading;
 
 	if (!Is_PreparePartDownloaders)
@@ -89,7 +89,6 @@ bool DownloadControl::StartDownload()
 
 
 
-	Is_Downloading = true;
 	elapsedTimer->start();
 
 	bool is_SpeedLimited = IsSpeedLimitted();
@@ -116,7 +115,6 @@ bool DownloadControl::StartDownload()
 	download->Set_downloadStatus(Download::DownloadStatusEnum::Downloading);
 	download->LastTryTime = QDateTime::currentDateTime();
 	emit Started();
-	Is_Downloading = true;
 	elapsedTimer->restart();
 	timer->start(1000);
 	if (is_SpeedLimited)
@@ -134,7 +132,7 @@ bool DownloadControl::StartDownload()
 
 bool DownloadControl::PauseDownload()
 {
-	this->Is_Downloading = false;
+	Is_Downloading.store(false);
 	statusOfDownload = DownloadStatus::Pause;
 	for (PartDownloader* partDownloader : PartDownloader_list)
 	{
@@ -154,7 +152,7 @@ bool DownloadControl::PauseDownload()
 
 bool DownloadControl::IsDownloading()
 {
-	return this->Is_Downloading;
+	return Is_Downloading.load();
 }
 
 Download* DownloadControl::Get_Download()
@@ -168,7 +166,7 @@ void DownloadControl::SetMaxSpeed(int maxSpeed)
 	SetMaxSpeedForPartDownloaders();
 	qDebug() << "After Set M";
 	//qDebug() << "Max Speed is " << maxSpeed;
-	if (Is_Downloading)
+	if (Is_Downloading.load())
 	{
 
 		disconnect(speedControlConnection);
@@ -384,7 +382,7 @@ bool DownloadControl::ProcessFinishDownload()
 	statusOfDownload = DownloadStatus::StartFinish;
 	disconnect(speedControlConnection);
 	qDebug() << "Process Of End Of Downloading "<<QThread::currentThread()->objectName() ;
-	Is_Downloading = false;
+	Is_Downloading.store(false);
 	timer->stop();
 	
 	// Use PartDownloader_list instead of get_PartDownloads() to properly access PartDownload objects
@@ -416,7 +414,7 @@ bool DownloadControl::ProcessFinishDownload()
 	
 	download->Set_downloadStatus(Download::Completed);
 	NewDownloadFile->deleteLater();
-	emit CompeletedDownload();
+	emit CompletedDownload();
 	statusOfDownload = DownloadStatus::Finished;
 	return true;
 }
@@ -483,7 +481,7 @@ void DownloadControl::UpdateListOfActivePartDownloaders()
 
 void DownloadControl::DownloadForControlSpeed()
 {
-	if (Is_Downloading)
+	if (Is_Downloading.load())
 	{
 		// Note: The mutex was a local variable and didn't protect any shared data
 		// The ActivePartDownloader_list is already protected by the locker mutex

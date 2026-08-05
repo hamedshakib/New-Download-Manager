@@ -22,6 +22,7 @@
 #include "qpixmap.h"
 #include "qprocess.h"
 #include "qinputdialog.h"
+#include "qatomicpointer.h"
 
 
 class MainWindow : public QMainWindow
@@ -78,5 +79,5 @@ private:
 	QueueManager* queueManager;
 	Ui::MainWindow ui;
 
-	Download* SelectedDownload=nullptr;
+	QAtomicPointer<Download> SelectedDownload;
 };

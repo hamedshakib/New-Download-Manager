@@ -7,6 +7,7 @@
 #include "qmutex.h"
 #include "qtimer.h"
 #include "qthread.h"
+#include "qatomicbool.h"
 
 class PartDownloader : public QObject
 {
@@ -24,8 +25,8 @@ private:
     QNetworkReply* reply = nullptr;
     PartDownload* partDownload=nullptr;
     DownloadFileWriter* downloadFileWriter;
-    bool is_SpeedLimit;
-    bool is_Downloading = false;
+    QAtomicBool is_SpeedLimit = false;
+    QAtomicBool is_Downloading = false;  // Changed to QAtomicBool for thread safety
     QTimer timer;
     QMutex mutex;
     PartDownloaderStatus partDownloaderStatus= PartDownloadPaused;
@@ -63,6 +64,8 @@ signals:
 	void DownloadedBytes(qint64 ReadedBytes);
 	void DownloadError(QString errorMessage, int retryAttempt);
 	void NetworkReplyReady(QNetworkReply* reply);
+
+
 
 
 

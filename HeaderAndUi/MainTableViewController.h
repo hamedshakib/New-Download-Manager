@@ -18,6 +18,8 @@
 #include "SelectColumnsForMainTableView.h"
 #include "qinputdialog.h"
 #include "qhash.h"
+#include "qatomicint.h"
+#include "qmutex.h"
 
 
 class MainTableViewController : public TableViewController
@@ -87,12 +89,14 @@ private:
 	QHeaderView* horizontalHeader;
 
 	QMap<DownloadControl*, ShowDownloadWidget*> MapOfShowDownloadWidgets;
-	int SelectedFinishedDownload_id = 0;
+	QAtomicInt SelectedFinishedDownload_id = 0;
 
 	QList<int> HiddenColumns;
+	mutable QMutex hiddenColumnsMutex;
 
 	// Use QHash for fast row lookup instead of iterating through model rows
 	QHash<size_t, size_t> DownloadIdToRowMap;
+	mutable QMutex downloadIdToRowMapMutex;
 
 public:
 	MainTableViewController(QTableView* tableView,QObject *parent);

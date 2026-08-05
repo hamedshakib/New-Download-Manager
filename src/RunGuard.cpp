@@ -40,15 +40,20 @@ RunGuard::~RunGuard()
 
 bool RunGuard::isAnotherRunning()
 {
-    if (sharedMem.isAttached())
-        return false;
-
     memLock.acquire();
+    
+    // Check if already attached
+    if (sharedMem.isAttached()) {
+        memLock.release();
+        return false;
+    }
+    
+    // Try to attach
     const bool isRunning = sharedMem.attach();
     if (isRunning)
         sharedMem.detach();
+    
     memLock.release();
-
     return isRunning;
 }
 

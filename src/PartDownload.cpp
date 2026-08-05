@@ -9,6 +9,10 @@ PartDownload::~PartDownload()
 {
 	if (PartDownloadFile != nullptr)
 	{
+		// Close file if it's open before deleting
+		if (PartDownloadFile->isOpen()) {
+			PartDownloadFile->close();
+		}
 		PartDownloadFile->deleteLater();
 		PartDownloadFile = nullptr;
 	}

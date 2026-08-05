@@ -153,13 +153,14 @@ void MainWindow::ChangedDownloadSelected(int Download_id,bool Is_Completed)
 	qDebug() << "Download_id:"<< Download_id;
 	
 	// Disconnect old connection if exists (before setting SelectedDownload to nullptr)
-	if (SelectedDownload != nullptr)
+	Download* oldDownload = SelectedDownload.load();
+	if (oldDownload != nullptr)
 	{
-		disconnect(SelectedDownload, &Download::DownloadStatusChanged, this, &MainWindow::ChangedStatusOfSeletedDownload);
+		disconnect(oldDownload, &Download::DownloadStatusChanged, this, &MainWindow::ChangedStatusOfSeletedDownload);
 	}
 	
 	// Reset state first
-	SelectedDownload = nullptr;
+	SelectedDownload.store(nullptr);
 	ui.actionRemove->setEnabled(false);
 	ui.actionDownload_Now->setEnabled(false);
 	ui.actionStop_Download->setEnabled(false);
@@ -178,19 +179,20 @@ void MainWindow::ChangedDownloadSelected(int Download_id,bool Is_Completed)
 	}
 	
 	// Download Not Completed - get download from manager
-	SelectedDownload = downloadManagerPointer->ProcessAchieveDownload(Download_id);
+	Download* newDownload = downloadManagerPointer->ProcessAchieveDownload(Download_id);
+	SelectedDownload.store(newDownload);
 	
 	// Check if download was successfully loaded
-	if (!SelectedDownload)
+	if (!newDownload)
 	{
 		qWarning() << "Failed to load download with ID:" << Download_id;
 		return;
 	}
 	
 	// Use QueuedConnection because Download is in a different thread than MainWindow
-	connect(SelectedDownload, &Download::DownloadStatusChanged, this, &MainWindow::ChangedStatusOfSeletedDownload, Qt::QueuedConnection);
+	connect(newDownload, &Download::DownloadStatusChanged, this, &MainWindow::ChangedStatusOfSeletedDownload, Qt::QueuedConnection);
 
-	if (SelectedDownload->get_Status() == Download::NotStarted || SelectedDownload->get_Status() == Download::Pause)
+	if (newDownload->get_Status() == Download::NotStarted || newDownload->get_Status() == Download::Pause)
 	{
 		ui.actionDownload_Now->setEnabled(true);
 		ui.actionStop_Download->setEnabled(false);
@@ -205,19 +207,20 @@ void MainWindow::ChangedDownloadSelected(int Download_id,bool Is_Completed)
 
 void MainWindow::ChangedStatusOfSeletedDownload(Download::DownloadStatusEnum NewStatus)
 {
-	if (!SelectedDownload)
+	Download* currentDownload = SelectedDownload.load();
+	if (!currentDownload)
 	{
 		qWarning() << "ChangedStatusOfSeletedDownload: SelectedDownload is null";
 		return;
 	}
 	
 	ui.actionRemove->setEnabled(true);
-	if (SelectedDownload->get_Status() == Download::NotStarted || SelectedDownload->get_Status() == Download::Pause)
+	if (currentDownload->get_Status() == Download::NotStarted || currentDownload->get_Status() == Download::Pause)
 	{
 		ui.actionDownload_Now->setEnabled(true);
 		ui.actionStop_Download->setEnabled(false);
 	}
-	else if(SelectedDownload->get_Status() == Download::Downloading)
+	else if(currentDownload->get_Status() == Download::Downloading)
 	{
 		ui.actionDownload_Now->setEnabled(false);
 		ui.actionStop_Download->setEnabled(true);
@@ -232,7 +235,8 @@ void MainWindow::ChangedStatusOfSeletedDownload(Download::DownloadStatusEnum New
 
 void MainWindow::on_actionDownload_Now_triggered()
 {
-	if (!SelectedDownload)
+	Download* currentDownload = SelectedDownload.load();
+	if (!currentDownload)
 	{
 		qWarning() << "on_actionDownload_Now_triggered: SelectedDownload is null";
 		return;
@@ -244,20 +248,21 @@ void MainWindow::on_actionDownload_Now_triggered()
 		return;
 	}
 	
-	DownloadControl *downloadControl = downloadManagerPointer->ProcessAchieveDownloadControl(SelectedDownload);
+	DownloadControl *downloadControl = downloadManagerPointer->ProcessAchieveDownloadControl(currentDownload);
 	if (downloadControl)
 	{
 		downloadControl->StartDownload();
 	}
 	else
 	{
-		qCritical() << "Failed to get DownloadControl for download ID:" << SelectedDownload->get_Id();
+		qCritical() << "Failed to get DownloadControl for download ID:" << currentDownload->get_Id();
 	}
 }
 
 void MainWindow::on_actionStop_Download_triggered()
 {
-	if (!SelectedDownload)
+	Download* currentDownload = SelectedDownload.load();
+	if (!currentDownload)
 	{
 		qWarning() << "on_actionStop_Download_triggered: SelectedDownload is null";
 		return;
@@ -269,14 +274,14 @@ void MainWindow::on_actionStop_Download_triggered()
 		return;
 	}
 	
-	DownloadControl* downloadControl = downloadManagerPointer->ProcessAchieveDownloadControl(SelectedDownload);
+	DownloadControl* downloadControl = downloadManagerPointer->ProcessAchieveDownloadControl(currentDownload);
 	if (downloadControl)
 	{
 		downloadControl->PauseDownload();
 	}
 	else
 	{
-		qCritical() << "Failed to get DownloadControl for download ID:" << SelectedDownload->get_Id();
+		qCritical() << "Failed to get DownloadControl for download ID:" << currentDownload->get_Id();
 	}
 }
 
@@ -288,11 +293,12 @@ void MainWindow::on_actionRemove_triggered()
 		return;
 	}
 	
-	if (SelectedDownload != nullptr)
+	Download* currentDownload = SelectedDownload.load();
+	if (currentDownload != nullptr)
 	{
 		if (mainTableViewController)
 		{
-			mainTableViewController->RemoveActionTriggered(SelectedDownload);
+			mainTableViewController->RemoveActionTriggered(currentDownload);
 		}
 		else
 		{

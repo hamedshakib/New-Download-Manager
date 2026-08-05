@@ -1,6 +1,7 @@
 #include "HeaderAndUi/SettingInteract.h"
 #include "qapplication.h"
 #include "qdir.h"
+#include "qmutex.h"
 
 /*
 SettingInteract::SettingInteract(QObject *parent)
@@ -22,15 +23,21 @@ QSettings& SettingInteract::Get_settings()
 	return settings;
 }
 
+QMutex& SettingInteract::GetMutex()
+{
+	static QMutex mutex;
+	return mutex;
+}
+
 bool SettingInteract::SetValue(QString Name, QVariant value)
 {
-	
+	QMutexLocker locker(&GetMutex());
 	Get_settings().setValue(Name, value);
 	return true;
-
 }
 
 QVariant SettingInteract::GetValue(QString Name)
 {
+	QMutexLocker locker(&GetMutex());
 	return Get_settings().value(Name);
 }

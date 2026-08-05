@@ -8,6 +8,8 @@
 #include "qdatetime.h"
 #include "qurl.h"
 #include "qlist.h"
+#include "qatomicint.h"
+#include "qatomiclonglong.h"
 
 class Download : public QObject
 {
@@ -43,10 +45,10 @@ private:
 	QString FileName;
 	size_t MaxSpeed; //Kilobytes
 	qint64 DownloadSize;
-	qint64 SizeDownloaded;
+	QAtomicLongLong SizeDownloaded = 0;
 	QFile* CompletedFile = nullptr;
 	QString description;
-	DownloadStatusEnum downloadStatus;
+	QAtomicInt downloadStatus = 0;  // DownloadStatusEnum::NotStarted
 	QTime TimeLeft;
 	QDateTime LastTryTime;
 	QUrl Url;

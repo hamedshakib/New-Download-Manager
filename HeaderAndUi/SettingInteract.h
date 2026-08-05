@@ -2,6 +2,7 @@
 
 #include <QObject>
 #include "qsettings.h"
+#include "qmutex.h"
 
 class SettingInteract : public QObject
 {
@@ -14,6 +15,7 @@ public:
 
 private:
 	static QSettings& Get_settings();
+	static QMutex& GetMutex();
 
 /*
 public:

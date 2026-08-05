@@ -38,7 +38,7 @@ ApplicationManager::ApplicationManager(QObject *parent,int argc,char* argv[])
 		mainWindow->CreateMainTableViewControllerForMainWindow();
 
 		ProcessArguments(argc, argv);
-		if (!is_Silent) {
+		if (!is_Silent.load()) {
 			mainWindow->show();
 		}
 		
@@ -53,7 +53,7 @@ ApplicationManager::ApplicationManager(QObject *parent,int argc,char* argv[])
 
 		// Create proxyManager as member variable
 		proxyManager = new ProxyManager();
-		if (!proxyManager) {
+	if (!proxyManager) {
 			qCritical() << "ApplicationManager: Failed to create ProxyManager";
 			// ProxyManager is not critical, continue without it
 			proxyManager = nullptr;
@@ -160,11 +160,8 @@ void ApplicationManager::ProcessArguments(int argc, char* argv[])
 	{
 		if (QString(argv[i]) == "-silent")
 		{
-			is_Silent = true;
+			is_Silent.store(true);
 		}
-
-
-
 	}
 }
 

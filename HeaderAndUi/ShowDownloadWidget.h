@@ -18,8 +18,6 @@ private:
 	QMap< QTreeWidgetItem*, PartDownload*> TreeWidgetMap;
 	QList<QTreeWidgetItem*> items;
 
-	bool isChangeSpeedNow;
-
 public slots:
 	void ProcessSetup();
 

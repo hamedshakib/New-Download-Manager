@@ -3,6 +3,7 @@
 #include <QObject>
 #include "qfile.h"
 #include "qdebug.h"
+#include "qatomicbool.h"
 //#include <utility>
 
 class PartDownload : public QObject
@@ -13,7 +14,7 @@ signals:
 	void Finished();
 
 public:
-	bool is_Finished = false;
+	QAtomicBool is_Finished = false;
 	int id_PartDownload;
 	qint64 start_byte;
 	qint64 end_byte;

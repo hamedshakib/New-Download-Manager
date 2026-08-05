@@ -18,6 +18,7 @@
 #include "qfileinfo.h"
 #include "qreadwritelock.h"
 #include "qmutex.h"
+#include "qatomicbool.h"
 
 class DownloadControl : public QObject
 {
@@ -51,8 +52,9 @@ private:
 	CalculatorDownload calculatorDownload;
 	size_t MaxSpeed; //   KB/Sec
 	bool Is_PreparePartDownloaders = false;
-	bool Is_Downloading = false;
+	QAtomicBool Is_Downloading = false;  // Changed to QAtomicBool for thread safety
 	bool DownloadFinished = false;
+
 
 	bool RecentlyUpdatedActivePartDownloader_list = false;
 	QElapsedTimer *elapsedTimer;
@@ -79,7 +81,7 @@ public:
 signals:
 	void Started();
 	void Paused();
-	void CompeletedDownload();
+	void CompletedDownload();  // Fixed typo: was CompeletedDownload
 	//void UpdateDownloaded();
 	void SpeedChanged(int speed);
 	void UpdateDownloaded(QString Status, QString speed, QString TimeLeft,QList<qint64> DownloadedBytesEachPartDownloadList);

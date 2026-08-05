@@ -9,6 +9,7 @@
 #include "DateTimeManager.h"
 #include "ProxyManager.h"
 #include "QueueManager.h"
+#include "qatomicbool.h"
 
 class ApplicationManager : public QObject
 {
@@ -29,7 +30,7 @@ private slots:
 
 private:
 	QSystemTrayIcon* m_trayIcon;
-	bool is_Silent = false;
+QAtomicBool is_Silent = false;
 
 public:
 	ApplicationManager(QObject *parent,int argc,char* argv[]);
