@@ -1,4 +1,15 @@
 #include "HeaderAndUi/DatabaseInteract.h"
+#include "HeaderAndUi/SettingUpDatabase.h"
+#include "HeaderAndUi/DatabaseQueryPreparer.h"
+
+// Helper function to create a thread-safe query
+static QSqlQuery* createThreadSafeQuery(QSqlDatabase* db = nullptr)
+{
+    if (db) {
+        return new QSqlQuery(*db);
+    }
+    return new QSqlQuery(SettingUpDatabase::getThreadDatabase());
+}
 
 bool DatabaseInteract::ExectionQueryForReadData(QSqlQuery* query)
 {
@@ -140,4 +151,89 @@ bool DatabaseInteract::ExectionQueryForDeleteData(QSqlQuery* query)
 		}
 		return false;
 	}
+}
+
+// Helper functions for thread-safe query execution
+bool DatabaseInteract::executeReadQuery(const QString& queryText, QSqlRecord* boundValues)
+{
+	QSqlQuery* query = createThreadSafeQuery();
+	if (!query) {
+		qCritical() << "Failed to create thread-safe query";
+		return false;
+	}
+	
+	query->setQuery(queryText);
+	
+	if (boundValues) {
+		for (int i = 0; i < boundValues->count(); ++i) {
+			query->addBindValue(boundValues->value(i));
+		}
+	}
+	
+	bool result = ExectionQueryForReadData(query);
+	delete query;
+	return result;
+}
+
+bool DatabaseInteract::executeUpdateQuery(const QString& queryText, QSqlRecord* boundValues)
+{
+	QSqlQuery* query = createThreadSafeQuery();
+	if (!query) {
+		qCritical() << "Failed to create thread-safe query";
+		return false;
+	}
+	
+	query->setQuery(queryText);
+	
+	if (boundValues) {
+		for (int i = 0; i < boundValues->count(); ++i) {
+			query->addBindValue(boundValues->value(i));
+		}
+	}
+	
+	bool result = ExectionQueryForUpdateData(query);
+	delete query;
+	return result;
+}
+
+bool DatabaseInteract::executeInsertQuery(const QString& queryText, QSqlRecord* boundValues)
+{
+	QSqlQuery* query = createThreadSafeQuery();
+	if (!query) {
+		qCritical() << "Failed to create thread-safe query";
+		return false;
+	}
+	
+	query->setQuery(queryText);
+	
+	if (boundValues) {
+		for (int i = 0; i < boundValues->count(); ++i) {
+			query->addBindValue(boundValues->value(i));
+		}
+	}
+	
+	bool result = ExectionQueryForInsertData(query);
+	delete query;
+	return result;
+}
+
+bool DatabaseInteract::executeDeleteQuery(const QString& queryText, QSqlRecord* boundValues)
+{
+	QSqlQuery* query = createThreadSafeQuery();
+	if (!query) {
+		qCritical() << "Failed to create thread-safe query";
+		return false;
+	}
+	
+	query->setQuery(queryText);
+	
+	if (boundValues) {
+		for (int i = 0; i < boundValues->count(); ++i) {
+			query->addBindValue(boundValues->value(i));
+		}
+	}
+	
+	bool result = ExectionQueryForDeleteData(query);
+	delete query;
+	return result;
 }

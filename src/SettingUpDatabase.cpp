@@ -1,19 +1,15 @@
 #include "HeaderAndUi/SettingUpDatabase.h"
 #include "qapplication.h"
 #include "qdir.h"
-
-/*
-SettingUpDatabase::SettingUpDatabase(QObject *parent)
-	: QObject(parent)
-{
-}
-
-SettingUpDatabase::~SettingUpDatabase()
-{
-}
-*/
+#include "qthread.h"
 
 QMutex& SettingUpDatabase::getMutex()
+{
+    static QMutex mutex;
+    return mutex;
+}
+
+QMutex& SettingUpDatabase::getThreadDatabaseMutex()
 {
     static QMutex mutex;
     return mutex;
@@ -36,13 +32,53 @@ QSqlDatabase& SettingUpDatabase::get_Database()
     return db;
 }
 
+// Thread-specific database connection storage
+QThreadStorage<QSqlDatabase*> SettingUpDatabase::m_threadDatabases;
+
+QSqlDatabase& SettingUpDatabase::getThreadDatabase()
+{
+    QMutexLocker locker(&getThreadDatabaseMutex());
+    
+    QThread* currentThread = QThread::currentThread();
+    QString threadId = QString::number(reinterpret_cast<quintptr>(currentThread));
+    
+    if (!m_threadDatabases.hasLocalData())
+    {
+        QSqlDatabase* db = new QSqlDatabase();
+        *db = QSqlDatabase::addDatabase("QSQLITE", threadId);
+        SettingUp(*db);
+        m_threadDatabases.setLocalData(db);
+    }
+    
+    return *m_threadDatabases.localData();
+}
+
+void SettingUpDatabase::releaseThreadDatabase()
+{
+    QMutexLocker locker(&getThreadDatabaseMutex());
+    
+    if (m_threadDatabases.hasLocalData())
+    {
+        QSqlDatabase* db = m_threadDatabases.localData();
+        QString threadId = QString::number(reinterpret_cast<quintptr>(QThread::currentThread()));
+        
+        if (QSqlDatabase::contains(threadId))
+        {
+            QSqlDatabase::database(threadId).close();
+            QSqlDatabase::removeDatabase(threadId);
+        }
+        
+        delete db;
+        m_threadDatabases.setLocalData(nullptr);
+    }
+}
+
 bool SettingUpDatabase::SettingUp(QSqlDatabase& db)
 {
     // Use absolute path based on application directory to ensure
     // database file is always found regardless of working directory
     static QString dbPath = QDir(qApp->applicationDirPath()).filePath("DM.db");
     
-    db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(dbPath);
     if (!db.open())
     {
@@ -50,6 +86,9 @@ bool SettingUpDatabase::SettingUp(QSqlDatabase& db)
         qCritical() << "Error:" << db.lastError().text();
         return false;
     }
+    
+    // Set connection options for better concurrency
+    db.setConnectOptions("QSQLITE_JOURNAL_MODE=WAL;QSQLITE_BUSY_TIMEOUT=5000");
     
     // Add database indexes for improved query performance
     // Indexes are critical for:

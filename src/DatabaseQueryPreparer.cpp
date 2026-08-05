@@ -11,14 +11,14 @@ DatabaseQueryPreparer::~DatabaseQueryPreparer()
 
 QSqlQuery* DatabaseQueryPreparer::PrepareQueryForLoadDownload(int Download_id)
 {
-	SettingUpDatabase::get_Database();
+	SettingUpDatabase::getThreadDatabase();
 	QString queryString = QString(
 		"select D.id,D.FileName,DS.Name as Status,Url,SaveTo,Suffix,DownloadSize,SizeDownloaded,description,LastTryTime,RC.Name as ResumeCapability,Category_id,Queue_id,User,Password "
 		"From Download as D join DownloadStatus as DS on D.DownloadStatus_id = DS.id join ResumeCapability as RC on D.ResumeCapability_id = RC.id "
 		"where D.id=:id "
 	);
 	
-	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query (null pointer)";
 		return nullptr;
@@ -38,7 +38,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryChangeLastbitDownloaded(int PartDo
 		"WHERE id = :id "
 	);
 	
-	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query for changing last bit (null pointer)";
 		return nullptr;
@@ -58,7 +58,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQuerySuffixsFromMimeType(QString MimeTy
 		"WHERE mimeType=:mimeType"
 	);
 	
-	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query for suffixs from mime type (null pointer)";
 		return nullptr;
@@ -71,7 +71,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQuerySuffixsFromMimeType(QString MimeTy
 
 QSqlQuery* DatabaseQueryPreparer::PrepareQueryForCreateNewDownload(Download* download)
 {
-	SettingUpDatabase::get_Database();
+	SettingUpDatabase::getThreadDatabase();
 	QString queryString = QString(
 		"INSERT INTO Download(DownloadStatus_id,FileName,"
 		"Url,SaveTo,"
@@ -95,7 +95,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForCreateNewDownload(Download* dow
 		");"
 	);
 
-	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query for creating new download (null pointer)";
 		return nullptr;
@@ -157,7 +157,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForCreateNewPartDownload(PartDownl
 	);
 
 	
-	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query for creating new part download (null pointer)";
 		return nullptr;
@@ -179,7 +179,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForLoadDownloadForMainTable()
 		"From Download as D join DownloadStatus as DS on D.DownloadStatus_id = DS.id"
 	);
 	
-	QSqlQuery* query = new QSqlQuery(queryString, SettingUpDatabase::get_Database());
+	QSqlQuery* query = new QSqlQuery(queryString, SettingUpDatabase::getThreadDatabase());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query for loading downloads for main table (null pointer)";
 		return nullptr;
@@ -209,7 +209,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForUpdateAllFieldDownload(Download
 	);
 
 
-	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query for updating all fields download (null pointer)";
 		return nullptr;
@@ -261,7 +261,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForUpdateInStartDownload(Download*
 		"LastTryTime = :lastTryTime "
 		"WHERE id = :id;"
 	);
-	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query for updating in start download (null pointer)";
 		return nullptr;
@@ -285,7 +285,7 @@ QList<QSqlQuery*> DatabaseQueryPreparer::PrepareQueriesForUpdateInDownloading(Do
 		"SET SizeDownloaded = :sizeDownloaded "
 		"WHERE id = :id;"
 	);
-	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query for updating in downloading (null pointer)";
 		return listOfQueries;
@@ -304,7 +304,7 @@ QList<QSqlQuery*> DatabaseQueryPreparer::PrepareQueriesForUpdateInDownloading(Do
 			"SET  LastDownloaded_byte = :lastDownloaded_byte "
 			"WHERE id = :id; "
 		);
-		QSqlQuery* query1 = new QSqlQuery(SettingUpDatabase::get_Database());
+		QSqlQuery* query1 = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 		if (!query1) {
 			qCritical() << "Database Query Preparer: Failed to create query 1 for updating in downloading (null pointer)";
 			continue;
@@ -334,7 +334,7 @@ QList<QSqlQuery*> DatabaseQueryPreparer::PrepareQueryForFinishDownload(Download*
 		"DownloadStatus_id = :downloadStatus_id "
 		"WHERE id = :id;"
 	);
-	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query for finish download (null pointer)";
 		return listOfQueries;
@@ -353,7 +353,7 @@ QList<QSqlQuery*> DatabaseQueryPreparer::PrepareQueryForFinishDownload(Download*
 	);
 
 
-	QSqlQuery* query1 = new QSqlQuery(SettingUpDatabase::get_Database());
+	QSqlQuery* query1 = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 	if (!query1) {
 		qCritical() << "Database Query Preparer: Failed to create query 1 for finish download (null pointer)";
 		return listOfQueries;
@@ -375,7 +375,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForLoadPartDownloadOfDownload(int 
 		"FROM PartDownload "
 		"where Download_id = :download_id; "
 	);
-	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query for loading part downloads (null pointer)";
 		return nullptr;
@@ -391,7 +391,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForRemovePartDownloadsOfDownloadFr
 		"DELETE FROM PartDownload "
 		"WHERE Download_id = :download_id; "
 	);
-	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query for removing part downloads (null pointer)";
 		return nullptr;
@@ -407,7 +407,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForRemoveDownloadFromDatabase(Down
 		"DELETE FROM Download "
 		"WHERE id = :download_id; "
 	);
-	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query for removing download (null pointer)";
 		return nullptr;
@@ -423,7 +423,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForLoadAllQueuesGeneralInformation
 	QString queryString = QString(
 		"Select * FROM Queue; "
 	);
-	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query for loading all queues (null pointer)";
 		return nullptr;
@@ -441,7 +441,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForGetDownloadIdOfQueue(Queue* que
 		"FROM Download "
 		"where Queue_id =:queue_id; "
 	);
-	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query for getting download id of queue (null pointer)";
 		return nullptr;
@@ -458,7 +458,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForRemoveDownloadFromQueueOnDataba
 		"SET Queue_id = :queue_id "
 		"WHERE id = :id;"
 	);
-	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query for removing download from queue (null pointer)";
 		return nullptr;
@@ -476,7 +476,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForCreateNewQueue(Queue* queue)
 		"INSERT INTO Queue(Name,NumberDownloadSameTime) "
 		"VALUES(:name,:numberDownloadSameTime); "
 	);
-	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query for creating new queue (null pointer)";
 		return nullptr;
@@ -494,7 +494,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForExitAllDownloadFromQueue(Queue*
 		"SET Queue_id = :null "
 		"WHERE Queue_id = :queue_id; "
 	);
-	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query for exiting all downloads from queue (null pointer)";
 		return nullptr;
@@ -512,7 +512,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForRemoveQueueFromDatabase(Queue* 
 		"DELETE FROM Queue "
 		"WHERE id = :id; "
 	);
-	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query for removing queue (null pointer)";
 		return nullptr;
@@ -530,7 +530,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryFroAddDownloadToQueue(Download* do
 		"SET Queue_id = :queue_id "
 		"WHERE id = :id; "
 	);
-	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query for adding download to queue (null pointer)";
 		return nullptr;
@@ -554,7 +554,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryFroEditTimeEventsOfQueue(Queue* qu
 		"DaysOfWeek = :daysOfWeek "
 		"WHERE id = :queue_id; "
 	);
-	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query for editing time events of queue (null pointer)";
 		return nullptr;
@@ -634,7 +634,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForAddDownloadTo_Queue_Download(Qu
 	
 
 
-	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query for adding download to queue download (null pointer)";
 		return nullptr;
@@ -653,7 +653,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForRemoveDownloadFrom_Queue_Downlo
 		"WHERE Download_id = :download_id; "
 	);
 
-	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query for removing download from queue download (null pointer)";
 		return nullptr;
@@ -673,7 +673,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForDecreaseDownloadNumberOfQueueLi
 		"NumbersInList > :numbersInList; "
 	);
 
-	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query for decreasing download number (null pointer)";
 		return nullptr;
@@ -688,7 +688,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForDecreaseDownloadNumberOfQueueLi
 QList<QSqlQuery*> DatabaseQueryPreparer::PrepareQueryForMoveDownloadIn_Queue_Download(Queue* queue, Download* download, int moveNumber)
 {
 	/*
-	SettingUpDatabase::get_Database();
+	SettingUpDatabase::getThreadDatabase();
 	QString queryString = QString(
 		"UPDATE Queue_Download "
 		"SET NumbersInList = NumbersInList + :moveNumber "
@@ -717,7 +717,7 @@ QList<QSqlQuery*> DatabaseQueryPreparer::PrepareQueryForMoveDownloadIn_Queue_Dow
 		"SET NumbersInList = NumbersInList + :moveNumber "
 		"WHERE Queue_id = :queue_id AND Download_id = :download_id; "
 	);
-	QSqlQuery* query1 = new QSqlQuery(SettingUpDatabase::get_Database());
+	QSqlQuery* query1 = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 	if (!query1) {
 		qCritical() << "Database Query Preparer: Failed to create query 1 for moving download in queue download (null pointer)";
 		return listOfQueries;
@@ -735,7 +735,7 @@ QList<QSqlQuery*> DatabaseQueryPreparer::PrepareQueryForMoveDownloadIn_Queue_Dow
 		"SET NumbersInList = NumbersInList + :moveNumber "
 		"WHERE Queue_id = :queue_id AND  Download_id != :download_id and NumbersInList = (select NumbersInList From Queue_Download where Download_id = :download_id); "
 	);
-	QSqlQuery* query2 = new QSqlQuery(SettingUpDatabase::get_Database());
+	QSqlQuery* query2 = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 	if (!query2) {
 		qCritical() << "Database Query Preparer: Failed to create query 2 for moving download in queue download (null pointer)";
 		return listOfQueries;
@@ -766,7 +766,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForExitAllDownloadFrom_Queue_Downl
 		"WHERE Queue_id = :queue_id; "
 	);
 
-	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query for exiting all downloads from queue download (null pointer)";
 		return nullptr;
@@ -785,7 +785,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForGetNumberInListDownload(Downloa
 		"WHERE Download_id = :download_id; "
 	);
 
-	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query for getting number in list download (null pointer)";
 		return nullptr;
@@ -805,7 +805,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForGetturnInIdOfDownload(Queue* qu
 		"where NumbersInList = :numbersInList And Queue_id = :queue_id ; "
 	);
 
-	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query for getting turn in id of download (null pointer)";
 		return nullptr;
@@ -827,7 +827,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForLoadDownloadInformationOfQueueF
 		"Where QD.Queue_id = :queue_id; "
 	);
 
-	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query for loading download information of queue for schedule tree widget (null pointer)";
 		return nullptr;
@@ -847,7 +847,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForUpdateNumberOfDownloadAtSameTim
 		"WHERE id = :queue_id; "
 	);
 
-	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query for updating number of download at same time of queue (null pointer)";
 		return nullptr;
@@ -870,7 +870,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForRemoveAllCompletedDownload()
 		"WHERE DownloadStatus_id = :statusId; "
 	);
 
-	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::getThreadDatabase());
 	if (!query) {
 		qCritical() << "Database Query Preparer: Failed to create query for removing all completed downloads (null pointer)";
 		return nullptr;
