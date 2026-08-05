@@ -439,10 +439,9 @@ void DownloadControl::ProcessForShowDownloadCompleteDialog()
 	if (SettingInteract::GetValue("Download/ShowCompleteDialog").toBool())
 	{
 		Download* download1 = download;
-		QMutex mutux;
-		mutux.lock();
+		// Use QueuedConnection to safely call ShowCompleteDialog from main thread
+		// No mutex needed as qApp handles thread safety for queued connections
 		QMetaObject::invokeMethod(qApp, [&, download1]() {ShowCompleteDialog(download1,download1->get_SavaTo().toString()); }, Qt::QueuedConnection);
-		mutux.unlock();
 	}
 }
 
@@ -476,9 +475,10 @@ void DownloadControl::DownloadForControlSpeed()
 {
 	if (Is_Downloading)
 	{
-		QMutex mutex;
-		mutex.lock();
-
+		// Note: The mutex was a local variable and didn't protect any shared data
+		// The ActivePartDownloader_list is already protected by the locker mutex
+		// which is managed by SetMaxSpeedForPartDownloaders and UpdateListOfActivePartDownloaders
+		
 		qint64 spentedTimeFromLastPeriod = elapsedTimer->restart();
 		NumberOfBytesDownloadedInLastPeriodOfDownloadSpeedLimitted = 0;
 		bool anyDownloaded = false;
@@ -516,7 +516,6 @@ void DownloadControl::DownloadForControlSpeed()
 			}
 		emit FinishedLastControlledSpeedPriod(elapsedTimer->elapsed());
 		}
-		mutex.unlock();
 	}
 }
 

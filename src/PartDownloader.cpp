@@ -200,12 +200,17 @@ void PartDownloader::HandleNetworkError(QNetworkReply::NetworkError error)
         return;
     }
     
+    // Store current state before scheduling retry
+    // The mutex is locked during this entire method, so the state is safe
+    bool canRetry = true;
+    
     // Schedule retry after delay
+    // Note: The lambda captures by value where needed, and we rely on the
+    // mutex-protected state check in Resume to ensure thread safety
     QTimer::singleShot(RETRY_DELAY_MS, this, [this, errorString]() {
-        // Use mutex to ensure thread-safe access
+        // Check if we should retry - use mutex for thread safety
         QMutexLocker locker(&mutex);
         
-        // Check if we should retry
         if (!this->reply) {
             qWarning() << "Cannot retry - reply no longer valid";
             return;
