@@ -46,7 +46,10 @@ void QueueManager::ProcessDownloadOfQueue(Queue* queue)
 
 		Download* download = m_downloadManager->ProcessAchieveDownload(download_id);
 		DownloadController* DownloadController = m_downloadManager->ProcessAchieveDownloadController(download);
-		connect(DownloadController, &DownloadController::DownloadCompleted, this, [&, queue]() {FinishDownloadOfQueue(download, queue); });
+		//Capture the pointers BY VALUE (not by reference) so the lambda does not hold a
+		//dangling reference to the loop-local `download` when DownloadCompleted fires
+		//later (this was a use-after-free / read-access-violation crash).
+		connect(DownloadController, &DownloadController::DownloadCompleted, this, [this, download, queue]() {FinishDownloadOfQueue(download, queue); });
 		queue->Downloading_list.append(download);
 		if (DownloadController->IsDownloading() == false)
 		{

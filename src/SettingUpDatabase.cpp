@@ -2,6 +2,7 @@
 
 #include <QThread>
 #include <QSqlError>
+#include <QSqlQuery>
 
 /*
 SettingUpDatabase::SettingUpDatabase(QObject *parent)
@@ -77,5 +78,12 @@ bool SettingUpDatabase::SettingUp(QSqlDatabase& db)
 		qCritical() << "Can not open Database!!!!" << db.lastError().text();
 		return false;
 	}
+
+	// Use WAL + NORMAL so concurrent readers/writers from the per-thread connections
+	// block far less than the default rollback journal. This keeps the (now
+	// worker-thread) per-second progress writes from stalling on the shared file lock.
+	db.exec("PRAGMA journal_mode=WAL;");
+	db.exec("PRAGMA synchronous=NORMAL;");
+	db.exec("PRAGMA busy_timeout=10000;");
 	return true;
 }

@@ -79,8 +79,11 @@ DownloadController* DownloadManager::CreateDownloadController(Download* download
 		QObject::connect(dlThread, &QThread::finished, dlThread, &QObject::deleteLater);
 	}
 
-	connect(downloadController, &DownloadController::DownloadStarted, this, [&, download]() {DatabaseManager::UpdateDownloadInStartOfDownloadOnDatabase(download); });
-	connect(downloadController, &DownloadController::UpdateDownloaded, this, [&, download]() {DatabaseManager::UpdateInDownloadingOnDataBase(download); });
+	connect(downloadController, &DownloadController::DownloadStarted, downloadController, [&, download]() {DatabaseManager::UpdateDownloadInStartOfDownloadOnDatabase(download); });
+	//Connect the progress update to the DownloadController (its own thread) instead of
+	//"this" (the main/UI thread). This keeps the per-second SQLite writes on the
+	//download worker thread so the UI never blocks on disk I/O while dragging a window.
+	connect(downloadController, &DownloadController::UpdateDownloaded, downloadController, [&, download]() {DatabaseManager::UpdateInDownloadingOnDataBase(download); });
 	connect(downloadController, &DownloadController::DownloadCompleted, this, [&, download]() {
 		/*DatabaseManager::UpdateAllFieldDownloadOnDataBase(download);*/
 		DatabaseManager::FinishDownloadOnDatabase(download);

@@ -18,10 +18,8 @@ PartDownload::~PartDownload()
 bool PartDownload::IsPartDownloadFinished()
 {
 	QMutexLocker lock(&stateMutex);
-	qDebug() << LastDownloadedByte;
 	if (this->LastDownloadedByte >= this->end_byte)
 	{
-		qDebug() << "**downloadC last:" << this->LastDownloadedByte << " end:" << this->end_byte;
 		is_Finished = true;
 		return true;
 	}

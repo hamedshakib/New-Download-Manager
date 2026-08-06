@@ -19,6 +19,7 @@ private:
 	QList<QTreeWidgetItem*> items;
 
 	bool isChangeSpeedNow;
+	void UpdateProgressBar(qint64 downloaded, qint64 total);
 
 public slots:
 	void ProcessSetup();
@@ -27,7 +28,6 @@ private slots:
 	void UpdateInDownloading(QString Status, QString speed, QString TimeLeft,QList<qint64> DownloadedBytesEachPartDownloadList);
 	void on_PauseResume_pushButton_clicked();
 	void ChangePauseOrResume_Download();
-
 
 	void ChangeShowSpeedFromDownloadController(int Speed);
 	void ChangeDownloadControllerSpeed(int speed);
