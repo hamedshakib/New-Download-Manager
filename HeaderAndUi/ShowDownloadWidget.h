@@ -1,8 +1,8 @@
 #pragma once
 
 #include <QWidget>
-#include "ui_ShowDownloadWidget.h"
-#include "DownloadControl.h"
+#include "ui_ShowDownloadWidget.h" 
+#include "DownloadController.h"
 #include "qdebug.h"
 #include "ProcessEnum.h"
 #include "ConverterSizeToSuitableString.h"
@@ -14,7 +14,7 @@ class ShowDownloadWidget : public QWidget
 
 private:
 	Download* m_Download;
-	DownloadControl* m_DownloadControl;
+	DownloadController* m_DownloadController;
 	QMap< QTreeWidgetItem*, PartDownload*> TreeWidgetMap;
 	QList<QTreeWidgetItem*> items;
 
@@ -29,15 +29,15 @@ private slots:
 	void ChangePauseOrResume_Download();
 
 
-	void ChangeShowSpeedFromDownloadControl(int Speed);
-	void ChangeDownloadControlSpeed(int speed);
+	void ChangeShowSpeedFromDownloadController(int Speed);
+	void ChangeDownloadControllerSpeed(int speed);
 	void ClickedCheckBox(bool is_checked);
 	void SpinBoxValueChanged(int newValue);
 
 
 
 public:
-	ShowDownloadWidget(DownloadControl* downloadControl,QWidget *parent=nullptr);
+	ShowDownloadWidget(DownloadController* DownloadController,QWidget *parent=nullptr);
 	~ShowDownloadWidget();
 
 private:

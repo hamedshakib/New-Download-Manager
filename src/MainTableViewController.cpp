@@ -29,7 +29,7 @@ void MainTableViewController::Set_DownloadManager(DownloadManager* downloadManag
 {
 	m_downloadManager = downloadManager;
 	connect(m_downloadManager, &DownloadManager::CreatedNewDownload, this, &MainTableViewController::AddNewDownloadToTableView);
-	connect(m_downloadManager, &DownloadManager::CreatedDownloadControl, this, &MainTableViewController::ConnectorDownloadControlToTableUpdateInDownloading);
+	connect(m_downloadManager, &DownloadManager::CreatedDownloadController, this, &MainTableViewController::ConnectorDownloadControllerToTableUpdateInDownloading);
 }
 
 void MainTableViewController::ProcessSetupOfTableView()
@@ -98,10 +98,10 @@ void MainTableViewController::AdjusteTableViewProperty()
 
 void MainTableViewController::OnHeaderRightClicked(const QPoint& pos)
 {
-	QAction *ColomnsSetting=new QAction(tr("Colomns..."), this);
+	QAction *colomnsSetting=new QAction(tr("Colomns..."), this);
 	QMenu menu;
-	menu.addAction(ColomnsSetting);
-	connect(ColomnsSetting, &QAction::triggered, this, [&](bool clicked) {
+	menu.addAction(colomnsSetting);
+	connect(colomnsSetting, &QAction::triggered, this, [&](bool clicked) {
 		ChooseColumnsHidden();
 		});
 	menu.exec(QCursor::pos());
@@ -109,9 +109,14 @@ void MainTableViewController::OnHeaderRightClicked(const QPoint& pos)
 
 void MainTableViewController::doubleClickedOnRow(const QModelIndex& modelindex)
 {
-	int Download_id = FindDownloadIdFromRow(modelindex);
+	int downloadId = FindDownloadIdFromRow(modelindex);
 	//TODO Load a Download From Database Or ListOfDownload
-	Download* doubleClickedDownload = m_downloadManager->ProcessAchieveDownload(Download_id);
+	Download* doubleClickedDownload = m_downloadManager->ProcessAchieveDownload(downloadId);
+	if (doubleClickedDownload == nullptr)
+	{
+		qWarning() << "doubleClickedOnRow: download could not be loaded (id=" << downloadId << ")";
+		return;
+	}
 	if (doubleClickedDownload->get_Status() == Download::DownloadStatusEnum::Completed)
 	{
 		QString UrlOfFile = doubleClickedDownload->get_SavaTo().toString();
@@ -120,19 +125,19 @@ void MainTableViewController::doubleClickedOnRow(const QModelIndex& modelindex)
 	else
 	{
 		//Not Completed Download
-		DownloadControl* downloadControl = m_downloadManager->ProcessAchieveDownloadControl(doubleClickedDownload);
+		DownloadController* downloadController = m_downloadManager->ProcessAchieveDownloadController(doubleClickedDownload);
 		ShowDownloadWidget* showDownloadWidget;
 
-		if (MapOfShowDownloadWidgets.find(downloadControl) != MapOfShowDownloadWidgets.end())
+		if (MapOfShowDownloadWidgets.find(downloadController) != MapOfShowDownloadWidgets.end())
 		{
 			//found
-			showDownloadWidget = MapOfShowDownloadWidgets.find(downloadControl).value();
+			showDownloadWidget = MapOfShowDownloadWidgets.find(downloadController).value();
 		}
 		else
 		{
 			//not found
-			showDownloadWidget = CreaterShowDownloadWidget(downloadControl);
-			MapOfShowDownloadWidgets.insert(downloadControl, showDownloadWidget);
+			showDownloadWidget = CreaterShowDownloadWidget(downloadController);
+			MapOfShowDownloadWidgets.insert(downloadController, showDownloadWidget);
 		}
 		showDownloadWidget->show();
 
@@ -173,27 +178,27 @@ void MainTableViewController::ProcessCheckAndApply_RightClickOnTable(const QPoin
 QMenu* MainTableViewController::CreaterRightClickMenuForRowRightClicked(int Download_id)
 {
 
-	Download* RightClickedRow_Download = m_downloadManager->ProcessAchieveDownload(Download_id);
-	Download::DownloadStatusEnum status = RightClickedRow_Download->get_Status();
+	Download* rightClickedRow_Download = m_downloadManager->ProcessAchieveDownload(Download_id);
+	Download::DownloadStatusEnum status = rightClickedRow_Download->get_Status();
 	QMenu* menu = new QMenu(m_tableView);
 
 
 	//Open Item For Menu
 	if (status == Download::DownloadStatusEnum::Completed)
 	{
-		QAction* OpenAction = new QAction(tr("Open"), this);
-		menu->addAction(OpenAction);
-		connect(OpenAction, &QAction::triggered, this, [&, RightClickedRow_Download](bool clicked) {OpenFileActionTriggered(RightClickedRow_Download); });
+		QAction* openAction = new QAction(tr("Open"), this);
+		menu->addAction(openAction);
+		connect(openAction, &QAction::triggered, this, [&, rightClickedRow_Download](bool clicked) {OpenFileActionTriggered(rightClickedRow_Download); });
 
 
 
-		QAction* OpenWithAction = new QAction(tr("Open with"), this);
-		menu->addAction(OpenWithAction);
-		connect(OpenWithAction, &QAction::triggered, this, [&, RightClickedRow_Download](bool clicked) {OpenFileWithActionTriggered(RightClickedRow_Download); });
+		QAction* openWithAction = new QAction(tr("Open with"), this);
+		menu->addAction(openWithAction);
+		connect(openWithAction, &QAction::triggered, this, [&, rightClickedRow_Download](bool clicked) {OpenFileWithActionTriggered(rightClickedRow_Download); });
 
 		QAction* OpenFolderAction = new QAction(tr("Open folder"), this);
 		menu->addAction(OpenFolderAction);
-		connect(OpenFolderAction, &QAction::triggered, this, [&, RightClickedRow_Download](bool clicked) {OpenFolderActionTriggered(RightClickedRow_Download); });
+		connect(OpenFolderAction, &QAction::triggered, this, [&, rightClickedRow_Download](bool clicked) {OpenFolderActionTriggered(rightClickedRow_Download); });
 
 	}
 
@@ -210,7 +215,7 @@ QMenu* MainTableViewController::CreaterRightClickMenuForRowRightClicked(int Down
 		ResumeOrPause->setText(tr("Resume"));
 		ResumeOrPause->setVisible(true);
 		menu->addAction(ResumeOrPause);
-		connect(ResumeOrPause, &QAction::triggered, this, [&, ResumeOrPause, RightClickedRow_Download](bool clicked) {PauseOrResumeActionTriggered(ResumeOrPause, RightClickedRow_Download); });
+		connect(ResumeOrPause, &QAction::triggered, this, [&, ResumeOrPause, rightClickedRow_Download](bool clicked) {PauseOrResumeActionTriggered(ResumeOrPause, rightClickedRow_Download); });
 
 	}
 	else if (status == Download::DownloadStatusEnum::Downloading)
@@ -219,7 +224,7 @@ QMenu* MainTableViewController::CreaterRightClickMenuForRowRightClicked(int Down
 		ResumeOrPause->setText(tr("Pause"));
 		ResumeOrPause->setVisible(true);
 		menu->addAction(ResumeOrPause);
-		connect(ResumeOrPause, &QAction::triggered, this, [&, ResumeOrPause, RightClickedRow_Download](bool clicked) {PauseOrResumeActionTriggered(ResumeOrPause, RightClickedRow_Download); });
+		connect(ResumeOrPause, &QAction::triggered, this, [&, ResumeOrPause, rightClickedRow_Download](bool clicked) {PauseOrResumeActionTriggered(ResumeOrPause, rightClickedRow_Download); });
 
 	}
 
@@ -227,14 +232,14 @@ QMenu* MainTableViewController::CreaterRightClickMenuForRowRightClicked(int Down
 	//Add To Queue or Remove From Queue
 	if (status != Download::DownloadStatusEnum::Completed)
 	{
-		if (RightClickedRow_Download->get_QueueId() > 0)
+		if (rightClickedRow_Download->get_QueueId() > 0)
 		{
 			QAction* RemoveFromQueueAction = new QAction(this);
 			RemoveFromQueueAction->setText(tr("Delete From Queue"));
 			RemoveFromQueueAction->setVisible(true);
 			menu->addAction(RemoveFromQueueAction);
 			//Todo Edit Connect
-			connect(RemoveFromQueueAction, &QAction::triggered, this, [&, RemoveFromQueueAction, RightClickedRow_Download](bool clicked) {RemoveDownloadFromQueue(RightClickedRow_Download); sender()->deleteLater(); });
+			connect(RemoveFromQueueAction, &QAction::triggered, this, [&, RemoveFromQueueAction, rightClickedRow_Download](bool clicked) {RemoveDownloadFromQueue(rightClickedRow_Download); sender()->deleteLater(); });
 		}
 		else
 		{
@@ -243,7 +248,7 @@ QMenu* MainTableViewController::CreaterRightClickMenuForRowRightClicked(int Down
 			for (Queue* queue : queueManager->Get_ListOfQueues())
 			{
 				QAction* AddToQueue = new QAction(queue->Get_QueueName());
-				connect(AddToQueue, &QAction::triggered, this, [&, queue, RightClickedRow_Download, ListOfQueueAction]() {AddDownloadToQueue(queue, RightClickedRow_Download); qDeleteAll(ListOfQueueAction); });
+				connect(AddToQueue, &QAction::triggered, this, [&, queue, rightClickedRow_Download, ListOfQueueAction]() {AddDownloadToQueue(queue, rightClickedRow_Download); qDeleteAll(ListOfQueueAction); });
 				ListOfQueueAction.append(AddToQueue);
 				AddToQueueMenu->addAction(AddToQueue);
 			}
@@ -258,10 +263,10 @@ QMenu* MainTableViewController::CreaterRightClickMenuForRowRightClicked(int Down
 
 
 	//Remove Action
-	QAction* RemoveDownloadAction = new QAction(tr("Remove"), this);
-	RemoveDownloadAction->setVisible(true);
-	menu->addAction(RemoveDownloadAction);
-	connect(RemoveDownloadAction, &QAction::triggered, this, [&, RightClickedRow_Download](bool clicked) {RemoveActionTriggered(RightClickedRow_Download); });
+	QAction* removeDownloadAction = new QAction(tr("Remove"), this);
+	removeDownloadAction->setVisible(true);
+	menu->addAction(removeDownloadAction);
+	connect(removeDownloadAction, &QAction::triggered, this, [&, rightClickedRow_Download](bool clicked) {RemoveActionTriggered(rightClickedRow_Download); });
 
 	menu->addSeparator();
 
@@ -271,32 +276,32 @@ QMenu* MainTableViewController::CreaterRightClickMenuForRowRightClicked(int Down
 	PropertiesAction->setVisible(true);
 	menu->addAction(PropertiesAction);
 
-	connect(PropertiesAction, &QAction::triggered, this, [&, RightClickedRow_Download](bool clicked) {PropertiesActionTriggered(RightClickedRow_Download); });
+	connect(PropertiesAction, &QAction::triggered, this, [&, rightClickedRow_Download](bool clicked) {PropertiesActionTriggered(rightClickedRow_Download); });
 
 
 	return menu;
 }
 
-void MainTableViewController::ConnectorDownloadControlToTableUpdateInDownloading(DownloadControl* downloadControl)
+void MainTableViewController::ConnectorDownloadControllerToTableUpdateInDownloading(DownloadController* DownloadController)
 {
-	size_t Download_id = downloadControl->Get_Download()->get_Id();
-	size_t Row = 0;
+	size_t download_id = DownloadController->Get_Download()->get_Id();
+	size_t row = 0;
 	for (size_t i = 0; i < model->rowCount(); i++)
 	{
 		qDebug() << model->index(i, 0).data().toInt();
-		if (model->index(i, 0).data().toInt() == Download_id)
+		if (model->index(i, 0).data().toInt() == download_id)
 		{
-			Row = i;
+			row = i;
 			break;
 		}
 	}
-	if (Row >= 0)
+	if (row >= 0)
 	{
-		connect(downloadControl, &DownloadControl::UpdateDownloaded, this, [&, Row](QString Status, QString Speed, QString TimeLeft,QList<qint64> list) {UpdateRowInDownloading(Row, Status, Speed, TimeLeft); });
-		connect(downloadControl, &DownloadControl::CompeletedDownload, this, [&, Row]() {CompeletedDownload(Row); });
-		connect(downloadControl, &DownloadControl::Started, this, [&, Row, downloadControl]() {
+		connect(DownloadController, &DownloadController::UpdateDownloaded, this, [&, row](QString Status, QString Speed, QString TimeLeft,QList<qint64> list) {UpdateRowInDownloading(row, Status, Speed, TimeLeft); });
+		connect(DownloadController, &DownloadController::DownloadCompleted, this, [&, row]() {CompeletedDownload(row); });
+		connect(DownloadController, &DownloadController::DownloadStarted, this, [&, row, DownloadController]() {
 			//Update LastStartedTime
-			model->setData(model->index(Row, 6), DateTimeManager::ConvertDataTimeToString(downloadControl->Get_Download()->get_LastTryTime()));
+			model->setData(model->index(row, 6), DateTimeManager::ConvertDataTimeToString(DownloadController->Get_Download()->get_LastTryTime()));
 			});
 
 	}
@@ -304,21 +309,21 @@ void MainTableViewController::ConnectorDownloadControlToTableUpdateInDownloading
 
 bool MainTableViewController::UpdateRowInDownloading(size_t row, QString Status, QString Speed, QString TimeLeft)
 {
-	DownloadControl* downloadControl = static_cast<DownloadControl*>(sender());
+	DownloadController* downloadController = static_cast<DownloadController*>(sender());
 
-	QModelIndex Status_index = model->index(row, 3);
-	QModelIndex Speed_index = model->index(row, 4);
-	QModelIndex TimeLeft_index = model->index(row, 5);
+	QModelIndex statusIndex = model->index(row, 3);
+	QModelIndex speedIndex = model->index(row, 4);
+	QModelIndex timeLeftIndex = model->index(row, 5);
 
-	if (downloadControl->Get_Download()->get_Status() == Download::DownloadStatusEnum::Completed)
+	if (downloadController->Get_Download()->get_Status() == Download::DownloadStatusEnum::Completed)
 	{
 		Status = tr("Complete");
 		Speed = "";
 		TimeLeft = "";
 	}
-	model->setData(Status_index, Status);
-	model->setData(Speed_index, Speed);
-	model->setData(TimeLeft_index, TimeLeft);
+	model->setData(statusIndex, Status);
+	model->setData(speedIndex, Speed);
+	model->setData(timeLeftIndex, TimeLeft);
 
 
 	return true;
@@ -329,9 +334,9 @@ void MainTableViewController::AddNewDownloadToTableView(Download* download)
 	model->appendRow(TableViewRowCreater::PrepareDataForRowForMainTableView(download));
 }
 
-ShowDownloadWidget* MainTableViewController::CreaterShowDownloadWidget(DownloadControl* downloadControl)
+ShowDownloadWidget* MainTableViewController::CreaterShowDownloadWidget(DownloadController* DownloadController)
 {
-	ShowDownloadWidget* showDownload = new ShowDownloadWidget(downloadControl);
+	ShowDownloadWidget* showDownload = new ShowDownloadWidget(DownloadController);
 	showDownload->ProcessSetup();
 	return showDownload;
 }
@@ -341,11 +346,11 @@ void MainTableViewController::PauseOrResumeActionTriggered(QAction* pauseOrResum
 
 	if (pauseOrResumeAction->text() == tr("Resume"))
 	{
-		m_downloadManager->ProcessAchieveDownloadControl(download)->StartDownload();
+		m_downloadManager->ProcessAchieveDownloadController(download)->StartDownload();
 	}
 	else if (pauseOrResumeAction->text() == tr("Pause"))
 	{
-		m_downloadManager->ProcessAchieveDownloadControl(download)->PauseDownload();
+		m_downloadManager->ProcessAchieveDownloadController(download)->PauseDownload();
 	}
 }
 
@@ -396,21 +401,21 @@ void MainTableViewController::RemoveDownloadFromQueue(Download* download)
 	queueManager->ProcessRemoveADownloadFromQueue(download);
 }
 
-void MainTableViewController::ClickedOnRow(const QModelIndex& modelindex)
+void MainTableViewController::ClickedOnRow(const QModelIndex& modelIndex)
 {
-	int Download_id = FindDownloadIdFromRow(modelindex);
+	int download_id = FindDownloadIdFromRow(modelIndex);
 
 	int row = m_tableView->currentIndex().row();
-	QModelIndex Statusindex = model->index(row, 3);
-	QString Status = model->data(Statusindex).toString();
-	if (Status == tr("Complete"))
+	QModelIndex statusIndex = model->index(row, 3);
+	QString status = model->data(statusIndex).toString();
+	if (status == tr("Complete"))
 	{
-		SelectedFinishedDownload_id = Download_id;
-		emit SelectedDownloadChanged(Download_id, true);
+		SelectedFinishedDownload_id = download_id;
+		emit SelectedDownloadChanged(download_id, true);
 	}
 	else
 	{
-		emit SelectedDownloadChanged(Download_id, false);
+		emit SelectedDownloadChanged(download_id, false);
 	}
 }
 
@@ -419,10 +424,10 @@ int MainTableViewController::Get_SeletedFinisedDownloadId()
 	return SelectedFinishedDownload_id;
 }
 
-void MainTableViewController::ChangeColumnWidth(int numberOfColumn, int NewColumnWidth)
+void MainTableViewController::ChangeColumnWidth(int numberOfColumn, int new_column_width)
 {
 	QString SettingStringKey = "TableView/MainTableView/WidthColum" + QString::number(numberOfColumn);
-	SettingInteract::SetValue(SettingStringKey, NewColumnWidth);
+	SettingInteract::SetValue(SettingStringKey, new_column_width);
 }
 
 void MainTableViewController::ChooseColumnsHidden()
@@ -431,8 +436,8 @@ void MainTableViewController::ChooseColumnsHidden()
 	selectColumnsForMainTableViewWidget->LoadColumnsHide();
 	selectColumnsForMainTableViewWidget->show();
 	HiddenColumns.clear();
-	QList<int>& hiddencolumns = HiddenColumns;
-	connect(selectColumnsForMainTableViewWidget, &SelectColumnsForMainTableView::HideColumns, this, [=,&hiddencolumns](QList<int> columns) {hiddencolumns.clear(); hiddencolumns.append(columns); HideOrShowColumns(); });
+	QList<int>& hiddenColumns = HiddenColumns;
+	connect(selectColumnsForMainTableViewWidget, &SelectColumnsForMainTableView::HideColumns, this, [=,&hiddenColumns](QList<int> columns) {hiddenColumns.clear(); hiddenColumns.append(columns); HideOrShowColumns(); });
 
 }
 
@@ -457,11 +462,11 @@ void MainTableViewController::HideOrShowColumns()
 
 void MainTableViewController::CompeletedDownload(size_t row)
 {
-	QModelIndex Status_index = model->index(row, 3);
-	QModelIndex Speed_index = model->index(row, 4);
-	QModelIndex TimeLeft_index = model->index(row, 5);
+	QModelIndex status_index = model->index(row, 3);
+	QModelIndex speed_index = model->index(row, 4);
+	QModelIndex time_left_index = model->index(row, 5);
 
-	model->setData(Status_index, tr("Complete"));
-	model->setData(Speed_index, "");
-	model->setData(TimeLeft_index, "");
+	model->setData(status_index, tr("Complete"));
+	model->setData(speed_index, "");
+	model->setData(time_left_index, "");
 }

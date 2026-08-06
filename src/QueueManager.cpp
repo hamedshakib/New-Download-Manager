@@ -24,8 +24,8 @@ void QueueManager::StopQueue(Queue* queue)
 {
 	for (Download* download : queue->Downloading_list)
 	{
-		DownloadControl* downloadControl = m_downloadManager->ProcessAchieveDownloadControl(download);
-		downloadControl->PauseDownload();
+		DownloadController* DownloadController = m_downloadManager->ProcessAchieveDownloadController(download);
+		DownloadController->PauseDownload();
 	}
 	queue->Downloading_list.clear();
 	queue->Is_Downloading = false;
@@ -45,12 +45,12 @@ void QueueManager::ProcessDownloadOfQueue(Queue* queue)
 		int download_id = DatabaseManager::GetturnInIdOfDownload(queue, NumberOfDownload + 1);
 
 		Download* download = m_downloadManager->ProcessAchieveDownload(download_id);
-		DownloadControl* downloadControl = m_downloadManager->ProcessAchieveDownloadControl(download);
-		connect(downloadControl, &DownloadControl::CompeletedDownload, this, [&, queue]() {FinishDownloadOfQueue(download, queue); });
+		DownloadController* DownloadController = m_downloadManager->ProcessAchieveDownloadController(download);
+		connect(DownloadController, &DownloadController::DownloadCompleted, this, [&, queue]() {FinishDownloadOfQueue(download, queue); });
 		queue->Downloading_list.append(download);
-		if (downloadControl->IsDownloading() == false)
+		if (DownloadController->IsDownloading() == false)
 		{
-			downloadControl->StartDownload();
+			DownloadController->StartDownload();
 		}
 
 		NumberOfDownload++;

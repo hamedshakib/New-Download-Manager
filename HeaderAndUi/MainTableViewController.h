@@ -34,10 +34,10 @@ public slots:
 	void LoadAllDownloadsFromDatabaseForMainTableView();
 
 private slots:
-	void ClickedOnRow(const QModelIndex& modelindex);
+	void ClickedOnRow(const QModelIndex& modelIndex);
 	void doubleClickedOnRow(const QModelIndex& modelindex);
 	void OnHeaderRightClicked(const QPoint& pos);
-	void ChangeColumnWidth(int numberOfColumn, int NewColumnWidth);
+	void ChangeColumnWidth(int numberOfColumn, int new_column_width);
 	int FindDownloadIdFromRow(const QModelIndex& modelindex);
 	void ProcessCheckAndApply_RightClickOnTable(const QPoint& point);
 	void AdjusteTableViewProperty();
@@ -46,10 +46,10 @@ private slots:
 
 	bool UpdateRowInDownloading(size_t row, QString Status, QString Speed, QString TimeLeft);
 
-	void ConnectorDownloadControlToTableUpdateInDownloading(DownloadControl* DownloadControl);
+	void ConnectorDownloadControllerToTableUpdateInDownloading(DownloadController* DownloadController);
 	void AddNewDownloadToTableView(Download* download);
 
-	ShowDownloadWidget* CreaterShowDownloadWidget(DownloadControl* DownloadControl);
+	ShowDownloadWidget* CreaterShowDownloadWidget(DownloadController* DownloadController);
 
 
 	void PauseOrResumeActionTriggered(QAction* pauseOrResumeAction, Download* download);
@@ -84,7 +84,7 @@ private:
 	QHeaderView* horizontalHeader;
 
 
-	QMap<DownloadControl*, ShowDownloadWidget*> MapOfShowDownloadWidgets;
+	QMap<DownloadController*, ShowDownloadWidget*> MapOfShowDownloadWidgets;
 	int SelectedFinishedDownload_id = 0;
 
 	QList<int> HiddenColumns;

@@ -170,6 +170,11 @@ void MainWindow::ChangedDownloadSelected(int Download_id,bool Is_Completed)
 
 
 		SelectedDownload = downloadManagerPointer->ProcessAchieveDownload(Download_id);
+		if (SelectedDownload == nullptr)
+		{
+			qWarning() << "ChangedDownloadSelected: download could not be loaded (id=" << Download_id << ")";
+			return;
+		}
 		connect(SelectedDownload, &Download::DownloadStatusChanged, this, &MainWindow::ChangedStatusOfSeletedDownload);
 
 		if (SelectedDownload->get_Status() == Download::NotStarted || SelectedDownload->get_Status() == Download::Pause)
@@ -213,8 +218,8 @@ void MainWindow::on_actionDownload_Now_triggered()
 {
 	if (SelectedDownload != nullptr)
 	{
-		DownloadControl *downloadControl = downloadManagerPointer->ProcessAchieveDownloadControl(SelectedDownload);
-		downloadControl->StartDownload();
+		DownloadController *DownloadController = downloadManagerPointer->ProcessAchieveDownloadController(SelectedDownload);
+		DownloadController->StartDownload();
 	}
 }
 
@@ -222,8 +227,8 @@ void MainWindow::on_actionStop_Download_triggered()
 {
 	if (SelectedDownload != nullptr)
 	{
-		DownloadControl* downloadControl = downloadManagerPointer->ProcessAchieveDownloadControl(SelectedDownload);
-		downloadControl->PauseDownload();
+		DownloadController* DownloadController = downloadManagerPointer->ProcessAchieveDownloadController(SelectedDownload);
+		DownloadController->PauseDownload();
 	}
 }
 

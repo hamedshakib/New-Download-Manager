@@ -18,6 +18,9 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
+# تولید compile_commands.json برای IntelliSense/IDE
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -59,9 +62,9 @@ set(PROJECT_SOURCES
     ${MY_HeaderAndUi_PATH}/Download.h
     ${MY_SOURCE_PATH}/Download.cpp
 
-    # DownloadControl
-    ${MY_HeaderAndUi_PATH}/DownloadControl.h
-    ${MY_SOURCE_PATH}/DownloadControl.cpp
+    # DownloadController
+    ${MY_HeaderAndUi_PATH}/DownloadController.h
+    ${MY_SOURCE_PATH}/DownloadController.cpp
 
     # PartDownloader
     ${MY_HeaderAndUi_PATH}/PartDownload.h
@@ -165,6 +168,13 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
     )
 
+    # مسیرهای include برای هدرهای تولیدشده AUTOUIC و هدرهای منبع
+    target_include_directories(${PROJECT_NAME} PRIVATE
+        ${MY_HeaderAndUi_PATH}
+        ${MY_SOURCE_PATH}
+        ${CMAKE_CURRENT_BINARY_DIR}/DownloadManager_autogen/include
+    )
+
     # ۲. کامپایل فایل‌های .ts به .qm و قرار دادن آن‌ها در پوشه translations کنار فایل اجرا
     qt_add_translations(${PROJECT_NAME}
         TS_FILES ${TS_FILES}
@@ -176,6 +186,13 @@ else()
     else()
         add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
     endif()
+
+    # مسیرهای include برای Qt 5
+    target_include_directories(${PROJECT_NAME} PRIVATE
+        ${MY_HeaderAndUi_PATH}
+        ${MY_SOURCE_PATH}
+        ${CMAKE_CURRENT_BINARY_DIR}
+    )
 
     # برای Qt 5
     qt5_add_translation(QM_FILES ${TS_FILES})

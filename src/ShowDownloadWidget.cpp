@@ -1,12 +1,12 @@
 #include "HeaderAndUi/ShowDownloadWidget.h"
 
-ShowDownloadWidget::ShowDownloadWidget(DownloadControl* downloadControl,QWidget *parent)
+ShowDownloadWidget::ShowDownloadWidget(DownloadController* DownloadController,QWidget *parent)
 	:QWidget(parent)
 {
 	ui.setupUi(this);
 	this->setWindowTitle("Download");
-	m_DownloadControl = downloadControl;
-	m_Download = downloadControl->Get_Download();
+	m_DownloadController = DownloadController;
+	m_Download = DownloadController->Get_Download();
 }
 
 ShowDownloadWidget::~ShowDownloadWidget()
@@ -22,7 +22,7 @@ void ShowDownloadWidget::ProcessSetup()
 	ui.TransferRate_label->setText("");
 	ui.TimeLeft_label->setText("");
 	ui.transferRateInSpeedLimiter_label->setText("");
-	bool is_Downloading = m_DownloadControl->IsDownloading();
+	bool is_Downloading = m_DownloadController->IsDownloading();
 	QString PauseOrResume= is_Downloading ? tr("Pause") : tr("Resume");
 	ui.PauseResume_pushButton->setText(PauseOrResume);
 	ui.resumeCapability_label->setText(ProcessEnum::ConvertResumeCapabilityEnumToString(m_Download->ResumeCapability));
@@ -30,10 +30,10 @@ void ShowDownloadWidget::ProcessSetup()
 	ui.FileSize_label->setText(ConverterSizeToSuitableString::ConvertSizeToSuitableString(m_Download->DownloadSize));
 	ui.Downloded_label->setText(ConverterSizeToSuitableString::ConvertSizeToSuitableString(m_Download->SizeDownloaded));
 	ui.progressBar->setValue((int)(m_Download->SizeDownloaded*100 / m_Download->DownloadSize));
-	connect(m_DownloadControl, &DownloadControl::UpdateDownloaded, this, &ShowDownloadWidget::UpdateInDownloading);
-	connect(m_DownloadControl, &DownloadControl::Started, this, [&]() {ChangePauseOrResume_Download(); });
-	connect(m_DownloadControl, &DownloadControl::Paused, this, [&]() {ChangePauseOrResume_Download(); });
-	connect(m_DownloadControl, &DownloadControl::CompeletedDownload, this, [&]() {this->close(); /*if (this)*/ this->deleteLater(); });
+	connect(m_DownloadController, &DownloadController::UpdateDownloaded, this, &ShowDownloadWidget::UpdateInDownloading);
+	connect(m_DownloadController, &DownloadController::DownloadStarted, this, [&]() {ChangePauseOrResume_Download(); });
+	connect(m_DownloadController, &DownloadController::DownloadPaused, this, [&]() {ChangePauseOrResume_Download(); });
+	connect(m_DownloadController, &DownloadController::DownloadCompleted, this, [&]() {this->close(); /*if (this)*/ this->deleteLater(); });
 
 	ui.treeWidget->clear();
 	QList<PartDownload*> partdownloads= m_Download->get_PartDownloads();
@@ -53,13 +53,13 @@ void ShowDownloadWidget::ProcessSetup()
 
 
 
-	int MaxSpeed = m_DownloadControl->Get_MaxSpeed();
+	int MaxSpeed = m_DownloadController->Get_MaxSpeed();
 	if (MaxSpeed > 0)
 	{
-		ChangeShowSpeedFromDownloadControl(MaxSpeed);
+		ChangeShowSpeedFromDownloadController(MaxSpeed);
 	}
 	
-	connect(m_DownloadControl, &DownloadControl::SpeedChanged, this, &ShowDownloadWidget::ChangeShowSpeedFromDownloadControl);
+	connect(m_DownloadController, &DownloadController::SpeedChanged, this, &ShowDownloadWidget::ChangeShowSpeedFromDownloadController);
 	connect(ui.checkBox, &QCheckBox::clicked, this,&ShowDownloadWidget::ClickedCheckBox);
 	connect(ui.spinBox, &QSpinBox::valueChanged, this,&ShowDownloadWidget::SpinBoxValueChanged);
 
@@ -84,19 +84,19 @@ void ShowDownloadWidget::UpdateInDownloading(QString Status, QString speed, QStr
 
 void ShowDownloadWidget::on_PauseResume_pushButton_clicked()
 {
-	if (m_DownloadControl->IsDownloading())
+	if (m_DownloadController->IsDownloading())
 	{
-		m_DownloadControl->PauseDownload();
+		m_DownloadController->PauseDownload();
 	}
 	else
 	{
-		m_DownloadControl->StartDownload();
+		m_DownloadController->StartDownload();
 	}
 }
 
 void ShowDownloadWidget::ChangePauseOrResume_Download()
 {
-	bool Is_downloading = m_DownloadControl->IsDownloading();
+	bool Is_downloading = m_DownloadController->IsDownloading();
 	QString PauseOrResume = Is_downloading ? tr("Pause") : tr(("Resume"));
 
 	QString InfoString = Is_downloading ? tr("Downloading") : tr("Paused");
@@ -105,7 +105,7 @@ void ShowDownloadWidget::ChangePauseOrResume_Download()
 	ui.PauseResume_pushButton->setText(PauseOrResume);
 }
 
-void ShowDownloadWidget::ChangeShowSpeedFromDownloadControl(int Speed)
+void ShowDownloadWidget::ChangeShowSpeedFromDownloadController(int Speed)
 {
 	if (Speed > 0)
 	{
@@ -134,30 +134,30 @@ void ShowDownloadWidget::ClickedCheckBox(bool is_checked)
 	if (is_checked)
 	{
 		ui.spinBox->setEnabled(true);
-		if (m_DownloadControl->Get_MaxSpeed() != ui.spinBox->value())
+		if (m_DownloadController->Get_MaxSpeed() != ui.spinBox->value())
 		{
-			m_DownloadControl->SetMaxSpeed(ui.spinBox->value());
+			m_DownloadController->SetMaxSpeed(ui.spinBox->value());
 		}
 	}
 	else
 	{
 		ui.spinBox->setEnabled(false);
-		if (m_DownloadControl->Get_MaxSpeed() != 0)
+		if (m_DownloadController->Get_MaxSpeed() != 0)
 		{
-			m_DownloadControl->SetMaxSpeed(0);
+			m_DownloadController->SetMaxSpeed(0);
 		}
 	}
 }
 
-void ShowDownloadWidget::ChangeDownloadControlSpeed(int speed)
+void ShowDownloadWidget::ChangeDownloadControllerSpeed(int speed)
 {
-	m_DownloadControl->SetMaxSpeed(speed);
+	m_DownloadController->SetMaxSpeed(speed);
 }
 
 void ShowDownloadWidget::SpinBoxValueChanged(int newValue)
 {
-	if (m_DownloadControl->Get_MaxSpeed() != newValue)
+	if (m_DownloadController->Get_MaxSpeed() != newValue)
 	{
-		m_DownloadControl->SetMaxSpeed(newValue);
+		m_DownloadController->SetMaxSpeed(newValue);
 	}
 }

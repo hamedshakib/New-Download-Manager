@@ -67,7 +67,7 @@ private:
 	friend class DatabaseQueryPreparer;
 	friend class TableViewRowCreater;
 	friend class ShowDownloadWidget;
-	friend class DownloadControl;
+	friend class DownloadController;
 
 public:
 	QUrl get_Url();

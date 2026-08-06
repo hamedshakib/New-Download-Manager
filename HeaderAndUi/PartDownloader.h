@@ -17,7 +17,7 @@ class PartDownloader : public QObject
 
 
 	enum PartDownloaderStatus {
-		PartDownloadPaused, PartDownloadDownloading, PartDownloadFinishedReciveBytes
+		Init, Downloading, Paused, FinishedReceiveBytes, Finished
 	};
 
 private:
@@ -27,23 +27,23 @@ private:
 	PartDownload* partDownload=nullptr;
 	DownloadFileWriter* downloadFileWriter;
 	bool is_SpeedLimit;
-	bool is_Downloading = false;
+	//bool is_Downloading = false;
 	QTimer timer;
 	QMutex mutex;
-	PartDownloaderStatus partDownloaderStatus= PartDownloadPaused;
+	PartDownloaderStatus partDownloaderStatus = Init;
 
 public:
-	PartDownload* Get_PartDownload();
+	PartDownload* GetPartDownload();
 	bool ProcessSetNewReply(QNetworkReply* reply);
-	bool SetSpeedLimited(bool is_SpeedLimitted);
+	bool SetSpeedLimited(bool isSpeedLimited);
 
 public slots:
-	void initPartDownlolader(PartDownload* paerDownload,qint64 readBytesEachTimes);
-	void Resume(bool ItSelf=true);
+	void InitPartDownloader(PartDownload* partDownload,qint64 readBytesEachTimeCount);
+	void Resume(bool itSelfDownload=true);
 	void Pause();
 
 	//Start a ranged HTTP request for this part. Called (queued) from the
-	//DownloadControl thread but executes on this object's own thread so that
+	//DownloadController thread but executes on this object's own thread so that
 	//this PartDownloader owns its QNetworkAccessManager/reply and writes its
 	//QFile on the same thread (true per-part parallelism).
 	bool StartRequest(const QUrl& url, const QString& username, const QString& password, qint64 startByte, qint64 endByte);
@@ -53,20 +53,20 @@ public slots:
 
 private slots:
 	void ReadyRead();
-	qint64 ReadBytes(qint64 bytes);
-	void CheckFinishedRecivedBytes();
+	qint64 ReadBytes(qint64 byteCount);
+	void CheckFinishedReceivedBytes();
 	void CheckFinishedPartDownloader();
 	bool IsSpeedLimiter();
 
 
 
 signals:
-	void Started();
-	void Paused();
-	void FinishedRecivedBytes();
-	void Finished();
-	void DownloadedBytes(qint64 ReadedBytes);
+	void DownloadStarted();
+	void DownloadPaused();
+	void FinishedReceivedBytes();
 
+	void DownloadedByteCount(qint64 downloadedBytesCount);
+	void PartDownloaderFinished();
 
 
 public:

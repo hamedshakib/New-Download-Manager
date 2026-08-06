@@ -18,23 +18,23 @@
 #include "qfileinfo.h"
 #include "qreadwritelock.h"
 
-class DownloadControl : public QObject
+class DownloadController : public QObject
 {
 	Q_OBJECT
 
 	enum DownloadStatus
 	{
-		Downloading,Pause,StartFinsh,Finidshed
+		Init,Downloading,Paused,FinishProcessStaretd,Finidshed
 	};
 
 public:
-	DownloadControl(QObject *parent=nullptr);
-	~DownloadControl();
+	DownloadController(QObject *parent=nullptr);
+	~DownloadController();
 
 
 
 private:
-	DownloadStatus statusOfDownload = DownloadStatus::Pause;
+	DownloadStatus statusOfDownload = DownloadStatus::Init;
 	QReadWriteLock locker;
 
 
@@ -58,7 +58,7 @@ private:
 
 
 public:
-	void initDownloadControl(Download* download);
+	void initDownloadController(Download* download);
 	bool StartDownload();
 	bool PauseDownload();
 
@@ -71,9 +71,9 @@ public:
 
 
 signals:
-	void Started();
-	void Paused();
-	void CompeletedDownload();
+	void DownloadStarted();
+	void DownloadPaused();
+	void DownloadCompleted();
 	//void UpdateDownloaded();
 	void SpeedChanged(int speed);
 	void UpdateDownloaded(QString Status, QString speed, QString TimeLeft,QList<qint64> DownloadedBytesEachPartDownloadList);
@@ -83,13 +83,13 @@ signals:
 private slots:
 	bool ProcessPreparePartDownloaders();
 	//bool CreatePartDownloaderFromDatabase();
-	bool ProcessPreparePartDownloaderFromPartdownload(PartDownloader* partDownloader, PartDownload* partDownload);
+	bool ProcessPreparePartDownloaderFromPartDownload(PartDownloader* partDownloader, PartDownload* partDownload);
 	bool StartPartDownloader(PartDownloader* partDownloader);
 	bool StopPartDownloader(PartDownloader* partDownloader);
 
 	void HandelStartedPartDownloaderSignalEmitted();
 	void HandelPausedPartDownloaderSignalEmitted();
-	void HandelFinishedRecivedBytesPartDownloaderSignalEmitted();
+	void HandelFinishedReceivedBytesPartDownloaderSignalEmitted();
 	void HandelFinishedPartDownloaderSignalEmitted();
 	void HandelDownloadedBytesPartDownloaderSignalEmitted(qint64 ReadedBytes);
 

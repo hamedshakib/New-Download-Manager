@@ -18,7 +18,7 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForLoadDownload(int Download_id)
 		"where D.id=:id "
 	);
 	
-	QSqlQuery* query = new QSqlQuery();
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
 	query->prepare(queryString);
 
 	query->bindValue(":id", Download_id);
@@ -242,7 +242,7 @@ QList<QSqlQuery*> DatabaseQueryPreparer::PrepareQueriesForUpdateInDownloading(Do
 		QSqlQuery* query1 = new QSqlQuery(SettingUpDatabase::get_Database());
 		query1->prepare(queryString1);
 
-		query1->bindValue(":lastDownloaded_byte", partDownload->LastDownloadedByte);
+		query1->bindValue(":lastDownloaded_byte", partDownload->GetLastDownloadedByte());
 		query1->bindValue(":id", partDownload->id_PartDownload);
 		listOfQueries.append(query1);
 	}

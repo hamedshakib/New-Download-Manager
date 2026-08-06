@@ -90,7 +90,7 @@ bool ProcessDatabaseOutput::ProcessPutLoadedPartDownloadInInPartDownloadObject(c
 	partDownload->PartDownloadFile->open(QIODevice::WriteOnly | QIODevice::Append);
 
 
-	partDownload->LastDownloadedByte = partDownload->start_byte+partDownload->PartDownloadFile->size()-1;
+	partDownload->SetLastDownloadedByte(partDownload->start_byte + partDownload->PartDownloadFile->size() - 1);
 
 
 	return true;

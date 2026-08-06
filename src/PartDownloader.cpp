@@ -22,12 +22,12 @@ PartDownloader::~PartDownloader()
 	}
 }
 
-void PartDownloader::initPartDownlolader(PartDownload* partDownload,qint64 readBytesEachTimes)
+void PartDownloader::InitPartDownloader(PartDownload* partDownload,qint64 readBytesEachTimeCount)
 {
 	this->partDownload = partDownload;
 	this->downloadFileWriter = new DownloadFileWriter();
 	downloadFileWriter->moveToThread(this->thread());
-	readBytesEachTimes = 50000000;
+	readBytesEachTimeCount = 50000000;
 	//This object lives on its PartDownload thread, so the network manager is
 	//created on / moved to that thread too.
 	if (m_manager == nullptr)
@@ -44,6 +44,19 @@ bool PartDownloader::StartRequest(const QUrl& url, const QString& username, cons
 		m_manager = new QNetworkAccessManager();
 		m_manager->moveToThread(this->thread());
 	}
+
+	//Reconcile the current byte position from the actual file. This runs on this
+	//object's (PartDownload) thread, where the QFile lives, so reading its size
+	//here is safe (reading it from the Download thread would be a cross-thread
+	//QFile access and could return a wrong/zero size).
+	partDownload->UpdatePartDownloadLastDownloadedByte();
+	if (partDownload->IsPartDownloadFinished())
+	{
+		//Nothing left to download for this part.
+		emit PartDownloaderFinished();
+		return true;
+	}
+	startByte = partDownload->GetLastDownloadedByte() + 1;
 
 	QUrl u = url;
 	if (!username.isEmpty() && !password.isEmpty())
@@ -63,14 +76,13 @@ bool PartDownloader::StartRequest(const QUrl& url, const QString& username, cons
 	return ProcessSetNewReply(newReply);
 }
 
-void PartDownloader::Resume(bool ItSelf)
+void PartDownloader::Resume(bool itSelfDownloading)
 {
-	this->is_Downloading = true;
-	partDownloaderStatus = PartDownloaderStatus::PartDownloadDownloading;
+	partDownloaderStatus = PartDownloaderStatus::Downloading;
 	qDebug() << "range partDownload:" << partDownload->start_byte << "-" << partDownload->end_byte;
 
 	qDebug() << this->reply->bytesAvailable();
-	if (ItSelf)
+	if (itSelfDownloading)
 	{
 		if (reply->bytesAvailable() > 0)
 		{
@@ -81,38 +93,36 @@ void PartDownloader::Resume(bool ItSelf)
 
 void PartDownloader::Pause()
 {
-	this->is_Downloading = false;
-	partDownloaderStatus = PartDownloaderStatus::PartDownloadPaused;
-	this->reply->abort();
+	partDownloaderStatus = PartDownloaderStatus::Paused;
+	if (this->reply)
+		this->reply->abort();
 }
 
-qint64 PartDownloader::ReadBytes(qint64 bytes)
+qint64 PartDownloader::ReadBytes(qint64 byteCount)
 {
-	if (!this->is_Downloading)
-	{
+	if (partDownloaderStatus != PartDownloaderStatus::Downloading && partDownloaderStatus != PartDownloaderStatus::FinishedReceiveBytes)
 		return 0;
-	}
 
 	//QMutexLocker is exception-safe (unlike manual lock/unlock).
 	QMutexLocker guard(&mutex);
-	qint64 ReadedBytes = 0;
+	qint64 numberOfBytesRead = 0;
 	QByteArray byteArray;
-	if (bytes > 0)
+	if (byteCount > 0)
 	{
-		byteArray = reply->read(bytes);
-		ReadedBytes = byteArray.size();
+		byteArray = reply->read(byteCount);
+		numberOfBytesRead = byteArray.size();
 	}
-	if (ReadedBytes > 0)
+	if (numberOfBytesRead > 0)
 	{
 		downloadFileWriter->WriteDownloadToFile(byteArray, partDownload->PartDownloadFile);
 	}
-	qDebug() << "Downloaded " << ReadedBytes << "Bytes From Thread " << QThread::currentThread()->objectName();
-	partDownload->AddToLastDownloadedByte(ReadedBytes);
+	qDebug() << "Downloaded " << numberOfBytesRead << "Bytes From Thread " << QThread::currentThread()->objectName();
+	partDownload->AddToLastDownloadedByte(numberOfBytesRead);
 	if (!is_SpeedLimit)
 	{
-		emit DownloadedBytes(ReadedBytes);
+		emit DownloadedByteCount(numberOfBytesRead);
 	}
-	return ReadedBytes;
+	return numberOfBytesRead;
 }
 
 void PartDownloader::ReadyRead()
@@ -120,7 +130,7 @@ void PartDownloader::ReadyRead()
 	if (!is_SpeedLimit)
 	{
 		ReadBytes(reply->bytesAvailable());
-		if (partDownloaderStatus == PartDownloaderStatus::PartDownloadFinishedReciveBytes)
+		if (partDownloaderStatus == PartDownloaderStatus::FinishedReceiveBytes)
 		{
 			CheckFinishedPartDownloader();
 		}
@@ -129,22 +139,22 @@ void PartDownloader::ReadyRead()
 
 qint64 PartDownloader::DownloadByteInSpeedControl(qint64 maxReadBytes)
 {
-	//This is called from the DownloadControl thread while this object lives on
+	//This is called from the DownloadController thread while this object lives on
 	//the PartDownload thread, so run the actual read on our own thread and block
 	//until it returns. Safe because the part thread never blocks on us: its
 	//signals are delivered to the download thread via queued connections.
-	qint64 ReadedBytes = 0;
-	QMetaObject::invokeMethod(this, [this, maxReadBytes, &ReadedBytes]() {
-		ReadedBytes = ReadBytes(maxReadBytes);
-		if (partDownloaderStatus == PartDownloaderStatus::PartDownloadFinishedReciveBytes)
+	qint64 numberOfBytesRead = 0;
+	QMetaObject::invokeMethod(this, [this, maxReadBytes, &numberOfBytesRead]() {
+		numberOfBytesRead = ReadBytes(maxReadBytes);
+		if (partDownloaderStatus == PartDownloaderStatus::FinishedReceiveBytes)
 		{
 			CheckFinishedPartDownloader();
 		}
 	}, Qt::BlockingQueuedConnection);
-	return ReadedBytes;
+	return numberOfBytesRead;
 }
 
-PartDownload* PartDownloader::Get_PartDownload()
+PartDownload* PartDownloader::GetPartDownload()
 {
 	if (this->partDownload != nullptr)
 		return this->partDownload;
@@ -162,34 +172,34 @@ bool PartDownloader::ProcessSetNewReply(QNetworkReply* reply)
 	if (this->reply != nullptr && this->reply != reply)
 	{
 		disconnect(this->reply, &QNetworkReply::readyRead, this, &PartDownloader::ReadyRead);
-		disconnect(this->reply, &QNetworkReply::finished, this, &PartDownloader::CheckFinishedRecivedBytes);
+		disconnect(this->reply, &QNetworkReply::finished, this, &PartDownloader::CheckFinishedReceivedBytes);
 		this->reply->deleteLater();
 	}
 	this->reply = reply;
 	//UniqueConnection prevents duplicate connections regardless of how often this is called.
 	connect(reply, &QNetworkReply::readyRead, this, &PartDownloader::ReadyRead, Qt::ConnectionType::UniqueConnection);
-	connect(reply, &QNetworkReply::finished, this, &PartDownloader::CheckFinishedRecivedBytes);
+	connect(reply, &QNetworkReply::finished, this, &PartDownloader::CheckFinishedReceivedBytes);
 	return true;
 }
 
-void PartDownloader::CheckFinishedRecivedBytes()
+void PartDownloader::CheckFinishedReceivedBytes()
 {
-	if (partDownloaderStatus == PartDownloaderStatus::PartDownloadDownloading)
+	if (partDownloaderStatus == PartDownloaderStatus::Downloading)
 	{
-		partDownloaderStatus = PartDownloaderStatus::PartDownloadFinishedReciveBytes;
+		partDownloaderStatus = PartDownloaderStatus::FinishedReceiveBytes;
 		qDebug() << "Finsih receive bytes PartDownload";
-		emit FinishedRecivedBytes();
+		emit FinishedReceivedBytes();
 	}
 }
 
 void PartDownloader::CheckFinishedPartDownloader()
 {
-	if (partDownloaderStatus == PartDownloaderStatus::PartDownloadFinishedReciveBytes)
+	if (partDownloaderStatus == PartDownloaderStatus::FinishedReceiveBytes)
 	{
 		if (partDownload->IsPartDownloadFinished())
 		{
 			qDebug() << "Finsih PartDownload";
-			emit Finished();
+			emit PartDownloaderFinished();
 		}
 	}
 }

@@ -153,7 +153,7 @@ QList<PartDownload*> DatabaseManager::CreatePartDownloadsOfDownload(int Download
 		while (query->next())
 		{
 			//The PartDownload (and its QFile) is created on the calling thread so it
-			//matches the download's thread (DownloadControl lives there too). No
+			//matches the download's thread (DownloadController lives there too). No
 			//separate worker thread is created here.
 			PartDownload* partDownload = new PartDownload(nullptr);
 			if (ProcessDatabaseOutput::ProcessPutLoadedPartDownloadInInPartDownloadObject(query->record(), partDownload, Download_id))
