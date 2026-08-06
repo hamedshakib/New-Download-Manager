@@ -19,6 +19,10 @@ void DownloadController::initDownloadController(Download* download)
 
     elapsedTimer = new QElapsedTimer();
     elapsedTimerForIndependentSpeed = new QElapsedTimer();
+
+    speedControlTimer = new QTimer(this);
+    speedControlTimer->setInterval(TICK_INTERVAL_MS);
+    connect(speedControlTimer, &QTimer::timeout, this, &DownloadController::DownloadForControlSpeed);
 }
 
 bool DownloadController::StartDownload()
@@ -59,9 +63,12 @@ bool DownloadController::StartDownload()
     emit DownloadStarted();
 
     elapsedTimer->restart();
+    elapsedTimerForIndependentSpeed->restart();
+    m_smoothedSpeed = 0; // ریست سرعت میانگین
+
     timer->start(1000);
 
-    if (is_SpeedLimited && this->MaxSpeed > 0) {
+    if (IsSpeedLimitted() && this->MaxSpeed > 0) {
         disconnect(speedControlConnection);
         ProcessScheduleControledLimittedSpeed();
         emit FinishedLastControlledSpeedPriod(elapsedTimer->elapsed());
@@ -73,6 +80,11 @@ bool DownloadController::PauseDownload()
 {
     this->Is_Downloading = false;
     statusOfDownload = DownloadStatus::Paused;
+
+    // توقف تایمر کنترل سرعت
+    if (speedControlTimer) {
+        speedControlTimer->stop();
+    }
 
     for (PartDownloader* partDownloader : PartDownloader_list) {
         PartDownload* partDownload = partDownloader->GetPartDownload();
@@ -103,10 +115,11 @@ void DownloadController::SetMaxSpeed(int maxSpeed)
     SetMaxSpeedForPartDownloaders();
 
     if (Is_Downloading) {
-        disconnect(speedControlConnection);
         if (maxSpeed > 0) {
             ProcessScheduleControledLimittedSpeed();
-            emit FinishedLastControlledSpeedPriod(elapsedTimer->elapsed());
+        }
+        else if (speedControlTimer) {
+            speedControlTimer->stop();
         }
     }
     emit SpeedChanged(maxSpeed);
@@ -279,22 +292,55 @@ bool DownloadController::ProcessFinishDownload()
 
 void DownloadController::TimerTimeOut()
 {
-    qint64 downloadedByte = this->NumberOfBytesDownloadedInLastPeriod;
-    if (downloadedByte > 0) {
+    qint64 downloadedBytes = this->NumberOfBytesDownloadedInLastPeriod;
+    if (downloadedBytes >= 0) { // حتی اگر 0 بود محاسبه شود تا در صورت قطع شبکه سرعت صفر شود[cite: 2]
         this->NumberOfBytesDownloadedInLastPeriod = 0;
-        qint64 timerSpent = elapsedTimerForIndependentSpeed->restart();
-        qint64 speed = calculatorDownload.CalculateDownloadSpeed(downloadedByte, timerSpent);
-        QString SpeedString = calculatorDownload.GetSpeedOfDownloadInFormOfString();
-        QString TimeLeftString = calculatorDownload.GetTimeLeftOfDownloadInFormOfString(download->DownloadSize - download->SizeDownloaded);
+
+        qint64 elapsedMs = elapsedTimerForIndependentSpeed->restart();
+        if (elapsedMs <= 0) elapsedMs = 1000; // جلوگیری از تقسیم بر صفر
+
+        // ۱. محاسبه سرعت لحظه‌ای (بایت بر ثانیه)
+        qint64 instantSpeed = (downloadedBytes * 1000LL) / elapsedMs;
+
+        // ۲. استفاده از Exponential Moving Average (EMA) برای هموارسازی سرعت
+        // وزن ۳۰٪ به سرعت جدید و ۷۰٪ به سرعت قبلی جهت جلوگیری از پرش‌های شدید
+        if (m_smoothedSpeed == 0) {
+            m_smoothedSpeed = instantSpeed;
+        }
+        else {
+            m_smoothedSpeed = (instantSpeed * 3 + m_smoothedSpeed * 7) / 10;
+        }
+
+        // ۳. محاسبه زمان باقی‌مانده (ETA) پایدار بر اساس سرعت هموارسازی‌شده
+        qint64 remainingBytes = qMax(0LL, download->DownloadSize - download->SizeDownloaded);
+        qint64 secondsLeft = (m_smoothedSpeed > 0) ? (remainingBytes / m_smoothedSpeed) : 0;
+
+        // تبدیل به رشته (رشته زمان باقی‌مانده پایدار و بدون پرش خواهد بود)[cite: 2]
+        QString SpeedString = ConverterSizeToSuitableString::ConvertSizeToSuitableString(m_smoothedSpeed) + "/s";
+        QString TimeLeftString = FormatTimeLeft(secondsLeft);
         QString DownloadStatus = calculatorDownload.getStatusForTable(download->SizeDownloaded, download->DownloadSize);
 
         QList<qint64> DownloadedBytesEachPartDownloadList;
         for (PartDownload* partDownload : download->get_PartDownloads()) {
-            DownloadedBytesEachPartDownloadList.append(partDownload->GetLastDownloadedByte() - partDownload->start_byte + 1);
+            DownloadedBytesEachPartDownloadList.append(qMax(0LL, partDownload->GetLastDownloadedByte() - partDownload->start_byte + 1));
         }
 
         emit UpdateDownloaded(DownloadStatus, SpeedString, TimeLeftString, DownloadedBytesEachPartDownloadList);
     }
+}
+
+QString DownloadController::FormatTimeLeft(qint64 seconds)
+{
+    if (seconds <= 0 || seconds > 86400 * 30) { // بیشتر از 30 روز یا نامشخص
+        return "--:--:--";
+    }
+    qint64 h = seconds / 3600;
+    qint64 m = (seconds % 3600) / 60;
+    qint64 s = seconds % 60;
+    return QString("%1:%2:%3")
+        .arg(h, 2, 10, QChar('0'))
+        .arg(m, 2, 10, QChar('0'))
+        .arg(s, 2, 10, QChar('0'));
 }
 
 void DownloadController::ProcessForShowDownloadCompleteDialog()
@@ -334,46 +380,48 @@ void DownloadController::UpdateListOfActivePartDownloaders()
 
 void DownloadController::DownloadForControlSpeed()
 {
-    if (!Is_Downloading) return;
+    if (!Is_Downloading || MaxSpeed <= 0) {
+        if (speedControlTimer) speedControlTimer->stop();
+        return;
+    }
 
     QReadLocker listGuard(&locker);
-    elapsedTimer->restart();
-    NumberOfBytesDownloadedInLastPeriodOfDownloadSpeedLimitted = 0;
-    bool anyDownloaded = false;
 
-    if (MaxSpeed > 0) {
-        qint64 spentedTimeOfThisPeriod = 0;
-        while (spentedTimeOfThisPeriod < 995 && (MaxSpeed * 1024) > NumberOfBytesDownloadedInLastPeriodOfDownloadSpeedLimitted) {
-            qint64 BytesShouldDownload = (MaxSpeed * 1024) - NumberOfBytesDownloadedInLastPeriodOfDownloadSpeedLimitted;
-            RecentlyUpdatedActivePartDownloader_list = false;
+    // ۱. محاسبه سهمیه (توکن) این بازه ۱۰۰ میلی‌ثانیه‌ای
+    // مثال: سرعت ۱۰۰ کیلوبایت بر ثانیه -> هر ۱۰۰ میلی‌ثانیه ۱۰,۲۴۰ بایت سهمیه اضافه می‌شود
+    qint64 tokensToAdd = (MaxSpeed * 1024LL * TICK_INTERVAL_MS) / 1000LL;
+    m_tokenBucket += tokensToAdd;
 
-            for (PartDownloader* partDownloader : ActivePartDownloader_list) {
-                if (partDownloader->IsAvaliableByteForRead()) {
-                    anyDownloaded = true;
-                    qint64 ReadedBytes = partDownloader->DownloadByteInSpeedControl(BytesShouldDownload);
-                    this->NumberOfBytesDownloadedInLastPeriod += ReadedBytes;
-                    this->NumberOfBytesDownloadedInLastPeriodOfDownloadSpeedLimitted += ReadedBytes;
-                    download->SizeDownloaded += ReadedBytes;
-                    BytesShouldDownload -= ReadedBytes;
+    // ۲. جلوگیری از انباشت بیش از حد توکن (حداکثر سهمیه معادل ۱ ثانیه دانلود)
+    // تا اگر شبکه چند ثانیه قطع شد، ناگهان با سرعت نامحدود دانلود نکند
+    qint64 maxBucketSize = MaxSpeed * 1024LL;
+    if (m_tokenBucket > maxBucketSize) {
+        m_tokenBucket = maxBucketSize;
+    }
 
-                    if (RecentlyUpdatedActivePartDownloader_list) break;
-                }
-            }
-            if (!anyDownloaded) break;
-            spentedTimeOfThisPeriod = elapsedTimer->elapsed();
+    // ۳. خواندن داده‌ها از دانلودرهای فعال به اندازه سهمیه موجود در سطل
+    for (PartDownloader* partDownloader : ActivePartDownloader_list) {
+        if (m_tokenBucket <= 0) {
+            break; // سهمیه این تیک تمام شد؛ ادامه در ۱۰۰ میلی‌ثانیه بعدی
         }
-        emit FinishedLastControlledSpeedPriod(elapsedTimer->elapsed());
+
+        if (partDownloader->IsAvaliableByteForRead()) {
+            // فقط به اندازه توکن باقی‌مانده اجازه خواندن می‌دهیم
+            qint64 bytesRead = partDownloader->DownloadByteInSpeedControl(m_tokenBucket);
+
+            if (bytesRead > 0) {
+                m_tokenBucket -= bytesRead; // کسر حجم خوانده‌شده از سطل توکن
+                this->NumberOfBytesDownloadedInLastPeriod += bytesRead;
+                download->SizeDownloaded += bytesRead;
+            }
+        }
     }
 }
 
 void DownloadController::ProcessScheduleControledLimittedSpeed()
 {
-    speedControlConnection = connect(this, &DownloadController::FinishedLastControlledSpeedPriod, this, [this](qint64 spentedTime) {
-        if (spentedTime < 1000) {
-            QTimer::singleShot(999 - spentedTime, this, &DownloadController::DownloadForControlSpeed);
-        }
-        else {
-            DownloadForControlSpeed();
-        }
-        }, Qt::UniqueConnection);
+    m_tokenBucket = 0; // ریست سطل توکن در شروع
+    if (speedControlTimer && !speedControlTimer->isActive()) {
+        speedControlTimer->start();
+    }
 }

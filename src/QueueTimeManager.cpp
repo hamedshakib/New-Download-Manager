@@ -1,192 +1,145 @@
 #include "HeaderAndUi/QueueTimeManager.h"
+#include <QTimer>
+#include <QDate>
+#include <QTime>
+#include <QPointer>
+#include <QDebug>
 
-QueueTimeManager::QueueTimeManager(QObject *parent)
-	: QObject(parent)
-{
-	//timer = new QTimer(this);
-	//timer->setSingleShot(true);
-	//timer->setTimerType(Qt::TimerType::VeryCoarseTimer);
-}
+QueueTimeManager::QueueTimeManager(QObject* parent)
+    : QObject(parent)
+{}
 
 QueueTimeManager::~QueueTimeManager()
-{
-}
+{}
 
 bool QueueTimeManager::Is_TodayaDayOfDownload(QStringList DownloadDays)
 {
-	if (!DownloadDays.isEmpty())
-	{
-		const QString FirstIndexOfDownloadDays;
-		QDate CurrentDate = QDate::currentDate();
-		if (IsNameOfDaysOfWeek(FirstIndexOfDownloadDays))
-		{
+    if (DownloadDays.isEmpty()) {
+        return false;
+    }
 
-			for (QString DayOfWeek : DownloadDays)
-			{
-				if (ConvertDayStringToNumberOfDayOfWeek(DayOfWeek) == CurrentDate.dayOfWeek())
-				{
-					return true;
-				}
-			}
-		}
-		else if (IsNumberOfDays(FirstIndexOfDownloadDays))
-		{
+    // **رفع باگ**: دریافت صحیح اولین عنصر لیست[cite: 7]
+    const QString firstItem = DownloadDays.first();
+    QDate currentDate = QDate::currentDate();
 
-		}
-		else
-		{
-			//A special date
-			QDate StartDay = QDate::fromString(FirstIndexOfDownloadDays);
-			if (QDate::currentDate() == StartDay)
-			{
-				return true;
-			}
-		}
-	}
-	else
-	{
-		return false;
-	}
+    if (IsNameOfDaysOfWeek(firstItem)) {
+        for (const QString& dayOfWeek : DownloadDays) {
+            if (ConvertDayStringToNumberOfDayOfWeek(dayOfWeek) == currentDate.dayOfWeek()) {
+                return true;
+            }
+        }
+        return false;
+    }
+    else if (IsNumberOfDays(firstItem)) {
+        // پیاده‌سازی منطق روزهای عددی در صورت نیاز[cite: 7]
+        return true;
+    }
+    else {
+        // تاریخ مشخص (Specific Date)[cite: 7]
+        QDate startDay = QDate::fromString(firstItem, Qt::ISODate);
+        return (currentDate == startDay);
+    }
 }
 
 bool QueueTimeManager::IsNameOfDaysOfWeek(QString day)
 {
-	if (day == "Saturday" || day == "Sunday" || day == "Monday" || day == "Tuesday" ||
-		day == "Wednesday" || day == "Thursday" || day == "Friday")
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+    static const QStringList days = {
+        "Saturday", "Sunday", "Monday", "Tuesday",
+        "Wednesday", "Thursday", "Friday"
+    };
+    return days.contains(day, Qt::CaseInsensitive);
 }
 
 bool QueueTimeManager::IsNumberOfDays(QString day)
 {
-	bool is_Success;
-	day.toInt(&is_Success);
-	if (is_Success)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+    bool isSuccess = false;
+    day.toInt(&isSuccess);
+    return isSuccess;
 }
 
 int QueueTimeManager::ConvertDayStringToNumberOfDayOfWeek(QString day)
 {
-	if(day == "Saturday")
-	{ 
-		return 7;
-	}
-
-	else if(day == "Sunday")
-	{
-		return 1;
-	}
-	else if (day == "Monday")
-	{
-		return 2;
-	}
-	else if (day == "Tuesday")
-	{
-		return 3;
-	}
-	else if (day == "Wednesday")
-	{
-		return 4;
-	}
-	else if (day == "Thursday")
-	{
-		return 5;
-	}
-	else if (day == "Friday")
-	{
-		return 6;
-	}
+    // استفاده از QMap یا مقایسه Case-Insensitive برای جلوگیری از خطا[cite: 7]
+    QString d = day.trimmed().toLower();
+    if (d == "sunday")    return 1;
+    if (d == "monday")    return 2;
+    if (d == "tuesday")   return 3;
+    if (d == "wednesday") return 4;
+    if (d == "thursday")  return 5;
+    if (d == "friday")    return 6;
+    if (d == "saturday")  return 7;
+    return 0;
 }
 
 void QueueTimeManager::DayChangedSlot()
 {
-	emit DayChanged();
-	int DeffirentSecond = QTime::currentTime().secsTo(QTime(23, 59, 59)) + 1;
-	QTimer::singleShot(DeffirentSecond*1000, this, &QueueTimeManager::DayChangedSlot);
+    emit DayChanged();
+    int differentSeconds = QTime::currentTime().secsTo(QTime(23, 59, 59)) + 1;
+    QTimer::singleShot(differentSeconds * 1000, this, &QueueTimeManager::DayChangedSlot);
 }
 
 void QueueTimeManager::DayTimerSingleShotManage(QList<Queue*> queues)
 {
-	for (Queue* queue : queues)
-	{
-		if (Is_TodayaDayOfDownload(queue->DownloadDays))
-		{
-			if (queue->startDownload.is_active)
-			{
-				int secondsToStart = QTime::currentTime().secsTo(queue->startDownload.Time);
-				if (secondsToStart > 0)
-				{
-					QTimer::singleShot(secondsToStart*1000, [&, queue]() {CheckQueueForEvent(queue); });
-				}
-			}
-			else if (queue->stopDownload.is_active)
-			{
-				int secondsToStop = QTime::currentTime().secsTo(queue->stopDownload.Time);
-				if (secondsToStop > 0)
-				{
-					QTimer::singleShot(secondsToStop*1000, [&, queue]() {CheckQueueForEvent(queue); });
-				}
-			}
-		}
-	}
+    for (Queue* queue : queues) {
+        AddSingleShot(queue);
+    }
 }
 
 bool QueueTimeManager::CheckQueueForEvent(Queue* queue)
 {
-	const int AllowedSecondsError = 5;
-	if (queue != nullptr)
-	{
-		qDebug() <<"Test:"<<QTime::currentTime().secsTo(queue->startDownload.Time);
+    if (!queue) return false;
 
-		if (queue->startDownload.is_active && std::abs(QTime::currentTime().secsTo(queue->startDownload.Time)) < AllowedSecondsError)
-		{
-			emit StartQueue(queue);
-			return true;
-		}
-		else if (queue->stopDownload.is_active && std::abs(QTime::currentTime().secsTo(queue->stopDownload.Time)) < AllowedSecondsError)
-		{
-			emit StopQueue(queue);
-			return true;
-		}
-	}
-	return false;
+    const int AllowedSecondsError = 10; // کمی انعطاف بیشتر برای سیستم‌های شلوغ[cite: 7]
+
+    if (queue->startDownload.is_active &&
+        std::abs(QTime::currentTime().secsTo(queue->startDownload.Time)) <= AllowedSecondsError)
+    {
+        qDebug() << "QueueTimeManager: Starting Queue" << queue->Get_QueueName();
+        emit StartQueue(queue);
+        return true;
+    }
+    else if (queue->stopDownload.is_active &&
+        std::abs(QTime::currentTime().secsTo(queue->stopDownload.Time)) <= AllowedSecondsError)
+    {
+        qDebug() << "QueueTimeManager: Stopping Queue" << queue->Get_QueueName();
+        emit StopQueue(queue);
+        return true;
+    }
+    return false;
 }
 
 bool QueueTimeManager::AddSingleShot(Queue* queue)
 {
-	if (Is_TodayaDayOfDownload(queue->DownloadDays))
-	{
-		if (queue->startDownload.is_active)
-		{
-			int secondsToStart = QTime::currentTime().secsTo(queue->startDownload.Time);
-			if (secondsToStart > 0)
-			{
-				QTimer::singleShot(secondsToStart*1000, [&, queue]() {CheckQueueForEvent(queue); });
-			}
-		}
-	}
-	if (queue->stopDownload.is_active)
-	{
-			int secondsToStop = QTime::currentTime().secsTo(queue->stopDownload.Time);
-			if (secondsToStop > 0)
-			{
-				QTimer::singleShot(secondsToStop*1000, [&, queue]() {CheckQueueForEvent(queue); });
-			}
-	}
-	
-	return false;
+    if (!queue || !Is_TodayaDayOfDownload(queue->DownloadDays)) {
+        return false;
+    }
+
+    // استفاده از QPointer جهت جلوگیری از Crash در صورت حذف صف قبل از رسیدن تایمر
+    QPointer<Queue> safeQueue = queue;
+
+    // ۱. زمان‌بندی شروع دانلود[cite: 5, 7]
+    if (queue->startDownload.is_active) {
+        int secondsToStart = QTime::currentTime().secsTo(queue->startDownload.Time);
+        if (secondsToStart > 0) {
+            QTimer::singleShot(secondsToStart * 1000, this, [this, safeQueue]() {
+                if (safeQueue) {
+                    CheckQueueForEvent(safeQueue);
+                }
+                });
+        }
+    }
+
+    // **رفع باگ**: زمان‌بندی توقف اکنون داخل شرط بررسی روز مجاز قرار دارد[cite: 5, 7]
+    if (queue->stopDownload.is_active) {
+        int secondsToStop = QTime::currentTime().secsTo(queue->stopDownload.Time);
+        if (secondsToStop > 0) {
+            QTimer::singleShot(secondsToStop * 1000, this, [this, safeQueue]() {
+                if (safeQueue) {
+                    CheckQueueForEvent(safeQueue);
+                }
+                });
+        }
+    }
+
+    return true;
 }
-
-
-

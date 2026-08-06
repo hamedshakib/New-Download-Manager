@@ -55,8 +55,11 @@ private:
 	QTimer *timer;
 	qint64 NumberOfBytesDownloadedInLastPeriod = 0;
 	qint64 NumberOfBytesDownloadedInLastPeriodOfDownloadSpeedLimitted = 0;
-
-
+	qint64 m_smoothedSpeed = 0;
+	QTimer* speedControlTimer = nullptr;
+	qint64 m_tokenBucket = 0;
+	const int TICK_INTERVAL_MS = 100;
+	QString FormatTimeLeft(qint64 seconds);
 public:
 	void initDownloadController(Download* download);
 	bool StartDownload();
@@ -68,7 +71,6 @@ public:
 	void SetMaxSpeed(int maxSpeed);
 	int Get_MaxSpeed();
 	bool IsSpeedLimitted();
-
 
 signals:
 	void DownloadStarted();
