@@ -292,18 +292,27 @@ bool DownloadController::ProcessFinishDownload()
 
 void DownloadController::TimerTimeOut()
 {
-    qint64 downloadedBytes = this->NumberOfBytesDownloadedInLastPeriod;
-    if (downloadedBytes >= 0) { // حتی اگر 0 بود محاسبه شود تا در صورت قطع شبکه سرعت صفر شود[cite: 2]
+    // ۱. محاسبه دقیق و واقعی حجم دانلود شده از روی وضعیت پارت‌ها (Ground Truth)
+    qint64 realSizeDownloaded = 0;
+    QList<qint64> DownloadedBytesEachPartDownloadList;
+    for (PartDownload* partDownload : download->get_PartDownloads()) {
+        qint64 partDownloaded = qMax(0LL, partDownload->GetLastDownloadedByte() - partDownload->start_byte + 1);
+        realSizeDownloaded += partDownloaded;
+        DownloadedBytesEachPartDownloadList.append(partDownloaded);
+    }
+
+    // همگام‌سازی حجم کل
+    download->SizeDownloaded = realSizeDownloaded;
+
+    qint64 downloadedBytesInPeriod = this->NumberOfBytesDownloadedInLastPeriod;
+    if (downloadedBytesInPeriod >= 0) {
         this->NumberOfBytesDownloadedInLastPeriod = 0;
 
         qint64 elapsedMs = elapsedTimerForIndependentSpeed->restart();
-        if (elapsedMs <= 0) elapsedMs = 1000; // جلوگیری از تقسیم بر صفر
+        if (elapsedMs <= 0) elapsedMs = 1000;
 
-        // ۱. محاسبه سرعت لحظه‌ای (بایت بر ثانیه)
-        qint64 instantSpeed = (downloadedBytes * 1000LL) / elapsedMs;
+        qint64 instantSpeed = (downloadedBytesInPeriod * 1000LL) / elapsedMs;
 
-        // ۲. استفاده از Exponential Moving Average (EMA) برای هموارسازی سرعت
-        // وزن ۳۰٪ به سرعت جدید و ۷۰٪ به سرعت قبلی جهت جلوگیری از پرش‌های شدید
         if (m_smoothedSpeed == 0) {
             m_smoothedSpeed = instantSpeed;
         }
@@ -311,19 +320,12 @@ void DownloadController::TimerTimeOut()
             m_smoothedSpeed = (instantSpeed * 3 + m_smoothedSpeed * 7) / 10;
         }
 
-        // ۳. محاسبه زمان باقی‌مانده (ETA) پایدار بر اساس سرعت هموارسازی‌شده
         qint64 remainingBytes = qMax(0LL, download->DownloadSize - download->SizeDownloaded);
         qint64 secondsLeft = (m_smoothedSpeed > 0) ? (remainingBytes / m_smoothedSpeed) : 0;
 
-        // تبدیل به رشته (رشته زمان باقی‌مانده پایدار و بدون پرش خواهد بود)[cite: 2]
         QString SpeedString = ConverterSizeToSuitableString::ConvertSizeToSuitableString(m_smoothedSpeed) + "/s";
         QString TimeLeftString = FormatTimeLeft(secondsLeft);
         QString DownloadStatus = calculatorDownload.getStatusForTable(download->SizeDownloaded, download->DownloadSize);
-
-        QList<qint64> DownloadedBytesEachPartDownloadList;
-        for (PartDownload* partDownload : download->get_PartDownloads()) {
-            DownloadedBytesEachPartDownloadList.append(qMax(0LL, partDownload->GetLastDownloadedByte() - partDownload->start_byte + 1));
-        }
 
         emit UpdateDownloaded(DownloadStatus, SpeedString, TimeLeftString, DownloadedBytesEachPartDownloadList);
     }
@@ -386,36 +388,42 @@ void DownloadController::DownloadForControlSpeed()
     }
 
     QReadLocker listGuard(&locker);
+    int activeCount = ActivePartDownloader_list.count();
+    if (activeCount == 0) return;
 
-    // ۱. محاسبه سهمیه (توکن) این بازه ۱۰۰ میلی‌ثانیه‌ای
-    // مثال: سرعت ۱۰۰ کیلوبایت بر ثانیه -> هر ۱۰۰ میلی‌ثانیه ۱۰,۲۴۰ بایت سهمیه اضافه می‌شود
+    // ۱. محاسبه توکن‌های جدید
     qint64 tokensToAdd = (MaxSpeed * 1024LL * TICK_INTERVAL_MS) / 1000LL;
     m_tokenBucket += tokensToAdd;
 
-    // ۲. جلوگیری از انباشت بیش از حد توکن (حداکثر سهمیه معادل ۱ ثانیه دانلود)
-    // تا اگر شبکه چند ثانیه قطع شد، ناگهان با سرعت نامحدود دانلود نکند
     qint64 maxBucketSize = MaxSpeed * 1024LL;
     if (m_tokenBucket > maxBucketSize) {
         m_tokenBucket = maxBucketSize;
     }
 
-    // ۳. خواندن داده‌ها از دانلودرهای فعال به اندازه سهمیه موجود در سطل
+    if (m_tokenBucket <= 0) return;
+
+    // ۲. توزیع عادلانه توکن بین تمام پارت‌های فعال (Fair Share)
+    qint64 fairTokenPerPart = m_tokenBucket / activeCount;
+    qint64 remainingTokens = m_tokenBucket;
+
     for (PartDownloader* partDownloader : ActivePartDownloader_list) {
-        if (m_tokenBucket <= 0) {
-            break; // سهمیه این تیک تمام شد؛ ادامه در ۱۰۰ میلی‌ثانیه بعدی
-        }
+        if (remainingTokens <= 0) break;
+
+        qint64 allowedBytes = qMin(fairTokenPerPart, remainingTokens);
+        if (allowedBytes <= 0) continue;
 
         if (partDownloader->IsAvaliableByteForRead()) {
-            // فقط به اندازه توکن باقی‌مانده اجازه خواندن می‌دهیم
-            qint64 bytesRead = partDownloader->DownloadByteInSpeedControl(m_tokenBucket);
-
+            qint64 bytesRead = partDownloader->DownloadByteInSpeedControl(allowedBytes);
             if (bytesRead > 0) {
-                m_tokenBucket -= bytesRead; // کسر حجم خوانده‌شده از سطل توکن
+                remainingTokens -= bytesRead;
                 this->NumberOfBytesDownloadedInLastPeriod += bytesRead;
                 download->SizeDownloaded += bytesRead;
             }
         }
     }
+
+    // به‌روزرسانی توکن باقی‌مانده در سطل
+    m_tokenBucket = qMax(0LL, remainingTokens);
 }
 
 void DownloadController::ProcessScheduleControledLimittedSpeed()

@@ -92,29 +92,22 @@ void CalculatorDownload::CalculateDownloadSpeedAccordingToLastSpeeds()
 {
 	qint64 SumOfSpeed;
 	int numberOfEffectedSpeed;
-	if (LastSpeeds[0] == 0)
-	{
-		//just Last speed
+	if (LastSpeeds[0] == 0) {
 		numberOfEffectedSpeed = 1;
 		SumOfSpeed = CurrentSpeedBytesPerSecond;
 	}
-	else if (LastSpeeds[1] == 0)
-	{
-		//Effected 2 speeds
+	else if (LastSpeeds[1] == 0) {
 		numberOfEffectedSpeed = 2;
-		SumOfSpeed = LastSpeeds[2] +CurrentSpeedBytesPerSecond;
+		SumOfSpeed = LastSpeeds[2] + CurrentSpeedBytesPerSecond;
 	}
-	else if (LastSpeeds[2] == 0)
-	{
-		//Effected 3 speeds
+	else if (LastSpeeds[2] == 0) {
 		numberOfEffectedSpeed = 3;
-		SumOfSpeed = LastSpeeds[1]+LastSpeeds[2] + CurrentSpeedBytesPerSecond;
+		SumOfSpeed = LastSpeeds[1] + LastSpeeds[2] + CurrentSpeedBytesPerSecond;
 	}
-	else
-	{
-		//Effected 4 speeds
+	else {
 		numberOfEffectedSpeed = 4;
-		SumOfSpeed = LastSpeeds[1] +LastSpeeds[1] + LastSpeeds[2] + CurrentSpeedBytesPerSecond;
+		// باگ LastSpeeds[1] + LastSpeeds[1] اصلاح شد:
+		SumOfSpeed = LastSpeeds[0] + LastSpeeds[1] + LastSpeeds[2] + CurrentSpeedBytesPerSecond;
 	}
 	AvrageSpeedBytesPerSecond = (SumOfSpeed / numberOfEffectedSpeed);
 }

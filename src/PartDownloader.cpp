@@ -161,7 +161,13 @@ bool PartDownloader::ProcessSetNewReply(QNetworkReply* newReply)
     }
 
     this->reply = newReply;
-    connect(reply, &QNetworkReply::readyRead, this, &PartDownloader::ReadyRead, Qt::UniqueConnection);
+
+    // تنظیم بافر روی ۱۶ کیلوبایت جهت فعال‌سازی سریع TCP Backpressure در لایه شبکه
+    this->reply->setReadBufferSize(16 * 1024);
+
+    if (!is_SpeedLimit) {
+        connect(reply, &QNetworkReply::readyRead, this, &PartDownloader::ReadyRead, Qt::UniqueConnection);
+    }
     connect(reply, &QNetworkReply::finished, this, &PartDownloader::CheckFinishedReceivedBytes, Qt::UniqueConnection);
     return true;
 }
@@ -171,9 +177,13 @@ void PartDownloader::CheckFinishedReceivedBytes()
     if (partDownloaderStatus == PartDownloaderStatus::Downloading) {
         partDownloaderStatus = PartDownloaderStatus::FinishedReceiveBytes;
 
-        // **حل مشکل تقدم و تاخر**: ابتدا هرچه در بافر مانده را می‌خوانیم و می‌نویسیم
         if (reply && reply->bytesAvailable() > 0) {
-            ReadBytes(reply->bytesAvailable());
+            qint64 remainingBytes = reply->bytesAvailable();
+            ReadBytes(remainingBytes);
+
+            if (is_SpeedLimit && remainingBytes > 0) {
+                emit DownloadedByteCount(remainingBytes);
+            }
         }
 
         qDebug() << "Finish receive bytes PartDownload";
@@ -200,12 +210,14 @@ bool PartDownloader::SetSpeedLimited(bool is_SpeedLimited)
     if (!reply) return true;
 
     if (!is_SpeedLimited) {
+        // اتصال مجدد برای خواندن با حداکثر سرعت شبکه
         connect(reply, &QNetworkReply::readyRead, this, &PartDownloader::ReadyRead, Qt::UniqueConnection);
         if (reply->bytesAvailable() > 0) {
             ReadyRead();
         }
     }
     else {
+        // قطع اتصال: لایه شبکه منتظر می‌ماند تا تایمر DownloadForControlSpeed دیتا را بخواند
         disconnect(reply, &QNetworkReply::readyRead, this, &PartDownloader::ReadyRead);
     }
     return true;

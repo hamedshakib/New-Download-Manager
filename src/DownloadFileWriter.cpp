@@ -8,65 +8,50 @@ DownloadFileWriter::DownloadFileWriter(QObject* parent)
 
 bool DownloadFileWriter::WriteDownloadToFile(QByteArray& byteArray, QFile* file, bool CloseFileAfterWrite)
 {
-	//qDebug() << "Write download Thread :" << QThread::currentThread()->objectName();
-	if (!file->isOpen())
-	{
-		if (!file->open(QIODevice::WriteOnly | QIODevice::Append))
-		{
-			qCritical() << "Can not Open File!";
+	if (!file->isOpen()) {
+		if (!file->open(QIODevice::WriteOnly | QIODevice::Append)) {
+			qCritical() << "Cannot Open File!";
 			return false;
 		}
 	}
 
-	file->write(byteArray);
-	file->flush();
+	qint64 bytesWritten = file->write(byteArray);
+	if (bytesWritten == -1) {
+		qCritical() << "Error writing to file:" << file->errorString();
+		return false;
+	}
 
-	if (CloseFileAfterWrite)
-	{
+	if (CloseFileAfterWrite) {
 		file->close();
 	}
 	return true;
-
 }
 
 QFile* DownloadFileWriter::BuildFileFromMultipleFiles(QList<QFile*> files, QString AddressOfFile)
 {
-	if (files.count() == 1)
-	{
+    if (files.count() == 1) {
+        files[0]->setFileName(AddressOfFile);
+        return files[0];
+    }
 
-		files[0]->setFileName(AddressOfFile);
-		return files[0];
-	}
-	else
-	{
-		QFile* NewFile = new QFile(AddressOfFile);
-		if (NewFile->open(QIODevice::WriteOnly))
-		{
-			for (QFile* file : files)
-			{
-				file->close();
-				if (!file->open(QFile::ReadOnly))
-				{
-					qCritical() << "Can't Open File for read for write to one file";
-					return file;
-				}
-				while (!file->atEnd()) {
-					QByteArray bytes;
-					if (file->bytesAvailable() >= 2048)
-					{
-						bytes = file->read(2048);
-					}
-					else
-					{
-						bytes = file->readAll();
-					}
-					NewFile->write(bytes);
-				}
-				file->remove();
-			}
-			NewFile->flush();
-			NewFile->close();
-		}
-		return NewFile;
-	}
+    QFile* NewFile = new QFile(AddressOfFile);
+    if (NewFile->open(QIODevice::WriteOnly)) {
+        constexpr qint64 BUFFER_SIZE = 1024 * 1024;
+        for (QFile* file : files) {
+            file->close();
+            if (!file->open(QFile::ReadOnly)) {
+                qCritical() << "Can't Open File for read to merge";
+                return file;
+            }
+            while (!file->atEnd()) {
+                QByteArray bytes = file->read(BUFFER_SIZE);
+                NewFile->write(bytes);
+            }
+            file->close();
+            file->remove();
+        }
+        NewFile->flush();
+        NewFile->close();
+    }
+    return NewFile;
 }
