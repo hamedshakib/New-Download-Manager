@@ -2,35 +2,23 @@
 
 QString ConverterSizeToSuitableString::ConvertSizeToSuitableString(qint64 size)
 {
-	long double preparedSize;
-	QString Str3;
+    if (size < 0) {
+        return "0 B";
+    }
 
-	if (size < 1024)
-	{
-		preparedSize= size;
-		Str3= "B";
-	}
-	else if (size >= 1024 && size < 1024 * 1024)
-	{
-		preparedSize = (long double)size/1024;
-		Str3 = "KB";
-	}
-	else if (size >= 1024 * 1024 && size < 1024 * 1024 * 1024)
-	{
-		preparedSize = (long double)size / (1024*1024);
-		Str3 = "MB";
-	}
-	else if (size >= (1073741824) && size < 1099511627776)
-	{
-		preparedSize = (long double)size / (1073741824);
-		Str3 = "GB";
-	}
-	else if(size >= (1099511627776) && size < (1024 * 1099511627776))
-	{
-		preparedSize = (long double)size / (1099511627776);
-		Str3 = "TB";
-	}
+    static const char* const units[] = { "B", "KB", "MB", "GB", "TB", "PB" };
+    int unitIndex = 0;
+    double preparedSize = static_cast<double>(size);
 
-	return QString::number(preparedSize, 'f', 2) + " " + Str3;
+    while (preparedSize >= 1024.0 && unitIndex < 5) {
+        preparedSize /= 1024.0;
+        unitIndex++;
+    }
+
+    if (unitIndex == 0) {
+        return QString::number(static_cast<int>(preparedSize)) + " " + units[unitIndex];
+    }
+
+    return QString::number(preparedSize, 'f', 2) + " " + units[unitIndex];
 }
 

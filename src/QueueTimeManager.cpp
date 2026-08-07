@@ -59,15 +59,14 @@ bool QueueTimeManager::IsNumberOfDays(QString day)
 
 int QueueTimeManager::ConvertDayStringToNumberOfDayOfWeek(QString day)
 {
-    // استفاده از QMap یا مقایسه Case-Insensitive برای جلوگیری از خطا[cite: 7]
     QString d = day.trimmed().toLower();
-    if (d == "sunday")    return 1;
-    if (d == "monday")    return 2;
-    if (d == "tuesday")   return 3;
-    if (d == "wednesday") return 4;
-    if (d == "thursday")  return 5;
-    if (d == "friday")    return 6;
-    if (d == "saturday")  return 7;
+    if (d == "monday")    return Qt::Monday;    // 1
+    if (d == "tuesday")   return Qt::Tuesday;   // 2
+    if (d == "wednesday") return Qt::Wednesday; // 3
+    if (d == "thursday")  return Qt::Thursday;  // 4
+    if (d == "friday")    return Qt::Friday;    // 5
+    if (d == "saturday")  return Qt::Saturday;  // 6
+    if (d == "sunday")    return Qt::Sunday;    // 7
     return 0;
 }
 
@@ -114,12 +113,17 @@ bool QueueTimeManager::AddSingleShot(Queue* queue)
         return false;
     }
 
-    // استفاده از QPointer جهت جلوگیری از Crash در صورت حذف صف قبل از رسیدن تایمر
     QPointer<Queue> safeQueue = queue;
+    QTime now = QTime::currentTime();
 
-    // ۱. زمان‌بندی شروع دانلود[cite: 5, 7]
+    // زمان‌بندی شروع دانلود
     if (queue->startDownload.is_active) {
-        int secondsToStart = QTime::currentTime().secsTo(queue->startDownload.Time);
+        int secondsToStart = now.secsTo(queue->startDownload.Time);
+        // اگر زمان شروع برای فردا است (عبور از نیمه‌شب)، ۲۴ ساعت (۸۶۴۰۰ ثانیه) اضافه می‌کنیم
+        if (secondsToStart < 0) {
+            secondsToStart += 86400;
+        }
+
         if (secondsToStart > 0) {
             QTimer::singleShot(secondsToStart * 1000, this, [this, safeQueue]() {
                 if (safeQueue) {
@@ -129,9 +133,13 @@ bool QueueTimeManager::AddSingleShot(Queue* queue)
         }
     }
 
-    // **رفع باگ**: زمان‌بندی توقف اکنون داخل شرط بررسی روز مجاز قرار دارد[cite: 5, 7]
+    // زمان‌بندی توقف دانلود
     if (queue->stopDownload.is_active) {
-        int secondsToStop = QTime::currentTime().secsTo(queue->stopDownload.Time);
+        int secondsToStop = now.secsTo(queue->stopDownload.Time);
+        if (secondsToStop < 0) {
+            secondsToStop += 86400;
+        }
+
         if (secondsToStop > 0) {
             QTimer::singleShot(secondsToStop * 1000, this, [this, safeQueue]() {
                 if (safeQueue) {

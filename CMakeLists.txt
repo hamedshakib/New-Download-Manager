@@ -73,8 +73,6 @@ set(PROJECT_SOURCES
     ${MY_SOURCE_PATH}/PartDownloader.cpp
 
     # Database
-    ${MY_HeaderAndUi_PATH}/DatabaseReader.h
-    ${MY_SOURCE_PATH}/DatabaseReader.cpp
     ${MY_HeaderAndUi_PATH}/SettingUpDatabase.h
     ${MY_SOURCE_PATH}/SettingUpDatabase.cpp
     ${MY_HeaderAndUi_PATH}/DatabaseQueryPreparer.h

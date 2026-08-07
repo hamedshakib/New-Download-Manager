@@ -1,4 +1,4 @@
-#include "HeaderAndUi/DatabaseQueryPreparer.h"
+﻿#include "HeaderAndUi/DatabaseQueryPreparer.h"
 
 DatabaseQueryPreparer::DatabaseQueryPreparer(QObject *parent)
 	: QObject(parent)
@@ -40,12 +40,13 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryChangeLastbitDownloaded(int PartDo
 QSqlQuery* DatabaseQueryPreparer::PrepareQuerySuffixsFromMimeType(QString MimeType)
 {
 	QString queryString = QString(
-		"Select suffix "
-		"From MimeType "
-		"WHERE mimeType='%1' "
-	).arg(MimeType);
-	qDebug() << queryString;
-	QSqlQuery* query = new QSqlQuery(queryString, SettingUpDatabase::get_Database());
+		"SELECT suffix "
+		"FROM MimeType "
+		"WHERE mimeType = :mimeType; "
+	);
+	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
+	query->prepare(queryString);
+	query->bindValue(":mimeType", MimeType);
 	return query;
 }
 
@@ -144,53 +145,41 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForLoadDownloadForMainTable()
 
 QSqlQuery* DatabaseQueryPreparer::PrepareQueryForUpdateAllFieldDownload(Download* download)
 {
-	//Todo
 	QString queryString = QString(
 		"UPDATE Download "
-		"SET FileName = :fileName,"
-		"DownloadStatus_id = :downloadStatus_id,"
-		"Url = :url,"
-		"SaveTo = :saveTo,"
-		"SizeDownloaded = :sizeDownloaded,"
-		"description = :description,"
-		"LastTryTime = :lastTryTime,"
-		"MaxSpeed = :maxSpeed,"
-		"ResumeCapability_id = :resumeCapability_id,"
-		"Category_id = :category_id,"
-		"Queue_id = :queue_id,"
-		"User = :user,"
-		"Password: :password "
+		"SET FileName = :fileName, "
+		"DownloadStatus_id = :downloadStatus_id, "
+		"Url = :url, "
+		"SaveTo = :saveTo, "
+		"SizeDownloaded = :sizeDownloaded, "
+		"description = :description, "
+		"LastTryTime = :lastTryTime, "
+		"MaxSpeed = :maxSpeed, "
+		"ResumeCapability_id = :resumeCapability_id, "
+		"Category_id = :category_id, "
+		"Queue_id = :queue_id, "
+		"User = :user, "
+		"Password = :password "   // باگ حیاتی Password: :password اصلاح شد
 		"WHERE id = :id;"
 	);
-
 
 	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
 	query->prepare(queryString);
 
-
 	query->bindValue(":fileName", download->FileName);
 	query->bindValue(":downloadStatus_id", ProcessEnum::ConvertDownloadStatusEnumToDownloadStatusId(download->downloadStatus));
-	query->bindValue(":url", download->Url);
-
-	query->bindValue(":saveTo", download->SaveTo);
-	query->bindValue(":SizeDownloaded", download->SizeDownloaded);
+	query->bindValue(":url", download->Url.toString());
+	query->bindValue(":saveTo", download->SaveTo.toString());
+	query->bindValue(":sizeDownloaded", download->SizeDownloaded);
 	query->bindValue(":description", download->description);
-
-
-
 	query->bindValue(":lastTryTime", DateTimeManager::ConvertDataTimeToString(download->LastTryTime));
-	query->bindValue(":maxSpeed", download->MaxSpeed>0 ? QString::number(download->MaxSpeed):QVariant("NULL"));
-	query->bindValue(":resumeCapability_id",ProcessEnum::ConvertResumeCapabilityEnumToResumeCapabilityId(download->ResumeCapability));
-
-	query->bindValue(":category_id", QVariant("NULL"));
-
-
-
-	query->bindValue(":queue_id", download->Queue_id > -1 ? download->Queue_id : QVariant("NULL"));
+	query->bindValue(":maxSpeed", download->MaxSpeed > 0 ? QVariant(QString::number(download->MaxSpeed)) : QVariant(QVariant::String));
+	query->bindValue(":resumeCapability_id", ProcessEnum::ConvertResumeCapabilityEnumToResumeCapabilityId(download->ResumeCapability));
+	query->bindValue(":category_id", QVariant(QVariant::Int));
+	query->bindValue(":queue_id", download->Queue_id > -1 ? QVariant(download->Queue_id) : QVariant(QVariant::Int));
 	query->bindValue(":user", download->Username);
 	query->bindValue(":password", download->Password);
-	
-	query->bindValue(":id",download->IdDownload);
+	query->bindValue(":id", download->IdDownload);
 
 	return query;
 }
@@ -622,12 +611,11 @@ QSqlQuery* DatabaseQueryPreparer::PrepareQueryForExitAllDownloadFrom_Queue_Downl
 {
 	QString queryString = QString(
 		"DELETE FROM Queue_Download "
-		"WHERE Queue_id = :queue_id'; "
+		"WHERE Queue_id = :queue_id; "   // باگ ':queue_id';' اصلاح شد
 	);
 
 	QSqlQuery* query = new QSqlQuery(SettingUpDatabase::get_Database());
 	query->prepare(queryString);
-
 	query->bindValue(":queue_id", queue->Get_QueueId());
 	return query;
 }

@@ -33,41 +33,69 @@ void QueueManager::StopQueue(Queue* queue)
 
 void QueueManager::ProcessDownloadOfQueue(Queue* queue)
 {
-	int NumberOfDownload =0;
+	if (!queue || !queue->Is_Downloading) return;
+
+	// تا زمانی که ظرفیت دانلود همزمان خالی است و دانلودهای صف تمام نشده‌اند
 	while (queue->Downloading_list.count() < queue->NumberDownloadAtSameTime)
 	{
-		if (queue->Downloading_list.count() == queue->List_DownloadId.count())
+		Download* nextDownloadToStart = nullptr;
+
+		// جستجو در لیست آی‌دی‌های صف برای یافتن اولین دانلودی که:
+		// ۱. قبلاً کامل نشده باشد (Status != Completed)
+		// ۲. در حال حاضر در لیست دانلودهای فعال (Downloading_list) نباشد
+		for (size_t download_id : queue->List_DownloadId)
 		{
+			Download* download = m_downloadManager->ProcessAchieveDownload(download_id);
+			if (!download) continue;
+
+			bool isAlreadyDownloading = queue->Downloading_list.contains(download);
+			bool isCompleted = (download->get_Status() == Download::Completed);
+
+			if (!isAlreadyDownloading && !isCompleted) {
+				nextDownloadToStart = download;
+				break; // اولین دانلود واجد شرایط پیدا شد
+			}
+		}
+
+		// اگر هیچ دانلود جدیدی برای شروع پیدا نشد، حلقه را می‌شکنیم
+		if (!nextDownloadToStart) {
 			break;
 		}
 
-		//Should Find Download for downloading
-		int download_id = DatabaseManager::GetturnInIdOfDownload(queue, NumberOfDownload + 1);
+		// اضافه کردن به لیست فعال‌های صف و شروع دانلود
+		queue->Downloading_list.append(nextDownloadToStart);
+		DownloadController* downloadController = m_downloadManager->ProcessAchieveDownloadController(nextDownloadToStart);
 
-		Download* download = m_downloadManager->ProcessAchieveDownload(download_id);
-		DownloadController* DownloadController = m_downloadManager->ProcessAchieveDownloadController(download);
-		//Capture the pointers BY VALUE (not by reference) so the lambda does not hold a
-		//dangling reference to the loop-local `download` when DownloadCompleted fires
-		//later (this was a use-after-free / read-access-violation crash).
-		connect(DownloadController, &DownloadController::DownloadCompleted, this, [this, download, queue]() {FinishDownloadOfQueue(download, queue); });
-		queue->Downloading_list.append(download);
-		if (DownloadController->IsDownloading() == false)
-		{
-			DownloadController->StartDownload();
+		// استفاده از Lambda ایمن برای مدیریت اتمام دانلود
+		connect(downloadController, &DownloadController::DownloadCompleted, this,
+			[this, nextDownloadToStart, queue]() {
+				FinishDownloadOfQueue(nextDownloadToStart, queue);
+			}, Qt::UniqueConnection);
+
+		if (!downloadController->IsDownloading()) {
+			downloadController->StartDownload();
 		}
+	}
 
-		NumberOfDownload++;
+	// اگر لیست فعال‌ها خالی است و آیتمی نمانده، یعنی کل صف تمام شده است
+	if (queue->Downloading_list.isEmpty()) {
+		queue->Is_Downloading = false;
+		qDebug() << "All downloads in queue completed:" << queue->Get_QueueName();
 	}
 }
 
-void QueueManager::FinishDownloadOfQueue(Download *download, Queue* queue)
+void QueueManager::FinishDownloadOfQueue(Download* download, Queue* queue)
 {
-	if (!Is_QueueIsEmpty(queue))
-	{
+	if (!queue || !download) return;
+
+	// ۱. حیاتی: حذف دانلود تکمیل‌شده از لیست دانلودهای فعال صف
+	queue->Downloading_list.removeOne(download);
+
+	// ۲. بررسی خالی بودن صف و جایگزین کردن دانلود بعدی در ظرفیت آزاد شده
+	if (!Is_QueueIsEmpty(queue) && queue->Is_Downloading) {
 		ProcessDownloadOfQueue(queue);
 	}
-	else
-	{
+	else if (queue->Downloading_list.isEmpty()) {
 		queue->Is_Downloading = false;
 	}
 }
@@ -87,7 +115,11 @@ bool QueueManager::Is_QueueIsEmpty(Queue* queue)
 
 void QueueManager::LoadQueuesFormDatabase()
 {
-	DatabaseManager::LoadAllQueues(ListOfQueues,this);
+	DatabaseManager::LoadAllQueues(ListOfQueues, this);
+	// اضافه کردن این خط حیاتی است:
+	for (Queue* queue : ListOfQueues) {
+		m_QueueTimeManager->AddSingleShot(queue);
+	}
 }
 
 void QueueManager::ProcessRemoveADownloadFromQueue(Download* download)

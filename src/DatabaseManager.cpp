@@ -31,20 +31,17 @@ bool DatabaseManager::LoadDownloadComplete(int Download_id,Download* download)
 
 QStringList DatabaseManager::LoadSuffixsForMimeType(QString MimeType)
 {
+	QStringList suffixs;
 	QSqlQuery* query = DatabaseQueryPreparer::PrepareQuerySuffixsFromMimeType(MimeType);
-	if (DatabaseInteract::ExectionQueryForReadData(query))
-	{
-		QStringList suffixs;
-		while (query->next())
-		{
-			suffixs.append(ProcessDatabaseOutput::ProcessLoadedSuffixsForMimeType(query->record()));
-			
-		}
-		delete query;
-		return suffixs;
 
+	if (DatabaseInteract::ExectionQueryForReadData(query)) {
+		while (query->next()) {
+			suffixs.append(ProcessDatabaseOutput::ProcessLoadedSuffixsForMimeType(query->record()));
+		}
 	}
+
 	delete query;
+	return suffixs;
 }
 
 size_t DatabaseManager::CreateNewDownloadOnDatabase(Download* download)
@@ -123,19 +120,28 @@ bool DatabaseManager::UpdateDownloadInStartOfDownloadOnDatabase(Download* downlo
 bool DatabaseManager::UpdateInDownloadingOnDataBase(Download* download)
 {
 	auto Queries = DatabaseQueryPreparer::PrepareQueriesForUpdateInDownloading(download);
-
-	// Wrap all part-progress updates in a single SQLite transaction so they are
-	// committed with one fsync instead of one commit per part (once per second on
-	// the worker thread). Fewer commits = far less disk churn per download.
 	QSqlDatabase& db = SettingUpDatabase::get_Database();
+
 	db.transaction();
-	for (int i = 0; i < Queries.size(); i++)
-	{
-		DatabaseInteract::ExectionQueryForUpdateData(Queries[i]);
+	bool allSuccess = true;
+
+	for (int i = 0; i < Queries.size(); i++) {
+		if (!DatabaseInteract::ExectionQueryForUpdateData(Queries[i])) {
+			allSuccess = false;
+			break;
+		}
 	}
-	db.commit();
+
+	if (allSuccess) {
+		db.commit();
+	}
+	else {
+		qCritical() << "Transaction failed in UpdateInDownloadingOnDataBase. Rolling back.";
+		db.rollback();
+	}
+
 	qDeleteAll(Queries);
-	return true;
+	return allSuccess;
 }
 
 bool DatabaseManager::FinishDownloadOnDatabase(Download* download)
